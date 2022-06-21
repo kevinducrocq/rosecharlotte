@@ -1,0 +1,24 @@
+{
+  "name": "fulleshop",
+  "version": "1.0.0",
+  "description": "full e-commerce with react and node",
+  "main": "index.js",
+  "engines": {
+    "node": "16.15.0"
+  },
+  "scripts": {
+    "build": "cd backend && npm install && cd ../frontend && npm install && npm run build",
+    "start": "node backend/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kevinducrocq/FullEshop.git"
+  },
+  "author": "Kévin Ducrocq",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kevinducrocq/FullEshop/issues"
+  },
+  "homepage": "https://github.com/kevinducrocq/FullEshop#readme"
+}
