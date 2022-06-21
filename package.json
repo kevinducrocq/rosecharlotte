@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/kevinducrocq/FullEshop/issues"
   },
-  "homepage": "https://github.com/kevinducrocq/FullEshop#readme"
+  "homepage": "https://github.com/kevinducrocq/FullEshop#readme",
+  "dependencies": {
+    "react-scripts": "^5.0.1"
+  }
 }
