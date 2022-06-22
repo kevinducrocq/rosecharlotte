@@ -62,7 +62,7 @@ const data = {
       // _id: '4',
       name: 'Fila fit shirt',
       slug: 'fila-fit-shirt',
-      category: 'shirts',
+      category: 'Shirts',
       image: '/images/p4.jpg',
       price: 62,
       countInStock: 0,
