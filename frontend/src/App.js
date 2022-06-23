@@ -27,6 +27,8 @@ import OrderHistoryPage from './pages/OrderHistoryPage';
 import ProfilePage from './pages/ProfilePage';
 import axios from 'axios';
 import { getError } from './utils';
+import SearchBox from './components/SearchBox';
+import SearchPage from './pages/SearchPage';
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -82,6 +84,7 @@ function App() {
                 <Navbar.Brand>Full eshop</Navbar.Brand>
               </LinkContainer>
               <Navbar.Toggle aria-controls="basic-navbar-nav" />
+              <SearchBox />
               <Navbar.Collapse id="basic-navbar-nav">
                 <Nav className="ms-auto">
                   <Link to="/cart" className="nav-link">
@@ -152,6 +155,7 @@ function App() {
             <Routes>
               <Route path="/product/:slug" element={<ProductPage />} />
               <Route path="/cart" element={<CartPage />} />
+              <Route path="/search" element={<SearchPage />} />
               <Route path="/signin" element={<SigninPage />} />
               <Route path="/signup" element={<SignupPage />} />
               <Route path="/profile" element={<ProfilePage />} />
