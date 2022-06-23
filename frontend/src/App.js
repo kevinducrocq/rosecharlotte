@@ -1,41 +1,45 @@
-import './App.css';
-import React, { useContext, useEffect, useState } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import HomePage from './pages/HomePage';
-import ProductPage from './pages/ProductPage';
+import HomePage from './screens/HomePage';
+import ProductPage from './screens/ProductPage';
 import {
   Navbar,
-  Container,
-  Nav,
   Badge,
+  Nav,
   NavDropdown,
+  Container,
   Button,
 } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-import { Link } from 'react-router-dom';
+import { useContext, useEffect, useState } from 'react';
 import { Store } from './Store';
-import CartPage from './pages/CartPage';
-import SigninPage from './pages/SigninPage';
-import ShippingAddressPage from './pages/ShippingAddressPage';
-import SignupPage from './pages/SignupPage';
-import PaymentMethodPage from './pages/PaymentMethodPage';
-import PlaceOrderPage from './pages/PlaceOrderPage';
-import OrderPage from './pages/OrderPage';
-import OrderHistoryPage from './pages/OrderHistoryPage';
-import ProfilePage from './pages/ProfilePage';
-import axios from 'axios';
+import CartPage from './screens/CartPage';
+import SigninPage from './screens/SigninPage';
+import ShippingAddressPage from './screens/ShippingAddressPage';
+import SignupPage from './screens/SignupPage';
+import PaymentMethodPage from './screens/PaymentMethodPage';
+import PlaceOrderPage from './screens/PlaceOrderPage';
+import OrderPage from './screens/OrderPage';
+import OrderHistoryPage from './screens/OrderHistoryPage';
+import ProfilePage from './screens/ProfilePage';
 import { getError } from './utils';
+import axios from 'axios';
 import SearchBox from './components/SearchBox';
-import SearchPage from './pages/SearchPage';
+import SearchPage from './screens/SearchPage';
 import ProtectedRoute from './components/ProtectedRoute';
+import DashboardPage from './screens/DashboardPage';
 import AdminRoute from './components/AdminRoute';
-import DashboardPage from './pages/DashboardPage';
+import ProductListPage from './screens/ProductListPage';
+import ProductEditPage from './screens/ProductEditPage';
+import OrderListPage from './screens/OrderListPage';
+import UserListPage from './screens/UserListPage';
+import UserEditPage from './screens/UserEditPage';
+import MapPage from './screens/MapPage';
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
-  const { cart, userInfo } = state;
+  const { fullBox, cart, userInfo } = state;
 
   const signoutHandler = () => {
     ctxDispatch({ type: 'USER_SIGNOUT' });
@@ -44,7 +48,6 @@ function App() {
     localStorage.removeItem('paymentMethod');
     window.location.href = '/signin';
   };
-
   const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
   const [categories, setCategories] = useState([]);
 
@@ -59,21 +62,20 @@ function App() {
     };
     fetchCategories();
   }, []);
-
   return (
     <BrowserRouter>
       <div
         className={
           sidebarIsOpen
-            ? 'd-flex flex-column site-container active-cont'
-            : 'd-flex flex-column site-container'
+            ? fullBox
+              ? 'site-container active-cont d-flex flex-column full-box'
+              : 'site-container active-cont d-flex flex-column'
+            : fullBox
+            ? 'site-container d-flex flex-column full-box'
+            : 'site-container d-flex flex-column'
         }
       >
-        <ToastContainer
-          position="top-right"
-          autoClose={''}
-          limit={1}
-        ></ToastContainer>
+        <ToastContainer position="bottom-center" limit={1} />
         <header>
           <Navbar bg="dark" variant="dark" expand="lg">
             <Container>
@@ -83,15 +85,16 @@ function App() {
               >
                 <i className="fas fa-bars"></i>
               </Button>
+
               <LinkContainer to="/">
-                <Navbar.Brand>Full eshop</Navbar.Brand>
+                <Navbar.Brand>amazona</Navbar.Brand>
               </LinkContainer>
               <Navbar.Toggle aria-controls="basic-navbar-nav" />
-              <SearchBox />
               <Navbar.Collapse id="basic-navbar-nav">
-                <Nav className="ms-auto">
+                <SearchBox />
+                <Nav className="me-auto  w-100  justify-content-end">
                   <Link to="/cart" className="nav-link">
-                    <i className="fa-solid fa-cart-shopping"></i> Panier{' '}
+                    Cart
                     {cart.cartItems.length > 0 && (
                       <Badge pill bg="danger">
                         {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
@@ -99,17 +102,12 @@ function App() {
                     )}
                   </Link>
                   {userInfo ? (
-                    <NavDropdown
-                      title={userInfo.lastName + ' ' + userInfo.firstName}
-                      id="basic-nav-dropdown"
-                    >
+                    <NavDropdown title={userInfo.name} id="basic-nav-dropdown">
                       <LinkContainer to="/profile">
-                        <NavDropdown.Item>Profil</NavDropdown.Item>
+                        <NavDropdown.Item>User Profile</NavDropdown.Item>
                       </LinkContainer>
                       <LinkContainer to="/orderhistory">
-                        <NavDropdown.Item>
-                          Historique de commandes
-                        </NavDropdown.Item>
+                        <NavDropdown.Item>Order History</NavDropdown.Item>
                       </LinkContainer>
                       <NavDropdown.Divider />
                       <Link
@@ -117,27 +115,27 @@ function App() {
                         to="#signout"
                         onClick={signoutHandler}
                       >
-                        Déconnexion
+                        Sign Out
                       </Link>
                     </NavDropdown>
                   ) : (
                     <Link className="nav-link" to="/signin">
-                      Connexion
+                      Sign In
                     </Link>
                   )}
                   {userInfo && userInfo.isAdmin && (
                     <NavDropdown title="Admin" id="admin-nav-dropdown">
                       <LinkContainer to="/admin/dashboard">
-                        <NavDropdown.Item>Tableau de bord</NavDropdown.Item>
+                        <NavDropdown.Item>Dashboard</NavDropdown.Item>
                       </LinkContainer>
-                      <LinkContainer to="/admin/productlist">
-                        <NavDropdown.Item>Produits</NavDropdown.Item>
+                      <LinkContainer to="/admin/products">
+                        <NavDropdown.Item>Products</NavDropdown.Item>
                       </LinkContainer>
-                      <LinkContainer to="/admin/orderlist">
-                        <NavDropdown.Item>Commandes</NavDropdown.Item>
+                      <LinkContainer to="/admin/orders">
+                        <NavDropdown.Item>Orders</NavDropdown.Item>
                       </LinkContainer>
-                      <LinkContainer to="/admin/userlist">
-                        <NavDropdown.Item>Utilisateurs</NavDropdown.Item>
+                      <LinkContainer to="/admin/users">
+                        <NavDropdown.Item>Users</NavDropdown.Item>
                       </LinkContainer>
                     </NavDropdown>
                   )}
@@ -160,7 +158,7 @@ function App() {
             {categories.map((category) => (
               <Nav.Item key={category}>
                 <LinkContainer
-                  to={`search?category=${category}`}
+                  to={`/search?category=${category}`}
                   onClick={() => setSidebarIsOpen(false)}
                 >
                   <Nav.Link>{category}</Nav.Link>
@@ -170,7 +168,7 @@ function App() {
           </Nav>
         </div>
         <main>
-          <Container className="mt-5">
+          <Container className="mt-3">
             <Routes>
               <Route path="/product/:slug" element={<ProductPage />} />
               <Route path="/cart" element={<CartPage />} />
@@ -185,8 +183,14 @@ function App() {
                   </ProtectedRoute>
                 }
               />
-              <Route path="/shipping" element={<ShippingAddressPage />} />
-              <Route path="/payment" element={<PaymentMethodPage />} />
+              <Route
+                path="/map"
+                element={
+                  <ProtectedRoute>
+                    <MapPage />
+                  </ProtectedRoute>
+                }
+              />
               <Route path="/placeorder" element={<PlaceOrderPage />} />
               <Route
                 path="/order/:id"
@@ -195,7 +199,7 @@ function App() {
                     <OrderPage />
                   </ProtectedRoute>
                 }
-              />
+              ></Route>
               <Route
                 path="/orderhistory"
                 element={
@@ -203,13 +207,55 @@ function App() {
                     <OrderHistoryPage />
                   </ProtectedRoute>
                 }
-              />
-              {/* ADMIN ROUTES */}
+              ></Route>
+              <Route path="/shipping" element={<ShippingAddressPage />}></Route>
+              <Route path="/payment" element={<PaymentMethodPage />}></Route>
+              {/* Admin Routes */}
               <Route
                 path="/admin/dashboard"
                 element={
                   <AdminRoute>
                     <DashboardPage />
+                  </AdminRoute>
+                }
+              ></Route>
+              <Route
+                path="/admin/orders"
+                element={
+                  <AdminRoute>
+                    <OrderListPage />
+                  </AdminRoute>
+                }
+              ></Route>
+              <Route
+                path="/admin/users"
+                element={
+                  <AdminRoute>
+                    <UserListPage />
+                  </AdminRoute>
+                }
+              ></Route>
+              <Route
+                path="/admin/products"
+                element={
+                  <AdminRoute>
+                    <ProductListPage />
+                  </AdminRoute>
+                }
+              ></Route>
+              <Route
+                path="/admin/product/:id"
+                element={
+                  <AdminRoute>
+                    <ProductEditPage />
+                  </AdminRoute>
+                }
+              ></Route>
+              <Route
+                path="/admin/user/:id"
+                element={
+                  <AdminRoute>
+                    <UserEditPage />
                   </AdminRoute>
                 }
               ></Route>
@@ -219,7 +265,7 @@ function App() {
           </Container>
         </main>
         <footer>
-          <div className="text-center">All right reserved</div>
+          <div className="text-center">All rights reserved</div>
         </footer>
       </div>
     </BrowserRouter>
