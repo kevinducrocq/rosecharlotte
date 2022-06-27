@@ -73,13 +73,13 @@ export default function UserListScreen() {
   }, [userInfo, successDelete]);
 
   const deleteHandler = async (user) => {
-    if (window.confirm('Are you sure to delete?')) {
+    if (window.confirm('Confirmer?')) {
       try {
         dispatch({ type: 'DELETE_REQUEST' });
         await axios.delete(`/api/users/${user._id}`, {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         });
-        toast.success('user deleted successfully');
+        toast.success('Utilisateur supprimé');
         dispatch({ type: 'DELETE_SUCCESS' });
       } catch (error) {
         toast.error(getError(error));
@@ -92,9 +92,9 @@ export default function UserListScreen() {
   return (
     <div>
       <Helmet>
-        <title>Users</title>
+        <title>Utilisateurs</title>
       </Helmet>
-      <h1>Users</h1>
+      <h1>Utilisateurs</h1>
 
       {loadingDelete && <LoadingBox></LoadingBox>}
       {loading ? (
@@ -105,35 +105,39 @@ export default function UserListScreen() {
         <table className="table">
           <thead>
             <tr>
-              <th>ID</th>
-              <th>NAME</th>
-              <th>EMAIL</th>
-              <th>IS ADMIN</th>
-              <th>ACTIONS</th>
+              <th>Id</th>
+              <th>Nom</th>
+              <th>Prénom</th>
+              <th>Email</th>
+              <th>Admin</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {users.map((user) => (
               <tr key={user._id}>
                 <td>{user._id}</td>
-                <td>{user.name}</td>
+                <td>{user.firstName}</td>
+                <td>{user.lastName}</td>
                 <td>{user.email}</td>
                 <td>{user.isAdmin ? 'YES' : 'NO'}</td>
                 <td>
                   <Button
+                    className="btn btn-sm"
                     type="button"
                     variant="light"
                     onClick={() => navigate(`/admin/user/${user._id}`)}
                   >
-                    Edit
+                    <i className="fa-solid fa-pen-to-square"></i>
                   </Button>
                   &nbsp;
                   <Button
+                    className="btn btn-sm"
                     type="button"
-                    variant="light"
+                    variant="danger"
                     onClick={() => deleteHandler(user)}
                   >
-                    Delete
+                    <i className="fa-solid fa-trash"></i>
                   </Button>
                 </td>
               </tr>

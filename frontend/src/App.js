@@ -1,8 +1,8 @@
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import HomePage from './screens/HomePage';
-import ProductPage from './screens/ProductPage';
+import HomePage from './pages/HomePage';
+import ProductPage from './pages/ProductPage';
 import {
   Navbar,
   Badge,
@@ -12,30 +12,30 @@ import {
   Button,
 } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
-import { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Store } from './Store';
-import CartPage from './screens/CartPage';
-import SigninPage from './screens/SigninPage';
-import ShippingAddressPage from './screens/ShippingAddressPage';
-import SignupPage from './screens/SignupPage';
-import PaymentMethodPage from './screens/PaymentMethodPage';
-import PlaceOrderPage from './screens/PlaceOrderPage';
-import OrderPage from './screens/OrderPage';
-import OrderHistoryPage from './screens/OrderHistoryPage';
-import ProfilePage from './screens/ProfilePage';
+import CartPage from './pages/CartPage';
+import SigninPage from './pages/SigninPage';
+import ShippingAddressPage from './pages/ShippingAddressPage';
+import SignupPage from './pages/SignupPage';
+import PlaceOrderPage from './pages/PlaceOrderPage';
+import OrderPage from './pages/OrderPage';
+import OrderHistoryPage from './pages/OrderHistoryPage';
+import ProfilePage from './pages/ProfilePage';
 import { getError } from './utils';
 import axios from 'axios';
 import SearchBox from './components/SearchBox';
-import SearchPage from './screens/SearchPage';
+import SearchPage from './pages/SearchPage';
 import ProtectedRoute from './components/ProtectedRoute';
-import DashboardPage from './screens/DashboardPage';
+import DashboardPage from './pages/DashboardPage';
 import AdminRoute from './components/AdminRoute';
-import ProductListPage from './screens/ProductListPage';
-import ProductEditPage from './screens/ProductEditPage';
-import OrderListPage from './screens/OrderListPage';
-import UserListPage from './screens/UserListPage';
-import UserEditPage from './screens/UserEditPage';
-import MapPage from './screens/MapPage';
+import ProductListPage from './pages/ProductListPage';
+import ProductAddPage from './pages/ProductAddPage';
+import ProductEditPage from './pages/ProductEditPage';
+import OrderListPage from './pages/OrderListPage';
+import UserListPage from './pages/UserListPage';
+import UserEditPage from './pages/UserEditPage';
+import MapPage from './pages/MapPage';
 
 function App() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -45,7 +45,6 @@ function App() {
     ctxDispatch({ type: 'USER_SIGNOUT' });
     localStorage.removeItem('userInfo');
     localStorage.removeItem('shippingAddress');
-    localStorage.removeItem('paymentMethod');
     window.location.href = '/signin';
   };
   const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
@@ -87,27 +86,22 @@ function App() {
               </Button>
 
               <LinkContainer to="/">
-                <Navbar.Brand>amazona</Navbar.Brand>
+                <Navbar.Brand>full Eshop</Navbar.Brand>
               </LinkContainer>
               <Navbar.Toggle aria-controls="basic-navbar-nav" />
               <Navbar.Collapse id="basic-navbar-nav">
                 <SearchBox />
                 <Nav className="me-auto  w-100  justify-content-end">
-                  <Link to="/cart" className="nav-link">
-                    Cart
-                    {cart.cartItems.length > 0 && (
-                      <Badge pill bg="danger">
-                        {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
-                      </Badge>
-                    )}
-                  </Link>
                   {userInfo ? (
-                    <NavDropdown title={userInfo.name} id="basic-nav-dropdown">
+                    <NavDropdown
+                      title={userInfo.lastName + ' ' + userInfo.firstName}
+                      id="basic-nav-dropdown"
+                    >
                       <LinkContainer to="/profile">
-                        <NavDropdown.Item>User Profile</NavDropdown.Item>
+                        <NavDropdown.Item>Profil</NavDropdown.Item>
                       </LinkContainer>
                       <LinkContainer to="/orderhistory">
-                        <NavDropdown.Item>Order History</NavDropdown.Item>
+                        <NavDropdown.Item>Historique</NavDropdown.Item>
                       </LinkContainer>
                       <NavDropdown.Divider />
                       <Link
@@ -115,30 +109,46 @@ function App() {
                         to="#signout"
                         onClick={signoutHandler}
                       >
-                        Sign Out
+                        Déconnexion
                       </Link>
                     </NavDropdown>
                   ) : (
                     <Link className="nav-link" to="/signin">
-                      Sign In
+                      <i className="fa-solid fa-arrow-right-to-bracket"></i>{' '}
+                      Connexion
                     </Link>
                   )}
+
+                  {!userInfo && (
+                    <Link className="nav-link" to="/signup">
+                      <i className="fa-solid fa-pen"></i> Inscription
+                    </Link>
+                  )}
+
                   {userInfo && userInfo.isAdmin && (
                     <NavDropdown title="Admin" id="admin-nav-dropdown">
                       <LinkContainer to="/admin/dashboard">
-                        <NavDropdown.Item>Dashboard</NavDropdown.Item>
+                        <NavDropdown.Item>Tableau de bord</NavDropdown.Item>
                       </LinkContainer>
                       <LinkContainer to="/admin/products">
-                        <NavDropdown.Item>Products</NavDropdown.Item>
+                        <NavDropdown.Item>Produits</NavDropdown.Item>
                       </LinkContainer>
                       <LinkContainer to="/admin/orders">
-                        <NavDropdown.Item>Orders</NavDropdown.Item>
+                        <NavDropdown.Item>Commandes</NavDropdown.Item>
                       </LinkContainer>
                       <LinkContainer to="/admin/users">
-                        <NavDropdown.Item>Users</NavDropdown.Item>
+                        <NavDropdown.Item>Utilisateurs</NavDropdown.Item>
                       </LinkContainer>
                     </NavDropdown>
                   )}
+                  <Link to="/cart" className="nav-link">
+                    <i className="fa-solid fa-cart-shopping"></i> Panier{' '}
+                    {cart.cartItems.length > 0 && (
+                      <Badge pill bg="danger">
+                        {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
+                      </Badge>
+                    )}
+                  </Link>
                 </Nav>
               </Navbar.Collapse>
             </Container>
@@ -209,7 +219,6 @@ function App() {
                 }
               ></Route>
               <Route path="/shipping" element={<ShippingAddressPage />}></Route>
-              <Route path="/payment" element={<PaymentMethodPage />}></Route>
               {/* Admin Routes */}
               <Route
                 path="/admin/dashboard"
@@ -244,6 +253,14 @@ function App() {
                 }
               ></Route>
               <Route
+                path="/admin/product/add"
+                element={
+                  <AdminRoute>
+                    <ProductAddPage />
+                  </AdminRoute>
+                }
+              ></Route>
+              <Route
                 path="/admin/product/:id"
                 element={
                   <AdminRoute>
@@ -264,8 +281,8 @@ function App() {
             </Routes>
           </Container>
         </main>
-        <footer>
-          <div className="text-center">All rights reserved</div>
+        <footer className="bg-dark p-3 text-white">
+          <div className="text-center bg-dark">All rights reserved</div>
         </footer>
       </div>
     </BrowserRouter>

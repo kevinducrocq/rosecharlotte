@@ -38,7 +38,7 @@ const reducer = (state, action) => {
       return state;
   }
 };
-export default function ProductEditScreen() {
+export default function ProductEditPage() {
   const navigate = useNavigate();
   const params = useParams(); // /product/:id
   const { id: productId } = params;

@@ -11,24 +11,37 @@ productRouter.get('/', async (req, res) => {
 });
 
 productRouter.post(
-  '/',
+  '/add',
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
     const newProduct = new Product({
-      name: 'sample name ' + Date.now(),
-      slug: 'sample-name-' + Date.now(),
-      image: '/images/p1.jpg',
-      price: 0,
-      category: 'sample category',
-      brand: 'sample brand',
-      countInStock: 0,
-      rating: 0,
+      name: req.body.name,
+      slug: req.body.slug,
+      price: req.body.price,
+      image: req.body.image,
+      images: req.body.images,
+      category: req.body.category,
+      countInStock: req.body.countInStock,
       numReviews: 0,
-      description: 'sample description',
+      rating: 0,
+      brand: req.body.brand,
+      description: req.body.description,
     });
     const product = await newProduct.save();
-    res.send({ message: 'Product Created', product });
+    res.send({
+      name: product.name,
+      slug: product.slug,
+      price: product.price,
+      image: product.image,
+      images: product.images,
+      category: product.category,
+      countInStock: product.countInStock,
+      numReviews: 0,
+      rating: 0,
+      brand: product.brand,
+      description: product.description,
+    });
   })
 );
 
@@ -40,19 +53,31 @@ productRouter.put(
     const productId = req.params.id;
     const product = await Product.findById(productId);
     if (product) {
-      product.name = req.body.name;
-      product.slug = req.body.slug;
-      product.price = req.body.price;
-      product.image = req.body.image;
-      product.images = req.body.images;
-      product.category = req.body.category;
-      product.brand = req.body.brand;
-      product.countInStock = req.body.countInStock;
-      product.description = req.body.description;
-      await product.save();
-      res.send({ message: 'Product Updated' });
+      product.name = req.body.name || product.name;
+      product.slug = req.body.slug || product.slug;
+      product.price = req.body.price || product.price;
+      product.image = req.body.image || product.image;
+      product.images = req.body.images || product.images;
+      product.category = req.body.category || product.category;
+      product.brand = req.body.brand || product.brand;
+      product.countInStock = req.body.countInStock || product.countInStock;
+      product.description = req.body.description || product.description;
+
+      const updatedProduct = await product.save();
+      res.send({
+        _id: updatedProduct._id,
+        name: updatedProduct.name,
+        slug: updatedProduct.slug,
+        price: updatedProduct.price,
+        image: updatedProduct.image,
+        images: updatedProduct.images,
+        category: updatedProduct.category,
+        brand: updatedProduct.brand,
+        countInStock: updatedProduct.countInStock,
+        description: updatedProduct.description,
+      });
     } else {
-      res.status(404).send({ message: 'Product Not Found' });
+      res.status(404).send({ message: 'Produit non trouvé' });
     }
   })
 );
@@ -65,9 +90,9 @@ productRouter.delete(
     const product = await Product.findById(req.params.id);
     if (product) {
       await product.remove();
-      res.send({ message: 'Product Deleted' });
+      res.send({ message: 'Produit supprimé' });
     } else {
-      res.status(404).send({ message: 'Product Not Found' });
+      res.status(404).send({ message: 'Produit non trouvé' });
     }
   })
 );
@@ -79,17 +104,18 @@ productRouter.post(
     const productId = req.params.id;
     const product = await Product.findById(productId);
     if (product) {
-      if (product.reviews.find((x) => x.name === req.user.name)) {
+      if (product.reviews.find((x) => x.firstName === req.user.firstName)) {
         return res
           .status(400)
-          .send({ message: 'You already submitted a review' });
+          .send({ message: 'Vous avez déjà laissé un commentaire' });
       }
 
       const review = {
-        name: req.user.name,
+        firstName: req.user.firstName,
         rating: Number(req.body.rating),
         comment: req.body.comment,
       };
+
       product.reviews.push(review);
       product.numReviews = product.reviews.length;
       product.rating =
@@ -97,18 +123,18 @@ productRouter.post(
         product.reviews.length;
       const updatedProduct = await product.save();
       res.status(201).send({
-        message: 'Review Created',
+        message: 'Avis créé',
         review: updatedProduct.reviews[updatedProduct.reviews.length - 1],
         numReviews: product.numReviews,
         rating: product.rating,
       });
     } else {
-      res.status(404).send({ message: 'Product Not Found' });
+      res.status(404).send({ message: 'Pas de résultat' });
     }
   })
 );
 
-const PAGE_SIZE = 3;
+const PAGE_SIZE = 5;
 
 productRouter.get(
   '/admin',

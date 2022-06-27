@@ -41,7 +41,8 @@ export default function UserEditScreen() {
   const { id: userId } = params;
   const navigate = useNavigate();
 
-  const [name, setName] = useState('');
+  const [firstName, setfirstName] = useState('');
+  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [isAdmin, setIsAdmin] = useState(false);
 
@@ -52,7 +53,8 @@ export default function UserEditScreen() {
         const { data } = await axios.get(`/api/users/${userId}`, {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         });
-        setName(data.name);
+        setfirstName(data.firstName);
+        setLastName(data.lastName);
         setEmail(data.email);
         setIsAdmin(data.isAdmin);
         dispatch({ type: 'FETCH_SUCCESS' });
@@ -72,7 +74,7 @@ export default function UserEditScreen() {
       dispatch({ type: 'UPDATE_REQUEST' });
       await axios.put(
         `/api/users/${userId}`,
-        { _id: userId, name, email, isAdmin },
+        { _id: userId, firstName, lastName, email, isAdmin },
         {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         }
@@ -80,7 +82,7 @@ export default function UserEditScreen() {
       dispatch({
         type: 'UPDATE_SUCCESS',
       });
-      toast.success('User updated successfully');
+      toast.success('Utilisateur mis à jour');
       navigate('/admin/users');
     } catch (error) {
       toast.error(getError(error));
@@ -90,7 +92,7 @@ export default function UserEditScreen() {
   return (
     <Container className="small-container">
       <Helmet>
-        <title>Edit User ${userId}</title>
+        <title>Edit user ${userId}</title>
       </Helmet>
       <h1>Edit User {userId}</h1>
 
@@ -100,11 +102,19 @@ export default function UserEditScreen() {
         <MessageBox variant="danger">{error}</MessageBox>
       ) : (
         <Form onSubmit={submitHandler}>
-          <Form.Group className="mb-3" controlId="name">
-            <Form.Label>Name</Form.Label>
+          <Form.Group className="mb-3" controlId="firstName">
+            <Form.Label>Nom</Form.Label>
             <Form.Control
-              value={name}
-              onChange={(e) => setName(e.target.value)}
+              value={firstName}
+              onChange={(e) => setfirstName(e.target.value)}
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="lastName">
+            <Form.Label>Prénom</Form.Label>
+            <Form.Control
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
               required
             />
           </Form.Group>
@@ -129,7 +139,7 @@ export default function UserEditScreen() {
 
           <div className="mb-3">
             <Button disabled={loadingUpdate} type="submit">
-              Update
+              Mettre à jour
             </Button>
             {loadingUpdate && <LoadingBox></LoadingBox>}
           </div>

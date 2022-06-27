@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Form, Button } from 'react-bootstrap/Form';
+import { Form, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { Store } from '../Store';
 import CheckoutSteps from '../components/CheckoutSteps';
@@ -13,12 +13,11 @@ export default function ShippingAddressScreen() {
     userInfo,
     cart: { shippingAddress },
   } = state;
-  const [fullName, setFullName] = useState(shippingAddress.fullName || '');
+  const [firstName, setfirstName] = useState(shippingAddress.firstName || '');
+  const [lastName, setLastName] = useState(shippingAddress.lastName || '');
   const [address, setAddress] = useState(shippingAddress.address || '');
+  const [zip, setZip] = useState(shippingAddress.zip || '');
   const [city, setCity] = useState(shippingAddress.city || '');
-  const [postalCode, setPostalCode] = useState(
-    shippingAddress.postalCode || ''
-  );
   useEffect(() => {
     if (!userInfo) {
       navigate('/signin?redirect=/shipping');
@@ -30,10 +29,11 @@ export default function ShippingAddressScreen() {
     ctxDispatch({
       type: 'SAVE_SHIPPING_ADDRESS',
       payload: {
-        fullName,
+        firstName,
+        lastName,
         address,
+        zip,
         city,
-        postalCode,
         country,
         location: shippingAddress.location,
       },
@@ -41,15 +41,16 @@ export default function ShippingAddressScreen() {
     localStorage.setItem(
       'shippingAddress',
       JSON.stringify({
-        fullName,
+        firstName,
+        lastName,
         address,
+        zip,
         city,
-        postalCode,
         country,
         location: shippingAddress.location,
       })
     );
-    navigate('/payment');
+    navigate('/placeorder');
   };
 
   useEffect(() => {
@@ -64,42 +65,50 @@ export default function ShippingAddressScreen() {
 
       <CheckoutSteps step1 step2></CheckoutSteps>
       <div className="container small-container">
-        <h1 className="my-3">Shipping Address</h1>
+        <h1 className="my-3">Adresse de livraison</h1>
         <Form onSubmit={submitHandler}>
-          <Form.Group className="mb-3" controlId="fullName">
-            <Form.Label>Full Name</Form.Label>
+          <Form.Group className="mb-3" controlId="firstName">
+            <Form.Label>Nom</Form.Label>
             <Form.Control
-              value={fullName}
-              onChange={(e) => setFullName(e.target.value)}
+              value={firstName}
+              onChange={(e) => setfirstName(e.target.value)}
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="lastName">
+            <Form.Label>Prénom</Form.Label>
+            <Form.Control
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
               required
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="address">
-            <Form.Label>Address</Form.Label>
+            <Form.Label>Adresse</Form.Label>
             <Form.Control
               value={address}
               onChange={(e) => setAddress(e.target.value)}
               required
             />
           </Form.Group>
+          <Form.Group className="mb-3" controlId="zip">
+            <Form.Label>Postal Code</Form.Label>
+            <Form.Control
+              value={zip}
+              onChange={(e) => setZip(e.target.value)}
+              required
+            />
+          </Form.Group>
           <Form.Group className="mb-3" controlId="city">
-            <Form.Label>City</Form.Label>
+            <Form.Label>Ville</Form.Label>
             <Form.Control
               value={city}
               onChange={(e) => setCity(e.target.value)}
               required
             />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="postalCode">
-            <Form.Label>Postal Code</Form.Label>
-            <Form.Control
-              value={postalCode}
-              onChange={(e) => setPostalCode(e.target.value)}
-              required
-            />
-          </Form.Group>
           <Form.Group className="mb-3" controlId="country">
-            <Form.Label>Country</Form.Label>
+            <Form.Label>Pays</Form.Label>
             <Form.Control
               value={country}
               onChange={(e) => setCountry(e.target.value)}
@@ -113,7 +122,7 @@ export default function ShippingAddressScreen() {
               variant="light"
               onClick={() => navigate('/map')}
             >
-              Choose Location On Map
+              Trouver votre localisation sur la carte
             </Button>
             {shippingAddress.location && shippingAddress.location.lat ? (
               <div>
@@ -121,13 +130,13 @@ export default function ShippingAddressScreen() {
                 LNG:{shippingAddress.location.lng}
               </div>
             ) : (
-              <div>No location</div>
+              <div>Pas de localisation</div>
             )}
           </div>
 
           <div className="mb-3">
             <Button variant="primary" type="submit">
-              Continue
+              Continuer
             </Button>
           </div>
         </Form>

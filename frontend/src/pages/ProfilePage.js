@@ -63,12 +63,11 @@ const ProfilePage = () => {
       <Helmet>
         <title>Profil</title>
       </Helmet>
-      <h1 className="my-5">Votre profil</h1>
+      <h1 className="my-5">Votre profil {userInfo._id}</h1>
       <Form onSubmit={submitHandler}>
         <Form.Group className="mb-3" controlId="firstName">
           <Form.Label>Nom</Form.Label>
           <Form.Control
-            type="text"
             value={firstName}
             onChange={(e) => setFirstName(e.target.value)}
             required
@@ -77,7 +76,6 @@ const ProfilePage = () => {
         <Form.Group className="mb-3" controlId="lastName">
           <Form.Label>Prénom</Form.Label>
           <Form.Control
-            type="text"
             value={lastName}
             onChange={(e) => setLastName(e.target.value)}
             required

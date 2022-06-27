@@ -22,14 +22,14 @@ const reducer = (state, action) => {
       };
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
-    case 'CREATE_REQUEST':
+    case 'EDIT_REQUEST':
       return { ...state, loadingCreate: true };
-    case 'CREATE_SUCCESS':
+    case 'EDIT_SUCCESS':
       return {
         ...state,
         loadingCreate: false,
       };
-    case 'CREATE_FAIL':
+    case 'EDIT_FAIL':
       return { ...state, loadingCreate: false };
 
     case 'DELETE_REQUEST':
@@ -93,10 +93,10 @@ export default function ProductListScreen() {
     }
   }, [page, userInfo, successDelete]);
 
-  const createHandler = async () => {
-    if (window.confirm('Are you sure to create?')) {
+  const editHandler = async () => {
+    if (window.confirm('Are you sure to edit?')) {
       try {
-        dispatch({ type: 'CREATE_REQUEST' });
+        dispatch({ type: 'EDIT_REQUEST' });
         const { data } = await axios.post(
           '/api/products',
           {},
@@ -104,13 +104,13 @@ export default function ProductListScreen() {
             headers: { Authorization: `Bearer ${userInfo.token}` },
           }
         );
-        toast.success('product created successfully');
-        dispatch({ type: 'CREATE_SUCCESS' });
+        // toast.success('product created successfully');
+        dispatch({ type: 'EDIT_SUCCESS' });
         navigate(`/admin/product/${data.product._id}`);
       } catch (err) {
         toast.error(getError(error));
         dispatch({
-          type: 'CREATE_FAIL',
+          type: 'EDIT_FAIL',
         });
       }
     }
@@ -135,15 +135,18 @@ export default function ProductListScreen() {
 
   return (
     <div>
-      <Row>
+      <Row className="bg-light px-2 rounded">
         <Col>
-          <h1>Products</h1>
+          <h1 className="my-5">Produits</h1>
         </Col>
-        <Col className="col text-end">
+        <Col className="col text-end my-5">
           <div>
-            <Button type="button" onClick={createHandler}>
-              Create Product
-            </Button>
+            <Link to="/admin/product/add" className="btn btn-primary">
+              <i className="fa-solid fa-plus"></i> Ajouter
+            </Link>
+            {/* <Button type="button" onClick={createHandler}>
+              <i className="fa-solid fa-plus"></i> Ajouter
+            </Button> */}
           </div>
         </Col>
       </Row>
@@ -157,40 +160,40 @@ export default function ProductListScreen() {
         <MessageBox variant="danger">{error}</MessageBox>
       ) : (
         <>
-          <table className="table">
+          <table className="table table-striped rounded">
             <thead>
               <tr>
-                <th>ID</th>
-                <th>NAME</th>
-                <th>PRICE</th>
-                <th>CATEGORY</th>
-                <th>BRAND</th>
-                <th>ACTIONS</th>
+                <th>Nom</th>
+                <th>Prix</th>
+                <th>Catégorie</th>
+                <th>Marque</th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
               {products.map((product) => (
                 <tr key={product._id}>
-                  <td>{product._id}</td>
                   <td>{product.name}</td>
                   <td>{product.price}</td>
                   <td>{product.category}</td>
                   <td>{product.brand}</td>
                   <td>
                     <Button
+                      className="btn btn-sm"
                       type="button"
                       variant="light"
                       onClick={() => navigate(`/admin/product/${product._id}`)}
                     >
-                      Edit
+                      <i className="fa-solid fa-pen-to-square"></i>
                     </Button>
                     &nbsp;
                     <Button
+                      className="btn btn-sm"
                       type="button"
-                      variant="light"
+                      variant="danger"
                       onClick={() => deleteHandler(product)}
                     >
-                      Delete
+                      <i className="fa-solid fa-trash"></i>
                     </Button>
                   </td>
                 </tr>

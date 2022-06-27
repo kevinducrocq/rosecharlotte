@@ -39,14 +39,16 @@ export default function OrderPage() {
   const { id: orderId } = params;
   const navigate = useNavigate();
 
-  const [{ loading, error, order, successPay, loadingPay }, dispatch] =
-    useReducer(reducer, {
-      loading: true,
-      order: {},
-      error: '',
-      successPay: false,
-      loadingPay: false,
-    });
+  const [
+    { loading, error, order, successPay, loadingPay },
+    dispatch,
+  ] = useReducer(reducer, {
+    loading: true,
+    order: {},
+    error: '',
+    successPay: false,
+    loadingPay: false,
+  });
 
   const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
 
@@ -61,7 +63,7 @@ export default function OrderPage() {
   }
 
   function onApprove(data, actions) {
-    return actions.order.capture().then(async function (details) {
+    return actions.order.capture().then(async function(details) {
       try {
         dispatch({ type: 'PAY_REQUEST' });
         const { data } = await axios.put(
@@ -105,7 +107,7 @@ export default function OrderPage() {
       }
     } else {
       const loadPaypalScript = async () => {
-        const { data: clientId } = await axios.get('/api/keys/papyal', {
+        const { data: clientId } = await axios.get('/api/keys/paypal', {
           headers: { authorization: `Bearer ${userInfo.token}` },
         });
         paypalDispatch({
@@ -153,9 +155,6 @@ export default function OrderPage() {
           <Card className="mb-3">
             <Card.Body>
               <Card.Title>Payment</Card.Title>
-              <Card.Text>
-                <strong>Méthode:</strong> {order.paymentMethod}
-              </Card.Text>
               {order.isPaid ? (
                 <MessageBox variant="success">
                   Payé le {order.paidAt}

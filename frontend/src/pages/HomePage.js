@@ -44,7 +44,7 @@ function HomePage() {
       <Helmet>
         <title>Full Eshop</title>
       </Helmet>
-      <h1 className="my-5">Featured products</h1>
+      <h1 className="my-5">Nos produits</h1>
       <div className="products">
         {loading ? (
           <LoadingBox />

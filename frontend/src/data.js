@@ -1,10 +1,30 @@
+import bcrypt from 'bcryptjs';
+
 const data = {
+  users: [
+    {
+      firstName: 'Ducrocq',
+      lastName: 'Kévin',
+      email: 'kducrocq.dev@gmail.com',
+      password: bcrypt.hashSync('123456'),
+      isAdmin: true,
+    },
+    {
+      firstName: 'Doe',
+      lastName: 'John',
+      email: 'user@gmail.com',
+      password: bcrypt.hashSync('123456'),
+      isAdmin: false,
+    },
+  ],
+
   products: [
     {
-      name: 'Nike Slim shirt',
+      // _id: '1',
+      name: 'Nike slim shirt',
       slug: 'nike-slim-shirt',
       category: 'Shirts',
-      image: '/images/p1.jpg', // 679px × 829px
+      image: '/images/p1.jpg',
       price: 120,
       countInStock: 10,
       brand: 'Nike',
@@ -13,7 +33,8 @@ const data = {
       description: 'high quality shirt',
     },
     {
-      name: 'Adidas Fit Shirt',
+      // _id: '2',
+      name: 'Adidas fit shirt',
       slug: 'adidas-fit-shirt',
       category: 'Shirts',
       image: '/images/p2.jpg',
@@ -22,32 +43,35 @@ const data = {
       brand: 'Adidas',
       rating: 4.0,
       numReviews: 10,
-      description: 'high quality product',
+      description: 'high quality shirt',
     },
     {
-      name: 'Nike Slim Pant',
+      // _id: '3',
+      name: 'Nike slim pant',
       slug: 'nike-slim-pant',
       category: 'Pants',
       image: '/images/p3.jpg',
       price: 25,
       countInStock: 15,
       brand: 'Nike',
-      rating: 4.5,
-      numReviews: 14,
-      description: 'high quality product',
+      rating: 4.2,
+      numReviews: 15,
+      description: 'high quality pants',
     },
     {
-      name: 'Adidas Fit Pant',
-      slug: 'adidas-fit-pant',
-      category: 'Pants',
+      // _id: '4',
+      name: 'Fila fit shirt',
+      slug: 'fila-fit-shirt',
+      category: 'Shirts',
       image: '/images/p4.jpg',
-      price: 65,
-      countInStock: 5,
-      brand: 'Puma',
-      rating: 4.5,
-      numReviews: 10,
-      description: 'high quality product',
+      price: 62,
+      countInStock: 0,
+      brand: 'Nike',
+      rating: 3.7,
+      numReviews: 18,
+      description: 'high quality shirt',
     },
   ],
 };
+
 export default data;

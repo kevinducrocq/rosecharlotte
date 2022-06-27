@@ -104,46 +104,48 @@ export default function OrderListPage() {
         <table className="table">
           <thead>
             <tr>
-              <th>ID</th>
-              <th>USER</th>
-              <th>DATE</th>
-              <th>TOTAL</th>
-              <th>PAID</th>
-              <th>DELIVERED</th>
-              <th>ACTIONS</th>
+              <th>N°</th>
+              <th>Client</th>
+              <th>Date</th>
+              <th>Total</th>
+              <th>Payé?</th>
+              <th>Livré?</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {orders.map((order) => (
               <tr key={order._id}>
                 <td>{order._id}</td>
-                <td>{order.user ? order.user.name : 'DELETED USER'}</td>
+                <td>{order.user ? order.user.firstName : 'Client supprimé'}</td>
                 <td>{order.createdAt.substring(0, 10)}</td>
                 <td>{order.totalPrice.toFixed(2)}</td>
-                <td>{order.isPaid ? order.paidAt.substring(0, 10) : 'No'}</td>
+                <td>{order.isPaid ? order.paidAt.substring(0, 10) : 'Non'}</td>
 
                 <td>
                   {order.isDelivered
                     ? order.deliveredAt.substring(0, 10)
-                    : 'No'}
+                    : 'Non'}
                 </td>
                 <td>
                   <Button
+                    className="btn btn-sm"
                     type="button"
                     variant="light"
                     onClick={() => {
                       navigate(`/order/${order._id}`);
                     }}
                   >
-                    Details
+                    <i className="fa-solid fa-eye"></i>
                   </Button>
                   &nbsp;
                   <Button
+                    className="btn btn-sm"
                     type="button"
-                    variant="light"
+                    variant="danger"
                     onClick={() => deleteHandler(order)}
                   >
-                    Delete
+                    <i className="fa-solid fa-trash"></i>
                   </Button>
                 </td>
               </tr>

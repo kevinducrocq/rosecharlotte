@@ -12,7 +12,7 @@ orderRouter.get(
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
-    const orders = await Order.find().populate('user', 'name');
+    const orders = await Order.find().populate('user', 'firstName');
     res.send(orders);
   })
 );
@@ -24,7 +24,6 @@ orderRouter.post(
     const newOrder = new Order({
       orderItems: req.body.orderItems.map((x) => ({ ...x, product: x._id })),
       shippingAddress: req.body.shippingAddress,
-      paymentMethod: req.body.paymentMethod,
       itemsPrice: req.body.itemsPrice,
       shippingPrice: req.body.shippingPrice,
       taxPrice: req.body.taxPrice,
@@ -125,7 +124,7 @@ orderRouter.put(
   expressAsyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id).populate(
       'user',
-      'email name'
+      'email firstName'
     );
     if (order) {
       order.isPaid = true;
@@ -143,7 +142,7 @@ orderRouter.put(
         .send(
           {
             from: 'Amazona <amazona@mg.yourdomain.com>',
-            to: `${order.user.name} <${order.user.email}>`,
+            to: `${order.user.firstName} <${order.user.email}>`,
             subject: `New order ${order._id}`,
             html: payOrderEmailTemplate(order),
           },

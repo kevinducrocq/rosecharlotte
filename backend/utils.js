@@ -5,7 +5,8 @@ export const generateToken = (user) => {
   return jwt.sign(
     {
       _id: user._id,
-      name: user.name,
+      firstName: user.firstName,
+      lastName: user.lastName,
       email: user.email,
       isAdmin: user.isAdmin,
     },
@@ -86,18 +87,15 @@ export const payOrderEmailTemplate = (order) => {
   <td colspan="2"><strong>Total Price:</strong></td>
   <td align="right"><strong> $${order.totalPrice.toFixed(2)}</strong></td>
   </tr>
-  <tr>
-  <td colspan="2">Payment Method:</td>
-  <td align="right">${order.paymentMethod}</td>
-  </tr>
   </table>
   <h2>Shipping address</h2>
   <p>
-  ${order.shippingAddress.fullName},<br/>
+  ${order.shippingAddress.firstName},<br/>
+  ${order.shippingAddress.lastName},<br/>
   ${order.shippingAddress.address},<br/>
+  ${order.shippingAddress.zip}<br/>
   ${order.shippingAddress.city},<br/>
   ${order.shippingAddress.country},<br/>
-  ${order.shippingAddress.postalCode}<br/>
   </p>
   <hr/>
   <p>

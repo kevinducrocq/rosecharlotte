@@ -90,8 +90,9 @@ export default function CartPage() {
 
                     <Col md={2} sm={12}>
                       <Button
-                        className="btn btn-sm btn-warning"
+                        className="btn btn-sm"
                         onClick={() => removeItemHandler(item)}
+                        variant="danger"
                       >
                         <i className="fas fa-trash"></i>
                       </Button>

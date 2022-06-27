@@ -36,37 +36,37 @@ const reducer = (state, action) => {
 
 const prices = [
   {
-    name: '$1 to $50',
+    name: '1€ to 50€',
     value: '1-50',
   },
   {
-    name: '$51 to $200',
+    name: '51€ to 200€',
     value: '51-200',
   },
   {
-    name: '$201 to $1000',
+    name: '201€ to 1000€',
     value: '201-1000',
   },
 ];
 
 export const ratings = [
   {
-    name: '4stars & up',
+    name: '4 étoiles & +',
     rating: 4,
   },
 
   {
-    name: '3stars & up',
+    name: '3 étoiles & +',
     rating: 3,
   },
 
   {
-    name: '2stars & up',
+    name: '2 étoiles & +',
     rating: 2,
   },
 
   {
-    name: '1stars & up',
+    name: '1 étoile & +',
     rating: 1,
   },
 ];
@@ -136,7 +136,7 @@ export default function SearchScreen() {
       </Helmet>
       <Row>
         <Col md={3}>
-          <h3>Department</h3>
+          <h3>Catégorie</h3>
           <div>
             <ul>
               <li>
@@ -144,7 +144,7 @@ export default function SearchScreen() {
                   className={'all' === category ? 'text-bold' : ''}
                   to={getFilterUrl({ category: 'all' })}
                 >
-                  Any
+                  Tout
                 </Link>
               </li>
               {categories.map((c) => (
@@ -160,14 +160,14 @@ export default function SearchScreen() {
             </ul>
           </div>
           <div>
-            <h3>Price</h3>
+            <h3>Prix</h3>
             <ul>
               <li>
                 <Link
                   className={'all' === price ? 'text-bold' : ''}
                   to={getFilterUrl({ price: 'all' })}
                 >
-                  Any
+                  Tous les prix
                 </Link>
               </li>
               {prices.map((p) => (
@@ -183,7 +183,7 @@ export default function SearchScreen() {
             </ul>
           </div>
           <div>
-            <h3>Avg. Customer Review</h3>
+            <h3>Notes des clients</h3>
             <ul>
               {ratings.map((r) => (
                 <li key={r.name}>
@@ -216,11 +216,11 @@ export default function SearchScreen() {
               <Row className="justify-content-between mb-3">
                 <Col md={6}>
                   <div>
-                    {countProducts === 0 ? 'No' : countProducts} Results
+                    {countProducts === 0 ? 'Pas de' : countProducts} Résultats
                     {query !== 'all' && ' : ' + query}
                     {category !== 'all' && ' : ' + category}
-                    {price !== 'all' && ' : Price ' + price}
-                    {rating !== 'all' && ' : Rating ' + rating + ' & up'}
+                    {price !== 'all' && ' : Prix ' + price}
+                    {rating !== 'all' && ' : Note ' + rating + ' & plus'}
                     {query !== 'all' ||
                     category !== 'all' ||
                     rating !== 'all' ||
@@ -242,15 +242,15 @@ export default function SearchScreen() {
                       navigate(getFilterUrl({ order: e.target.value }));
                     }}
                   >
-                    <option value="newest">Newest Arrivals</option>
-                    <option value="lowest">Price: Low to High</option>
-                    <option value="highest">Price: High to Low</option>
-                    <option value="toprated">Avg. Customer Reviews</option>
+                    <option value="newest">Les nouveaux produits</option>
+                    <option value="lowest">Prix: du - au +</option>
+                    <option value="highest">Price: du + au -</option>
+                    <option value="toprated">Note des clients</option>
                   </select>
                 </Col>
               </Row>
               {products.length === 0 && (
-                <MessageBox>No Product Found</MessageBox>
+                <MessageBox>Pas de résultat</MessageBox>
               )}
 
               <Row>

@@ -60,18 +60,18 @@ const OrderHistoryPage = () => {
         <table className="table table-striped">
           <thead>
             <tr className="to-upper">
-              <th>id</th>
-              <th>date</th>
-              <th>total</th>
-              <th>payé</th>
-              <th>livré</th>
-              <th>actions</th>
+              <th>N°</th>
+              <th>Date</th>
+              <th>Total</th>
+              <th>Payé?</th>
+              <th>Livré?</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {orders.map((order) => (
               <tr key={order._id}>
-                <td>{order._id}</td>
+                <td>{order._id.substring(0, 5)}</td>
                 <td>{order.createdAt.substring(0, 10)}</td>
                 <td>{order.totalPrice.toFixed(2)} &euro;</td>
                 <td>{order.isPaid ? order.paidAt.substring(0, 10) : 'Non'}</td>
@@ -82,13 +82,14 @@ const OrderHistoryPage = () => {
                 </td>
                 <td>
                   <Button
+                    className="btn btn-sm"
                     type="button"
                     variant="light"
                     onClick={() => {
                       navigate(`/order/${order._id}`);
                     }}
                   >
-                    <i class="fa-solid fa-eye"></i> Voir
+                    <i className="fa-solid fa-eye"></i>
                   </Button>
                 </td>
               </tr>

@@ -1,5 +1,11 @@
 import axios from 'axios';
-import { useContext, useEffect, useReducer, useRef, useState } from 'react';
+import React, {
+  useContext,
+  useEffect,
+  useReducer,
+  useRef,
+  useState,
+} from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import {
   Row,
@@ -16,7 +22,6 @@ import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import { getError } from '../utils';
 import { Store } from '../Store';
-import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import { toast } from 'react-toastify';
 
 const reducer = (state, action) => {
@@ -79,7 +84,7 @@ function ProductScreen() {
     const quantity = existItem ? existItem.quantity + 1 : 1;
     const { data } = await axios.get(`/api/products/${product._id}`);
     if (data.countInStock < quantity) {
-      window.alert('Sorry. Product is out of stock');
+      window.alert('Désolé, le produit est épuisé');
       return;
     }
     ctxDispatch({
@@ -92,13 +97,13 @@ function ProductScreen() {
   const submitHandler = async (e) => {
     e.preventDefault();
     if (!comment || !rating) {
-      toast.error('Please enter comment and rating');
+      toast.error('Entrez une note et un commentaire');
       return;
     }
     try {
       const { data } = await axios.post(
         `/api/products/${product._id}/reviews`,
-        { rating, comment, name: userInfo.name },
+        { rating, comment, firstName: userInfo.firstName },
         {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         }
@@ -107,7 +112,7 @@ function ProductScreen() {
       dispatch({
         type: 'CREATE_SUCCESS',
       });
-      toast.success('Review submitted successfully');
+      toast.success('Commentaire soumis avec succès');
       product.reviews.unshift(data.review);
       product.numReviews = data.numReviews;
       product.rating = data.rating;
@@ -169,7 +174,7 @@ function ProductScreen() {
               </Row>
             </ListGroup.Item>
             <ListGroup.Item>
-              Description:
+              Déscription:
               <p>{product.description}</p>
             </ListGroup.Item>
           </ListGroup>
@@ -180,18 +185,18 @@ function ProductScreen() {
               <ListGroup variant="flush">
                 <ListGroup.Item>
                   <Row>
-                    <Col>Price:</Col>
-                    <Col>${product.price}</Col>
+                    <Col>Prix:</Col>
+                    <Col>{product.price} &euro;</Col>
                   </Row>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Row>
-                    <Col>Status:</Col>
+                    <Col>Statut:</Col>
                     <Col>
                       {product.countInStock > 0 ? (
-                        <Badge bg="success">In Stock</Badge>
+                        <Badge bg="success">En stock</Badge>
                       ) : (
-                        <Badge bg="danger">Unavailable</Badge>
+                        <Badge bg="danger">Epuisé</Badge>
                       )}
                     </Col>
                   </Row>
@@ -201,7 +206,7 @@ function ProductScreen() {
                   <ListGroup.Item>
                     <div className="d-grid">
                       <Button onClick={addToCartHandler} variant="primary">
-                        Add to Cart
+                        Ajouter au panier
                       </Button>
                     </div>
                   </ListGroup.Item>
@@ -212,16 +217,16 @@ function ProductScreen() {
         </Col>
       </Row>
       <div className="my-3">
-        <h2 ref={reviewsRef}>Reviews</h2>
+        <h2 ref={reviewsRef}>Avis</h2>
         <div className="mb-3">
           {product.reviews.length === 0 && (
-            <MessageBox>There is no review</MessageBox>
+            <MessageBox>Il n'y a pas encore d'avis</MessageBox>
           )}
         </div>
         <ListGroup>
           {product.reviews.map((review) => (
             <ListGroup.Item key={review._id}>
-              <strong>{review.name}</strong>
+              <strong>{review.firstName}</strong>
               <Rating rating={review.rating} caption=" "></Rating>
               <p>{review.createdAt.substring(0, 10)}</p>
               <p>{review.comment}</p>
@@ -231,49 +236,46 @@ function ProductScreen() {
         <div className="my-3">
           {userInfo ? (
             <form onSubmit={submitHandler}>
-              <h2>Write a customer review</h2>
+              <h2>Ajouter un avis</h2>
               <Form.Group className="mb-3" controlId="rating">
-                <Form.Label>Rating</Form.Label>
+                <Form.Label>Note</Form.Label>
                 <Form.Select
                   aria-label="Rating"
                   value={rating}
                   onChange={(e) => setRating(e.target.value)}
                 >
-                  <option value="">Select...</option>
-                  <option value="1">1- Poor</option>
-                  <option value="2">2- Fair</option>
-                  <option value="3">3- Good</option>
-                  <option value="4">4- Very good</option>
-                  <option value="5">5- Excelent</option>
+                  <option value="">Sélectionnez...</option>
+                  <option value="1">1- Mauvais</option>
+                  <option value="2">2- Moyen</option>
+                  <option value="3">3- Bien</option>
+                  <option value="4">4- Très bien</option>
+                  <option value="5">5- Excellent</option>
                 </Form.Select>
               </Form.Group>
-              <FloatingLabel
-                controlId="floatingTextarea"
-                label="Comments"
-                className="mb-3"
-              >
+              <Form.Group className="mb-3" controlId="floatingTextarea">
+                <Form.Label>Commentaire</Form.Label>
                 <Form.Control
                   as="textarea"
-                  placeholder="Leave a comment here"
+                  placeholder="Ecrivez votre commentaire ici"
+                  rows={3}
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
                 />
-              </FloatingLabel>
+              </Form.Group>
 
               <div className="mb-3">
                 <Button disabled={loadingCreateReview} type="submit">
-                  Submit
+                  Noter
                 </Button>
                 {loadingCreateReview && <LoadingBox></LoadingBox>}
               </div>
             </form>
           ) : (
             <MessageBox>
-              Please{' '}
               <Link to={`/signin?redirect=/product/${product.slug}`}>
-                Sign In
+                Connectez-vous
               </Link>{' '}
-              to write a review
+              pour rédiger un avis
             </MessageBox>
           )}
         </div>

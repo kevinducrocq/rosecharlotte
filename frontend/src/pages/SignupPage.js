@@ -98,8 +98,7 @@ export default function SignupPage() {
           <Button type="submit">Inscritpion</Button>
         </div>
         <div className="mb-3">
-          Déjà client ?{' '}
-          <Link to={`signin?redirect=${redirect}`}>Connectez-vous!</Link>
+          Déjà client ? <Link to={`/signin`}>Connectez-vous!</Link>
         </div>
       </Form>
     </Container>

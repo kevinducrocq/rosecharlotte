@@ -46,7 +46,6 @@ export default function PlaceOrderPage() {
         {
           orderItems: cart.cartItems,
           shippingAddress: cart.shippingAddress,
-          paymentMethod: cart.paymentMethod,
           itemsPrice: cart.itemsPrice,
           shippingPrice: cart.shippingPrice,
           taxPrice: cart.taxPrice,
@@ -64,15 +63,9 @@ export default function PlaceOrderPage() {
     }
   };
 
-  useEffect(() => {
-    if (!cart.paymentMethod) {
-      navigate('/payment');
-    }
-  }, [cart, navigate]);
-
   return (
     <div>
-      <CheckoutSteps step1 step2 step3 step4></CheckoutSteps>
+      <CheckoutSteps step1 step2 step3></CheckoutSteps>
       <Helmet>Récapitulatif de commande</Helmet>
       <h1 className="my-5">Récapitulatif de la commande</h1>
       <Row>
@@ -90,18 +83,6 @@ export default function PlaceOrderPage() {
                 {cart.shippingAddress.country} <br />
               </Card.Text>
               <Link to="/shipping">
-                <i className="fa-solid fa-pen-to-square"></i> Modifier
-              </Link>
-            </Card.Body>
-          </Card>
-          <Card className="mb-3">
-            <Card.Body>
-              <Card.Title>Paiement</Card.Title>
-              <Card.Text>
-                <strong>Méthode de paiement : </strong>
-                {cart.paymentMethod}
-              </Card.Text>
-              <Link to="/payment">
                 <i className="fa-solid fa-pen-to-square"></i> Modifier
               </Link>
             </Card.Body>
