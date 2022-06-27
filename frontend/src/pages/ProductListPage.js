@@ -93,29 +93,6 @@ export default function ProductListScreen() {
     }
   }, [page, userInfo, successDelete]);
 
-  const editHandler = async () => {
-    if (window.confirm('Are you sure to edit?')) {
-      try {
-        dispatch({ type: 'EDIT_REQUEST' });
-        const { data } = await axios.post(
-          '/api/products',
-          {},
-          {
-            headers: { Authorization: `Bearer ${userInfo.token}` },
-          }
-        );
-        // toast.success('product created successfully');
-        dispatch({ type: 'EDIT_SUCCESS' });
-        navigate(`/admin/product/${data.product._id}`);
-      } catch (err) {
-        toast.error(getError(error));
-        dispatch({
-          type: 'EDIT_FAIL',
-        });
-      }
-    }
-  };
-
   const deleteHandler = async (product) => {
     if (window.confirm('Are you sure to delete?')) {
       try {

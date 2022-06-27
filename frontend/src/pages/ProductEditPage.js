@@ -157,7 +157,8 @@ export default function ProductEditPage() {
       <Helmet>
         <title>Edit Product ${productId}</title>
       </Helmet>
-      <h1>Edit Product {productId}</h1>
+      <h1>Edit Product</h1>
+      <small className="text-muted">{productId}</small>
 
       {loading ? (
         <LoadingBox></LoadingBox>
@@ -166,7 +167,7 @@ export default function ProductEditPage() {
       ) : (
         <Form onSubmit={submitHandler}>
           <Form.Group className="mb-3" controlId="name">
-            <Form.Label>Name</Form.Label>
+            <Form.Label>Nom</Form.Label>
             <Form.Control
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -182,29 +183,31 @@ export default function ProductEditPage() {
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="name">
-            <Form.Label>Price</Form.Label>
+            <Form.Label>Prix</Form.Label>
             <Form.Control
               value={price}
               onChange={(e) => setPrice(e.target.value)}
               required
             />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="image">
-            <Form.Label>Image File</Form.Label>
+          <Form.Group className="mb-3" controlId="imageFile">
+            <Form.Label>Téléverser une image</Form.Label>
             <Form.Control
+              className="mb-2"
+              type="file"
+              onChange={uploadFileHandler}
+            />
+            {loadingUpload && <LoadingBox></LoadingBox>}
+            <Form.Control
+              disabled
               value={image}
               onChange={(e) => setImage(e.target.value)}
               required
             />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="imageFile">
-            <Form.Label>Upload Image</Form.Label>
-            <Form.Control type="file" onChange={uploadFileHandler} />
-            {loadingUpload && <LoadingBox></LoadingBox>}
-          </Form.Group>
 
           <Form.Group className="mb-3" controlId="additionalImage">
-            <Form.Label>Additional Images</Form.Label>
+            <Form.Label>Images supplémentaires</Form.Label>
             {images.length === 0 && <MessageBox>No image</MessageBox>}
             <ListGroup variant="flush">
               {images.map((x) => (
@@ -218,7 +221,7 @@ export default function ProductEditPage() {
             </ListGroup>
           </Form.Group>
           <Form.Group className="mb-3" controlId="additionalImageFile">
-            <Form.Label>Upload Aditional Image</Form.Label>
+            <Form.Label>Ajouter des images</Form.Label>
             <Form.Control
               type="file"
               onChange={(e) => uploadFileHandler(e, true)}
@@ -227,7 +230,7 @@ export default function ProductEditPage() {
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="category">
-            <Form.Label>Category</Form.Label>
+            <Form.Label>Catégorie</Form.Label>
             <Form.Control
               value={category}
               onChange={(e) => setCategory(e.target.value)}
@@ -235,7 +238,7 @@ export default function ProductEditPage() {
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="brand">
-            <Form.Label>Brand</Form.Label>
+            <Form.Label>Marque</Form.Label>
             <Form.Control
               value={brand}
               onChange={(e) => setBrand(e.target.value)}
@@ -251,7 +254,7 @@ export default function ProductEditPage() {
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="description">
-            <Form.Label>Description</Form.Label>
+            <Form.Label>Déscription</Form.Label>
             <Form.Control
               value={description}
               onChange={(e) => setDescription(e.target.value)}
@@ -260,7 +263,7 @@ export default function ProductEditPage() {
           </Form.Group>
           <div className="mb-3">
             <Button disabled={loadingUpdate} type="submit">
-              Update
+              Mettre à jour
             </Button>
             {loadingUpdate && <LoadingBox></LoadingBox>}
           </div>

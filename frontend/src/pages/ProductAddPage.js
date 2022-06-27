@@ -141,9 +141,14 @@ export default function ProductEditPage() {
           </Form.Group>
           <Form.Group className="mb-3" controlId="imageFile">
             <Form.Label>Téléverser une image</Form.Label>
-            <Form.Control type="file" onChange={uploadFileHandler} />
+            <Form.Control
+              className="mb-2"
+              type="file"
+              onChange={uploadFileHandler}
+            />
             {loadingUpload && <LoadingBox></LoadingBox>}
             <Form.Control
+              disabled
               value={image}
               onChange={(e) => setImage(e.target.value)}
               required
