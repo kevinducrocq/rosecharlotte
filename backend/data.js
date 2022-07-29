@@ -1,14 +1,14 @@
-// import bcrypt from 'bcryptjs';
+import bcrypt from 'bcryptjs';
 
 const data = {
-  // users: [
-  //   {
-  //     name: 'Kévin Ducrocq',
-  //     email: 'kducrocq.dev@gmail.com',
-  //     password: bcrypt.hashSync('123456'),
-  //     isAdmin: true,
-  //   },
-  // ],
+  users: [
+    {
+      name: 'Kévin Ducrocq',
+      email: 'kducrocq.dev@gmail.com',
+      password: bcrypt.hashSync('123456'),
+      isAdmin: true,
+    },
+  ],
 
   products: [
     {
