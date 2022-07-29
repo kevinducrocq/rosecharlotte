@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import data from '../data';
+import data from '../../../backend/data';
 
 function HomePage() {
   return (
