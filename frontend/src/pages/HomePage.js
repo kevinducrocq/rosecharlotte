@@ -44,15 +44,21 @@ function HomePage() {
       <Helmet>
         <title>RoseCharlotte</title>
       </Helmet>
+
       <Container>
         <div className="title mb-3">
-          <img src="../images/logo-site.png" alt="Rose Charlotte" width={150} />
-          <h1>Bienvenue sur le site</h1>
+          <img
+            src="../images/logo-site.png"
+            alt="Rose Charlotte"
+            width={150}
+            className="img-fluid mb-3"
+          />
+          <h1>Bienvenue sur Rose Charlotte</h1>
         </div>
         <CarouselFade />
       </Container>
 
-      <Container>
+      <Container className="my-5">
         <h2 className="">Les derniers produits</h2>
         <div className="products">
           {loading ? (

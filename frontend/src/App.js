@@ -39,12 +39,14 @@ function App() {
         draggable
         pauseOnHover={false}
       />
-      <div className="d-flex flex-column site-container">
-        <header className="mb-5">
+
+      <div className="site-container">
+        <header>
           <NavigationBar />
         </header>
+
         <main>
-          <Container className="mt-3">
+          <Container fluid>
             <Routes>
               <Route path="/product/:slug" element={<ProductPage />} />
               <Route path="/cart" element={<CartPage />} />

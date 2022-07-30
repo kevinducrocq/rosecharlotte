@@ -45,11 +45,11 @@ export default function SignupPage() {
   }, [navigate, redirect, userInfo]);
 
   return (
-    <Container className="small-container">
+    <Container className="my-5 small-container bg3 p-3 rounded shadow">
       <Helmet>
         <title>Inscription</title>
       </Helmet>
-      <h1 className="my-5">Inscription</h1>
+      <h1 className="my-5 text-center">Inscription</h1>
 
       <Form onSubmit={submitHandler}>
         <Form.Group className="mb-3" controlId="name">

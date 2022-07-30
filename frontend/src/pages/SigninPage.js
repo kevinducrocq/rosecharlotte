@@ -40,11 +40,11 @@ export default function SigninPage() {
   }, [navigate, redirect, userInfo]);
 
   return (
-    <Container className="small-container">
+    <Container className="my-5 small-container bg3 p-3 rounded shadow">
       <Helmet>
         <title>Connexion</title>
       </Helmet>
-      <h1 className="my-5">Connexion</h1>
+      <h1 className="my-5 text-center">Connexion</h1>
       <Form onSubmit={submitHandler}>
         <Form.Group className="mb-3" controlId="email">
           <Form.Label>Email</Form.Label>

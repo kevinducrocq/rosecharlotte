@@ -16,6 +16,7 @@ import {
   Badge,
   Button,
   Image,
+  Container,
 } from 'react-bootstrap';
 import Rating from '../components/Rating';
 import { Helmet } from 'react-helmet-async';
@@ -130,7 +131,7 @@ function ProductScreen() {
   ) : error ? (
     <MessageBox variant="danger">{error}</MessageBox>
   ) : (
-    <div>
+    <Container>
       <Row>
         <Col lg={1} md={1} sm={2}>
           <div className="d-flex flex-column">
@@ -260,7 +261,7 @@ function ProductScreen() {
           )}
         </div>
       </div>
-    </div>
+    </Container>
   );
 }
 export default ProductScreen;

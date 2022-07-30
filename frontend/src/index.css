@@ -5,6 +5,15 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: #fff2f2;
+}
+
+main {
+  margin-top: 150px;
+}
+
+.site-container {
+  height: 100vh;
 }
 
 .bg1 {
@@ -30,9 +39,11 @@ body {
 main {
   flex: 1;
 }
+
 .card {
   border: solid 0.5px #ef9f9f;
 }
+
 .card-img-top {
   height: 300px;
   object-fit: cover;
@@ -42,13 +53,43 @@ main {
 
 .navbar {
   transition: 0.3s ease-in;
-  overflow: hidden;
-  margin-bottom: 50px;
   background-color: #f47c7c;
+}
+
+.navbar a:hover {
+  border-bottom: solid 2px #fff2f2;
+  transition: none;
 }
 
 .navbar-bg {
   background-color: rgba(250, 212, 212, 0.7);
+}
+
+.navbar-bg .nav-link {
+  color: #000;
+}
+
+.navbar2 {
+  display: flex;
+  height: 40px;
+  align-items: center;
+  color: #f1f1f1;
+  transition: 0.3s ease-in;
+  background-color: #ef9f9f;
+}
+
+.navbar2 a:hover {
+  border-bottom: solid 3px #fff2f2;
+}
+.navbar2-bg a:hover {
+  border-bottom: solid 3px #fff2f2;
+}
+
+.navbar2-bg {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  background-color: rgba(250, 212, 212, 0.6);
 }
 
 /*CAROUSEL*/

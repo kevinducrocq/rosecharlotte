@@ -1,5 +1,5 @@
 import React, { useContext, useReducer, useState } from 'react';
-import { Button, Col, Form, Row } from 'react-bootstrap';
+import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { Store } from '../Store';
 import { getError } from '../utils';
@@ -66,11 +66,11 @@ const ProfilePage = () => {
   };
 
   return (
-    <div className="mt-5 shadow rounded-3 p-4">
+    <Container className="my-5 bg3 shadow rounded-3 p-4">
       <Helmet>
         <title>Profil</title>
       </Helmet>
-      <h1 className="my-3 text-center">Profil de {userInfo.pseudo}</h1>
+      <h1 className="my-3 text-center">Profil de {userInfo.name}</h1>
       <Form onSubmit={submitHandler}>
         <Row>
           <Col md={6}>
@@ -79,14 +79,6 @@ const ProfilePage = () => {
               <Form.Control
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="pseudo">
-              <Form.Label>Pseudo</Form.Label>
-              <Form.Control
-                value={pseudo}
-                onChange={(e) => setPseudo(e.target.value)}
-                required
               ></Form.Control>
             </Form.Group>
             <Form.Group className="mb-3" controlId="email">
@@ -146,7 +138,7 @@ const ProfilePage = () => {
           </div>
         </Row>
       </Form>
-    </div>
+    </Container>
   );
 };
 
