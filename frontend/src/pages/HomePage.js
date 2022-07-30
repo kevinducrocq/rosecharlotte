@@ -1,10 +1,11 @@
 import axios from 'axios';
 import React, { useEffect, useReducer } from 'react';
-import { Col, Row } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import Product from '../components/Product';
+import CarouselFade from '../components/Carousel';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -39,26 +40,36 @@ function HomePage() {
     fetchData();
   }, []);
   return (
-    <div className="mt-5">
+    <div>
       <Helmet>
         <title>RoseCharlotte</title>
       </Helmet>
-      <h1 className="my-5">Nos produits</h1>
-      <div className="products">
-        {loading ? (
-          <LoadingBox />
-        ) : error ? (
-          <MessageBox variant="danger">{error}</MessageBox>
-        ) : (
-          <Row>
-            {products.map((product) => (
-              <Col key={product.slug} sm={6} md={4} lg={3} className="mb-3">
-                <Product product={product}></Product>
-              </Col>
-            ))}
-          </Row>
-        )}
-      </div>
+      <Container>
+        <div className="title mb-3">
+          <img src="../images/logo-site.png" alt="Rose Charlotte" width={150} />
+          <h1>Bienvenue sur le site</h1>
+        </div>
+        <CarouselFade />
+      </Container>
+
+      <Container>
+        <h2 className="">Les derniers produits</h2>
+        <div className="products">
+          {loading ? (
+            <LoadingBox />
+          ) : error ? (
+            <MessageBox variant="danger">{error}</MessageBox>
+          ) : (
+            <Row>
+              {products.map((product) => (
+                <Col key={product.slug} sm={6} md={4} lg={3} className="mb-3">
+                  <Product product={product}></Product>
+                </Col>
+              ))}
+            </Row>
+          )}
+        </div>
+      </Container>
     </div>
   );
 }

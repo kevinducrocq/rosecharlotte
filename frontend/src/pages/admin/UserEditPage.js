@@ -42,7 +42,6 @@ export default function UserEditScreen() {
   const navigate = useNavigate();
 
   const [name, setName] = useState('');
-  const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [isAdmin, setIsAdmin] = useState(false);
 

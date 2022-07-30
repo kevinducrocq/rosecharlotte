@@ -2,14 +2,14 @@ import React, { useContext, useEffect, useReducer, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-import { Container, ListGroup, Button, Form } from 'react-bootstrap';
+import { Container, ListGroup, Button, Form, Image } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { Store } from '../../Store';
 import { getError } from '../../utils';
 import LoadingBox from '../../components/LoadingBox';
 import MessageBox from '../../components/MessageBox';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -198,23 +198,27 @@ export default function ProductEditPage() {
               onChange={uploadFileHandler}
             />
             {loadingUpload && <LoadingBox></LoadingBox>}
-            <Form.Control
-              disabled
-              value={image}
+
+            <Image
+              src={image}
               onChange={(e) => setImage(e.target.value)}
-              required
+              fluid
+              thumbnail
             />
+            <Form.Control disabled value={image} />
           </Form.Group>
 
           <Form.Group className="mb-3" controlId="additionalImage">
             <Form.Label>Images supplémentaires</Form.Label>
-            {images.length === 0 && <MessageBox>No image</MessageBox>}
+            {images.length === 0 && (
+              <MessageBox>Pas d'image supplémentaire</MessageBox>
+            )}
             <ListGroup variant="flush">
               {images.map((x) => (
                 <ListGroup.Item key={x}>
-                  {x}
+                  <Image fluid thumbnail src={x} alt={x} />
                   <Button variant="light" onClick={() => deleteFileHandler(x)}>
-                    <FontAwesomeIcon icon={faTimesCircle} />
+                    <FontAwesomeIcon icon={faTrash} />
                   </Button>
                 </ListGroup.Item>
               ))}

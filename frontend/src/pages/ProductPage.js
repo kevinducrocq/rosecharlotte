@@ -15,6 +15,7 @@ import {
   Form,
   Badge,
   Button,
+  Image,
 } from 'react-bootstrap';
 import Rating from '../components/Rating';
 import { Helmet } from 'react-helmet-async';
@@ -56,14 +57,12 @@ function ProductScreen() {
   const params = useParams();
   const { slug } = params;
 
-  const [
-    { loading, error, product, loadingCreateReview },
-    dispatch,
-  ] = useReducer(reducer, {
-    product: [],
-    loading: true,
-    error: '',
-  });
+  const [{ loading, error, product, loadingCreateReview }, dispatch] =
+    useReducer(reducer, {
+      product: [],
+      loading: true,
+      error: '',
+    });
   useEffect(() => {
     const fetchData = async () => {
       dispatch({ type: 'FETCH_REQUEST' });
@@ -133,14 +132,33 @@ function ProductScreen() {
   ) : (
     <div>
       <Row>
-        <Col md={6}>
-          <img
-            className="img-large"
-            src={selectedImage || product.image}
-            alt={product.name}
-          ></img>
+        <Col lg={1} md={1} sm={2}>
+          <div className="d-flex flex-column">
+            {[product.image, ...product.images].map((x) => (
+              <Col key={x}>
+                <Card>
+                  <Button
+                    className="thumbnail"
+                    type="button"
+                    variant="light"
+                    onClick={() => setSelectedImage(x)}
+                  >
+                    <Card.Img variant="top" src={x} alt="product" />
+                  </Button>
+                </Card>
+              </Col>
+            ))}
+          </div>
         </Col>
-        <Col md={3}>
+        <Col md={5} lg={5} sm={8}>
+          <Image
+            src={selectedImage || product.image}
+            fluid
+            alt={product.name}
+            className="img-large"
+          />
+        </Col>
+        <Col md={6}>
           <ListGroup variant="flush">
             <ListGroup.Item>
               <Helmet>
@@ -149,71 +167,33 @@ function ProductScreen() {
               <h1>{product.name}</h1>
             </ListGroup.Item>
             <ListGroup.Item>
+              {product.countInStock > 0 ? (
+                <Badge bg="success">{product.countInStock} En stock</Badge>
+              ) : (
+                <Badge bg="danger">Epuisé</Badge>
+              )}
+            </ListGroup.Item>
+            <ListGroup.Item>
               <Rating
                 rating={product.rating}
                 numReviews={product.numReviews}
               ></Rating>
             </ListGroup.Item>
-            <ListGroup.Item>Pirce : ${product.price}</ListGroup.Item>
+            <ListGroup.Item>Prix : {product.price} &euro;</ListGroup.Item>
             <ListGroup.Item>
-              <Row xs={1} md={2} className="g-2">
-                {[product.image, ...product.images].map((x) => (
-                  <Col key={x}>
-                    <Card>
-                      <Button
-                        className="thumbnail"
-                        type="button"
-                        variant="light"
-                        onClick={() => setSelectedImage(x)}
-                      >
-                        <Card.Img variant="top" src={x} alt="product" />
-                      </Button>
-                    </Card>
-                  </Col>
-                ))}
-              </Row>
-            </ListGroup.Item>
-            <ListGroup.Item>
-              Déscription:
+              Description:
               <p>{product.description}</p>
             </ListGroup.Item>
+            {product.countInStock > 0 && (
+              <ListGroup.Item>
+                <div className="d-grid">
+                  <Button onClick={addToCartHandler} variant="primary">
+                    Ajouter au panier
+                  </Button>
+                </div>
+              </ListGroup.Item>
+            )}
           </ListGroup>
-        </Col>
-        <Col md={3}>
-          <Card>
-            <Card.Body>
-              <ListGroup variant="flush">
-                <ListGroup.Item>
-                  <Row>
-                    <Col>Prix:</Col>
-                    <Col>{product.price} &euro;</Col>
-                  </Row>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                  <Row>
-                    <Col>Statut:</Col>
-                    <Col>
-                      {product.countInStock > 0 ? (
-                        <Badge bg="success">En stock</Badge>
-                      ) : (
-                        <Badge bg="danger">Epuisé</Badge>
-                      )}
-                    </Col>
-                  </Row>
-                </ListGroup.Item>
-
-                {product.countInStock > 0 && (
-                  <ListGroup.Item>
-                    <div className="d-grid">
-                      <Button onClick={addToCartHandler} variant="primary">
-                        Ajouter au panier
-                      </Button>
-                    </div>
-                  </ListGroup.Item>
-                )}
-              </ListGroup>
-            </Card.Body>
-          </Card>
         </Col>
       </Row>
       <div className="my-3">

@@ -23,7 +23,8 @@ const data = {
       brand: 'Nike',
       rating: 4.5,
       numReviews: 10,
-      description: 'high quality shirt',
+      description:
+        'Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis neque non dolorum quod eos vel, perspiciatis quisquam necessitatibus obcaecati eveniet id, molestias eligendi, sint laudantium provident odit laborum. Sed, quo velit cumque earum a voluptatem tenetur modi quibusdam. Laudantium ipsam voluptate dignissimos id ducimus accusamus delectus velit pariatur sapiente architecto perferendis qui exercitationem saepe maiores temporibus corrupti earum repudiandae, placeat consequatur vel cupiditate et, fugiat fuga amet? Deserunt harum soluta laboriosam repudiandae maiores sapiente quos obcaecati voluptas dolore officia eos maxime tempora sed dolores reprehenderit id nostrum ratione, minus eveniet iste est totam? Cumque impedit iure quas nostrum illum eos.',
     },
     {
       // _id: '2',
