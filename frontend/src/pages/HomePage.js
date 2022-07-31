@@ -60,7 +60,7 @@ function HomePage() {
 
       <Container className="my-5">
         <h2 className="">Les derniers produits</h2>
-        <div className="products">
+        <div>
           {loading ? (
             <LoadingBox />
           ) : error ? (

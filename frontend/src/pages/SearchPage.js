@@ -14,6 +14,7 @@ import Product from '../components/Product';
 import LinkContainer from 'react-router-bootstrap/LinkContainer';
 import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Container } from 'react-bootstrap';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -130,15 +131,15 @@ export default function SearchScreen() {
     return `/search?category=${filterCategory}&query=${filterQuery}&price=${filterPrice}&rating=${filterRating}&order=${sortOrder}&page=${filterPage}`;
   };
   return (
-    <div>
+    <Container>
       <Helmet>
-        <title>Search Products</title>
+        <title>Boutique</title>
       </Helmet>
       <Row>
-        <Col md={3}>
-          <h3>Catégorie</h3>
+        <Col md={2}>
+          <h3>Catégories</h3>
           <div>
-            <ul>
+            <ul className="list-unstyled">
               <li>
                 <Link
                   className={'all' === category ? 'text-bold' : ''}
@@ -159,52 +160,6 @@ export default function SearchScreen() {
               ))}
             </ul>
           </div>
-          <div>
-            <h3>Prix</h3>
-            <ul>
-              <li>
-                <Link
-                  className={'all' === price ? 'text-bold' : ''}
-                  to={getFilterUrl({ price: 'all' })}
-                >
-                  Tous les prix
-                </Link>
-              </li>
-              {prices.map((p) => (
-                <li key={p.value}>
-                  <Link
-                    to={getFilterUrl({ price: p.value })}
-                    className={p.value === price ? 'text-bold' : ''}
-                  >
-                    {p.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h3>Notes des clients</h3>
-            <ul>
-              {ratings.map((r) => (
-                <li key={r.name}>
-                  <Link
-                    to={getFilterUrl({ rating: r.rating })}
-                    className={`${r.rating}` === `${rating}` ? 'text-bold' : ''}
-                  >
-                    <Rating caption={' & up'} rating={r.rating}></Rating>
-                  </Link>
-                </li>
-              ))}
-              <li>
-                <Link
-                  to={getFilterUrl({ rating: 'all' })}
-                  className={rating === 'all' ? 'text-bold' : ''}
-                >
-                  <Rating caption={' & up'} rating={0}></Rating>
-                </Link>
-              </li>
-            </ul>
-          </div>
         </Col>
         <Col md={9}>
           {loading ? (
@@ -216,26 +171,23 @@ export default function SearchScreen() {
               <Row className="justify-content-between mb-3">
                 <Col md={6}>
                   <div>
-                    {countProducts === 0 ? 'Pas de' : countProducts} Résultats
+                    <h4>
+                      {countProducts === 0 ? 'Pas de' : countProducts} Produit
+                      {countProducts <= 1 ? '' : 's'} <br />
+                    </h4>
                     {query !== 'all' && ' : ' + query}
-                    {category !== 'all' && ' : ' + category}
+                    <h2> {category !== 'all' && ' ' + category}</h2>
                     {price !== 'all' && ' : Prix ' + price}
-                    {rating !== 'all' && ' : Note ' + rating + ' & plus'}
                     {query !== 'all' ||
                     category !== 'all' ||
                     rating !== 'all' ||
-                    price !== 'all' ? (
-                      <Button
-                        variant="light"
-                        onClick={() => navigate('/search')}
-                      >
-                        <FontAwesomeIcon icon={faTimesCircle} />
-                      </Button>
-                    ) : null}
+                    price !== 'all'
+                      ? ''
+                      : null}
                   </div>
                 </Col>
                 <Col className="text-end">
-                  Sort by{' '}
+                  Filtrer par{' '}
                   <select
                     value={order}
                     onChange={(e) => {
@@ -243,8 +195,8 @@ export default function SearchScreen() {
                     }}
                   >
                     <option value="newest">Les nouveaux produits</option>
-                    <option value="lowest">Prix: du - au +</option>
-                    <option value="highest">Price: du + au -</option>
+                    <option value="lowest">Prix : du - au +</option>
+                    <option value="highest">Prix : du + au -</option>
                     <option value="toprated">Note des clients</option>
                   </select>
                 </Col>
@@ -281,6 +233,6 @@ export default function SearchScreen() {
           )}
         </Col>
       </Row>
-    </div>
+    </Container>
   );
 }

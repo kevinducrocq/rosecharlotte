@@ -34,6 +34,7 @@ function NavigationBar() {
     localStorage.removeItem('shippingAddress');
     window.location.href = '/signin';
   };
+
   const [categories, setCategories] = useState([]);
 
   useEffect(() => {
@@ -47,6 +48,7 @@ function NavigationBar() {
     };
     fetchCategories();
   }, []);
+
   return (
     <div className="fixed-top">
       <Navbar
@@ -73,7 +75,10 @@ function NavigationBar() {
               <Link className="nav-link" to="/">
                 Accueil
               </Link>
-              <Link className="nav-link" to="/">
+              <Link className="nav-link" to="/search">
+                Boutique
+              </Link>
+              <Link className="nav-link" to="/about">
                 A propos
               </Link>
               {userInfo ? (

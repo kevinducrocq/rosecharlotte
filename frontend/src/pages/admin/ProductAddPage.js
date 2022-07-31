@@ -2,13 +2,13 @@ import React, { useContext, useReducer, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-import { Container, ListGroup, Button, Form } from 'react-bootstrap';
+import { Container, Button, Form, Row, Col, Image } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { Store } from '../../Store';
 import { getError } from '../../utils';
 import LoadingBox from '../../components/LoadingBox';
 import MessageBox from '../../components/MessageBox';
-import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const reducer = (state, action) => {
@@ -44,11 +44,11 @@ export default function ProductEditPage() {
   const [name, setName] = useState('');
   const [slug, setSlug] = useState('');
   const [price, setPrice] = useState('');
+  const [weight, setWeight] = useState('');
   const [image, setImage] = useState('');
   const [images, setImages] = useState([]);
   const [category, setCategory] = useState('');
   const [countInStock, setCountInStock] = useState('');
-  const [brand, setBrand] = useState('');
   const [description, setDescription] = useState('');
 
   const submitHandler = async (e) => {
@@ -58,11 +58,11 @@ export default function ProductEditPage() {
         name,
         slug,
         price,
+        weight,
         image,
         images,
         category,
         countInStock,
-        brand,
         description,
       });
       ctxDispatch({ type: 'ADD_PRODUCT', payload: data });
@@ -104,6 +104,7 @@ export default function ProductEditPage() {
     setImages(images.filter((x) => x !== fileName));
     toast.success('Image supprimée');
   };
+
   return (
     <Container className="small-container">
       <Helmet>
@@ -126,7 +127,6 @@ export default function ProductEditPage() {
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="slug">
-            <Form.Label>Slug</Form.Label>
             <Form.Control
               value={slug}
               onChange={(e) => setSlug(e.target.value)}
@@ -141,58 +141,75 @@ export default function ProductEditPage() {
               required
             />
           </Form.Group>
-          <Form.Group className="mb-3" controlId="imageFile">
-            <Form.Label>Téléverser une image</Form.Label>
+          <Form.Group className="mb-3" controlId="weight">
+            <Form.Label>Poids (grammes)</Form.Label>
             <Form.Control
-              className="mb-2"
-              type="file"
-              onChange={uploadFileHandler}
-            />
-            {loadingUpload && <LoadingBox></LoadingBox>}
-            <Form.Control
-              disabled
-              value={image}
-              onChange={(e) => setImage(e.target.value)}
+              type="text"
+              min="0"
+              value={weight ? weight : 0}
+              onChange={(e) => setWeight(e.target.value)}
               required
             />
           </Form.Group>
+          <Row>
+            <Col md={6}>
+              <Form.Group controlId="imageFile">
+                <Form.Label>Image principale</Form.Label>
+                <Form.Control
+                  className="mb-2"
+                  type="file"
+                  onChange={uploadFileHandler}
+                />
+                <div className="d-flex flex-column align-items-center">
+                  {image ? (
+                    <Image
+                      thumbnail
+                      src={image}
+                      onChange={(e) => setImage(e.target.value)}
+                      width="80"
+                    />
+                  ) : (
+                    ''
+                  )}
+                </div>
+              </Form.Group>
+            </Col>
+            <Col md={6}>
+              <Form.Group className="mb-2" controlId="additionalImageFile">
+                <Form.Label>Ajouter des images</Form.Label>
+                <Form.Control
+                  type="file"
+                  onChange={(e) => uploadFileHandler(e, true)}
+                />
+              </Form.Group>
 
-          <Form.Group className="mb-3" controlId="additionalImage">
-            <Form.Label>Images supplémentaires</Form.Label>
-            {images.length === 0 && <MessageBox>No image</MessageBox>}
-            <ListGroup variant="flush">
-              {images.map((x) => (
-                <ListGroup.Item key={x}>
-                  {x}
-                  <Button variant="light" onClick={() => deleteFileHandler(x)}>
-                    <FontAwesomeIcon icon={faTimesCircle} />
-                  </Button>
-                </ListGroup.Item>
-              ))}
-            </ListGroup>
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="additionalImageFile">
-            <Form.Label>Ajouter des images</Form.Label>
-            <Form.Control
-              type="file"
-              onChange={(e) => uploadFileHandler(e, true)}
-            />
-            {loadingUpload && <LoadingBox></LoadingBox>}
-          </Form.Group>
+              <Form.Group controlId="additionalImage">
+                <div className="d-flex" variant="flush">
+                  {images.map((x) => (
+                    <div
+                      key={x}
+                      className="d-flex flex-column align-items-center mx-1"
+                    >
+                      <Image fluid thumbnail src={x} alt={x} />
+                      <Button
+                        variant="warning"
+                        onClick={() => deleteFileHandler(x)}
+                      >
+                        <FontAwesomeIcon icon={faTrash} />
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              </Form.Group>
+            </Col>
+            <Row> {loadingUpload && <LoadingBox></LoadingBox>}</Row>
+          </Row>
 
           <Form.Group className="mb-3" controlId="category">
             <Form.Label>Catégorie</Form.Label>
             <Form.Control
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              required
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="brand">
-            <Form.Label>Marque</Form.Label>
-            <Form.Control
-              value={brand}
-              onChange={(e) => setBrand(e.target.value)}
               required
             />
           </Form.Group>
@@ -207,6 +224,8 @@ export default function ProductEditPage() {
           <Form.Group className="mb-3" controlId="description">
             <Form.Label>Déscription</Form.Label>
             <Form.Control
+              as="textarea"
+              rows={6}
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               required

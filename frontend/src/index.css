@@ -12,6 +12,8 @@ main {
   margin-top: 150px;
 }
 
+/*COULEURS GENERALES*/
+
 .bg1 {
   background-color: #f47c7c;
 }
@@ -28,20 +30,14 @@ main {
   background-color: #fff2f2;
 }
 
-.site-container {
-  max-height: 100vh;
-}
-
-main {
-  flex: 1;
-}
+/*CARDS*/
 
 .card {
   border: solid 0.5px #ef9f9f;
 }
 
 .card-img-top {
-  height: 300px;
+  height: 200px;
   object-fit: cover;
 }
 
@@ -50,11 +46,6 @@ main {
 .navbar {
   transition: 0.3s ease-in;
   background-color: #f47c7c;
-}
-
-.navbar a:hover {
-  border-bottom: solid 2px #fff2f2;
-  transition: none;
 }
 
 .navbar-bg {
@@ -72,13 +63,6 @@ main {
   color: #f1f1f1;
   transition: 0.3s ease-in;
   background-color: #ef9f9f;
-}
-
-.navbar2 a:hover {
-  border-bottom: solid 2px #fff2f2;
-}
-.navbar2-bg a:hover {
-  border-bottom: solid 2px #fff2f2;
 }
 
 .navbar2-bg {
@@ -114,22 +98,19 @@ main {
   align-items: center;
 }
 
+/*ETOILES NOTES*/
+
 .rating span {
   color: #ffc000;
 }
 
-.img-large {
-  max-width: 100%;
-  object-fit: contain;
-}
-
-.img-thumbnail {
-  height: 80px;
-}
+/*FORMULAIRES*/
 
 .small-container {
   max-width: 600px;
 }
+
+/*CHECKOUT STEPS*/
 
 .checkout-steps > div {
   border-bottom: 0.2rem solid #a0a0a0;

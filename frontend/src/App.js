@@ -1,4 +1,4 @@
-import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import HomePage from './pages/HomePage';
@@ -24,6 +24,7 @@ import UserEditPage from './pages/admin/UserEditPage';
 import NavigationBar from './components/NavigationBar';
 import { Container } from 'react-bootstrap';
 import Footer from './components/Footer';
+import AboutPage from './pages/AboutPage';
 
 function App() {
   return (
@@ -31,7 +32,7 @@ function App() {
       <ToastContainer
         position="bottom-center"
         limit={1}
-        autoClose={5000}
+        autoClose={2000}
         hideProgressBar={true}
         newestOnTop={false}
         closeOnClick
@@ -49,9 +50,10 @@ function App() {
         <Container fluid>
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/about" element={<AboutPage />} />
+            <Route path="/search" element={<SearchPage />} />
             <Route path="/product/:slug" element={<ProductPage />} />
             <Route path="/cart" element={<CartPage />} />
-            <Route path="/search" element={<SearchPage />} />
             <Route path="/signin" element={<SigninPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route
