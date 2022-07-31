@@ -12,10 +12,6 @@ main {
   margin-top: 150px;
 }
 
-.site-container {
-  height: 100vh;
-}
-
 .bg1 {
   background-color: #f47c7c;
 }
@@ -79,10 +75,10 @@ main {
 }
 
 .navbar2 a:hover {
-  border-bottom: solid 3px #fff2f2;
+  border-bottom: solid 2px #fff2f2;
 }
 .navbar2-bg a:hover {
-  border-bottom: solid 3px #fff2f2;
+  border-bottom: solid 2px #fff2f2;
 }
 
 .navbar2-bg {

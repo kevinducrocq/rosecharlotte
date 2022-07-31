@@ -66,9 +66,10 @@ function NavigationBar() {
           </LinkContainer>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
-            <SearchBox />
-
-            <Nav className="me-auto  w-100 justify-content-end">
+            <Nav className="w-50 mx-4">
+              <SearchBox />
+            </Nav>
+            <Nav className="me-auto w-100 justify-content-end">
               <Link className="nav-link" to="/">
                 Accueil
               </Link>

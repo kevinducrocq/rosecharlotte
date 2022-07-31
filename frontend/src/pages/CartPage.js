@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { Store } from '../Store';
 import { Helmet } from 'react-helmet-async';
-import { Row, Col, ListGroup, Button, Card } from 'react-bootstrap';
+import { Row, Col, ListGroup, Button, Card, Container } from 'react-bootstrap';
 import MessageBox from '../components/MessageBox';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -20,6 +20,8 @@ export default function CartPage() {
   const {
     cart: { cartItems },
   } = state;
+
+  const itemsQuantity = cartItems.reduce((a, c) => a + c.quantity, 0);
 
   const updateCartHandler = async (item, quantity) => {
     const { data } = await axios.get(`/api/products/${item._id}`);
@@ -45,7 +47,7 @@ export default function CartPage() {
   };
 
   return (
-    <div>
+    <Container>
       <Helmet>
         <title>Panier</title>
       </Helmet>
@@ -111,16 +113,16 @@ export default function CartPage() {
         </Col>
         <Col md={4}>
           <Card>
-            <Card.Body>
+            <Card.Body className="bg3">
               <ListGroup variant="flush">
-                <ListGroup.Item>
+                <ListGroup.Item className="bg3">
                   <h3>
                     Sous-total ({cartItems.reduce((a, c) => a + c.quantity, 0)}{' '}
-                    produits) : &euro;
+                    produit{itemsQuantity <= 1 ? '' : 's'}) : &euro;
                     {cartItems.reduce((a, c) => a + c.price * c.quantity, 0)}
                   </h3>
                 </ListGroup.Item>
-                <ListGroup.Item>
+                <ListGroup.Item className="bg3">
                   <div className="d-grid">
                     <Button
                       type="button"
@@ -137,6 +139,6 @@ export default function CartPage() {
           </Card>
         </Col>
       </Row>
-    </div>
+    </Container>
   );
 }
