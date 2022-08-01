@@ -8,7 +8,7 @@ import { Store } from '../Store';
 import axios from 'axios';
 import { getError } from '../utils';
 import { Helmet } from 'react-helmet-async';
-import { Card, Col, ListGroup, Row } from 'react-bootstrap';
+import { Card, Col, Container, ListGroup, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 function reducer(state, action) {
@@ -123,7 +123,7 @@ export default function OrderPage() {
   ) : error ? (
     <MessageBox variant="danger">{error}</MessageBox>
   ) : (
-    <div>
+    <Container>
       <Helmet>
         <title>Commande {orderId}</title>
       </Helmet>
@@ -235,6 +235,6 @@ export default function OrderPage() {
           </Card>
         </Col>
       </Row>
-    </div>
+    </Container>
   );
 }

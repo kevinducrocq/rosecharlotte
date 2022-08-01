@@ -13,6 +13,9 @@ userRouter.put(
     if (user) {
       user.name = req.body.name || user.name;
       user.email = req.body.email || user.email;
+      user.address = req.body.address || user.address;
+      user.zip = req.body.zip || user.zip;
+      user.city = req.body.city || user.city;
       if (req.body.password) {
         user.password = bcrypt.hashSync(req.body.password, 8);
       }
@@ -22,6 +25,9 @@ userRouter.put(
         _id: updatedUser._id,
         name: updatedUser.name,
         email: updatedUser.email,
+        address: updatedUser.address,
+        zip: updatedUser.zip,
+        city: updatedUser.city,
         isAdmin: updatedUser.isAdmin,
         token: generateToken(updatedUser),
       });

@@ -10,6 +10,7 @@ import LoadingBox from '../../components/LoadingBox';
 import MessageBox from '../../components/MessageBox';
 import { faEye, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Container } from 'react-bootstrap';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -90,7 +91,7 @@ export default function OrderListPage() {
   };
 
   return (
-    <div>
+    <Container>
       <Helmet>
         <title>Orders</title>
       </Helmet>
@@ -145,7 +146,6 @@ export default function OrderListPage() {
                     variant="danger"
                     onClick={() => deleteHandler(order)}
                   >
-                    f
                     <FontAwesomeIcon icon={faTrash} />
                   </Button>
                 </td>
@@ -154,6 +154,6 @@ export default function OrderListPage() {
           </tbody>
         </table>
       )}
-    </div>
+    </Container>
   );
 }

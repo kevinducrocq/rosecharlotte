@@ -24,7 +24,6 @@ const ProfilePage = () => {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
   const [name, setName] = useState(userInfo.name);
-  const [pseudo, setPseudo] = useState(userInfo.pseudo);
   const [email, setEmail] = useState(userInfo.email);
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -46,7 +45,6 @@ const ProfilePage = () => {
         '/api/users/profile',
         {
           name,
-          pseudo,
           email,
           address,
           zip,

@@ -10,6 +10,7 @@ import LoadingBox from '../../components/LoadingBox';
 import MessageBox from '../../components/MessageBox';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { Container } from 'react-bootstrap';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -90,11 +91,12 @@ export default function UserListScreen() {
     }
   };
   return (
-    <div>
+    <Container>
       <Helmet>
         <title>Utilisateurs</title>
       </Helmet>
-      <h1>Utilisateurs</h1>
+
+      <h1 className="my-5">Utilisateurs</h1>
 
       {loadingDelete && <LoadingBox></LoadingBox>}
       {loading ? (
@@ -105,9 +107,11 @@ export default function UserListScreen() {
         <table className="table">
           <thead>
             <tr>
-              <th>Id</th>
-              <th>Nom</th>
+              <th>Prénom | Nom</th>
               <th>Email</th>
+              <th>Adresse</th>
+              <th>Code postal</th>
+              <th>Ville</th>
               <th>Admin</th>
               <th>Actions</th>
             </tr>
@@ -115,9 +119,11 @@ export default function UserListScreen() {
           <tbody>
             {users.map((user) => (
               <tr key={user._id}>
-                <td>{user._id}</td>
                 <td>{user.name}</td>
                 <td>{user.email}</td>
+                <td>{user.address}</td>
+                <td>{user.zip}</td>
+                <td>{user.city}</td>
                 <td>{user.isAdmin ? 'YES' : 'NO'}</td>
                 <td>
                   <Button
@@ -143,6 +149,6 @@ export default function UserListScreen() {
           </tbody>
         </table>
       )}
-    </div>
+    </Container>
   );
 }

@@ -153,7 +153,7 @@ export default function ProductEditPage() {
     toast.success('Image removed successfully. click Update to apply it');
   };
   return (
-    <Container className="small-container">
+    <Container>
       <Helmet>
         <title>Edit Product ${productId}</title>
       </Helmet>

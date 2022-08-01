@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useReducer } from 'react';
 import axios from 'axios';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Button, Row, Col } from 'react-bootstrap';
+import { Button, Row, Col, Container } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { Store } from '../../Store';
 import { getError } from '../../utils';
@@ -117,8 +117,8 @@ export default function ProductListScreen() {
   };
 
   return (
-    <div>
-      <Row className="bg-light px-2 rounded">
+    <Container>
+      <Row>
         <Col>
           <h1 className="my-5">Produits</h1>
         </Col>
@@ -193,6 +193,6 @@ export default function ProductListScreen() {
           </div>
         </>
       )}
-    </div>
+    </Container>
   );
 }

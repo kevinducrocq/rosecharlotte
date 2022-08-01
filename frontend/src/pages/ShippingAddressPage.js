@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Form, Button } from 'react-bootstrap';
+import { Form, Button, Container } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { Store } from '../Store';
 import CheckoutSteps from '../components/CheckoutSteps';
@@ -41,18 +41,18 @@ export default function ShippingAddressScreen() {
         city,
       })
     );
-    navigate('/placeorder');
+    navigate('/payment');
   };
 
   return (
-    <div>
+    <Container>
       <Helmet>
-        <title>Shipping Address</title>
+        <title>Adresse de livraison</title>
       </Helmet>
 
       <CheckoutSteps step1 step2></CheckoutSteps>
-      <div className="container small-container">
-        <h1 className="my-3">Adresse de livraison</h1>
+      <div className="container">
+        <h1 className="my-5 text-center">Adresse de livraison</h1>
         <Form onSubmit={submitHandler}>
           <Form.Group className="mb-3" controlId="name">
             <Form.Label>Prénom et nom</Form.Label>
@@ -71,7 +71,7 @@ export default function ShippingAddressScreen() {
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="zip">
-            <Form.Label>Postal Code</Form.Label>
+            <Form.Label>Code postal</Form.Label>
             <Form.Control
               value={zip}
               onChange={(e) => setZip(e.target.value)}
@@ -88,12 +88,12 @@ export default function ShippingAddressScreen() {
           </Form.Group>
 
           <div className="mb-3">
-            <Button variant="primary" type="submit">
+            <Button className="bg1" variant="outline-light" type="submit">
               Continuer
             </Button>
           </div>
         </Form>
       </div>
-    </div>
+    </Container>
   );
 }

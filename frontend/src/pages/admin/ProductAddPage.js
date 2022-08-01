@@ -106,7 +106,7 @@ export default function ProductEditPage() {
   };
 
   return (
-    <Container className="small-container">
+    <Container>
       <Helmet>
         <title>Ajout d'un produit</title>
       </Helmet>

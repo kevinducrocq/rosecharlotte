@@ -1,5 +1,5 @@
 import React, { useContext, useReducer } from 'react';
-import { Button, Card, Col, ListGroup, Row } from 'react-bootstrap';
+import { Button, Card, Col, Container, ListGroup, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -66,8 +66,8 @@ export default function PlaceOrderPage() {
   };
 
   return (
-    <div>
-      <CheckoutSteps step1 step2 step3></CheckoutSteps>
+    <Container>
+      <CheckoutSteps step1 step2 step3 step4></CheckoutSteps>
       <Helmet>Récapitulatif de commande</Helmet>
       <h1 className="my-5">Récapitulatif de la commande</h1>
       <Row>
@@ -162,6 +162,6 @@ export default function PlaceOrderPage() {
           </Card>
         </Col>
       </Row>
-    </div>
+    </Container>
   );
 }

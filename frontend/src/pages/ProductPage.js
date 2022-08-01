@@ -160,7 +160,7 @@ function ProductScreen() {
           />
         </Col>
         <Col md={6}>
-          <ListGroup variant="flush">
+          <ListGroup variant="flush" classname="bg2">
             <ListGroup.Item>
               <Helmet>
                 <title>{product.name}</title>
@@ -182,7 +182,6 @@ function ProductScreen() {
             </ListGroup.Item>
             <ListGroup.Item>Prix : {product.price} &euro;</ListGroup.Item>
             <ListGroup.Item>
-              Description:
               <p>{product.description}</p>
             </ListGroup.Item>
             {product.countInStock > 0 && (

@@ -25,6 +25,7 @@ import NavigationBar from './components/NavigationBar';
 import { Container } from 'react-bootstrap';
 import Footer from './components/Footer';
 import AboutPage from './pages/AboutPage';
+import PaymentMethodPage from './pages/PaymentMethodPage';
 
 function App() {
   return (
@@ -47,7 +48,7 @@ function App() {
       </header>
 
       <main>
-        <Container fluid>
+        <Container fluid className="site-container">
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/about" element={<AboutPage />} />
@@ -82,6 +83,7 @@ function App() {
               }
             ></Route>
             <Route path="/shipping" element={<ShippingAddressPage />}></Route>
+            <Route path="/payment" element={<PaymentMethodPage />}></Route>
             {/* Admin Routes */}
             <Route
               path="/admin/dashboard"
