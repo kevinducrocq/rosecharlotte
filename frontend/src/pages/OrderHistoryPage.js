@@ -7,7 +7,7 @@ import MessageBox from '../components/MessageBox';
 import { Store } from '../Store';
 import axios from 'axios';
 import { getError } from '../utils';
-import { Button } from 'react-bootstrap';
+import { Button, Container } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
 
@@ -49,17 +49,17 @@ const OrderHistoryPage = () => {
   }, [userInfo]);
 
   return (
-    <div>
+    <Container className="my-5">
       <Helmet>
         <title>Historique de commandes</title>
       </Helmet>
-      <h1 className="my-5">Historique de commandes</h1>
+      <h1>Historique de commandes</h1>
       {loading ? (
         <LoadingBox></LoadingBox>
       ) : error ? (
         <MessageBox></MessageBox>
       ) : (
-        <table className="table table-striped">
+        <table className="table">
           <thead>
             <tr className="to-upper">
               <th>N°</th>
@@ -99,7 +99,7 @@ const OrderHistoryPage = () => {
           </tbody>
         </table>
       )}
-    </div>
+    </Container>
   );
 };
 

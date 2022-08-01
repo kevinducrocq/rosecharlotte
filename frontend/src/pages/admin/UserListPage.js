@@ -10,7 +10,8 @@ import LoadingBox from '../../components/LoadingBox';
 import MessageBox from '../../components/MessageBox';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { Container } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
+import AdminMenu from '../../components/AdminMenu';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -91,64 +92,70 @@ export default function UserListScreen() {
     }
   };
   return (
-    <Container>
+    <Container className="my-5">
       <Helmet>
         <title>Utilisateurs</title>
       </Helmet>
 
-      <h1 className="my-5">Utilisateurs</h1>
-
-      {loadingDelete && <LoadingBox></LoadingBox>}
-      {loading ? (
-        <LoadingBox></LoadingBox>
-      ) : error ? (
-        <MessageBox variant="danger">{error}</MessageBox>
-      ) : (
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Prénom | Nom</th>
-              <th>Email</th>
-              <th>Adresse</th>
-              <th>Code postal</th>
-              <th>Ville</th>
-              <th>Admin</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {users.map((user) => (
-              <tr key={user._id}>
-                <td>{user.name}</td>
-                <td>{user.email}</td>
-                <td>{user.address}</td>
-                <td>{user.zip}</td>
-                <td>{user.city}</td>
-                <td>{user.isAdmin ? 'YES' : 'NO'}</td>
-                <td>
-                  <Button
-                    className="btn btn-sm"
-                    type="button"
-                    variant="light"
-                    onClick={() => navigate(`/admin/user/${user._id}`)}
-                  >
-                    <FontAwesomeIcon icon={faPenToSquare} />
-                  </Button>
-                  &nbsp;
-                  <Button
-                    className="btn btn-sm"
-                    type="button"
-                    variant="danger"
-                    onClick={() => deleteHandler(user)}
-                  >
-                    <FontAwesomeIcon icon={faTrash} />
-                  </Button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+      <Row>
+        <Col md={2}>
+          <AdminMenu link5 />
+        </Col>
+        <Col md={8} className="shadow p-5">
+          <h1>Utilisateurs</h1>
+          {loadingDelete && <LoadingBox></LoadingBox>}
+          {loading ? (
+            <LoadingBox></LoadingBox>
+          ) : error ? (
+            <MessageBox variant="danger">{error}</MessageBox>
+          ) : (
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>Prénom | Nom</th>
+                  <th>Email</th>
+                  <th>Adresse</th>
+                  <th>Code postal</th>
+                  <th>Ville</th>
+                  <th>Admin</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {users.map((user) => (
+                  <tr key={user._id}>
+                    <td>{user.name}</td>
+                    <td>{user.email}</td>
+                    <td>{user.address}</td>
+                    <td>{user.zip}</td>
+                    <td>{user.city}</td>
+                    <td>{user.isAdmin ? 'YES' : 'NO'}</td>
+                    <td>
+                      <Button
+                        className="btn btn-sm"
+                        type="button"
+                        variant="light"
+                        onClick={() => navigate(`/admin/user/${user._id}`)}
+                      >
+                        <FontAwesomeIcon icon={faPenToSquare} />
+                      </Button>
+                      &nbsp;
+                      <Button
+                        className="btn btn-sm"
+                        type="button"
+                        variant="danger"
+                        onClick={() => deleteHandler(user)}
+                      >
+                        <FontAwesomeIcon icon={faTrash} />
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </Col>
+      </Row>
     </Container>
   );
 }

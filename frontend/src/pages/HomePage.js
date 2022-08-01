@@ -45,16 +45,18 @@ function HomePage() {
         <title>RoseCharlotte</title>
       </Helmet>
 
-      <section className="title mb-3">
-        <img
-          src="../images/logo-site.png"
-          alt="Rose Charlotte"
-          width={150}
-          className="img-fluid mb-3"
-        />
-        <h1>Bienvenue sur Rose Charlotte</h1>
+      <section>
+        <div className="title mb-3">
+          <img
+            src="../images/logo-site.png"
+            alt="Rose Charlotte"
+            width={150}
+            className="img-fluid mb-3"
+          />
+          <h1>Bienvenue sur Rose Charlotte</h1>
+        </div>
+        <CarouselFade />
       </section>
-      <CarouselFade />
 
       <section className="mt-5">
         <h2 className="mb-3">Les derniers produits</h2>

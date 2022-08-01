@@ -10,7 +10,8 @@ import LoadingBox from '../../components/LoadingBox';
 import MessageBox from '../../components/MessageBox';
 import { faEye, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Container } from 'react-bootstrap';
+import { Col, Container, Row } from 'react-bootstrap';
+import AdminMenu from '../../components/AdminMenu';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -91,69 +92,79 @@ export default function OrderListPage() {
   };
 
   return (
-    <Container>
+    <Container className="my-5">
       <Helmet>
         <title>Orders</title>
       </Helmet>
-      <h1>Orders</h1>
-      {loadingDelete && <LoadingBox></LoadingBox>}
-      {loading ? (
-        <LoadingBox></LoadingBox>
-      ) : error ? (
-        <MessageBox variant="danger">{error}</MessageBox>
-      ) : (
-        <table className="table">
-          <thead>
-            <tr>
-              <th>N°</th>
-              <th>Client</th>
-              <th>Date</th>
-              <th>Total</th>
-              <th>Payé?</th>
-              <th>Livré?</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {orders.map((order) => (
-              <tr key={order._id}>
-                <td>{order._id}</td>
-                <td>{order.user ? order.user.name : 'Client supprimé'}</td>
-                <td>{order.createdAt.substring(0, 10)}</td>
-                <td>{order.totalPrice.toFixed(2)}</td>
-                <td>{order.isPaid ? order.paidAt.substring(0, 10) : 'Non'}</td>
+      <Row>
+        <Col md={2}>
+          <AdminMenu link2 />
+        </Col>
 
-                <td>
-                  {order.isDelivered
-                    ? order.deliveredAt.substring(0, 10)
-                    : 'Non'}
-                </td>
-                <td>
-                  <Button
-                    className="btn btn-sm"
-                    type="button"
-                    variant="light"
-                    onClick={() => {
-                      navigate(`/order/${order._id}`);
-                    }}
-                  >
-                    <FontAwesomeIcon icon={faEye} />
-                  </Button>
-                  &nbsp;
-                  <Button
-                    className="btn btn-sm"
-                    type="button"
-                    variant="danger"
-                    onClick={() => deleteHandler(order)}
-                  >
-                    <FontAwesomeIcon icon={faTrash} />
-                  </Button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+        <Col md={8} className="shadow p-5">
+          <h1>Orders</h1>
+          {loadingDelete && <LoadingBox></LoadingBox>}
+          {loading ? (
+            <LoadingBox></LoadingBox>
+          ) : error ? (
+            <MessageBox variant="danger">{error}</MessageBox>
+          ) : (
+            <table className="table">
+              <thead>
+                <tr>
+                  <th>N°</th>
+                  <th>Client</th>
+                  <th>Date</th>
+                  <th>Total</th>
+                  <th>Payé?</th>
+                  <th>Livré?</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {orders.map((order) => (
+                  <tr key={order._id}>
+                    <td>{order._id}</td>
+                    <td>{order.user ? order.user.name : 'Client supprimé'}</td>
+                    <td>{order.createdAt.substring(0, 10)}</td>
+                    <td>{order.totalPrice.toFixed(2)}</td>
+                    <td>
+                      {order.isPaid ? order.paidAt.substring(0, 10) : 'Non'}
+                    </td>
+
+                    <td>
+                      {order.isDelivered
+                        ? order.deliveredAt.substring(0, 10)
+                        : 'Non'}
+                    </td>
+                    <td>
+                      <Button
+                        className="btn btn-sm"
+                        type="button"
+                        variant="light"
+                        onClick={() => {
+                          navigate(`/order/${order._id}`);
+                        }}
+                      >
+                        <FontAwesomeIcon icon={faEye} />
+                      </Button>
+                      &nbsp;
+                      <Button
+                        className="btn btn-sm"
+                        type="button"
+                        variant="danger"
+                        onClick={() => deleteHandler(order)}
+                      >
+                        <FontAwesomeIcon icon={faTrash} />
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </Col>
+      </Row>
     </Container>
   );
 }

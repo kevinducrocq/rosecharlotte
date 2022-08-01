@@ -6,14 +6,12 @@ import { getError } from '../utils';
 import { Helmet } from 'react-helmet-async';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Rating from '../components/Rating';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import Button from 'react-bootstrap/Button';
 import Product from '../components/Product';
 import LinkContainer from 'react-router-bootstrap/LinkContainer';
-import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+
 import { Container } from 'react-bootstrap';
 
 const reducer = (state, action) => {
@@ -36,21 +34,6 @@ const reducer = (state, action) => {
       return state;
   }
 };
-
-const prices = [
-  {
-    name: '1€ to 50€',
-    value: '1-50',
-  },
-  {
-    name: '51€ to 200€',
-    value: '51-200',
-  },
-  {
-    name: '201€ to 1000€',
-    value: '201-1000',
-  },
-];
 
 export const ratings = [
   {
@@ -131,7 +114,7 @@ export default function SearchScreen() {
     return `/search?category=${filterCategory}&query=${filterQuery}&price=${filterPrice}&rating=${filterRating}&order=${sortOrder}&page=${filterPage}`;
   };
   return (
-    <Container>
+    <Container className="my-5">
       <Helmet>
         <title>Boutique</title>
       </Helmet>
@@ -161,7 +144,7 @@ export default function SearchScreen() {
             </ul>
           </div>
         </Col>
-        <Col md={9}>
+        <Col md={8}>
           {loading ? (
             <LoadingBox></LoadingBox>
           ) : error ? (

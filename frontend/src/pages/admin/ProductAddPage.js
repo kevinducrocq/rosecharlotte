@@ -10,6 +10,7 @@ import LoadingBox from '../../components/LoadingBox';
 import MessageBox from '../../components/MessageBox';
 import { faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import AdminMenu from '../../components/AdminMenu';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -28,7 +29,7 @@ const reducer = (state, action) => {
       return state;
   }
 };
-export default function ProductEditPage() {
+export default function ProductAddPage() {
   const navigate = useNavigate();
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -106,139 +107,145 @@ export default function ProductEditPage() {
   };
 
   return (
-    <Container>
+    <Container className="my-5">
       <Helmet>
         <title>Ajout d'un produit</title>
       </Helmet>
-      <h1>Ajout d'un nouveau produit</h1>
-
-      {loading ? (
-        <LoadingBox></LoadingBox>
-      ) : error ? (
-        <MessageBox variant="danger">{error}</MessageBox>
-      ) : (
-        <Form onSubmit={submitHandler}>
-          <Form.Group className="mb-3" controlId="name">
-            <Form.Label>Nom</Form.Label>
-            <Form.Control
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="slug">
-            <Form.Control
-              value={slug}
-              onChange={(e) => setSlug(e.target.value)}
-              required
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="name">
-            <Form.Label>Prix</Form.Label>
-            <Form.Control
-              value={price}
-              onChange={(e) => setPrice(e.target.value)}
-              required
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="weight">
-            <Form.Label>Poids (grammes)</Form.Label>
-            <Form.Control
-              type="text"
-              min="0"
-              value={weight ? weight : 0}
-              onChange={(e) => setWeight(e.target.value)}
-              required
-            />
-          </Form.Group>
-          <Row>
-            <Col md={6}>
-              <Form.Group controlId="imageFile">
-                <Form.Label>Image principale</Form.Label>
+      <Row>
+        <Col md={2}>
+          <AdminMenu link4 />
+        </Col>
+        <Col md={8} className="shadow p-5">
+          <h1>Ajout d'un nouveau produit</h1>
+          {loading ? (
+            <LoadingBox></LoadingBox>
+          ) : error ? (
+            <MessageBox variant="danger">{error}</MessageBox>
+          ) : (
+            <Form onSubmit={submitHandler}>
+              <Form.Group className="mb-3" controlId="name">
+                <Form.Label>Nom</Form.Label>
                 <Form.Control
-                  className="mb-2"
-                  type="file"
-                  onChange={uploadFileHandler}
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
                 />
-                <div className="d-flex flex-column align-items-center">
-                  {image ? (
-                    <Image
-                      thumbnail
-                      src={image}
-                      onChange={(e) => setImage(e.target.value)}
-                      width="80"
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="slug">
+                <Form.Control
+                  value={slug}
+                  onChange={(e) => setSlug(e.target.value)}
+                  required
+                />
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="name">
+                <Form.Label>Prix</Form.Label>
+                <Form.Control
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  required
+                />
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="weight">
+                <Form.Label>Poids (grammes)</Form.Label>
+                <Form.Control
+                  type="text"
+                  min="0"
+                  value={weight ? weight : 0}
+                  onChange={(e) => setWeight(e.target.value)}
+                  required
+                />
+              </Form.Group>
+              <Row>
+                <Col md={6}>
+                  <Form.Group controlId="imageFile">
+                    <Form.Label>Image principale</Form.Label>
+                    <Form.Control
+                      className="mb-2"
+                      type="file"
+                      onChange={uploadFileHandler}
                     />
-                  ) : (
-                    ''
-                  )}
-                </div>
-              </Form.Group>
-            </Col>
-            <Col md={6}>
-              <Form.Group className="mb-2" controlId="additionalImageFile">
-                <Form.Label>Ajouter des images</Form.Label>
+                    <div className="d-flex flex-column align-items-center">
+                      {image ? (
+                        <Image
+                          thumbnail
+                          src={image}
+                          onChange={(e) => setImage(e.target.value)}
+                          width="80"
+                        />
+                      ) : (
+                        ''
+                      )}
+                    </div>
+                  </Form.Group>
+                </Col>
+                <Col md={6}>
+                  <Form.Group className="mb-2" controlId="additionalImageFile">
+                    <Form.Label>Ajouter des images</Form.Label>
+                    <Form.Control
+                      type="file"
+                      onChange={(e) => uploadFileHandler(e, true)}
+                    />
+                  </Form.Group>
+
+                  <Form.Group controlId="additionalImage">
+                    <div className="d-flex" variant="flush">
+                      {images.map((x) => (
+                        <div
+                          key={x}
+                          className="d-flex flex-column align-items-center mx-1"
+                        >
+                          <Image fluid thumbnail src={x} alt={x} />
+                          <Button
+                            variant="warning"
+                            onClick={() => deleteFileHandler(x)}
+                          >
+                            <FontAwesomeIcon icon={faTrash} />
+                          </Button>
+                        </div>
+                      ))}
+                    </div>
+                  </Form.Group>
+                </Col>
+                <Row> {loadingUpload && <LoadingBox></LoadingBox>}</Row>
+              </Row>
+
+              <Form.Group className="mb-3" controlId="category">
+                <Form.Label>Catégorie</Form.Label>
                 <Form.Control
-                  type="file"
-                  onChange={(e) => uploadFileHandler(e, true)}
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  required
                 />
               </Form.Group>
-
-              <Form.Group controlId="additionalImage">
-                <div className="d-flex" variant="flush">
-                  {images.map((x) => (
-                    <div
-                      key={x}
-                      className="d-flex flex-column align-items-center mx-1"
-                    >
-                      <Image fluid thumbnail src={x} alt={x} />
-                      <Button
-                        variant="warning"
-                        onClick={() => deleteFileHandler(x)}
-                      >
-                        <FontAwesomeIcon icon={faTrash} />
-                      </Button>
-                    </div>
-                  ))}
-                </div>
+              <Form.Group className="mb-3" controlId="countInStock">
+                <Form.Label>Stock</Form.Label>
+                <Form.Control
+                  value={countInStock}
+                  onChange={(e) => setCountInStock(e.target.value)}
+                  required
+                />
               </Form.Group>
-            </Col>
-            <Row> {loadingUpload && <LoadingBox></LoadingBox>}</Row>
-          </Row>
-
-          <Form.Group className="mb-3" controlId="category">
-            <Form.Label>Catégorie</Form.Label>
-            <Form.Control
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              required
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="countInStock">
-            <Form.Label>Stock</Form.Label>
-            <Form.Control
-              value={countInStock}
-              onChange={(e) => setCountInStock(e.target.value)}
-              required
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="description">
-            <Form.Label>Déscription</Form.Label>
-            <Form.Control
-              as="textarea"
-              rows={6}
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              required
-            />
-          </Form.Group>
-          <div className="mb-3">
-            <Button disabled={loadingAdd} type="submit">
-              Ajouter
-            </Button>
-            {loadingAdd && <LoadingBox></LoadingBox>}
-          </div>
-        </Form>
-      )}
+              <Form.Group className="mb-3" controlId="description">
+                <Form.Label>Description</Form.Label>
+                <Form.Control
+                  as="textarea"
+                  rows={6}
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  required
+                />
+              </Form.Group>
+              <div className="mb-3">
+                <Button disabled={loadingAdd} type="submit">
+                  Ajouter
+                </Button>
+                {loadingAdd && <LoadingBox></LoadingBox>}
+              </div>
+            </Form>
+          )}
+        </Col>
+      </Row>
     </Container>
   );
 }

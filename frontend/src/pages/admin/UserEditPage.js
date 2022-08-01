@@ -1,6 +1,6 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useReducer, useState } from 'react';
-import { Form, Button, Container } from 'react-bootstrap';
+import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -8,6 +8,7 @@ import { Store } from '../../Store';
 import { getError } from '../../utils';
 import LoadingBox from '../../components/LoadingBox';
 import MessageBox from '../../components/MessageBox';
+import AdminMenu from '../../components/AdminMenu';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -88,53 +89,60 @@ export default function UserEditScreen() {
     }
   };
   return (
-    <Container>
+    <Container className="my-5">
       <Helmet>
         <title>Edit user ${userId}</title>
       </Helmet>
-      <h1>Edit User {userId}</h1>
 
-      {loading ? (
-        <LoadingBox></LoadingBox>
-      ) : error ? (
-        <MessageBox variant="danger">{error}</MessageBox>
-      ) : (
-        <Form onSubmit={submitHandler}>
-          <Form.Group className="mb-3" controlId="name">
-            <Form.Label>Nom</Form.Label>
-            <Form.Control
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="email">
-            <Form.Label>Email</Form.Label>
-            <Form.Control
-              value={email}
-              type="email"
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </Form.Group>
+      <Row>
+        <Col md={2}>
+          <AdminMenu />
+        </Col>
+        <Col md={8} className="shadow p-5">
+          <h1>Edit User {userId}</h1>
+          {loading ? (
+            <LoadingBox></LoadingBox>
+          ) : error ? (
+            <MessageBox variant="danger">{error}</MessageBox>
+          ) : (
+            <Form onSubmit={submitHandler}>
+              <Form.Group className="mb-3" controlId="name">
+                <Form.Label>Nom</Form.Label>
+                <Form.Control
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="email">
+                <Form.Label>Email</Form.Label>
+                <Form.Control
+                  value={email}
+                  type="email"
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </Form.Group>
 
-          <Form.Check
-            className="mb-3"
-            type="checkbox"
-            id="isAdmin"
-            label="isAdmin"
-            checked={isAdmin}
-            onChange={(e) => setIsAdmin(e.target.checked)}
-          />
+              <Form.Check
+                className="mb-3"
+                type="checkbox"
+                id="isAdmin"
+                label="isAdmin"
+                checked={isAdmin}
+                onChange={(e) => setIsAdmin(e.target.checked)}
+              />
 
-          <div className="mb-3">
-            <Button disabled={loadingUpdate} type="submit">
-              Mettre à jour
-            </Button>
-            {loadingUpdate && <LoadingBox></LoadingBox>}
-          </div>
-        </Form>
-      )}
+              <div className="mb-3">
+                <Button disabled={loadingUpdate} type="submit">
+                  Mettre à jour
+                </Button>
+                {loadingUpdate && <LoadingBox></LoadingBox>}
+              </div>
+            </Form>
+          )}
+        </Col>
+      </Row>
     </Container>
   );
 }

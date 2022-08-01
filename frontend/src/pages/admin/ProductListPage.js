@@ -13,6 +13,7 @@ import {
   faPlus,
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
+import AdminMenu from '../../components/AdminMenu';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -117,82 +118,86 @@ export default function ProductListScreen() {
   };
 
   return (
-    <Container>
+    <Container className="my-5">
       <Row>
-        <Col>
-          <h1 className="my-5">Produits</h1>
+        <Col md={2}>
+          <AdminMenu link3 />
         </Col>
-        <Col className="col text-end my-5">
-          <div>
-            <Link to="/admin/product/add" className="btn btn-primary">
-              <FontAwesomeIcon icon={faPlus} /> Ajouter
-            </Link>
+        <Col md={8} className="shadow p-5">
+          <div className="d-flex justify-content-between align-items-center">
+            <h1>Produits</h1>
+            <div>
+              <Link to="/admin/product/add" className="btn btn-primary">
+                <FontAwesomeIcon icon={faPlus} /> Ajouter
+              </Link>
+            </div>
           </div>
+
+          {loadingCreate && <LoadingBox></LoadingBox>}
+          {loadingDelete && <LoadingBox></LoadingBox>}
+          {loading ? (
+            <LoadingBox></LoadingBox>
+          ) : error ? (
+            <MessageBox variant="danger">{error}</MessageBox>
+          ) : (
+            <>
+              <table className="table table-striped rounded">
+                <thead>
+                  <tr>
+                    <th>Nom</th>
+                    <th>Prix</th>
+                    <th>Catégorie</th>
+                    <th>Marque</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {products.map((product) => (
+                    <tr key={product._id}>
+                      <td>{product.name}</td>
+                      <td>{product.price}</td>
+                      <td>{product.category}</td>
+                      <td>{product.brand}</td>
+                      <td>
+                        <Button
+                          className="btn btn-sm"
+                          type="button"
+                          variant="light"
+                          onClick={() =>
+                            navigate(`/admin/product/${product._id}`)
+                          }
+                        >
+                          <FontAwesomeIcon icon={faPenToSquare} />
+                        </Button>
+                        &nbsp;
+                        <Button
+                          className="btn btn-sm"
+                          type="button"
+                          variant="danger"
+                          onClick={() => deleteHandler(product)}
+                        >
+                          <FontAwesomeIcon icon={faTrash} />
+                        </Button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <div>
+                {[...Array(pages).keys()].map((x) => (
+                  <Link
+                    className={x + 1 === Number(page) ? 'btn text-bold' : 'btn'}
+                    key={x + 1}
+                    to={`/admin/products?page=${x + 1}`}
+                  >
+                    {x + 1}
+                  </Link>
+                ))}
+              </div>
+            </>
+          )}
         </Col>
       </Row>
-
-      {loadingCreate && <LoadingBox></LoadingBox>}
-      {loadingDelete && <LoadingBox></LoadingBox>}
-
-      {loading ? (
-        <LoadingBox></LoadingBox>
-      ) : error ? (
-        <MessageBox variant="danger">{error}</MessageBox>
-      ) : (
-        <>
-          <table className="table table-striped rounded">
-            <thead>
-              <tr>
-                <th>Nom</th>
-                <th>Prix</th>
-                <th>Catégorie</th>
-                <th>Marque</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {products.map((product) => (
-                <tr key={product._id}>
-                  <td>{product.name}</td>
-                  <td>{product.price}</td>
-                  <td>{product.category}</td>
-                  <td>{product.brand}</td>
-                  <td>
-                    <Button
-                      className="btn btn-sm"
-                      type="button"
-                      variant="light"
-                      onClick={() => navigate(`/admin/product/${product._id}`)}
-                    >
-                      <FontAwesomeIcon icon={faPenToSquare} />
-                    </Button>
-                    &nbsp;
-                    <Button
-                      className="btn btn-sm"
-                      type="button"
-                      variant="danger"
-                      onClick={() => deleteHandler(product)}
-                    >
-                      <FontAwesomeIcon icon={faTrash} />
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          <div>
-            {[...Array(pages).keys()].map((x) => (
-              <Link
-                className={x + 1 === Number(page) ? 'btn text-bold' : 'btn'}
-                key={x + 1}
-                to={`/admin/products?page=${x + 1}`}
-              >
-                {x + 1}
-              </Link>
-            ))}
-          </div>
-        </>
-      )}
     </Container>
   );
 }

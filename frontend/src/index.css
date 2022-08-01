@@ -9,11 +9,12 @@ body {
 }
 
 main {
-  flex: 1;
+  margin-top: 100px;
 }
+
 .site-container {
-  height: 100vh;
-  margin-top: 150px;
+  display: flex;
+  flex-direction: column;
 }
 
 /*COULEURS GENERALES*/
@@ -124,4 +125,12 @@ main {
 .checkout-steps > div.active {
   border-bottom: 0.2rem solid #000;
   color: #f08000;
+}
+
+.card {
+  background-color: #fff2f2;
+}
+.card a {
+  text-decoration: none;
+  color: #f47c7c;
 }

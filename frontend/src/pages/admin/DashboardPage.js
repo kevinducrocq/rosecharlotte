@@ -6,6 +6,7 @@ import LoadingBox from '../../components/LoadingBox';
 import MessageBox from '../../components/MessageBox';
 import { Row, Col, Card, Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import AdminMenu from '../../components/AdminMenu';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -49,10 +50,12 @@ export default function DashboardScreen() {
   }, [userInfo]);
 
   return (
-    <Container>
+    <Container className="my-5">
       <Row>
-        <Col md={2}>Menu admin</Col>
-        <Col md={10}>
+        <Col md={2}>
+          <AdminMenu link1 />
+        </Col>
+        <Col md={8} className="shadow p-5">
           <h1>Tableau de bord</h1>
           {loading ? (
             <LoadingBox />

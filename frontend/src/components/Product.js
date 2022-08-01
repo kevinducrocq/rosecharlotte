@@ -1,3 +1,5 @@
+import { faCartPlus, faFaceAngry } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import React, { useContext } from 'react';
 import { Card, Button } from 'react-bootstrap';
@@ -38,21 +40,26 @@ function Product(props) {
         />
       </Link>
       <Card.Body>
-        <Link to={`/product/${product.slug}`}>
-          <Card.Title>{product.name}</Card.Title>
-        </Link>
-        <Rating
-          rating={product.rating}
-          numReviews={product.numReviews}
-        ></Rating>
-        <Card.Text>{product.price} &euro;</Card.Text>
+        <div className="d-flex justify-content-between">
+          <Link to={`/product/${product.slug}`}>
+            <Card.Title>{product.name}</Card.Title>
+          </Link>
+          <Card.Text>{product.price} &euro;</Card.Text>
+        </div>
+        <div className="mb-3">
+          <Rating rating={product.rating} numReviews={product.numReviews} />
+        </div>
         {product.countInStock === 0 ? (
-          <Button variant="light" disabled>
+          <Button variant="secondary" disabled>
             Epuisé
           </Button>
         ) : (
-          <Button onClick={() => addToCartHandler(product)}>
-            Ajouter au panier
+          <Button
+            onClick={() => addToCartHandler(product)}
+            className="w-100"
+            variant="primary"
+          >
+            <FontAwesomeIcon icon={faCartPlus} /> Ajouter au panier
           </Button>
         )}
       </Card.Body>

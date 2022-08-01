@@ -8,7 +8,7 @@ import { Store } from '../Store';
 import axios from 'axios';
 import { getError } from '../utils';
 import { Helmet } from 'react-helmet-async';
-import { Card, Col, Container, ListGroup, Row } from 'react-bootstrap';
+import { Card, Col, Container, Image, ListGroup, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 function reducer(state, action) {
@@ -167,20 +167,21 @@ export default function OrderPage() {
               <ListGroup variant="flush">
                 {order.orderItems.map((item) => (
                   <ListGroup.Item key={item._id}>
-                    <Row>
-                      <Col md={6}>
-                        <img
+                    <div className="d-flex justify-content-between align-items-center">
+                      <div>
+                        <Image
                           src={item.image}
                           alt={item.name}
-                          className="img-fluid img-thumbnail"
-                        />{' '}
-                        <Link to={`/product/${item.slug}`}>{item.name}</Link>
-                      </Col>
-                      <Col md={3}>
-                        <span>{item.quantity}</span>
-                      </Col>
-                      <Col md={3}>{item.price} &euro;</Col>
-                    </Row>
+                          thumbnail
+                          width="80"
+                        />
+                        <Link to={`/product/${item.slug}`} className="mx-2">
+                          {item.name}
+                        </Link>
+                      </div>
+                      <span>{item.quantity}</span>
+                      {item.price} &euro;
+                    </div>
                   </ListGroup.Item>
                 ))}
               </ListGroup>

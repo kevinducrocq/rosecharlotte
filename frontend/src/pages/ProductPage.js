@@ -131,27 +131,27 @@ function ProductScreen() {
   ) : error ? (
     <MessageBox variant="danger">{error}</MessageBox>
   ) : (
-    <Container>
+    <Container className="my-5">
       <Row>
-        <Col lg={1} md={1} sm={2}>
+        <Col lg={1} md={1} sm={2} className="mt-2">
           <div className="d-flex flex-column">
             {[product.image, ...product.images].map((x) => (
               <Col key={x}>
                 <Card>
                   <Button
-                    className="thumbnail"
+                    className="img-thumbnail"
                     type="button"
                     variant="light"
                     onClick={() => setSelectedImage(x)}
                   >
-                    <Card.Img variant="top" src={x} alt="product" />
+                    <Card.Img src={x} alt="product" />
                   </Button>
                 </Card>
               </Col>
             ))}
           </div>
         </Col>
-        <Col md={5} lg={5} sm={8}>
+        <Col md={5} lg={5} sm={1} className="mt-2">
           <Image
             src={selectedImage || product.image}
             fluid
@@ -159,8 +159,8 @@ function ProductScreen() {
             className="img-large"
           />
         </Col>
-        <Col md={6}>
-          <ListGroup variant="flush" classname="bg2">
+        <Col md={6} className="mt-2">
+          <ListGroup variant="flush">
             <ListGroup.Item>
               <Helmet>
                 <title>{product.name}</title>
