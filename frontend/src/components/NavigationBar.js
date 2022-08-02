@@ -58,13 +58,7 @@ function NavigationBar() {
       >
         <Container>
           <LinkContainer to="/">
-            <Navbar.Brand>
-              <img
-                src="../images/logo-site.png"
-                alt="Rose Charlotte"
-                width={40}
-              />
-            </Navbar.Brand>
+            <Navbar.Brand>Rose Charlotte</Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">

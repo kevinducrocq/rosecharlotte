@@ -164,7 +164,7 @@ export default function ProductEditPage() {
         <Col md={2}>
           <AdminMenu />
         </Col>
-        <Col md={8} className="shadow p-5">
+        <Col md={10} className="shadow p-5">
           <div className="mb-3">
             <h1>Edition du produit</h1>
             <small className="text-muted">{productId}</small>

@@ -55,7 +55,7 @@ export default function DashboardScreen() {
         <Col md={2}>
           <AdminMenu link1 />
         </Col>
-        <Col md={8} className="shadow p-5">
+        <Col md={10} className="shadow p-5">
           <h1>Tableau de bord</h1>
           {loading ? (
             <LoadingBox />

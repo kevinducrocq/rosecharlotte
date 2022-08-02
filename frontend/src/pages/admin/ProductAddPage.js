@@ -115,7 +115,7 @@ export default function ProductAddPage() {
         <Col md={2}>
           <AdminMenu link4 />
         </Col>
-        <Col md={8} className="shadow p-5">
+        <Col md={10} className="shadow p-5">
           <h1>Ajout d'un nouveau produit</h1>
           {loading ? (
             <LoadingBox></LoadingBox>
@@ -132,6 +132,7 @@ export default function ProductAddPage() {
                 />
               </Form.Group>
               <Form.Group className="mb-3" controlId="slug">
+                <Form.Label>Slug</Form.Label>
                 <Form.Control
                   value={slug}
                   onChange={(e) => setSlug(e.target.value)}

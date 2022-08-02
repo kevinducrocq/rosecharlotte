@@ -101,7 +101,7 @@ export default function OrderListPage() {
           <AdminMenu link2 />
         </Col>
 
-        <Col md={8} className="shadow p-5">
+        <Col md={10} className="shadow p-5">
           <h1>Orders</h1>
           {loadingDelete && <LoadingBox></LoadingBox>}
           {loading ? (

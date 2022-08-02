@@ -95,6 +95,14 @@ function App() {
                 }
               ></Route>
               <Route
+                path="/admin/product/add"
+                element={
+                  <AdminRoute>
+                    <ProductAddPage />
+                  </AdminRoute>
+                }
+              ></Route>
+              <Route
                 path="/admin/orders"
                 element={
                   <AdminRoute>
@@ -118,14 +126,7 @@ function App() {
                   </AdminRoute>
                 }
               ></Route>
-              <Route
-                path="/admin/product/add"
-                element={
-                  <AdminRoute>
-                    <ProductAddPage />
-                  </AdminRoute>
-                }
-              ></Route>
+
               <Route
                 path="/admin/product/:id"
                 element={

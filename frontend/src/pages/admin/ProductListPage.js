@@ -123,7 +123,7 @@ export default function ProductListScreen() {
         <Col md={2}>
           <AdminMenu link3 />
         </Col>
-        <Col md={8} className="shadow p-5">
+        <Col md={10} className="shadow p-5">
           <div className="d-flex justify-content-between align-items-center">
             <h1>Produits</h1>
             <div>
