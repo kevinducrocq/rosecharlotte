@@ -1,11 +1,13 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Container, Form } from 'react-bootstrap';
+import { Button, Container, Form, InputGroup } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Store } from '../Store';
 import { toast } from 'react-toastify';
 import { getError } from '../utils';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 export default function SignupPage() {
   const navigate = useNavigate();
@@ -17,6 +19,11 @@ export default function SignupPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+
+  const [passwordIsVisible, setPasswordIsVisible] = useState(false);
+
+  const [confirmPasswordIsVisible, setConfirmPasswordIsVisible] =
+    useState(false);
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { userInfo } = state;
@@ -53,7 +60,7 @@ export default function SignupPage() {
 
       <Form onSubmit={submitHandler}>
         <Form.Group className="mb-3" controlId="name">
-          <Form.Label>Nom</Form.Label>
+          <Form.Label>Nom et Prénom</Form.Label>
           <Form.Control
             type="text"
             required
@@ -68,21 +75,45 @@ export default function SignupPage() {
             onChange={(e) => setEmail(e.target.value)}
           />
         </Form.Group>
+
         <Form.Group className="mb-3" controlId="password">
           <Form.Label>Mot de passe</Form.Label>
-          <Form.Control
-            type="password"
-            required
-            onChange={(e) => setPassword(e.target.value)}
-          />
+          <InputGroup className="mb-3">
+            <Form.Control
+              type={passwordIsVisible ? 'text' : 'password'}
+              required
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            <Button
+              variant="secondary"
+              id="button-addon2"
+              onClick={() => setPasswordIsVisible(!passwordIsVisible)}
+            >
+              <FontAwesomeIcon icon={passwordIsVisible ? faEyeSlash : faEye} />
+            </Button>
+          </InputGroup>
         </Form.Group>
+
         <Form.Group className="mb-3" controlId="confirmPassword">
           <Form.Label>Répéter votre mot de passe</Form.Label>
-          <Form.Control
-            type="password"
-            required
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
+          <InputGroup className="mb-3">
+            <Form.Control
+              type={confirmPasswordIsVisible ? 'text' : 'password'}
+              required
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+            <Button
+              variant="secondary"
+              id="button-addon3"
+              onClick={() =>
+                setConfirmPasswordIsVisible(!confirmPasswordIsVisible)
+              }
+            >
+              <FontAwesomeIcon
+                icon={confirmPasswordIsVisible ? faEyeSlash : faEye}
+              />
+            </Button>
+          </InputGroup>
         </Form.Group>
         <div className="mb-3">
           <Button type="submit">Inscritpion</Button>
