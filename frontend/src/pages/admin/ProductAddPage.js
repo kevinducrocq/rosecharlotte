@@ -55,18 +55,24 @@ export default function ProductAddPage() {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios.post('/api/products/add', {
-        name,
-        slug,
-        price,
-        weight,
-        image,
-        images,
-        category,
-        countInStock,
-        description,
-      });
-      ctxDispatch({ type: 'ADD_PRODUCT', payload: data });
+      await axios.post(
+        `/api/products/add`,
+        {
+          name,
+          slug,
+          price,
+          weight,
+          image,
+          images,
+          category,
+          countInStock,
+          description,
+        },
+        {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+      toast.success('Produit ajouté');
       navigate('/admin/products');
     } catch (err) {
       toast.error(getError(err));
@@ -151,8 +157,7 @@ export default function ProductAddPage() {
                 <Form.Label>Poids (grammes)</Form.Label>
                 <Form.Control
                   type="text"
-                  min="0"
-                  value={weight ? weight : 0}
+                  value={weight}
                   onChange={(e) => setWeight(e.target.value)}
                   required
                 />
