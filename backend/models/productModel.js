@@ -1,12 +1,11 @@
 import mongoose from 'mongoose';
 
-
-
 const reviewSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
     comment: { type: String, required: true },
     rating: { type: Number, required: true },
+    status: { type: Boolean, required: true, default: false },
   },
   {
     timestamps: true,

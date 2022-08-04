@@ -26,6 +26,7 @@ import { Container } from 'react-bootstrap';
 import Footer from './components/Footer';
 import AboutPage from './pages/AboutPage';
 import PaymentMethodPage from './pages/PaymentMethodPage';
+import ReviewListPage from './pages/admin/ReviewListPage';
 
 function App() {
   return (
@@ -126,7 +127,14 @@ function App() {
                   </AdminRoute>
                 }
               ></Route>
-
+              <Route
+                path="/admin/reviews"
+                element={
+                  <AdminRoute>
+                    <ReviewListPage />
+                  </AdminRoute>
+                }
+              ></Route>
               <Route
                 path="/admin/product/:id"
                 element={

@@ -218,6 +218,7 @@ productRouter.get(
             },
           }
         : {};
+
     const sortOrder =
       order === 'featured'
         ? { featured: -1 }
@@ -262,6 +263,17 @@ productRouter.get(
   expressAsyncHandler(async (req, res) => {
     const categories = await Product.find().distinct('category');
     res.send(categories);
+  })
+);
+
+// RECUPERER TOUS LES COMMENTAIRES DES PRODUITS
+productRouter.get(
+  '/reviews',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const reviews = await Product.find().distinct('reviews');
+    res.send(reviews);
   })
 );
 

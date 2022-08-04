@@ -37,17 +37,27 @@ const reducer = (state, action) => {
       return { ...state, loadingDelete: false };
     case 'DELETE_RESET':
       return { ...state, loadingDelete: false, successDelete: false };
+
     default:
       return state;
   }
 };
 export default function UserListScreen() {
   const navigate = useNavigate();
-  const [{ loading, error, users, loadingDelete, successDelete }, dispatch] =
-    useReducer(reducer, {
-      loading: true,
-      error: '',
-    });
+  const [
+    {
+      loading,
+      error,
+      users,
+      loadingDelete,
+      successDelete,
+
+    },
+    dispatch,
+  ] = useReducer(reducer, {
+    loading: true,
+    error: '',
+  });
 
   const { state } = useContext(Store);
   const { userInfo } = state;

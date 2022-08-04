@@ -20,6 +20,9 @@ export default function AdminMenu(props) {
       <ListGroup.Item variant="flush" className={props.link5 ? 'active' : ''}>
         <Link to="/admin/users">Utilisateurs</Link>{' '}
       </ListGroup.Item>
+      <ListGroup.Item variant="flush" className={props.link6 ? 'active' : ''}>
+        <Link to="/admin/reviews">Commentaires</Link>{' '}
+      </ListGroup.Item>
     </ListGroup>
   );
 }

@@ -43,7 +43,6 @@ export default function ProductAddPage() {
   );
 
   const [name, setName] = useState('');
-  const [slug, setSlug] = useState('');
   const [price, setPrice] = useState('');
   const [weight, setWeight] = useState('');
   const [image, setImage] = useState('');
@@ -59,7 +58,6 @@ export default function ProductAddPage() {
         `/api/products/add`,
         {
           name,
-          slug,
           price,
           weight,
           image,

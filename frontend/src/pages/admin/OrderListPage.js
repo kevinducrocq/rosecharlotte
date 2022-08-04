@@ -132,7 +132,7 @@ export default function OrderListPage() {
                     <td
                       className={
                         order.isPaid
-                          ? 'bg-success text-light rounded'
+                          ? 'tbg-success text-light rounded'
                           : 'bg-warning text-light'
                       }
                     >

@@ -32,11 +32,19 @@ export default function PlaceOrderPage() {
   const [{ loading }, dispatch] = useReducer(reducer, {
     loading: false,
   });
+
   const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100;
   cart.itemsPrice = round2(
     cart.cartItems.reduce((a, c) => a + c.quantity * c.price, 0)
   );
-  cart.shippingPrice = cart.itemsPrice > 100 ? round2(0) : round2(10);
+
+  cart.itemsWeight = cart.cartItems.reduce(
+    (a, c) => a + c.quantity * c.weight,
+    0
+  );
+
+  cart.shippingPrice = cart.itemsWeight * 0.2;
+
   cart.totalPrice = cart.itemsPrice + cart.shippingPrice;
 
   const placeOrderHandler = async () => {
