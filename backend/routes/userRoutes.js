@@ -4,6 +4,10 @@ import expressAsyncHandler from 'express-async-handler';
 import User from '../models/userModel.js';
 import { isAuth, isAdmin, generateToken } from '../utils.js';
 
+const capitalize = (str) => {
+  return str[0].toUpperCase() + str.slice(1);
+};
+
 const userRouter = express.Router();
 userRouter.put(
   '/profile',
@@ -23,11 +27,11 @@ userRouter.put(
       const updatedUser = await user.save();
       res.send({
         _id: updatedUser._id,
-        name: updatedUser.name,
+        name: updatedUser.name.capitalize,
         email: updatedUser.email,
-        address: updatedUser.address,
+        address: updatedUser.address.capitalize,
         zip: updatedUser.zip,
-        city: updatedUser.city,
+        city: updatedUser.city.capitalize,
         isAdmin: updatedUser.isAdmin,
         token: generateToken(updatedUser),
       });

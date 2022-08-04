@@ -118,11 +118,12 @@ export default function ProductAddPage() {
         <title>Ajout d'un produit</title>
       </Helmet>
       <Row>
-        <Col md={2}>
+        <Col md={3}>
           <AdminMenu link4 />
         </Col>
-        <Col md={10} className="shadow p-5">
+        <Col md={9} className="shadow p-5">
           <h1>Ajout d'un nouveau produit</h1>
+          <hr />
           {loading ? (
             <LoadingBox></LoadingBox>
           ) : error ? (

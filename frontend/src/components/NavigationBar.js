@@ -18,16 +18,6 @@ function NavigationBar() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { cart, userInfo } = state;
 
-  const [color, setColor] = useState(false);
-  const changeColor = () => {
-    if (window.scrollY >= 10) {
-      setColor(true);
-    } else {
-      setColor(false);
-    }
-  };
-  window.addEventListener('scroll', changeColor);
-
   const signoutHandler = () => {
     ctxDispatch({ type: 'USER_SIGNOUT' });
     localStorage.removeItem('userInfo');
@@ -51,11 +41,7 @@ function NavigationBar() {
 
   return (
     <div className="fixed-top">
-      <Navbar
-        className={color ? 'navbar-bg' : 'navbar'}
-        variant="light"
-        expand="lg"
-      >
+      <Navbar className="navbar" variant="light" expand="lg">
         <Container>
           <LinkContainer to="/">
             <Navbar.Brand>Rose Charlotte</Navbar.Brand>
@@ -109,6 +95,9 @@ function NavigationBar() {
                   <LinkContainer to="/admin/dashboard">
                     <NavDropdown.Item>Tableau de bord</NavDropdown.Item>
                   </LinkContainer>
+                  <LinkContainer to="/admin/product/add">
+                    <NavDropdown.Item>Ajouter un produit</NavDropdown.Item>
+                  </LinkContainer>
                   <LinkContainer to="/admin/products">
                     <NavDropdown.Item>Produits</NavDropdown.Item>
                   </LinkContainer>
@@ -133,7 +122,7 @@ function NavigationBar() {
         </Container>
       </Navbar>
 
-      <div className={color ? 'navbar2-bg' : 'navbar2'}>
+      <div className="navbar2">
         <div className="container d-flex">
           {categories.map((category) => (
             <LinkContainer

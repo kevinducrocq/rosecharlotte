@@ -10,7 +10,7 @@ import LoadingBox from '../../components/LoadingBox';
 import MessageBox from '../../components/MessageBox';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { Col, Container, Row } from 'react-bootstrap';
+import { Col, Container, Row, Table } from 'react-bootstrap';
 import AdminMenu from '../../components/AdminMenu';
 
 const reducer = (state, action) => {
@@ -103,13 +103,14 @@ export default function UserListScreen() {
         </Col>
         <Col md={10} className="shadow p-5">
           <h1>Utilisateurs</h1>
+          <hr />
           {loadingDelete && <LoadingBox></LoadingBox>}
           {loading ? (
             <LoadingBox></LoadingBox>
           ) : error ? (
             <MessageBox variant="danger">{error}</MessageBox>
           ) : (
-            <table className="table">
+            <Table responsive className="table table-striped">
               <thead>
                 <tr>
                   <th>Prénom | Nom</th>
@@ -152,7 +153,7 @@ export default function UserListScreen() {
                   </tr>
                 ))}
               </tbody>
-            </table>
+            </Table>
           )}
         </Col>
       </Row>

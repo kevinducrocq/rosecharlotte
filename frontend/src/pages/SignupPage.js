@@ -86,7 +86,6 @@ export default function SignupPage() {
             />
             <Button
               variant="secondary"
-              id="button-addon2"
               onClick={() => setPasswordIsVisible(!passwordIsVisible)}
             >
               <FontAwesomeIcon icon={passwordIsVisible ? faEyeSlash : faEye} />
@@ -104,7 +103,6 @@ export default function SignupPage() {
             />
             <Button
               variant="secondary"
-              id="button-addon3"
               onClick={() =>
                 setConfirmPasswordIsVisible(!confirmPasswordIsVisible)
               }

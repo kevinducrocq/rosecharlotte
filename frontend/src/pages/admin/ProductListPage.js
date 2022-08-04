@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useReducer } from 'react';
 import axios from 'axios';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Button, Row, Col, Container } from 'react-bootstrap';
+import { Button, Row, Col, Container, Table } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { Store } from '../../Store';
 import { getError } from '../../utils';
@@ -132,6 +132,7 @@ export default function ProductListScreen() {
               </Link>
             </div>
           </div>
+          <hr />
 
           {loadingCreate && <LoadingBox></LoadingBox>}
           {loadingDelete && <LoadingBox></LoadingBox>}
@@ -141,7 +142,7 @@ export default function ProductListScreen() {
             <MessageBox variant="danger">{error}</MessageBox>
           ) : (
             <>
-              <table className="table table-striped rounded">
+              <Table responsive className="table table-striped">
                 <thead>
                   <tr>
                     <th>Nom</th>
@@ -182,7 +183,7 @@ export default function ProductListScreen() {
                     </tr>
                   ))}
                 </tbody>
-              </table>
+              </Table>
               <div>
                 {[...Array(pages).keys()].map((x) => (
                   <Link

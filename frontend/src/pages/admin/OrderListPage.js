@@ -10,7 +10,7 @@ import LoadingBox from '../../components/LoadingBox';
 import MessageBox from '../../components/MessageBox';
 import { faEye, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Col, Container, Row } from 'react-bootstrap';
+import { Col, Container, Row, Table } from 'react-bootstrap';
 import AdminMenu from '../../components/AdminMenu';
 
 const reducer = (state, action) => {
@@ -102,14 +102,15 @@ export default function OrderListPage() {
         </Col>
 
         <Col md={10} className="shadow p-5">
-          <h1>Orders</h1>
+          <h1>Commandes</h1>
+          <hr />
           {loadingDelete && <LoadingBox></LoadingBox>}
           {loading ? (
             <LoadingBox></LoadingBox>
           ) : error ? (
             <MessageBox variant="danger">{error}</MessageBox>
           ) : (
-            <table className="table">
+            <Table responsive className="table table-striped">
               <thead>
                 <tr>
                   <th>N°</th>
@@ -124,17 +125,31 @@ export default function OrderListPage() {
               <tbody>
                 {orders.map((order) => (
                   <tr key={order._id}>
-                    <td>{order._id}</td>
+                    <td>{order._id.substring(0, 5)}</td>
                     <td>{order.user ? order.user.name : 'Client supprimé'}</td>
                     <td>{order.createdAt.substring(0, 10)}</td>
                     <td>{order.totalPrice.toFixed(2)}</td>
-                    <td>
-                      {order.isPaid ? order.paidAt.substring(0, 10) : 'Non'}
+                    <td
+                      className={
+                        order.isPaid
+                          ? 'bg-success text-light rounded'
+                          : 'bg-warning text-light'
+                      }
+                    >
+                      {order.isPaid
+                        ? 'Le ' + order.paidAt.substring(0, 10)
+                        : 'Non'}
                     </td>
 
-                    <td>
+                    <td
+                      className={
+                        order.isDelivered
+                          ? 'bg-success text-light rounded'
+                          : 'bg-warning text-light'
+                      }
+                    >
                       {order.isDelivered
-                        ? order.deliveredAt.substring(0, 10)
+                        ? 'Le ' + order.deliveredAt.substring(0, 10)
                         : 'Non'}
                     </td>
                     <td>
@@ -161,7 +176,7 @@ export default function OrderListPage() {
                   </tr>
                 ))}
               </tbody>
-            </table>
+            </Table>
           )}
         </Col>
       </Row>
