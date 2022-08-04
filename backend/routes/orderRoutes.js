@@ -26,7 +26,6 @@ orderRouter.post(
       shippingAddress: req.body.shippingAddress,
       itemsPrice: req.body.itemsPrice,
       shippingPrice: req.body.shippingPrice,
-      taxPrice: req.body.taxPrice,
       totalPrice: req.body.totalPrice,
       user: req.user._id,
     });

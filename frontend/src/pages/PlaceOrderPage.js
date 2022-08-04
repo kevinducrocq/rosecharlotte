@@ -37,8 +37,7 @@ export default function PlaceOrderPage() {
     cart.cartItems.reduce((a, c) => a + c.quantity * c.price, 0)
   );
   cart.shippingPrice = cart.itemsPrice > 100 ? round2(0) : round2(10);
-  cart.taxPrice = round2(0.15 * cart.itemsPrice);
-  cart.totalPrice = cart.itemsPrice + cart.shippingPrice + cart.taxPrice;
+  cart.totalPrice = cart.itemsPrice + cart.shippingPrice;
 
   const placeOrderHandler = async () => {
     try {
@@ -50,7 +49,6 @@ export default function PlaceOrderPage() {
           shippingAddress: cart.shippingAddress,
           itemsPrice: cart.itemsPrice,
           shippingPrice: cart.shippingPrice,
-          taxPrice: cart.taxPrice,
           totalPrice: cart.totalPrice,
         },
         { headers: { authorization: `Bearer ${userInfo.token}` } }
@@ -131,12 +129,6 @@ export default function PlaceOrderPage() {
                   <Row>
                     <Col>Livraison</Col>
                     <Col>{cart.shippingPrice.toFixed(2)} &euro;</Col>
-                  </Row>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                  <Row>
-                    <Col>Taxes</Col>
-                    <Col>{cart.taxPrice.toFixed(2)} &euro;</Col>
                   </Row>
                 </ListGroup.Item>
                 <ListGroup.Item>

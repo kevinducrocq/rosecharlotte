@@ -146,9 +146,9 @@ export default function ProductListScreen() {
                 <thead>
                   <tr>
                     <th>Nom</th>
-                    <th>Prix</th>
                     <th>Catégorie</th>
-                    <th>Marque</th>
+                    <th>Prix</th>
+                    <th>Poids</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -156,9 +156,9 @@ export default function ProductListScreen() {
                   {products.map((product) => (
                     <tr key={product._id}>
                       <td>{product.name}</td>
-                      <td>{product.price}</td>
                       <td>{product.category}</td>
-                      <td>{product.brand}</td>
+                      <td>{product.price} &euro;</td>
+                      <td>{product.weight} g</td>
                       <td>
                         <Button
                           className="btn btn-sm"

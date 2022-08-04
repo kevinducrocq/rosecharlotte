@@ -267,10 +267,6 @@ export default function OrderPage() {
                     <Col>{order.shippingPrice.toFixed(2)} &euro;</Col>
                   </Row>
                   <Row>
-                    <Col>Taxes</Col>
-                    <Col>{order.taxPrice.toFixed(2)} &euro;</Col>
-                  </Row>
-                  <Row>
                     <Col>
                       <strong>Total de la commande</strong>
                     </Col>

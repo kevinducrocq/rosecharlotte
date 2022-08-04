@@ -118,10 +118,10 @@ export default function ProductAddPage() {
         <title>Ajout d'un produit</title>
       </Helmet>
       <Row>
-        <Col md={3}>
+        <Col md={2}>
           <AdminMenu link4 />
         </Col>
-        <Col md={9} className="shadow p-5">
+        <Col md={10} className="shadow p-5">
           <h1>Ajout d'un nouveau produit</h1>
           <hr />
           {loading ? (
@@ -135,14 +135,6 @@ export default function ProductAddPage() {
                 <Form.Control
                   value={name}
                   onChange={(e) => setName(e.target.value)}
-                  required
-                />
-              </Form.Group>
-              <Form.Group className="mb-3" controlId="slug">
-                <Form.Label>Slug</Form.Label>
-                <Form.Control
-                  value={slug}
-                  onChange={(e) => setSlug(e.target.value)}
                   required
                 />
               </Form.Group>

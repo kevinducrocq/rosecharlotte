@@ -5,6 +5,16 @@ import { isAuth, isAdmin } from '../utils.js';
 
 const productRouter = express.Router();
 
+const slugify = (str) =>
+  str
+    .toString()
+    .normalize('NFKD')
+    .toLowerCase()
+    .trim()
+    .replace(/\s+/g, '-')
+    .replace(/[^\w\-]+/g, '')
+    .replace(/\-\-+/g, '-');
+
 // RECUPERER TOUS LES PRODUITS
 productRouter.get('/', async (req, res) => {
   const products = await Product.find();
@@ -19,7 +29,7 @@ productRouter.post(
   expressAsyncHandler(async (req, res) => {
     const newProduct = new Product({
       name: req.body.name,
-      slug: req.body.slug,
+      slug: slugify(req.body.name),
       price: req.body.price,
       weight: req.body.weight,
       image: req.body.image,
