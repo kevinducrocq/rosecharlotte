@@ -27,6 +27,8 @@ import Footer from './components/Footer';
 import AboutPage from './pages/AboutPage';
 import PaymentMethodPage from './pages/PaymentMethodPage';
 import ReviewListPage from './pages/admin/ReviewListPage';
+import ContactPage from './pages/ContactPage';
+import ReviewEditPage from './pages/admin/reviewEditPage';
 
 function App() {
   return (
@@ -54,6 +56,7 @@ function App() {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/about" element={<AboutPage />} />
+              <Route path="/contact" element={<ContactPage />} />
               <Route path="/search" element={<SearchPage />} />
               <Route path="/product/:slug" element={<ProductPage />} />
               <Route path="/cart" element={<CartPage />} />
@@ -112,14 +115,6 @@ function App() {
                 }
               ></Route>
               <Route
-                path="/admin/users"
-                element={
-                  <AdminRoute>
-                    <UserListPage />
-                  </AdminRoute>
-                }
-              ></Route>
-              <Route
                 path="/admin/products"
                 element={
                   <AdminRoute>
@@ -136,10 +131,26 @@ function App() {
                 }
               ></Route>
               <Route
+                path="/admin/users"
+                element={
+                  <AdminRoute>
+                    <UserListPage />
+                  </AdminRoute>
+                }
+              ></Route>
+              <Route
                 path="/admin/product/:id"
                 element={
                   <AdminRoute>
                     <ProductEditPage />
+                  </AdminRoute>
+                }
+              ></Route>
+              <Route
+                path="/admin/review/:id"
+                element={
+                  <AdminRoute>
+                    <ReviewEditPage />
                   </AdminRoute>
                 }
               ></Route>

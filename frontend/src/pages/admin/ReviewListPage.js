@@ -1,13 +1,15 @@
 import {
   faCheck,
+  faEye,
   faPenToSquare,
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
-import React, { useContext, useEffect, useReducer } from 'react';
+import React, { useContext, useEffect, useReducer, useState } from 'react';
 import { Button, Col, Container, Row, Table } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
+import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import AdminMenu from '../../components/AdminMenu';
 import LoadingBox from '../../components/LoadingBox';
@@ -58,6 +60,10 @@ const reducer = (state, action) => {
 };
 
 export default function ReviewListPage() {
+  const navigate = useNavigate();
+
+  const params = useParams(); // /review/:id
+  const { id: reviewId } = params;
   const { state } = useContext(Store);
   const { userInfo } = state;
   const [
@@ -103,23 +109,45 @@ export default function ReviewListPage() {
     }
   }, [userInfo, successDelete, successValidate]);
 
-  async function validateHandler() {
-    try {
-      dispatch({ type: 'VALIDATE_REQUEST' });
-      const { data } = await axios.put(
-        `/api/products/review/${review._id}/validate`,
-        {},
-        {
-          headers: { authorization: `Bearer ${userInfo.token}` },
-        }
-      );
-      dispatch({ type: 'VALIDATE_SUCCESS', payload: data });
-      toast.success('Le commentaire a été validé');
-    } catch (err) {
-      toast.error(getError(err));
-      dispatch({ type: 'VALIDATE_FAIL' });
+  // const validateHandler = async (review) => {
+  //   if (window.confirm('Confirmer?')) {
+  //     try {
+  //       dispatch({ type: 'VALIDATE_REQUEST' });
+  //       await axios.put(
+  //         `/api/products/review/${reviewId}/`,
+  //         {
+  //           _id: reviewId,
+  //           status: true,
+  //         },
+  //         { headers: { Authorization: `Bearer ${userInfo.token}` } }
+  //       );
+  //       dispatch({ type: 'VALIDATE_SUCCESS' });
+  //       toast.success('Le commentaire a été validé');
+  //       navigate('/admin/reviews');
+  //     } catch (err) {
+  //       toast.error(getError(err));
+  //       dispatch({ type: 'VALIDATE_FAIL' });
+  //     }
+  //   }
+  // };
+
+  const deleteHandler = async (review) => {
+    if (window.confirm('Confirmer?')) {
+      try {
+        dispatch({ type: 'DELETE_REQUEST' });
+        await axios.delete(`/api/review/${review._id}`, {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        });
+        toast.success('Commentaire supprimé');
+        dispatch({ type: 'DELETE_SUCCESS' });
+      } catch (error) {
+        toast.error(getError(error));
+        dispatch({
+          type: 'DELETE_FAIL',
+        });
+      }
     }
-  }
+  };
 
   return (
     <Container className="my-5">
@@ -172,15 +200,18 @@ export default function ReviewListPage() {
                         className="btn btn-sm"
                         type="button"
                         variant="light"
-                        onClick={validateHandler}
+                        onClick={() =>
+                          navigate(`/admin/products/review/${review._id}`)
+                        }
                       >
-                        <FontAwesomeIcon icon={faCheck} />
+                        <FontAwesomeIcon icon={faEye} />
                       </Button>
                       &nbsp;
                       <Button
                         className="btn btn-sm"
                         type="button"
                         variant="danger"
+                        onClick={() => deleteHandler(review)}
                       >
                         <FontAwesomeIcon icon={faTrash} />
                       </Button>

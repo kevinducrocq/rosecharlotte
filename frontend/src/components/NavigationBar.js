@@ -61,6 +61,9 @@ function NavigationBar() {
               <Link className="nav-link" to="/about">
                 A propos
               </Link>
+              <Link className="nav-link" to="/contact">
+                Contact
+              </Link>
               {userInfo ? (
                 <NavDropdown title={userInfo.name} id="basic-nav-dropdown">
                   <LinkContainer to="/profile">

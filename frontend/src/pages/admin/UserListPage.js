@@ -44,20 +44,11 @@ const reducer = (state, action) => {
 };
 export default function UserListScreen() {
   const navigate = useNavigate();
-  const [
-    {
-      loading,
-      error,
-      users,
-      loadingDelete,
-      successDelete,
-
-    },
-    dispatch,
-  ] = useReducer(reducer, {
-    loading: true,
-    error: '',
-  });
+  const [{ loading, error, users, loadingDelete, successDelete }, dispatch] =
+    useReducer(reducer, {
+      loading: true,
+      error: '',
+    });
 
   const { state } = useContext(Store);
   const { userInfo } = state;

@@ -31,7 +31,7 @@ orderRouter.post(
     });
 
     const order = await newOrder.save();
-    res.status(201).send({ message: 'Nouvelle commande créée', order });
+    res.status(201).send({ message: 'Nouvelle commande crée', order });
   })
 );
 
@@ -137,9 +137,9 @@ orderRouter.put(
 
       const updatedOrder = await order.save();
 
-      res.send({ message: 'Order Paid', order: updatedOrder });
+      res.send({ message: 'Commande payée', order: updatedOrder });
     } else {
-      res.status(404).send({ message: 'Order Not Found' });
+      res.status(404).send({ message: 'Commande non trouvée' });
     }
   })
 );
