@@ -52,6 +52,7 @@ const reducer = (state, action) => {
 
     case 'DELETE_RESET':
       return { ...state, loadingDelete: false, successDelete: false };
+
     default:
       return state;
   }
@@ -116,6 +117,7 @@ export default function ProductListScreen() {
       }
     }
   };
+
 
   return (
     <Container className="my-5">

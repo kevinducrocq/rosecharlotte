@@ -114,7 +114,7 @@ productRouter.delete(
   })
 );
 
-// RECUPERER TOUS LES AVIS D'UN PRODUIT
+// POSTER UN AVIS
 productRouter.post(
   '/:id/reviews',
   isAuth,
@@ -132,6 +132,7 @@ productRouter.post(
         name: req.user.name,
         rating: Number(req.body.rating),
         comment: req.body.comment,
+        status: false,
       };
 
       product.reviews.push(review);
@@ -148,6 +149,25 @@ productRouter.post(
       });
     } else {
       res.status(404).send({ message: 'Pas de résultat' });
+    }
+  })
+);
+
+// VALIDER UN AVIS
+productRouter.put(
+  '/review/:id/validate',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const product = await Product.findById(productId);
+    const reviewId = product.reviews.map((review) => review.status === true);
+    console.log(reviewId);
+    const validateReview = await Product.findOneAndUpdate(product, reviewId);
+    if (validateReview) {
+      const validatedReview = await validateReview.save();
+      res.status(201).send({ message: 'Commentaire validé', validatedReview });
+    } else {
+      res.status(404).send({ message: 'Commentaire non trouvé' });
     }
   })
 );
@@ -272,7 +292,12 @@ productRouter.get(
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
-    const reviews = await Product.find().distinct('reviews');
+    const reviews = await Product.find()
+      .distinct('reviews')
+      .populate('product')
+      .execPopulate(() => {
+        res.send(product);
+      });
     res.send(reviews);
   })
 );

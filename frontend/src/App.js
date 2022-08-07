@@ -28,7 +28,6 @@ import AboutPage from './pages/AboutPage';
 import PaymentMethodPage from './pages/PaymentMethodPage';
 import ReviewListPage from './pages/admin/ReviewListPage';
 import ContactPage from './pages/ContactPage';
-import ReviewEditPage from './pages/admin/reviewEditPage';
 
 function App() {
   return (
@@ -131,6 +130,14 @@ function App() {
                 }
               ></Route>
               <Route
+                path="/admin/review/:id/validate"
+                element={
+                  <AdminRoute>
+                    <ReviewListPage />
+                  </AdminRoute>
+                }
+              ></Route>
+              <Route
                 path="/admin/users"
                 element={
                   <AdminRoute>
@@ -143,14 +150,6 @@ function App() {
                 element={
                   <AdminRoute>
                     <ProductEditPage />
-                  </AdminRoute>
-                }
-              ></Route>
-              <Route
-                path="/admin/review/:id"
-                element={
-                  <AdminRoute>
-                    <ReviewEditPage />
                   </AdminRoute>
                 }
               ></Route>

@@ -196,69 +196,84 @@ function ProductScreen() {
           </ListGroup>
         </Col>
       </Row>
+      <hr />
       <div className="my-3">
         <h2 ref={reviewsRef}>Avis</h2>
-        <div className="mb-3">
-          {product.reviews.length === 0 && (
-            <MessageBox>Il n'y a pas encore d'avis</MessageBox>
-          )}
-        </div>
-        <ListGroup>
-          {product.reviews.map((review) => (
-            <ListGroup.Item key={review._id}>
-              <strong>{review.name}</strong>
-              <Rating rating={review.rating} caption=" "></Rating>
-              <p>{review.createdAt.substring(0, 10)}</p>
-              <p>{review.comment}</p>
-            </ListGroup.Item>
-          ))}
-        </ListGroup>
-        <div className="my-3">
-          {userInfo ? (
-            <form onSubmit={submitHandler}>
-              <h2>Ajouter un avis</h2>
-              <Form.Group className="mb-3" controlId="rating">
-                <Form.Label>Note</Form.Label>
-                <Form.Select
-                  aria-label="Rating"
-                  value={rating}
-                  onChange={(e) => setRating(e.target.value)}
-                >
-                  <option value="">Sélectionnez...</option>
-                  <option value="1">1- Mauvais</option>
-                  <option value="2">2- Moyen</option>
-                  <option value="3">3- Bien</option>
-                  <option value="4">4- Très bien</option>
-                  <option value="5">5- Excellent</option>
-                </Form.Select>
-              </Form.Group>
-              <Form.Group className="mb-3" controlId="floatingTextarea">
-                <Form.Label>Commentaire</Form.Label>
-                <Form.Control
-                  as="textarea"
-                  placeholder="Ecrivez votre commentaire ici"
-                  rows={3}
-                  value={comment}
-                  onChange={(e) => setComment(e.target.value)}
-                />
-              </Form.Group>
+        <Row>
+          <Col md="8">
+            <Row>
+              {product.reviews.map((review) => (
+                <Col md={4}>
+                  <Card key={review._id}>
+                    <Card.Header>
+                      <strong>{review.name}</strong>
+                      <Rating rating={review.rating} caption=" "></Rating>
+                    </Card.Header>
+                    <Card.Body>
+                      <p>{review.createdAt.substring(0, 10)}</p>
+                      <p>{review.comment}</p>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              ))}
+            </Row>
+            <ListGroup></ListGroup>
+          </Col>
+          <Col md={4}>
+            <div className="mb-3">
+              {product.reviews.length === 0 && (
+                <MessageBox>Il n'y a pas encore d'avis</MessageBox>
+              )}
+            </div>
 
-              <div className="mb-3">
-                <Button disabled={loadingCreateReview} type="submit">
-                  Noter
-                </Button>
-                {loadingCreateReview && <LoadingBox></LoadingBox>}
-              </div>
-            </form>
-          ) : (
-            <MessageBox>
-              <Link to={`/signin?redirect=/product/${product.slug}`}>
-                Connectez-vous
-              </Link>{' '}
-              pour rédiger un avis
-            </MessageBox>
-          )}
-        </div>
+            <div className="my-3">
+              {userInfo ? (
+                <form onSubmit={submitHandler}>
+                  <h2>Ajouter un avis</h2>
+                  <Form.Group className="mb-3" controlId="rating">
+                    <Form.Label>Note</Form.Label>
+                    <Form.Select
+                      aria-label="Rating"
+                      value={rating}
+                      onChange={(e) => setRating(e.target.value)}
+                    >
+                      <option value="">Sélectionnez...</option>
+                      <option value="1">1- Mauvais</option>
+                      <option value="2">2- Moyen</option>
+                      <option value="3">3- Bien</option>
+                      <option value="4">4- Très bien</option>
+                      <option value="5">5- Excellent</option>
+                    </Form.Select>
+                  </Form.Group>
+                  <Form.Group className="mb-3" controlId="floatingTextarea">
+                    <Form.Label>Commentaire</Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      placeholder="Ecrivez votre commentaire ici"
+                      rows={3}
+                      value={comment}
+                      onChange={(e) => setComment(e.target.value)}
+                    />
+                  </Form.Group>
+
+                  <div className="mb-3">
+                    <Button disabled={loadingCreateReview} type="submit">
+                      Noter
+                    </Button>
+                    {loadingCreateReview && <LoadingBox></LoadingBox>}
+                  </div>
+                </form>
+              ) : (
+                <MessageBox>
+                  <Link to={`/signin?redirect=/product/${product.slug}`}>
+                    Connectez-vous
+                  </Link>{' '}
+                  pour rédiger un avis
+                </MessageBox>
+              )}
+            </div>
+          </Col>
+        </Row>
       </div>
     </Container>
   );

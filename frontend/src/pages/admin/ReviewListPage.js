@@ -1,16 +1,9 @@
-import {
-  faCheck,
-  faEye,
-  faPenToSquare,
-  faTrash,
-} from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
-import React, { useContext, useEffect, useReducer, useState } from 'react';
+import React, { useContext, useEffect, useReducer } from 'react';
 import { Button, Col, Container, Row, Table } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
-import { useNavigate, useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import AdminMenu from '../../components/AdminMenu';
 import LoadingBox from '../../components/LoadingBox';
 import MessageBox from '../../components/MessageBox';
@@ -29,56 +22,15 @@ const reducer = (state, action) => {
       };
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
-
-    case 'VALIDATE_REQUEST':
-      return { ...state, loadingValidate: true, successValidate: false };
-    case 'VALIDATE_SUCCESS':
-      return {
-        ...state,
-        loadingValidate: false,
-        successValidate: true,
-      };
-    case 'VALIDATE_FAIL':
-      return { ...state, loadingValidate: false };
-    case 'VALIDATE_RESET':
-      return { ...state, loadingValidate: false, successValidate: false };
-    case 'DELETE_REQUEST':
-      return { ...state, loadingDelete: true, successDelete: false };
-    case 'DELETE_SUCCESS':
-      return {
-        ...state,
-        loadingDelete: false,
-        successDelete: true,
-      };
-    case 'DELETE_FAIL':
-      return { ...state, loadingDelete: false };
-    case 'DELETE_RESET':
-      return { ...state, loadingDelete: false, successDelete: false };
     default:
       return state;
   }
 };
 
 export default function ReviewListPage() {
-  const navigate = useNavigate();
-
-  const params = useParams(); // /review/:id
-  const { id: reviewId } = params;
   const { state } = useContext(Store);
   const { userInfo } = state;
-  const [
-    {
-      loading,
-      error,
-      reviews,
-      review,
-      loadingDelete,
-      successDelete,
-      loadingValidate,
-      successValidate,
-    },
-    dispatch,
-  ] = useReducer(reducer, {
+  const [{ loading, error, reviews }, dispatch] = useReducer(reducer, {
     successValidate: false,
     loading: true,
     error: '',
@@ -99,55 +51,8 @@ export default function ReviewListPage() {
         });
       }
     };
-    if (successDelete) {
-      dispatch({ type: 'DELETE_RESET' });
-    }
-    if (successValidate) {
-      dispatch({ type: 'VALIDATE_RESET' });
-    } else {
-      fetchData();
-    }
-  }, [userInfo, successDelete, successValidate]);
-
-  // const validateHandler = async (review) => {
-  //   if (window.confirm('Confirmer?')) {
-  //     try {
-  //       dispatch({ type: 'VALIDATE_REQUEST' });
-  //       await axios.put(
-  //         `/api/products/review/${reviewId}/`,
-  //         {
-  //           _id: reviewId,
-  //           status: true,
-  //         },
-  //         { headers: { Authorization: `Bearer ${userInfo.token}` } }
-  //       );
-  //       dispatch({ type: 'VALIDATE_SUCCESS' });
-  //       toast.success('Le commentaire a été validé');
-  //       navigate('/admin/reviews');
-  //     } catch (err) {
-  //       toast.error(getError(err));
-  //       dispatch({ type: 'VALIDATE_FAIL' });
-  //     }
-  //   }
-  // };
-
-  const deleteHandler = async (review) => {
-    if (window.confirm('Confirmer?')) {
-      try {
-        dispatch({ type: 'DELETE_REQUEST' });
-        await axios.delete(`/api/review/${review._id}`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        });
-        toast.success('Commentaire supprimé');
-        dispatch({ type: 'DELETE_SUCCESS' });
-      } catch (error) {
-        toast.error(getError(error));
-        dispatch({
-          type: 'DELETE_FAIL',
-        });
-      }
-    }
-  };
+    fetchData();
+  }, [userInfo]);
 
   return (
     <Container className="my-5">
@@ -182,7 +87,7 @@ export default function ReviewListPage() {
                 {reviews.map((review) => (
                   <tr key={review._id}>
                     <td>{review.name}</td>
-                    <td>{review.productId}</td>
+                    <td>{review.product.name}</td>
                     <td>{review.rating}</td>
                     <td>{review.comment}</td>
                     <td>{review.createdAt.substring(0, 10)}</td>
@@ -199,19 +104,15 @@ export default function ReviewListPage() {
                       <Button
                         className="btn btn-sm"
                         type="button"
-                        variant="light"
-                        onClick={() =>
-                          navigate(`/admin/products/review/${review._id}`)
-                        }
+                        variant="success"
                       >
-                        <FontAwesomeIcon icon={faEye} />
+                        <FontAwesomeIcon icon={faCheck} />
                       </Button>
                       &nbsp;
                       <Button
                         className="btn btn-sm"
                         type="button"
                         variant="danger"
-                        onClick={() => deleteHandler(review)}
                       >
                         <FontAwesomeIcon icon={faTrash} />
                       </Button>
