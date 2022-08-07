@@ -294,10 +294,7 @@ productRouter.get(
   expressAsyncHandler(async (req, res) => {
     const reviews = await Product.find()
       .distinct('reviews')
-      .populate('product')
-      .execPopulate(() => {
-        res.send(product);
-      });
+      .populate('product');
     res.send(reviews);
   })
 );
