@@ -40,8 +40,8 @@ function NavigationBar() {
   }, []);
 
   return (
-    <div className="fixed-top">
-      <Navbar className="navbar" variant="light" expand="lg">
+    <>
+      <Navbar variant="light" expand="lg">
         <Container>
           <LinkContainer to="/">
             <Navbar.Brand>Rose Charlotte</Navbar.Brand>
@@ -140,7 +140,7 @@ function NavigationBar() {
           ))}
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

@@ -32,7 +32,7 @@ import ContactPage from './pages/ContactPage';
 function App() {
   return (
     <BrowserRouter>
-      <div className="site-container">
+      <div className="d-flex flex-column site-container">
         <ToastContainer
           position="bottom-center"
           limit={1}
@@ -51,7 +51,7 @@ function App() {
         </header>
 
         <main>
-          <Container fluid className="site-container">
+          <Container>
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/about" element={<AboutPage />} />

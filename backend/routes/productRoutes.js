@@ -153,25 +153,6 @@ productRouter.post(
   })
 );
 
-// VALIDER UN AVIS
-productRouter.put(
-  '/review/:id/validate',
-  isAuth,
-  isAdmin,
-  expressAsyncHandler(async (req, res) => {
-    const product = await Product.findById(productId);
-    const reviewId = product.reviews.map((review) => review.status === true);
-    console.log(reviewId);
-    const validateReview = await Product.findOneAndUpdate(product, reviewId);
-    if (validateReview) {
-      const validatedReview = await validateReview.save();
-      res.status(201).send({ message: 'Commentaire validé', validatedReview });
-    } else {
-      res.status(404).send({ message: 'Commentaire non trouvé' });
-    }
-  })
-);
-
 // AFFICHER LE NOMBRE TOTAL DE PRODUIT SUR LE TABLEAU DE BORD
 const PAGE_SIZE = 5;
 
@@ -292,9 +273,14 @@ productRouter.get(
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
-    const reviews = await Product.find()
-      .distinct('reviews')
-      .populate('product');
+    const products = await Product.find();
+    let reviews = [];
+    products.forEach((product) => {
+      product.reviews.forEach((review) => {
+        reviews.push({ ...review._doc, product: product });
+      });
+    });
+    console.log('Reviews : ', reviews);
     res.send(reviews);
   })
 );

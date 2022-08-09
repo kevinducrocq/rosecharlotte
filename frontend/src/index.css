@@ -8,13 +8,33 @@ body {
   background-color: #fff2f2;
 }
 
-main {
-  margin-top: 100px;
+.site-container {
+  height: 100vh;
 }
 
-.site-container {
-  display: flex;
-  flex-direction: column;
+main {
+  flex: 1;
+}
+
+.img-thumbnail {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+}
+
+.list-group .activee {
+  background-color: #ef9f9f;
+}
+
+.list-group .activee a {
+  text-decoration: none;
+  color: #f1f1f1;
+}
+
+.list-group a {
+  text-decoration: none;
+  font-weight: 600;
+  color: #000;
 }
 
 /*COULEURS GENERALES*/
@@ -49,7 +69,6 @@ main {
 /*NAVBAR*/
 
 .navbar {
-  transition: 0.3s ease-in;
   background-color: #f47c7c;
 }
 
@@ -58,7 +77,6 @@ main {
   height: 40px;
   align-items: center;
   color: #f1f1f1;
-  transition: 0.3s ease-in;
   background-color: #ef9f9f;
 }
 

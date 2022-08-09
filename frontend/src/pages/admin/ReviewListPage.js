@@ -76,6 +76,7 @@ export default function ReviewListPage() {
                 <tr>
                   <th>Auteur</th>
                   <th>Produit</th>
+                  <th>Image</th>
                   <th>Note</th>
                   <th>Commentaire</th>
                   <th>Crée le</th>
@@ -88,6 +89,13 @@ export default function ReviewListPage() {
                   <tr key={review._id}>
                     <td>{review.name}</td>
                     <td>{review.product.name}</td>
+                    <td>
+                      <img
+                        src={review.product.image}
+                        alt=""
+                        className="img-thumbnail"
+                      />
+                    </td>
                     <td>{review.rating}</td>
                     <td>{review.comment}</td>
                     <td>{review.createdAt.substring(0, 10)}</td>
