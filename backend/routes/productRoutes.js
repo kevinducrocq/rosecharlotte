@@ -285,6 +285,16 @@ productRouter.get(
   })
 );
 
+// VALIDER UN COMMENTAIRE
+productRouter.put(
+  '/review/:id',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const reviewId = req.params.id;
+  })
+);
+
 // AFFICHER LE PRODUIT PAR SON SLUG (CLIENT)
 productRouter.get('/slug/:slug', async (req, res) => {
   const product = await Product.findOne({ slug: req.params.slug });

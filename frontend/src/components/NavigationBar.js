@@ -124,7 +124,6 @@ function NavigationBar() {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-
       <div className="navbar2">
         <div className="container d-flex">
           {categories.map((category) => (

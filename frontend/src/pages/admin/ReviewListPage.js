@@ -4,6 +4,7 @@ import axios from 'axios';
 import React, { useContext, useEffect, useReducer } from 'react';
 import { Button, Col, Container, Row, Table } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
+import { toast } from 'react-toastify';
 import AdminMenu from '../../components/AdminMenu';
 import LoadingBox from '../../components/LoadingBox';
 import MessageBox from '../../components/MessageBox';
@@ -22,6 +23,14 @@ const reducer = (state, action) => {
       };
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
+
+    case 'UPDATE_REQUEST':
+      return { ...state, loadingValidate: true };
+    case 'UPDATE_SUCCESS':
+      return { ...state, loadingValidate: false };
+    case 'UPDATE_FAIL':
+      return { ...state, loadingValidate: false };
+
     default:
       return state;
   }
@@ -30,8 +39,9 @@ const reducer = (state, action) => {
 export default function ReviewListPage() {
   const { state } = useContext(Store);
   const { userInfo } = state;
-  const [{ loading, error, reviews }, dispatch] = useReducer(reducer, {
+  const [{ loading, error, reviews, review }, dispatch] = useReducer(reducer, {
     successValidate: false,
+    loadingValidate: false,
     loading: true,
     error: '',
   });
@@ -53,6 +63,24 @@ export default function ReviewListPage() {
     };
     fetchData();
   }, [userInfo]);
+
+  const validateHandler = async (review) => {
+    if (window.confirm('Validez vous ce commentaire?')) {
+      try {
+        dispatch({ type: 'VALIDATE_REQUEST' });
+        await axios.put(`/api/review/${review._id}`, {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        });
+        toast.success('Commentaire validé');
+        dispatch({ type: 'VALIDATE_SUCCESS' });
+      } catch (err) {
+        toast.error(getError(error));
+        dispatch({
+          type: 'VALIDATE_FAIL',
+        });
+      }
+    }
+  };
 
   return (
     <Container className="my-5">
@@ -113,6 +141,7 @@ export default function ReviewListPage() {
                         className="btn btn-sm"
                         type="button"
                         variant="success"
+                        onClick={validateHandler}
                       >
                         <FontAwesomeIcon icon={faCheck} />
                       </Button>
