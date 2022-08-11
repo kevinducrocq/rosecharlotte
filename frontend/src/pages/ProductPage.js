@@ -151,7 +151,7 @@ function ProductScreen() {
             ))}
           </div>
         </Col>
-        <Col md={5} lg={5} sm={1} className="mt-2">
+        <Col md={5} className="mt-2">
           <Image
             src={selectedImage || product.image}
             fluid
@@ -197,39 +197,14 @@ function ProductScreen() {
         </Col>
       </Row>
       <hr />
-      <div className="my-3">
-        <h2 ref={reviewsRef}>Avis</h2>
-        <Row>
-          <Col md="8">
-            <Row>
-              {product.reviews.map((review) => (
-                <Col md={4}>
-                  <Card key={review._id}>
-                    <Card.Header>
-                      <strong>{review.name}</strong>
-                      <Rating rating={review.rating} caption=" "></Rating>
-                    </Card.Header>
-                    <Card.Body>
-                      <p>{review.createdAt.substring(0, 10)}</p>
-                      <p>{review.comment}</p>
-                    </Card.Body>
-                  </Card>
-                </Col>
-              ))}
-            </Row>
-            <ListGroup></ListGroup>
-          </Col>
-          <Col md={4}>
-            <div className="mb-3">
-              {product.reviews.length === 0 && (
-                <MessageBox>Il n'y a pas encore d'avis</MessageBox>
-              )}
-            </div>
 
-            <div className="my-3">
+      <div className="my-3">
+        <Row>
+          <Col md={4}>
+            <div className="mb-3 p-4">
+              <h2>Ajouter un avis</h2>
               {userInfo ? (
                 <form onSubmit={submitHandler}>
-                  <h2>Ajouter un avis</h2>
                   <Form.Group className="mb-3" controlId="rating">
                     <Form.Label>Note</Form.Label>
                     <Form.Select
@@ -272,6 +247,35 @@ function ProductScreen() {
                 </MessageBox>
               )}
             </div>
+          </Col>
+          <Col md={8}>
+            <Row>
+              <div className="mb-3 p-4">
+                <h2 ref={reviewsRef}>Avis des clients</h2>
+                {product.reviews.length === 0 && (
+                  <MessageBox>Il n'y a pas encore d'avis</MessageBox>
+                )}
+              </div>
+              {product.reviews.map((review) =>
+                review.status === false ? (
+                  ''
+                ) : (
+                  <Col md={4}>
+                    <Card key={review._id}>
+                      <Card.Header>
+                        <strong>{review.name}</strong>
+                        <Rating rating={review.rating} caption=" "></Rating>
+                      </Card.Header>
+                      <Card.Body>
+                        <p>{review.createdAt.substring(0, 10)}</p>
+                        <p>{review.comment}</p>
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                )
+              )}
+            </Row>
+            <ListGroup></ListGroup>
           </Col>
         </Row>
       </div>

@@ -154,7 +154,7 @@ productRouter.post(
 );
 
 // AFFICHER LE NOMBRE TOTAL DE PRODUIT SUR LE TABLEAU DE BORD
-const PAGE_SIZE = 5;
+const PAGE_SIZE = 9;
 
 productRouter.get(
   '/admin',
@@ -280,20 +280,62 @@ productRouter.get(
         reviews.push({ ...review._doc, product: product });
       });
     });
-    console.log('Reviews : ', reviews);
+    // console.log('Reviews : ', reviews);
     res.send(reviews);
   })
 );
 
 // VALIDER UN COMMENTAIRE
 productRouter.put(
-  '/review/:id',
+  '/:id/review/:reviewId',
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
-    const reviewId = req.params.id;
+    const productId = req.params.id;
+    const product = await Product.findById(productId);
+
+    if (product) {
+      product.reviews.map((review) => {
+        if (review._id.toString() === req.params.reviewId) {
+          review.status = true;
+        }
+      });
+      const updatedReview = await product.save();
+      res
+        .status(201)
+        .send({ message: 'Commentaire validé', product: updatedReview });
+    } else {
+      res.status(404).send({ message: 'Commentaire non trouvé' });
+    }
   })
 );
+
+// CACHER UN COMMENTAIRE
+productRouter.put(
+  '/:id/review/:reviewId/hide',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const productId = req.params.id;
+    const product = await Product.findById(productId);
+
+    if (product) {
+      product.reviews.map((review) => {
+        if (review._id.toString() === req.params.reviewId) {
+          review.status = false;
+        }
+      });
+      const updatedReview = await product.save();
+      res
+        .status(201)
+        .send({ message: 'Commentaire caché', product: updatedReview });
+    } else {
+      res.status(404).send({ message: 'Commentaire non trouvé' });
+    }
+  })
+);
+
+// SUPPRIMER UN COMMENTAIRE
 
 // AFFICHER LE PRODUIT PAR SON SLUG (CLIENT)
 productRouter.get('/slug/:slug', async (req, res) => {
@@ -301,7 +343,7 @@ productRouter.get('/slug/:slug', async (req, res) => {
   if (product) {
     res.send(product);
   } else {
-    res.status(404).send({ message: 'Product Not Found' });
+    res.status(404).send({ message: 'Produit non trouvé' });
   }
 });
 

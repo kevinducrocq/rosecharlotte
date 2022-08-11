@@ -48,6 +48,8 @@ export default function ProductAddPage() {
   const [image, setImage] = useState('');
   const [images, setImages] = useState([]);
   const [category, setCategory] = useState('');
+  const [sousCategory, setSousCategory] = useState('');
+  const [sousSousCategory, setSousSousCategory] = useState('');
   const [countInStock, setCountInStock] = useState('');
   const [description, setDescription] = useState('');
 
@@ -63,6 +65,8 @@ export default function ProductAddPage() {
           image,
           images,
           category,
+          sousCategory,
+          sousSousCategory,
           countInStock,
           description,
         },
@@ -212,6 +216,22 @@ export default function ProductAddPage() {
                 <Form.Control
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
+                  required
+                />
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="sousCategory">
+                <Form.Label>Sous Catégorie</Form.Label>
+                <Form.Control
+                  value={sousCategory}
+                  onChange={(e) => setSousCategory(e.target.value)}
+                  required
+                />
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="sousCategory">
+                <Form.Label>Autre Catégorie ?</Form.Label>
+                <Form.Control
+                  value={sousSousCategory}
+                  onChange={(e) => setSousSousCategory(e.target.value)}
                   required
                 />
               </Form.Group>

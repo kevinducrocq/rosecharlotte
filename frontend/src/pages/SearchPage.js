@@ -62,6 +62,8 @@ export default function SearchScreen() {
   const { search } = useLocation();
   const sp = new URLSearchParams(search); // /search?category=Shirts
   const category = sp.get('category') || 'all';
+  const sousCategory = sp.get('sousCategory') || 'all';
+  const sousSousCategory = sp.get('sousSousCategory') || 'all';
   const query = sp.get('query') || 'all';
   const price = sp.get('price') || 'all';
   const rating = sp.get('rating') || 'all';
@@ -78,7 +80,7 @@ export default function SearchScreen() {
     const fetchData = async () => {
       try {
         const { data } = await axios.get(
-          `/api/products/search?page=${page}&query=${query}&category=${category}&price=${price}&rating=${rating}&order=${order}`
+          `/api/products/search?page=${page}&query=${query}&category=${category}&sousCategory=${sousCategory}&sousSousCategory=${sousSousCategory}&price=${price}&rating=${rating}&order=${order}`
         );
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {
@@ -89,7 +91,17 @@ export default function SearchScreen() {
       }
     };
     fetchData();
-  }, [category, error, order, page, price, query, rating]);
+  }, [
+    category,
+    error,
+    order,
+    page,
+    price,
+    query,
+    rating,
+    sousCategory,
+    sousSousCategory,
+  ]);
 
   const [categories, setCategories] = useState([]);
   useEffect(() => {
@@ -107,11 +119,13 @@ export default function SearchScreen() {
   const getFilterUrl = (filter) => {
     const filterPage = filter.page || page;
     const filterCategory = filter.category || category;
+    const filterSousCategory = filter.sousCategory || sousCategory;
+    const filterSousSousCategory = filter.sousSousCategory || sousSousCategory;
     const filterQuery = filter.query || query;
     const filterRating = filter.rating || rating;
     const filterPrice = filter.price || price;
     const sortOrder = filter.order || order;
-    return `/search?category=${filterCategory}&query=${filterQuery}&price=${filterPrice}&rating=${filterRating}&order=${sortOrder}&page=${filterPage}`;
+    return `/search?category=${filterCategory}&sousCategory=${sousCategory}&sousSousCategory=${sousSousCategory}&query=${filterQuery}&price=${filterPrice}&rating=${filterRating}&order=${sortOrder}&page=${filterPage}`;
   };
   return (
     <Container className="my-5">
@@ -163,6 +177,8 @@ export default function SearchScreen() {
                     {price !== 'all' && ' : Prix ' + price}
                     {query !== 'all' ||
                     category !== 'all' ||
+                    sousCategory !== 'all' ||
+                    sousSousCategory !== 'all' ||
                     rating !== 'all' ||
                     price !== 'all'
                       ? ''

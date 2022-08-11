@@ -1,4 +1,8 @@
-import { faCheck, faTrash } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCheck,
+  faEyeSlash,
+  faTrash,
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import React, { useContext, useEffect, useReducer } from 'react';
@@ -24,12 +28,30 @@ const reducer = (state, action) => {
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
 
-    case 'UPDATE_REQUEST':
+    case 'VALIDATE_REQUEST':
       return { ...state, loadingValidate: true };
-    case 'UPDATE_SUCCESS':
+    case 'VALIDATE_SUCCESS':
+      return { ...state, loadingValidate: false, successValidate: true };
+    case 'VALIDATE_FAIL':
       return { ...state, loadingValidate: false };
-    case 'UPDATE_FAIL':
-      return { ...state, loadingValidate: false };
+    case 'VALIDATE_RESET':
+      return {
+        ...state,
+        loadingValidate: false,
+        successValidate: false,
+      };
+    case 'HIDE_REQUEST':
+      return { ...state, loadingHide: true };
+    case 'HIDE_SUCCESS':
+      return { ...state, loadingHide: false, successHide: true };
+    case 'HIDE_FAIL':
+      return { ...state, loadingHide: false };
+    case 'HIDE_RESET':
+      return {
+        ...state,
+        loadingHide: false,
+        successHide: false,
+      };
 
     default:
       return state;
@@ -39,12 +61,15 @@ const reducer = (state, action) => {
 export default function ReviewListPage() {
   const { state } = useContext(Store);
   const { userInfo } = state;
-  const [{ loading, error, reviews, review }, dispatch] = useReducer(reducer, {
-    successValidate: false,
-    loadingValidate: false,
-    loading: true,
-    error: '',
-  });
+  const [{ loading, error, reviews, successValidate, successHide }, dispatch] =
+    useReducer(reducer, {
+      successHide: false,
+      successValidate: false,
+      loadingValidate: false,
+      loadingHide: false,
+      loading: true,
+      error: '',
+    });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -62,23 +87,51 @@ export default function ReviewListPage() {
       }
     };
     fetchData();
-  }, [userInfo]);
+    if (successValidate) {
+      dispatch({ type: 'VALIDATE_RESET' });
+    }
+    if (successHide) {
+      dispatch({ type: 'HIDE_RESET' });
+    }
+  }, [successHide, successValidate, userInfo]);
 
   const validateHandler = async (review) => {
-    if (window.confirm('Validez vous ce commentaire?')) {
-      try {
-        dispatch({ type: 'VALIDATE_REQUEST' });
-        await axios.put(`/api/review/${review._id}`, {
+    try {
+      dispatch({ type: 'VALIDATE_REQUEST' });
+      await axios.put(
+        `/api/products/${review.product._id}/review/${review._id}`,
+        [],
+        {
           headers: { Authorization: `Bearer ${userInfo.token}` },
-        });
-        toast.success('Commentaire validé');
-        dispatch({ type: 'VALIDATE_SUCCESS' });
-      } catch (err) {
-        toast.error(getError(error));
-        dispatch({
-          type: 'VALIDATE_FAIL',
-        });
-      }
+        }
+      );
+      toast.success('Commentaire validé');
+      dispatch({ type: 'VALIDATE_SUCCESS' });
+    } catch (err) {
+      toast.error(getError(error));
+      dispatch({
+        type: 'VALIDATE_FAIL',
+      });
+    }
+  };
+
+  const hideHandler = async (review) => {
+    try {
+      dispatch({ type: 'HIDE_REQUEST' });
+      await axios.put(
+        `/api/products/${review.product._id}/review/${review._id}/hide`,
+        [],
+        {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+      toast.success('Commentaire caché');
+      dispatch({ type: 'HIDE_SUCCESS' });
+    } catch (err) {
+      toast.error(getError(error));
+      dispatch({
+        type: 'HIDE_FAIL',
+      });
     }
   };
 
@@ -104,7 +157,6 @@ export default function ReviewListPage() {
                 <tr>
                   <th>Auteur</th>
                   <th>Produit</th>
-                  <th>Image</th>
                   <th>Note</th>
                   <th>Commentaire</th>
                   <th>Crée le</th>
@@ -117,13 +169,6 @@ export default function ReviewListPage() {
                   <tr key={review._id}>
                     <td>{review.name}</td>
                     <td>{review.product.name}</td>
-                    <td>
-                      <img
-                        src={review.product.image}
-                        alt=""
-                        className="img-thumbnail"
-                      />
-                    </td>
                     <td>{review.rating}</td>
                     <td>{review.comment}</td>
                     <td>{review.createdAt.substring(0, 10)}</td>
@@ -134,17 +179,28 @@ export default function ReviewListPage() {
                           : 'bg-success rounded text-white'
                       }
                     >
-                      {review.status === false ? 'A valider' : 'publié'}
+                      {review.status === false ? 'A valider' : 'Publié'}
                     </td>
                     <td>
-                      <Button
-                        className="btn btn-sm"
-                        type="button"
-                        variant="success"
-                        onClick={validateHandler}
-                      >
-                        <FontAwesomeIcon icon={faCheck} />
-                      </Button>
+                      {review.status === false ? (
+                        <Button
+                          className="btn btn-sm"
+                          type="button"
+                          variant="success"
+                          onClick={() => validateHandler(review)}
+                        >
+                          <FontAwesomeIcon icon={faCheck} />
+                        </Button>
+                      ) : (
+                        <Button
+                          className="btn btn-sm"
+                          type="button"
+                          variant="light"
+                          onClick={() => hideHandler(review)}
+                        >
+                          <FontAwesomeIcon icon={faEyeSlash} />
+                        </Button>
+                      )}
                       &nbsp;
                       <Button
                         className="btn btn-sm"
