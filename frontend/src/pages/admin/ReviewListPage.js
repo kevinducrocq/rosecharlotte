@@ -52,6 +52,18 @@ const reducer = (state, action) => {
         loadingHide: false,
         successHide: false,
       };
+    case 'DELETE_REQUEST':
+      return { ...state, loadingDelete: true, successDelete: false };
+    case 'DELETE_SUCCESS':
+      return {
+        ...state,
+        loadingDelete: false,
+        successDelete: true,
+      };
+    case 'DELETE_FAIL':
+      return { ...state, loadingDelete: false };
+    case 'DELETE_RESET':
+      return { ...state, loadingDelete: false, successDelete: false };
 
     default:
       return state;
@@ -61,15 +73,19 @@ const reducer = (state, action) => {
 export default function ReviewListPage() {
   const { state } = useContext(Store);
   const { userInfo } = state;
-  const [{ loading, error, reviews, successValidate, successHide }, dispatch] =
-    useReducer(reducer, {
-      successHide: false,
-      successValidate: false,
-      loadingValidate: false,
-      loadingHide: false,
-      loading: true,
-      error: '',
-    });
+  const [
+    { loading, error, reviews, successValidate, successHide, successDelete },
+    dispatch,
+  ] = useReducer(reducer, {
+    successDelete: false,
+    successHide: false,
+    successValidate: false,
+    loadingDelete: false,
+    loadingValidate: false,
+    loadingHide: false,
+    loading: true,
+    error: '',
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -93,7 +109,10 @@ export default function ReviewListPage() {
     if (successHide) {
       dispatch({ type: 'HIDE_RESET' });
     }
-  }, [successHide, successValidate, userInfo]);
+    if (successDelete) {
+      dispatch({ type: 'DELETE_RESET' });
+    }
+  }, [successDelete, successHide, successValidate, userInfo]);
 
   const validateHandler = async (review) => {
     try {
@@ -105,7 +124,6 @@ export default function ReviewListPage() {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         }
       );
-      toast.success('Commentaire validé');
       dispatch({ type: 'VALIDATE_SUCCESS' });
     } catch (err) {
       toast.error(getError(error));
@@ -125,13 +143,32 @@ export default function ReviewListPage() {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         }
       );
-      toast.success('Commentaire caché');
       dispatch({ type: 'HIDE_SUCCESS' });
     } catch (err) {
       toast.error(getError(error));
       dispatch({
         type: 'HIDE_FAIL',
       });
+    }
+  };
+
+  const deleteHandler = async (review) => {
+    if (window.confirm('Are you sure to delete?')) {
+      try {
+        dispatch({ type: 'DELETE_REQUEST' });
+        await axios.delete(
+          `/api/products/${review.product._id}/review/${review._id}`,
+          {
+            headers: { Authorization: `Bearer ${userInfo.token}` },
+          }
+        );
+        dispatch({ type: 'DELETE_SUCCESS' });
+      } catch (err) {
+        toast.error(getError(error));
+        dispatch({
+          type: 'DELETE_FAIL',
+        });
+      }
     }
   };
 
@@ -206,6 +243,7 @@ export default function ReviewListPage() {
                         className="btn btn-sm"
                         type="button"
                         variant="danger"
+                        onClick={() => deleteHandler(review)}
                       >
                         <FontAwesomeIcon icon={faTrash} />
                       </Button>

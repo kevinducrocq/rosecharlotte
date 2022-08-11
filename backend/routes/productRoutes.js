@@ -336,6 +336,37 @@ productRouter.put(
 );
 
 // SUPPRIMER UN COMMENTAIRE
+productRouter.delete(
+  '/:id/review/:reviewId',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const productId = req.params.id;
+    const product = await Product.findById(productId);
+
+    if (product) {
+      product.reviews.map((review) => {
+        if (review._id.toString() === req.params.reviewId) {
+          review.remove();
+        }
+      });
+      const updatedReview = await product.save();
+      res
+        .status(201)
+        .send({ message: 'Commentaire supprimé', product: updatedReview });
+    } else {
+      res.status(404).send({ message: 'Commentaire non trouvé' });
+    }
+
+    const order = await Order.findById(req.params.id);
+    if (order) {
+      await order.remove();
+      res.send({ message: 'Order Deleted' });
+    } else {
+      res.status(404).send({ message: 'Order Not Found' });
+    }
+  })
+);
 
 // AFFICHER LE PRODUIT PAR SON SLUG (CLIENT)
 productRouter.get('/slug/:slug', async (req, res) => {
