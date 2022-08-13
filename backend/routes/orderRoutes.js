@@ -135,11 +135,13 @@ orderRouter.put(
         update_time: req.body.update_time,
         email_address: req.body.email_address,
       };
-      // order.orderItems.forEach((orderItem) => {
-      //   const product = orderItem.product;
-      //   orderItem.product.countInStock -= orderItem.quantity;
-      //   product.save();
-      // });
+
+      order.orderItems.forEach((orderItem) => {
+        const product = orderItem.product;
+        orderItem.product.countInStock -= orderItem.quantity;
+        product.save();
+      });
+
       const updatedOrder = await order.save();
 
       res.send({ message: 'Commande payée', order: updatedOrder });

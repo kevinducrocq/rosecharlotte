@@ -35,6 +35,8 @@ productRouter.post(
       image: req.body.image,
       images: req.body.images,
       category: req.body.category,
+      subCategory: req.body.subCategory,
+      otherCategory: req.body.otherCategory,
       countInStock: req.body.countInStock,
       numReviews: 0,
       rating: 0,
@@ -50,6 +52,8 @@ productRouter.post(
       image: product.image,
       images: product.images,
       category: product.category,
+      subCategory: product.subCategory,
+      otherCategory: product.otherCategory,
       countInStock: product.countInStock,
       numReviews: 0,
       rating: 0,
@@ -74,6 +78,8 @@ productRouter.put(
       product.image = req.body.image || product.image;
       product.images = req.body.images || product.images;
       product.category = req.body.category || product.category;
+      product.subCategory = req.body.subCategory || product.subCategory;
+      product.otherCategory = req.body.otherCategory || product.otherCategory;
       product.brand = req.body.brand || product.brand;
       product.countInStock = req.body.countInStock || product.countInStock;
       product.description = req.body.description || product.description;
@@ -88,6 +94,8 @@ productRouter.put(
         image: updatedProduct.image,
         images: updatedProduct.images,
         category: updatedProduct.category,
+        subCategory: updatedProduct.subCategory,
+        otherCategory: updatedProduct.otherCategory,
         brand: updatedProduct.brand,
         countInStock: updatedProduct.countInStock,
         description: updatedProduct.description,

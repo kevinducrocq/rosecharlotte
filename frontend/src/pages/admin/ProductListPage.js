@@ -102,12 +102,12 @@ export default function ProductListScreen() {
   }, [page, userInfo, successDelete]);
 
   const deleteHandler = async (product) => {
-    if (window.confirm('Are you sure to delete?')) {
+    if (window.confirm('Confirmer ?')) {
       try {
         await axios.delete(`/api/products/${product._id}`, {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         });
-        toast.success('product deleted successfully');
+        toast.success('Produit supprimé');
         dispatch({ type: 'DELETE_SUCCESS' });
       } catch (err) {
         toast.error(getError(error));
@@ -117,7 +117,6 @@ export default function ProductListScreen() {
       }
     }
   };
-
 
   return (
     <Container className="my-5">
@@ -149,6 +148,7 @@ export default function ProductListScreen() {
                   <tr>
                     <th>Nom</th>
                     <th>Catégorie</th>
+                    <th>Sous-catégorie</th>
                     <th>Prix</th>
                     <th>Poids</th>
                     <th>Action</th>
@@ -159,6 +159,7 @@ export default function ProductListScreen() {
                     <tr key={product._id}>
                       <td>{product.name}</td>
                       <td>{product.category}</td>
+                      <td>{product.subCategory}</td>
                       <td>{product.price} &euro;</td>
                       <td>{product.weight} g</td>
                       <td>

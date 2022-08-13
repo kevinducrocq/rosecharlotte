@@ -61,6 +61,8 @@ export default function ProductEditPage() {
   const [image, setImage] = useState('');
   const [images, setImages] = useState([]);
   const [category, setCategory] = useState('');
+  const [subCategory, setSubCategory] = useState('');
+  const [otherCategory, setOtherCategory] = useState('');
   const [countInStock, setCountInStock] = useState('');
   const [description, setDescription] = useState('');
 
@@ -76,6 +78,8 @@ export default function ProductEditPage() {
         setImage(data.image);
         setImages(data.images);
         setCategory(data.category);
+        setSubCategory(data.subCategory);
+        setOtherCategory(data.otherCategory);
         setCountInStock(data.countInStock);
         setDescription(data.description);
         dispatch({ type: 'FETCH_SUCCESS' });
@@ -104,6 +108,8 @@ export default function ProductEditPage() {
           image,
           images,
           category,
+          subCategory,
+          otherCategory,
           countInStock,
           description,
         },
@@ -270,6 +276,20 @@ export default function ProductEditPage() {
                   value={category}
                   onChange={(e) => setCategory(e.target.value)}
                   required
+                />
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="subCategory">
+                <Form.Label>Sous-catégorie</Form.Label>
+                <Form.Control
+                  value={subCategory}
+                  onChange={(e) => setSubCategory(e.target.value)}
+                />
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="otherCategory">
+                <Form.Label>Autre catégorie ?</Form.Label>
+                <Form.Control
+                  value={otherCategory}
+                  onChange={(e) => setOtherCategory(e.target.value)}
                 />
               </Form.Group>
               <Form.Group className="mb-3" controlId="countInStock">
