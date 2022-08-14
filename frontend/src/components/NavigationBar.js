@@ -110,6 +110,9 @@ function NavigationBar() {
                   <LinkContainer to="/admin/users">
                     <NavDropdown.Item>Utilisateurs</NavDropdown.Item>
                   </LinkContainer>
+                  <LinkContainer to="/admin/reviews">
+                    <NavDropdown.Item>Commentaires</NavDropdown.Item>
+                  </LinkContainer>
                 </NavDropdown>
               )}
               <Link to="/cart" className="nav-link">

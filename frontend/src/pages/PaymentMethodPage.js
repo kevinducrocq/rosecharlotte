@@ -30,7 +30,7 @@ export default function PaymentMethodPage() {
     navigate('/placeorder');
   };
   return (
-    <Container>
+    <Container className="my-5">
       <CheckoutSteps step1 step2 step3></CheckoutSteps>
       <div className="container small-container">
         <Helmet>

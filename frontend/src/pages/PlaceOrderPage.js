@@ -72,7 +72,7 @@ export default function PlaceOrderPage() {
   };
 
   return (
-    <Container>
+    <Container className="my-5">
       <CheckoutSteps step1 step2 step3 step4></CheckoutSteps>
       <Helmet>Récapitulatif de commande</Helmet>
       <h1 className="my-5">Récapitulatif de la commande</h1>

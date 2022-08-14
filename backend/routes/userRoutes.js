@@ -110,6 +110,9 @@ userRouter.post(
           _id: user._id,
           name: user.name,
           email: user.email,
+          address: user.address,
+          zip: user.zip,
+          city: user.city,
           isAdmin: user.isAdmin,
           token: generateToken(user),
         });

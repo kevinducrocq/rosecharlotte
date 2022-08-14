@@ -137,7 +137,7 @@ orderRouter.put(
       };
 
       order.orderItems.forEach((orderItem) => {
-        const product = orderItem.product;
+        const product = Product.findOne({ _id: orderItem.product.toString() });
         orderItem.product.countInStock -= orderItem.quantity;
         product.save();
       });
