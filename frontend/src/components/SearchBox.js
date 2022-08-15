@@ -10,7 +10,7 @@ export default function SearchBox() {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    navigate(query ? `/search/?query=${query}` : '/search');
+    navigate(query ? `/boutique/search/?query=${query}` : '/boutique/search');
   };
 
   return (

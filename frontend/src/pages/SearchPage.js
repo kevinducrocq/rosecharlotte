@@ -11,6 +11,7 @@ import MessageBox from '../components/MessageBox';
 import Button from 'react-bootstrap/Button';
 import Product from '../components/Product';
 import LinkContainer from 'react-router-bootstrap/LinkContainer';
+import SearchBox from '../components/SearchBox';
 
 import { Container } from 'react-bootstrap';
 
@@ -62,8 +63,8 @@ export default function SearchScreen() {
   const { search } = useLocation();
   const sp = new URLSearchParams(search); // /search?category=Shirts
   const category = sp.get('category') || 'all';
-  const sousCategory = sp.get('sousCategory') || 'all';
-  const sousSousCategory = sp.get('sousSousCategory') || 'all';
+  const subCategory = sp.get('subCategory') || 'all';
+  const otherCategory = sp.get('otherCategory') || 'all';
   const query = sp.get('query') || 'all';
   const price = sp.get('price') || 'all';
   const rating = sp.get('rating') || 'all';
@@ -80,7 +81,7 @@ export default function SearchScreen() {
     const fetchData = async () => {
       try {
         const { data } = await axios.get(
-          `/api/products/search?page=${page}&query=${query}&category=${category}&sousCategory=${sousCategory}&sousSousCategory=${sousSousCategory}&price=${price}&rating=${rating}&order=${order}`
+          `/api/products/boutique/search?page=${page}&query=${query}&category=${category}&subCategory=${subCategory}&otherCategory=${otherCategory}&price=${price}&rating=${rating}&order=${order}`
         );
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {
@@ -93,14 +94,14 @@ export default function SearchScreen() {
     fetchData();
   }, [
     category,
+    subCategory,
+    otherCategory,
     error,
     order,
     page,
     price,
     query,
     rating,
-    sousCategory,
-    sousSousCategory,
   ]);
 
   const [categories, setCategories] = useState([]);
@@ -119,19 +120,22 @@ export default function SearchScreen() {
   const getFilterUrl = (filter) => {
     const filterPage = filter.page || page;
     const filterCategory = filter.category || category;
-    const filterSousCategory = filter.sousCategory || sousCategory;
-    const filterSousSousCategory = filter.sousSousCategory || sousSousCategory;
+    const filterSubCategory = filter.subCategory || subCategory;
+    const filterOtherCategory = filter.otherCategory || otherCategory;
     const filterQuery = filter.query || query;
     const filterRating = filter.rating || rating;
     const filterPrice = filter.price || price;
     const sortOrder = filter.order || order;
-    return `/search?category=${filterCategory}&sousCategory=${sousCategory}&sousSousCategory=${sousSousCategory}&query=${filterQuery}&price=${filterPrice}&rating=${filterRating}&order=${sortOrder}&page=${filterPage}`;
+    return `/boutique/search?category=${filterCategory}&subCategory=${filterSubCategory}&otherCategory=${filterOtherCategory}&query=${filterQuery}&price=${filterPrice}&rating=${filterRating}&order=${sortOrder}&page=${filterPage}`;
   };
   return (
     <Container className="my-5">
       <Helmet>
         <title>Boutique</title>
       </Helmet>
+      <div className="my-5 w-50">
+        <SearchBox />
+      </div>
       <Row>
         <Col md={2}>
           <h3>Catégories</h3>
@@ -177,8 +181,8 @@ export default function SearchScreen() {
                     {price !== 'all' && ' : Prix ' + price}
                     {query !== 'all' ||
                     category !== 'all' ||
-                    sousCategory !== 'all' ||
-                    sousSousCategory !== 'all' ||
+                    subCategory !== 'all' ||
+                    otherCategory !== 'all' ||
                     rating !== 'all' ||
                     price !== 'all'
                       ? ''

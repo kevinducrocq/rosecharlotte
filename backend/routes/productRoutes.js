@@ -188,12 +188,14 @@ productRouter.get(
 
 // PAGE BOUTIQUE
 productRouter.get(
-  '/search',
+  '/boutique/search',
   expressAsyncHandler(async (req, res) => {
     const { query } = req;
     const pageSize = query.pageSize || PAGE_SIZE;
     const page = query.page || 1;
     const category = query.category || '';
+    const subCategory = query.subCategory || '';
+    const otherCategory = query.otherCategory || '';
     const price = query.price || '';
     const rating = query.rating || '';
     const order = query.order || '';
@@ -209,6 +211,10 @@ productRouter.get(
           }
         : {};
     const categoryFilter = category && category !== 'all' ? { category } : {};
+    const subCategoryFilter =
+      subCategory && subCategory !== 'all' ? { subCategory } : {};
+    const otherCategoryFilter =
+      otherCategory && otherCategory !== 'all' ? { otherCategory } : {};
     const ratingFilter =
       rating && rating !== 'all'
         ? {
@@ -244,6 +250,8 @@ productRouter.get(
     const products = await Product.find({
       ...queryFilter,
       ...categoryFilter,
+      ...subCategoryFilter,
+      ...otherCategoryFilter,
       ...priceFilter,
       ...ratingFilter,
     })
@@ -254,6 +262,8 @@ productRouter.get(
     const countProducts = await Product.countDocuments({
       ...queryFilter,
       ...categoryFilter,
+      ...subCategoryFilter,
+      ...otherCategoryFilter,
       ...priceFilter,
       ...ratingFilter,
     });

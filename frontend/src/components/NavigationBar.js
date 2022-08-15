@@ -6,13 +6,21 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
-import { Badge, Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import {
+  Badge,
+  Col,
+  Container,
+  Image,
+  Nav,
+  Navbar,
+  NavDropdown,
+  Row,
+} from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Store } from '../Store';
 import { getError } from '../utils';
-import SearchBox from './SearchBox';
 
 function NavigationBar() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -44,18 +52,15 @@ function NavigationBar() {
       <Navbar variant="light" expand="lg">
         <Container>
           <LinkContainer to="/">
-            <Navbar.Brand>Rose Charlotte</Navbar.Brand>
+            <Navbar.Brand>Logo</Navbar.Brand>
           </LinkContainer>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="w-50 mx-4">
-              <SearchBox />
-            </Nav>
             <Nav className="me-auto w-100 justify-content-end">
               <Link className="nav-link" to="/">
                 Accueil
               </Link>
-              <Link className="nav-link" to="/search">
+              <Link className="nav-link" to="/boutique/search">
                 Boutique
               </Link>
               <Link className="nav-link" to="/about">
@@ -64,57 +69,7 @@ function NavigationBar() {
               <Link className="nav-link" to="/contact">
                 Contact
               </Link>
-              {userInfo ? (
-                <NavDropdown title={userInfo.name} id="basic-nav-dropdown">
-                  <LinkContainer to="/profile">
-                    <NavDropdown.Item>Profil</NavDropdown.Item>
-                  </LinkContainer>
-                  <LinkContainer to="/orderhistory">
-                    <NavDropdown.Item>Historique</NavDropdown.Item>
-                  </LinkContainer>
-                  <NavDropdown.Divider />
-                  <Link
-                    className="dropdown-item"
-                    to="#signout"
-                    onClick={signoutHandler}
-                  >
-                    Déconnexion
-                  </Link>
-                </NavDropdown>
-              ) : (
-                <Link className="nav-link" to="/signin">
-                  <FontAwesomeIcon icon={faArrowRightToBracket} /> Connexion
-                </Link>
-              )}
 
-              {!userInfo && (
-                <Link className="nav-link" to="/signup">
-                  <FontAwesomeIcon icon={faPen} /> Inscription
-                </Link>
-              )}
-
-              {userInfo && userInfo.isAdmin && (
-                <NavDropdown title="Admin" id="admin-nav-dropdown">
-                  <LinkContainer to="/admin/dashboard">
-                    <NavDropdown.Item>Tableau de bord</NavDropdown.Item>
-                  </LinkContainer>
-                  <LinkContainer to="/admin/product/add">
-                    <NavDropdown.Item>Ajouter un produit</NavDropdown.Item>
-                  </LinkContainer>
-                  <LinkContainer to="/admin/products">
-                    <NavDropdown.Item>Produits</NavDropdown.Item>
-                  </LinkContainer>
-                  <LinkContainer to="/admin/orders">
-                    <NavDropdown.Item>Commandes</NavDropdown.Item>
-                  </LinkContainer>
-                  <LinkContainer to="/admin/users">
-                    <NavDropdown.Item>Utilisateurs</NavDropdown.Item>
-                  </LinkContainer>
-                  <LinkContainer to="/admin/reviews">
-                    <NavDropdown.Item>Commentaires</NavDropdown.Item>
-                  </LinkContainer>
-                </NavDropdown>
-              )}
               <Link to="/cart" className="nav-link">
                 <FontAwesomeIcon icon={faShoppingCart} /> Panier{' '}
                 {cart.cartItems.length > 0 && (
@@ -127,21 +82,81 @@ function NavigationBar() {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-      <div className="navbar2">
-        <div className="container d-flex">
-          {categories.map((category) => (
-            <LinkContainer
-              to={`/search?category=${category}`}
-              key={category}
-              className="mx-2"
-            >
-              <Link className="nav-link" to={category}>
-                {category}
+
+      <Row className="navbar2 p-1">
+        <Col md={10}>
+          <div className="d-flex justify-content-start">
+            {categories.map((category) => (
+              <LinkContainer
+                to={`/boutique/search?category=${category}`}
+                key={category}
+                className="mx-2"
+              >
+                <Link className="nav-link" to={category}>
+                  {category}
+                </Link>
+              </LinkContainer>
+            ))}
+          </div>
+        </Col>
+        <Col md={2}>
+          <div className="d-flex">
+            {userInfo ? (
+              <NavDropdown
+                title={userInfo.name}
+                id="basic-nav-dropdown"
+                className="mx-2"
+              >
+                <LinkContainer to="/profile">
+                  <NavDropdown.Item>Profil</NavDropdown.Item>
+                </LinkContainer>
+                <LinkContainer to="/orderhistory">
+                  <NavDropdown.Item>Historique</NavDropdown.Item>
+                </LinkContainer>
+                <NavDropdown.Divider />
+                <Link
+                  className="dropdown-item"
+                  to="#signout"
+                  onClick={signoutHandler}
+                >
+                  Déconnexion
+                </Link>
+              </NavDropdown>
+            ) : (
+              <Link className="mx-2 nav-link" to="/signin">
+                <FontAwesomeIcon icon={faArrowRightToBracket} /> Connexion
               </Link>
-            </LinkContainer>
-          ))}
-        </div>
-      </div>
+            )}
+            {!userInfo && (
+              <Link className="mx-2 nav-link" to="/signup">
+                <FontAwesomeIcon icon={faPen} /> Inscription
+              </Link>
+            )}
+            {userInfo && userInfo.isAdmin && (
+              <NavDropdown title="Admin" id="admin-nav-dropdown">
+                <LinkContainer to="/admin/dashboard">
+                  <NavDropdown.Item>Tableau de bord</NavDropdown.Item>
+                </LinkContainer>
+                <LinkContainer to="/admin/product/add">
+                  <NavDropdown.Item>Ajouter un produit</NavDropdown.Item>
+                </LinkContainer>
+                <LinkContainer to="/admin/products">
+                  <NavDropdown.Item>Produits</NavDropdown.Item>
+                </LinkContainer>
+                <LinkContainer to="/admin/orders">
+                  <NavDropdown.Item>Commandes</NavDropdown.Item>
+                </LinkContainer>
+                <LinkContainer to="/admin/users">
+                  <NavDropdown.Item>Utilisateurs</NavDropdown.Item>
+                </LinkContainer>
+                <LinkContainer to="/admin/reviews">
+                  <NavDropdown.Item>Commentaires</NavDropdown.Item>
+                </LinkContainer>
+              </NavDropdown>
+            )}
+          </div>
+        </Col>
+      </Row>
     </>
   );
 }

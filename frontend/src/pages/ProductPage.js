@@ -133,30 +133,29 @@ function ProductScreen() {
   ) : (
     <Container className="my-5">
       <Row>
-        <Col lg={1} md={1} sm={2} className="mt-2">
-          <div className="d-flex flex-column">
+        <Col md={2}>
+          <div className="d-flex flex-column align-items-end">
             {[product.image, ...product.images].map((x) => (
               <Col key={x}>
-                <Card>
+                <div className="my-1">
                   <Button
-                    className="img-thumbnail"
+                    className="img-thumbnail bg3"
                     type="button"
-                    variant="light"
                     onClick={() => setSelectedImage(x)}
                   >
                     <Card.Img src={x} alt="product" />
                   </Button>
-                </Card>
+                </div>
               </Col>
             ))}
           </div>
         </Col>
-        <Col md={5} className="mt-2">
+        <Col md={4} className="mt-2">
           <Image
             src={selectedImage || product.image}
             fluid
             alt={product.name}
-            className="img-large"
+            className="img-fluid"
           />
         </Col>
         <Col md={6} className="mt-2">
@@ -166,6 +165,11 @@ function ProductScreen() {
                 <title>{product.name}</title>
               </Helmet>
               <h1>{product.name}</h1>
+              <h2 className="h6 text-muted">
+                {product.category}
+                {product.subCategory ? ' - ' + product.subCategory : ''}
+                {product.otherCategory ? ' - ' + product.otherCategory : ''}
+              </h2>
             </ListGroup.Item>
             <ListGroup.Item>
               {product.countInStock > 0 ? (
