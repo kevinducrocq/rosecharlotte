@@ -133,9 +133,32 @@ export default function SearchScreen() {
       <Helmet>
         <title>Boutique</title>
       </Helmet>
-      <div className="my-5 w-50">
-        <SearchBox />
-      </div>
+
+      <Row className="my-5">
+        <div className="d-flex align-items-center justify-content-between">
+          <div className="w-100">
+            <Col md={8}>
+              <SearchBox />
+            </Col>
+          </div>
+          <div>
+            <Col md={4}>
+              Filtrer par{' '}
+              <select
+                value={order}
+                onChange={(e) => {
+                  navigate(getFilterUrl({ order: e.target.value }));
+                }}
+              >
+                <option value="newest">Les nouveaux produits</option>
+                <option value="lowest">Prix : du - au +</option>
+                <option value="highest">Prix : du + au -</option>
+                <option value="toprated">Note des clients</option>
+              </select>
+            </Col>
+          </div>
+        </div>
+      </Row>
       <Row>
         <Col md={2}>
           <h3>Catégories</h3>
@@ -188,20 +211,6 @@ export default function SearchScreen() {
                       ? ''
                       : null}
                   </div>
-                </Col>
-                <Col className="text-end">
-                  Filtrer par{' '}
-                  <select
-                    value={order}
-                    onChange={(e) => {
-                      navigate(getFilterUrl({ order: e.target.value }));
-                    }}
-                  >
-                    <option value="newest">Les nouveaux produits</option>
-                    <option value="lowest">Prix : du - au +</option>
-                    <option value="highest">Prix : du + au -</option>
-                    <option value="toprated">Note des clients</option>
-                  </select>
                 </Col>
               </Row>
               {products.length === 0 && (
