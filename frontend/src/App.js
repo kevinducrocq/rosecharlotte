@@ -28,6 +28,7 @@ import AboutPage from './pages/AboutPage';
 import PaymentMethodPage from './pages/PaymentMethodPage';
 import ReviewListPage from './pages/admin/ReviewListPage';
 import ContactPage from './pages/ContactPage';
+import CgvPage from './pages/CgvPage';
 
 function App() {
   return (
@@ -56,6 +57,7 @@ function App() {
               <Route path="/" element={<HomePage />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/contact" element={<ContactPage />} />
+              <Route path="/cgv" element={<CgvPage />} />
               <Route path="/boutique/search" element={<SearchPage />} />
               <Route path="/product/:slug" element={<ProductPage />} />
               <Route path="/cart" element={<CartPage />} />
