@@ -32,7 +32,7 @@ export default function PaymentMethodPage() {
   return (
     <Container className="my-5">
       <CheckoutSteps step1 step2 step3></CheckoutSteps>
-      <div className="container small-container">
+      <div className="container small-container mt-5">
         <Helmet>
           <title>Moyen de paiement</title>
         </Helmet>

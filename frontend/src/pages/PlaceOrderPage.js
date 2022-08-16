@@ -38,12 +38,24 @@ export default function PlaceOrderPage() {
     cart.cartItems.reduce((a, c) => a + c.quantity * c.price, 0)
   );
 
-  cart.itemsWeight = cart.cartItems.reduce(
+  const totalWeight = (cart.itemsWeight = cart.cartItems.reduce(
     (a, c) => a + c.quantity * c.weight,
     0
-  );
+  ));
 
-  cart.shippingPrice = cart.itemsWeight * 0.2;
+  const deliveryPrice = () => {
+    if (totalWeight <= 200) {
+      return 4.4;
+    } else if (totalWeight >= 200 && totalWeight <= 250) {
+      return 5.4;
+    } else {
+      return 6.9;
+    }
+  };
+
+  cart.shippingPrice = deliveryPrice(totalWeight);
+
+  console.log(totalWeight);
 
   cart.totalPrice = cart.itemsPrice + cart.shippingPrice;
 
