@@ -1,12 +1,16 @@
 import React, { useState } from 'react';
-import { Button, Container, Form } from 'react-bootstrap';
+import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { send } from 'emailjs-com';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 export default function ContactPage() {
   const [senderName, setSenderName] = useState('');
   const [senderEmail, setSenderEmail] = useState('');
   const [message, setMessage] = useState('');
+
+  const navigate = useNavigate();
 
   const sendEmail = (e) => {
     e.preventDefault();
@@ -18,6 +22,8 @@ export default function ContactPage() {
     )
       .then((response) => {
         console.log('Message envoyé', response.status, response.text);
+        navigate('/contact');
+        toast.success('Merci pour votre message');
       })
       .catch((err) => {
         console.log('Erreur', err);
@@ -29,44 +35,50 @@ export default function ContactPage() {
       <Helmet>
         <title>Contact</title>
       </Helmet>
-      <h1>Contact</h1>
+      <h1 className="text-center">Contactez-nous</h1>
 
-      <div>
-        <Form onSubmit={sendEmail}>
-          <Form.Group className="mb-3">
-            <Form.Label>Prénom et nom</Form.Label>
-            <Form.Control
-              name="senderName"
-              value={senderName}
-              onChange={(e) => setSenderName(e.target.value)}
-              required
-            />
-          </Form.Group>
-          <Form.Group className="mb-3">
-            <Form.Label>Email</Form.Label>
-            <Form.Control
-              name="senderEmail"
-              value={senderEmail}
-              onChange={(e) => setSenderEmail(e.target.value)}
-              required
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="description">
-            <Form.Label>Message</Form.Label>
-            <Form.Control
-              as="textarea"
-              rows={6}
-              name="message"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              required
-            />
-          </Form.Group>
-          <div className="mb-3">
-            <Button type="submit">Envoyer</Button>
-          </div>
-        </Form>
-      </div>
+      <Row>
+        <Col md={8} className="shadow bg3 p-5 offset-md-2 my-5 rounded-5">
+          <Form onSubmit={sendEmail}>
+            <Form.Group className="mb-3">
+              <Form.Control
+                placeholder="Prénom et nom"
+                name="senderName"
+                value={senderName}
+                onChange={(e) => setSenderName(e.target.value)}
+                required
+              />
+            </Form.Group>
+            <Form.Group className="mb-3">
+              <Form.Control
+                type="email"
+                placeholder="Votre email"
+                name="senderEmail"
+                value={senderEmail}
+                onChange={(e) => setSenderEmail(e.target.value)}
+                required
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="description">
+              <Form.Control
+                placeholder="Votre message"
+                as="textarea"
+                rows={6}
+                name="message"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                required
+              />
+            </Form.Group>
+            <div className="mb-3">
+              <Button type="submit" variant="primary" className="w-100">
+                Envoyer
+              </Button>
+            </div>
+          </Form>
+        </Col>
+        <hr />
+      </Row>
       <div>
         <iframe
           title="RoseCharlotte"
