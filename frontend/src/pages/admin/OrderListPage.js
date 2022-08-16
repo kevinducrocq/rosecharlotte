@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useContext, useEffect, useReducer } from 'react';
+import React, { useContext, useEffect, useReducer, useRef } from 'react';
 import { toast } from 'react-toastify';
 import Button from 'react-bootstrap/Button';
 import { Helmet } from 'react-helmet-async';
@@ -12,6 +12,12 @@ import { faEye, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Col, Container, Row, Table } from 'react-bootstrap';
 import AdminMenu from '../../components/AdminMenu';
+
+import 'jquery/dist/jquery.min.js';
+//Datatable Modules
+import 'datatables.net-dt/js/dataTables.dataTables';
+import 'datatables.net-dt/css/jquery.dataTables.min.css';
+import $ from 'jquery';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -51,12 +57,20 @@ export default function OrderListPage() {
       error: '',
     });
 
+  $.DataTable = require('datatables.net');
+  const tableRef = useRef();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
         const { data } = await axios.get(`/api/orders`, {
           headers: { Authorization: `Bearer ${userInfo.token}` },
+        });
+        const table = $(tableRef.current).DataTable({
+          language: {
+            url: 'https://cdn.datatables.net/plug-ins/1.12.1/i18n/fr-FR.json',
+          },
         });
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {
@@ -110,7 +124,7 @@ export default function OrderListPage() {
           ) : error ? (
             <MessageBox variant="danger">{error}</MessageBox>
           ) : (
-            <Table responsive className="table table-striped">
+            <Table ref={tableRef} responsive className="table table-striped">
               <thead>
                 <tr>
                   <th>N°</th>
@@ -129,28 +143,32 @@ export default function OrderListPage() {
                     <td>{order.user ? order.user.name : 'Client supprimé'}</td>
                     <td>{order.createdAt.substring(0, 10)}</td>
                     <td>{order.totalPrice.toFixed(2)}</td>
-                    <td
-                      className={
-                        order.isPaid
-                          ? 'tbg-success text-light rounded'
-                          : 'bg-warning text-light'
-                      }
-                    >
-                      {order.isPaid
-                        ? 'Le ' + order.paidAt.substring(0, 10)
-                        : 'Non'}
+                    <td>
+                      <div
+                        className={
+                          order.isPaid
+                            ? 'badge bg-success text-light rounded'
+                            : 'bg-warning badge text-light'
+                        }
+                      >
+                        {order.isPaid
+                          ? 'Le ' + order.paidAt.substring(0, 10)
+                          : 'Non'}
+                      </div>
                     </td>
 
-                    <td
-                      className={
-                        order.isDelivered
-                          ? 'bg-success text-light rounded'
-                          : 'bg-warning text-light'
-                      }
-                    >
-                      {order.isDelivered
-                        ? 'Le ' + order.deliveredAt.substring(0, 10)
-                        : 'Non'}
+                    <td>
+                      <div
+                        className={
+                          order.isDelivered
+                            ? 'bg-success badge text-light rounded'
+                            : 'bg-warning badge text-light'
+                        }
+                      >
+                        {order.isDelivered
+                          ? 'Le ' + order.deliveredAt.substring(0, 10)
+                          : 'Non'}
+                      </div>
                     </td>
                     <td>
                       <Button

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useReducer } from 'react';
+import React, { useContext, useEffect, useReducer, useRef } from 'react';
 import axios from 'axios';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Button, Row, Col, Container, Table } from 'react-bootstrap';
@@ -14,6 +14,12 @@ import {
   faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import AdminMenu from '../../components/AdminMenu';
+
+import 'jquery/dist/jquery.min.js';
+//Datatable Modules
+import 'datatables.net-dt/js/dataTables.dataTables';
+import 'datatables.net-dt/css/jquery.dataTables.min.css';
+import $ from 'jquery';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -83,11 +89,19 @@ export default function ProductListScreen() {
   const { state } = useContext(Store);
   const { userInfo } = state;
 
+  $.DataTable = require('datatables.net');
+  const tableRef = useRef();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const { data } = await axios.get(`/api/products/admin?page=${page} `, {
           headers: { Authorization: `Bearer ${userInfo.token}` },
+        });
+        const table = $(tableRef.current).DataTable({
+          language: {
+            url: 'https://cdn.datatables.net/plug-ins/1.12.1/i18n/fr-FR.json',
+          },
         });
 
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
@@ -143,7 +157,7 @@ export default function ProductListScreen() {
             <MessageBox variant="danger">{error}</MessageBox>
           ) : (
             <>
-              <Table responsive className="table table-striped">
+              <Table ref={tableRef} responsive className="table table-striped">
                 <thead>
                   <tr>
                     <th>Nom</th>

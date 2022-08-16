@@ -5,7 +5,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
-import React, { useContext, useEffect, useReducer } from 'react';
+import React, { useContext, useEffect, useReducer, useRef } from 'react';
 import { Button, Col, Container, Row, Table } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { toast } from 'react-toastify';
@@ -14,6 +14,12 @@ import LoadingBox from '../../components/LoadingBox';
 import MessageBox from '../../components/MessageBox';
 import { Store } from '../../Store';
 import { getError } from '../../utils';
+
+import 'jquery/dist/jquery.min.js';
+//Datatable Modules
+import 'datatables.net-dt/js/dataTables.dataTables';
+import 'datatables.net-dt/css/jquery.dataTables.min.css';
+import $ from 'jquery';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -87,6 +93,9 @@ export default function ReviewListPage() {
     error: '',
   });
 
+  $.DataTable = require('datatables.net');
+  const tableRef = useRef();
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -94,6 +103,13 @@ export default function ReviewListPage() {
         const { data } = await axios.get(`/api/products/reviews`, {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         });
+
+        const table = $(tableRef.current).DataTable({
+          language: {
+            url: 'https://cdn.datatables.net/plug-ins/1.12.1/i18n/fr-FR.json',
+          },
+        });
+
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {
         dispatch({
@@ -189,7 +205,11 @@ export default function ReviewListPage() {
           ) : error ? (
             <MessageBox variant="danger">{error}</MessageBox>
           ) : (
-            <Table responsive className="table table-striped table-responsive">
+            <Table
+              ref={tableRef}
+              responsive
+              className="table table-striped table-responsive"
+            >
               <thead>
                 <tr>
                   <th>Auteur</th>
@@ -209,14 +229,16 @@ export default function ReviewListPage() {
                     <td>{review.rating}</td>
                     <td>{review.comment}</td>
                     <td>{review.createdAt.substring(0, 10)}</td>
-                    <td
-                      className={
-                        review.status === false
-                          ? 'bg-danger rounded text-white'
-                          : 'bg-success rounded text-white'
-                      }
-                    >
-                      {review.status === false ? 'A valider' : 'Publié'}
+                    <td>
+                      <div
+                        className={
+                          review.status === false
+                            ? 'bg-danger badge rounded text-white'
+                            : 'bg-success badge rounded text-white'
+                        }
+                      >
+                        {review.status === false ? 'A valider' : 'Publié'}
+                      </div>
                     </td>
                     <td>
                       {review.status === false ? (

@@ -93,6 +93,9 @@ export default function ProductEditPage() {
     fetchData();
   }, [productId]);
 
+  
+  
+
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
@@ -120,7 +123,7 @@ export default function ProductEditPage() {
       dispatch({
         type: 'UPDATE_SUCCESS',
       });
-      toast.success('Produit mis à jour avec succ');
+      toast.success('Produit mis à jour avec succès');
       navigate('/admin/products');
     } catch (err) {
       toast.error(getError(err));
