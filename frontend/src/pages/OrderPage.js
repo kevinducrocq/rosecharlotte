@@ -215,7 +215,7 @@ export default function OrderPage() {
           </Card>
           <Card className="mb-3">
             <Card.Body>
-              <Card.Title>Payment</Card.Title>
+              <Card.Title>Paiement</Card.Title>
               {order.isPaid ? (
                 <MessageBox variant="success">
                   Payé le {order.paidAt.substring(0, 10)}
@@ -296,7 +296,7 @@ export default function OrderPage() {
                     {loadingDeliver && <LoadingBox></LoadingBox>}
                     <div className="d-grid">
                       <Button type="button" onClick={deliverOrderHandler}>
-                        Deliver Order
+                        Livrer
                       </Button>
                     </div>
                   </ListGroup.Item>

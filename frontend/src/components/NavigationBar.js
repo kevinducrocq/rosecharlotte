@@ -2,6 +2,7 @@ import {
   faArrowRightToBracket,
   faPen,
   faShoppingCart,
+  faSquare,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
@@ -80,6 +81,10 @@ function NavigationBar() {
               </Link>
             </Nav>
           </Navbar.Collapse>
+
+          <div className="mx-5 bg3 p-2 rounded-5 d-flex justify-content-between">
+            réseaux
+          </div>
         </Container>
       </Navbar>
 

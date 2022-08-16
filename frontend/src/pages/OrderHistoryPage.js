@@ -65,8 +65,8 @@ const OrderHistoryPage = () => {
               <th>N°</th>
               <th>Date</th>
               <th>Total</th>
-              <th>Payé?</th>
-              <th>Livré?</th>
+              <th>Payé</th>
+              <th>Livré</th>
               <th>Actions</th>
             </tr>
           </thead>

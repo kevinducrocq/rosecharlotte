@@ -51,10 +51,10 @@ export default function PaymentMethodPage() {
           <div className="mb-3">
             <Form.Check
               type="radio"
-              id="Stripe"
-              label="Stripe"
-              value="Stripe"
-              checked={paymentMethodName === 'Stripe'}
+              id="cheque"
+              label="Chèque"
+              value="cheque"
+              checked={paymentMethodName === 'cheque'}
               onChange={(e) => setPaymentMethod(e.target.value)}
             />
           </div>

@@ -129,10 +129,11 @@ export default function OrderListPage() {
                 <tr>
                   <th>N°</th>
                   <th>Client</th>
+                  {/* <th>Paiement</th> */}
                   <th>Date</th>
                   <th>Total</th>
-                  <th>Payé?</th>
-                  <th>Livré?</th>
+                  <th>Payé</th>
+                  <th>Livré</th>
                   <th>Actions</th>
                 </tr>
               </thead>
@@ -140,9 +141,10 @@ export default function OrderListPage() {
                 {orders.map((order) => (
                   <tr key={order._id}>
                     <td>{order._id.substring(0, 5)}</td>
+                    {/* <td>{order.paymentMethod}</td> */}
                     <td>{order.user ? order.user.name : 'Client supprimé'}</td>
                     <td>{order.createdAt.substring(0, 10)}</td>
-                    <td>{order.totalPrice.toFixed(2)}</td>
+                    <td>{order.totalPrice.toFixed(2)} &euro;</td>
                     <td>
                       <div
                         className={
