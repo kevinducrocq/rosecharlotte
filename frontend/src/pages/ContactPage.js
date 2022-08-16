@@ -1,6 +1,7 @@
 import React from 'react';
 import { Container } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
+import ContactForm from '../components/contactComponent/ContactForm';
 
 export default function ContactPage() {
   return (
@@ -9,6 +10,10 @@ export default function ContactPage() {
         <title>Contact</title>
       </Helmet>
       <h1>Contact</h1>
+
+      <div>
+        <ContactForm />
+      </div>
       <div>
         <iframe
           title="RoseCharlotte"

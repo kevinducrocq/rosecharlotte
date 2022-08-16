@@ -8,10 +8,6 @@ body {
   background-color: #fff2f2;
 }
 
-a {
-  text-decoration: none;
-}
-
 .site-container {
   height: 100vh;
 }
@@ -78,9 +74,12 @@ main {
 }
 
 .navbar2 {
-  align-items: center;
-  color: #f1f1f1;
   background-color: #ef9f9f;
+}
+
+.navbar2 .nav-link {
+  text-decoration: none;
+  color: #f1f1f1;
 }
 
 /*CAROUSEL*/

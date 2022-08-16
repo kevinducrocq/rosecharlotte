@@ -83,14 +83,13 @@ function NavigationBar() {
         </Container>
       </Navbar>
 
-      <Row className="navbar2 p-1">
-        <Col md={10}>
-          <div className="d-flex justify-content-start">
+      <Nav className="navbar2">
+        <Container className="d-flex">
+          <div className="d-flex">
             {categories.map((category) => (
               <LinkContainer
                 to={`/boutique/search?category=${category}`}
                 key={category}
-                className="mx-2"
               >
                 <Link className="nav-link" to={category}>
                   {category}
@@ -98,15 +97,9 @@ function NavigationBar() {
               </LinkContainer>
             ))}
           </div>
-        </Col>
-        <Col md={2}>
-          <div className="d-flex">
+          <div className="d-flex ms-auto">
             {userInfo ? (
-              <NavDropdown
-                title={userInfo.name}
-                id="basic-nav-dropdown"
-                className="mx-2"
-              >
+              <NavDropdown title={userInfo.name} id="basic-nav-dropdown">
                 <LinkContainer to="/profile">
                   <NavDropdown.Item>Profil</NavDropdown.Item>
                 </LinkContainer>
@@ -155,8 +148,8 @@ function NavigationBar() {
               </NavDropdown>
             )}
           </div>
-        </Col>
-      </Row>
+        </Container>
+      </Nav>
     </>
   );
 }
