@@ -1,9 +1,29 @@
-import React from 'react';
-import { Container } from 'react-bootstrap';
+import React, { useState } from 'react';
+import { Button, Container, Form } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
-import ContactForm from '../components/contactComponent/ContactForm';
+import { send } from 'emailjs-com';
 
 export default function ContactPage() {
+  const [senderName, setSenderName] = useState('');
+  const [senderEmail, setSenderEmail] = useState('');
+  const [message, setMessage] = useState('');
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+    send(
+      'service_k6w1mkp',
+      'template_q4nenia',
+      { senderName, senderEmail, message },
+      'avpCoPewjR1-y5tpA'
+    )
+      .then((response) => {
+        console.log('Message envoyé', response.status, response.text);
+      })
+      .catch((err) => {
+        console.log('Erreur', err);
+      });
+  };
+
   return (
     <Container className="my-5">
       <Helmet>
@@ -12,7 +32,40 @@ export default function ContactPage() {
       <h1>Contact</h1>
 
       <div>
-        <ContactForm />
+        <Form onSubmit={sendEmail}>
+          <Form.Group className="mb-3">
+            <Form.Label>Prénom et nom</Form.Label>
+            <Form.Control
+              name="senderName"
+              value={senderName}
+              onChange={(e) => setSenderName(e.target.value)}
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label>Email</Form.Label>
+            <Form.Control
+              name="senderEmail"
+              value={senderEmail}
+              onChange={(e) => setSenderEmail(e.target.value)}
+              required
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="description">
+            <Form.Label>Message</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={6}
+              name="message"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              required
+            />
+          </Form.Group>
+          <div className="mb-3">
+            <Button type="submit">Envoyer</Button>
+          </div>
+        </Form>
       </div>
       <div>
         <iframe
