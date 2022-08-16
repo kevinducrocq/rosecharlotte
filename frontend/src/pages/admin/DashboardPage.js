@@ -72,7 +72,7 @@ export default function DashboardScreen() {
                           ? summary.users[0].numUsers
                           : 0}
                       </Card.Title>
-                      <Card.Text> Users</Card.Text>
+                      <Card.Text> Utilisateurs inscrits</Card.Text>
                       <Link to="/admin/users">Voir</Link>
                     </Card.Body>
                   </Card>
