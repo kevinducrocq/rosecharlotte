@@ -109,7 +109,7 @@ function NavigationBar() {
                   <NavDropdown.Item>Profil</NavDropdown.Item>
                 </LinkContainer>
                 <LinkContainer to="/orderhistory">
-                  <NavDropdown.Item>Historique</NavDropdown.Item>
+                  <NavDropdown.Item>Mes commandes</NavDropdown.Item>
                 </LinkContainer>
                 <NavDropdown.Divider />
                 <Link

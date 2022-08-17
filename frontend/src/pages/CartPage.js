@@ -118,8 +118,11 @@ export default function CartPage() {
                 <ListGroup.Item className="bg3">
                   <h3>
                     Sous-total ({cartItems.reduce((a, c) => a + c.quantity, 0)}{' '}
-                    produit{itemsQuantity <= 1 ? '' : 's'}) : &euro;
-                    {cartItems.reduce((a, c) => a + c.price * c.quantity, 0)}
+                    produit{itemsQuantity <= 1 ? '' : 's'}) :{' '}
+                    {cartItems
+                      .reduce((a, c) => a + c.price * c.quantity, 0)
+                      .toFixed(2)}{' '}
+                    &euro;
                   </h3>
                 </ListGroup.Item>
                 <ListGroup.Item className="bg3">

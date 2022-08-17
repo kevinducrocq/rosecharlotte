@@ -55,7 +55,8 @@ export default function PlaceOrderPage() {
 
   cart.shippingPrice = deliveryPrice(totalWeight);
 
-  cart.totalPrice = cart.itemsPrice + cart.shippingPrice;
+  cart.totalPrice = round2(cart.itemsPrice + cart.shippingPrice);
+  console.log(cart.totalPrice);
 
   const placeOrderHandler = async () => {
     try {
