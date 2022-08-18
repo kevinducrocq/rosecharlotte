@@ -20,17 +20,17 @@ const MentionsLegalesPage = () => {
           préalable de Rose Charlotte & COMPAGNIE. Malgré tous les soins d'usage
           apportés à la réalisation de ce site et à son actualisation régulière,
           des erreurs peuvent s'être glissées dans les informations et/ou
-          documents présentés. Barnabé aime le café ne peut néanmoins garantir
-          l'exactitude, la précision ou l'exhaustivité des informations mises à
-          la disposition sur ce site et la responsabilité de l'éditeur ne peut
-          être engagée en aucune circonstance en cas d'éventuelles erreurs. Si
-          vous en constatez, merci de le signaler par courrier électronique à :
-          rosecharlotteetcompagnie@gmail.com afin que nous procédions aux
-          rectifications correspondantes. La microentreprise Rose Charlotte &
-          COMPAGNIE se réserve le droit de corriger, à tout moment et sans
-          préavis, le contenu. Ce site a fait l'objet d'une déclaration auprès
-          de la Commission Nationale de l'Informatique et des Libertés. Les
-          données nominatives enregistrées sur ce site seront stockées et
+          documents présentés. Rose Charlotte & Compagnie ne peut néanmoins
+          garantir l'exactitude, la précision ou l'exhaustivité des informations
+          mises à la disposition sur ce site et la responsabilité de l'éditeur
+          ne peut être engagée en aucune circonstance en cas d'éventuelles
+          erreurs. Si vous en constatez, merci de le signaler par courrier
+          électronique à : rosecharlotteetcompagnie@gmail.com afin que nous
+          procédions aux rectifications correspondantes. La microentreprise Rose
+          Charlotte & COMPAGNIE se réserve le droit de corriger, à tout moment
+          et sans préavis, le contenu. Ce site a fait l'objet d'une déclaration
+          auprès de la Commission Nationale de l'Informatique et des Libertés.
+          Les données nominatives enregistrées sur ce site seront stockées et
           utilisées conformément à la loi du 6 janvier 1978 relative à
           l'informatique et aux libertés. Les utilisateurs de ce site disposent
           d'un droit d'accès, de rectification et de suppression des données les

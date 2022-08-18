@@ -21,6 +21,12 @@ productRouter.get('/', async (req, res) => {
   res.send(products);
 });
 
+// RECUPERER TOUS LES PRODUITS ORDRE ASCENDANT
+productRouter.get('/last-products', async (req, res) => {
+  const products = await Product.aggregate([{ $sort: { createdAt: -1 } }]);
+  res.send(products);
+});
+
 // AJOUTER UN PRODUIT
 productRouter.post(
   '/add',
@@ -290,7 +296,6 @@ productRouter.get(
         reviews.push({ ...review._doc, product: product });
       });
     });
-    // console.log('Reviews : ', reviews);
     res.send(reviews);
   })
 );

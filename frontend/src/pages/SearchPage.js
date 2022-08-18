@@ -36,28 +36,6 @@ const reducer = (state, action) => {
   }
 };
 
-export const ratings = [
-  {
-    name: '4 étoiles & +',
-    rating: 4,
-  },
-
-  {
-    name: '3 étoiles & +',
-    rating: 3,
-  },
-
-  {
-    name: '2 étoiles & +',
-    rating: 2,
-  },
-
-  {
-    name: '1 étoile & +',
-    rating: 1,
-  },
-];
-
 export default function SearchScreen() {
   const navigate = useNavigate();
   const { search } = useLocation();

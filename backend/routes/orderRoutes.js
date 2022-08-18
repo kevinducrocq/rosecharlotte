@@ -110,21 +110,6 @@ orderRouter.put(
       order.isDelivered = true;
       order.deliveredAt = Date.now();
 
-      // order.orderItems.map((orderItem, index) => {
-      //   // const orderItemProduct = Product.findOne({
-      //   //   _id: orderItem.product.toString(),
-      //   // });
-      //   order.populate('orderItems.0.product.' + index + '.product');
-
-      //   console.log(order);
-      //   console.log(order.orderItems);
-      //   console.log(orderItem.quantity);
-      //   // console.log(orderItemProduct.quantity);
-
-      //   orderItem.product.countInStock -= orderItem.quantity;
-      //   orderItem.save();
-      // });
-
       await order.save();
       res.send({ message: 'Order Delivered' });
     } else {
@@ -150,7 +135,12 @@ orderRouter.put(
         update_time: req.body.update_time,
         email_address: req.body.email_address,
       };
-
+      //DECREMENTER LE STOCK DES PRODUITS
+      order.orderItems.map((orderItem, index) => {
+        order.populate('orderItems.0.product.' + index + '.product');
+        orderItem.product.countInStock -= orderItem.quantity;
+        orderItem.save();
+      });
       const updatedOrder = await order.save();
 
       res.send({ message: 'Commande payée', order: updatedOrder });

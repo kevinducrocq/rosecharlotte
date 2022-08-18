@@ -31,7 +31,7 @@ function HomePage() {
     const fetchData = async () => {
       dispatch({ type: 'FETCH_REQUEST' });
       try {
-        const result = await axios.get('/api/products');
+        const result = await axios.get('/api/products/last-products');
         dispatch({ type: 'FETCH_SUCCESS', payload: result.data });
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: err.message });
@@ -67,7 +67,7 @@ function HomePage() {
             <MessageBox variant="danger">{error}</MessageBox>
           ) : (
             <Row>
-              {products.map((product) => (
+              {products.slice(0, 8).map((product) => (
                 <Col key={product.slug} sm={6} md={4} lg={3} className="mb-3">
                   <Product product={product}></Product>
                 </Col>
