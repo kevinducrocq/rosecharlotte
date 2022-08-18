@@ -83,6 +83,7 @@ export default function SearchScreen() {
   ]);
 
   const [categories, setCategories] = useState([]);
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {

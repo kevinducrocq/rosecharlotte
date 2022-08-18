@@ -76,6 +76,10 @@ function HomePage() {
           )}
         </div>
       </section>
+
+      <section className="mt-5">
+        <h2>Les avis des clients</h2>
+      </section>
     </Container>
   );
 }
