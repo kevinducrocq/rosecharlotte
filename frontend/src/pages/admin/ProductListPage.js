@@ -155,6 +155,7 @@ export default function ProductListScreen() {
                     <th>Nom</th>
                     <th>Catégorie</th>
                     <th>Sous-catégorie</th>
+                    <th>Stock</th>
                     <th>Prix</th>
                     <th>Poids</th>
                     <th>Action</th>
@@ -166,6 +167,7 @@ export default function ProductListScreen() {
                       <td>{product.name}</td>
                       <td>{product.category}</td>
                       <td>{product.subCategory}</td>
+                      <td>{product.countInStock}</td>
                       <td>{product.price} &euro;</td>
                       <td>{product.weight} g</td>
                       <td>
