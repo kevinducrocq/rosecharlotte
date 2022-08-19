@@ -4,8 +4,10 @@ import Order from '../models/orderModel.js';
 import User from '../models/userModel.js';
 import Product from '../models/productModel.js';
 import { isAuth, isAdmin } from '../utils.js';
+import mongodb from 'mongodb';
 
 const orderRouter = express.Router();
+const ObjectId = mongodb.ObjectId;
 
 orderRouter.get(
   '/',
@@ -106,11 +108,19 @@ orderRouter.put(
   isAuth,
   expressAsyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id);
+    const productId = order.orderItems.map((orderItem) => {
+      return orderItem._id.toString();
+    });
+
+    const idx = Product.findOne(ObjectId(productId));
+    console.log(idx);
+
     if (order) {
       order.isDelivered = true;
       order.deliveredAt = Date.now();
 
-      await order.save();
+      // DECREMENTER LE STOCK DES PRODUITS
+      // await order.save();
       res.send({ message: 'Order Delivered' });
     } else {
       res.status(404).send({ message: 'Order Not Found' });
@@ -135,12 +145,6 @@ orderRouter.put(
         update_time: req.body.update_time,
         email_address: req.body.email_address,
       };
-
-      // DECREMENTER LE STOCK DES PRODUITS
-      order.orderItems.map((orderItem) => {
-        orderItem.product.countInStock -= orderItem.quantity;
-        orderItem.save();
-      });
 
       const updatedOrder = await order.save();
 
