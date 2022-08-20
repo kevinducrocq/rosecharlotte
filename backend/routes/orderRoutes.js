@@ -154,11 +154,9 @@ orderRouter.put(
           console.log(modifiedProduct);
         }
       }
-
       res.send({
         message: 'Commande payée',
         order: updatedOrder,
-        product: modifiedProduct,
       });
     } else {
       res.status(404).send({ message: 'Commande non trouvée' });
