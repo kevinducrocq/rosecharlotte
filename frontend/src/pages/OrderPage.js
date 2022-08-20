@@ -1,4 +1,4 @@
-import React, { useReducer, useContext, useEffect } from 'react';
+import React, { useReducer, useContext, useEffect, useState } from 'react';
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
 import { useNavigate, useParams } from 'react-router-dom';
 import LoadingBox from '../components/LoadingBox';
@@ -58,6 +58,7 @@ export default function OrderPage() {
   const params = useParams();
   const { id: orderId } = params;
   const navigate = useNavigate();
+  const [countInStock, setCountInStock] = useState('');
 
   const [
     {

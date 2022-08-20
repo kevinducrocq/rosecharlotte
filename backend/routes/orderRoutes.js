@@ -4,10 +4,9 @@ import Order from '../models/orderModel.js';
 import User from '../models/userModel.js';
 import Product from '../models/productModel.js';
 import { isAuth, isAdmin } from '../utils.js';
-import mongodb from 'mongodb';
+import mongoose from 'mongoose';
 
 const orderRouter = express.Router();
-const ObjectId = mongodb.ObjectId;
 
 orderRouter.get(
   '/',
@@ -108,19 +107,13 @@ orderRouter.put(
   isAuth,
   expressAsyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id);
-    const productId = order.orderItems.map((orderItem) => {
-      return orderItem._id.toString();
-    });
-
-    const idx = Product.findOne(ObjectId(productId));
-    console.log(idx);
 
     if (order) {
       order.isDelivered = true;
       order.deliveredAt = Date.now();
 
-      // DECREMENTER LE STOCK DES PRODUITS
-      // await order.save();
+      await order.save();
+
       res.send({ message: 'Order Delivered' });
     } else {
       res.status(404).send({ message: 'Order Not Found' });
@@ -136,6 +129,7 @@ orderRouter.put(
       'user',
       'email name'
     );
+
     if (order) {
       order.isPaid = true;
       order.paidAt = Date.now();
@@ -148,7 +142,24 @@ orderRouter.put(
 
       const updatedOrder = await order.save();
 
-      res.send({ message: 'Commande payée', order: updatedOrder });
+      const { orderItems } = order;
+
+      for (order of orderItems) {
+        const product = await Product.findOne({ _id: order._id });
+        if (product) {
+          const modifiedProduct = await Product.findOneAndUpdate(
+            { _id: mongoose.Types.ObjectId(order.product) },
+            { countInStock: product.countInStock - order.quantity }
+          );
+          console.log(modifiedProduct);
+        }
+      }
+
+      res.send({
+        message: 'Commande payée',
+        order: updatedOrder,
+        product: modifiedProduct,
+      });
     } else {
       res.status(404).send({ message: 'Commande non trouvée' });
     }
