@@ -188,7 +188,16 @@ function ProductScreen() {
             <ListGroup.Item>
               <p>{product.description}</p>
             </ListGroup.Item>
-            {product.countInStock > 0 && (
+
+            {product.countInStock <= 0 ? (
+              <ListGroup.Item>
+                <div className="d-grid">
+                  <Button variant="secondary" disabled>
+                    Epuisé
+                  </Button>
+                </div>
+              </ListGroup.Item>
+            ) : (
               <ListGroup.Item>
                 <div className="d-grid">
                   <Button onClick={addToCartHandler} variant="primary">

@@ -49,8 +49,8 @@ function Product(props) {
         <div className="mb-3">
           <Rating rating={product.rating} numReviews={product.numReviews} />
         </div>
-        {product.countInStock === 0 ? (
-          <Button variant="secondary" disabled>
+        {product.countInStock <= 0 ? (
+          <Button variant="secondary" disabled className="w-100">
             Epuisé
           </Button>
         ) : (
