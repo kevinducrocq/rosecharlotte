@@ -9,7 +9,7 @@ import { getError } from '../../utils';
 import LoadingBox from '../../components/LoadingBox';
 import MessageBox from '../../components/MessageBox';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faPenToSquare, faTrash } from '@fortawesome/pro-solid-svg-icons';
 import { Col, Container, Row, Table } from 'react-bootstrap';
 import AdminMenu from '../../components/AdminMenu';
 

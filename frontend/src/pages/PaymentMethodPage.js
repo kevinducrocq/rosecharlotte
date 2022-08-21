@@ -6,6 +6,9 @@ import Button from 'react-bootstrap/Button';
 import CheckoutSteps from '../components/CheckoutSteps';
 import { Store } from '../Store';
 import { Container } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCcPaypal, faPaypal } from '@fortawesome/free-brands-svg-icons';
+import { faMoneyCheckPen } from '@fortawesome/pro-solid-svg-icons';
 
 export default function PaymentMethodPage() {
   const navigate = useNavigate();
@@ -36,30 +39,43 @@ export default function PaymentMethodPage() {
         <Helmet>
           <title>Moyen de paiement</title>
         </Helmet>
-        <h1 className="my-3">Moyen de paiement</h1>
+        <h1 className="my-3 text-center">Moyen de paiement</h1>
+
         <Form onSubmit={submitHandler}>
-          <div className="mb-3">
-            <Form.Check
-              type="radio"
-              id="PayPal"
-              label="PayPal"
-              value="PayPal"
-              checked={paymentMethodName === 'PayPal'}
-              onChange={(e) => setPaymentMethod(e.target.value)}
-            />
+          <div className="mb-3 d-flex justify-content-center align-items-center">
+            <div className="mx-2">
+              <Form.Check
+                type="radio"
+                id="PayPal"
+                value="PayPal"
+                label="Carte bancaire ou Paypal"
+                checked={paymentMethodName === 'PayPal'}
+                onChange={(e) => setPaymentMethod(e.target.value)}
+              />
+            </div>
+            <div>
+              <FontAwesomeIcon icon={faCcPaypal} size="5x" />
+            </div>
+          </div>
+          <div className="mb-3 d-flex justify-content-center align-items-center">
+            <div className="mx-2">
+              <Form.Check
+                type="radio"
+                id="cheque"
+                label="Chèque bancaire"
+                value="cheque"
+                checked={paymentMethodName === 'cheque'}
+                onChange={(e) => setPaymentMethod(e.target.value)}
+              />
+            </div>
+            <div>
+              <FontAwesomeIcon icon={faMoneyCheckPen} size="5x" />
+            </div>
           </div>
           <div className="mb-3">
-            <Form.Check
-              type="radio"
-              id="cheque"
-              label="Chèque"
-              value="cheque"
-              checked={paymentMethodName === 'cheque'}
-              onChange={(e) => setPaymentMethod(e.target.value)}
-            />
-          </div>
-          <div className="mb-3">
-            <Button type="submit">Continue</Button>
+            <Button type="submit" className="w-100 bg1">
+              Continuer
+            </Button>
           </div>
         </Form>
       </div>

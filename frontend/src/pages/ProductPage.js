@@ -164,19 +164,23 @@ function ProductScreen() {
               <Helmet>
                 <title>{product.name}</title>
               </Helmet>
-              <h1>{product.name}</h1>
-              <h2 className="h6 text-muted">
-                {product.category}
-                {product.subCategory ? ' - ' + product.subCategory : ''}
-                {product.otherCategory ? ' - ' + product.otherCategory : ''}
-              </h2>
-            </ListGroup.Item>
-            <ListGroup.Item>
-              {product.countInStock > 0 ? (
-                <Badge bg="success">{product.countInStock} En stock</Badge>
-              ) : (
-                <Badge bg="danger">Epuisé</Badge>
-              )}
+              <div className="d-flex justify-content-between align-items-center">
+                <div>
+                  <h1>{product.name}</h1>
+                  <h2 className="h6 text-muted">
+                    {product.category}
+                    {product.subCategory ? ' - ' + product.subCategory : ''}
+                    {product.otherCategory ? ' - ' + product.otherCategory : ''}
+                  </h2>
+                </div>
+                <div>
+                  {product.countInStock > 0 ? (
+                    <Badge bg="success">{product.countInStock} En stock</Badge>
+                  ) : (
+                    <Badge bg="danger">Epuisé</Badge>
+                  )}
+                </div>
+              </div>
             </ListGroup.Item>
             <ListGroup.Item>
               <Rating
@@ -184,7 +188,9 @@ function ProductScreen() {
                 numReviews={product.numReviews}
               ></Rating>
             </ListGroup.Item>
-            <ListGroup.Item>Prix : {product.price} &euro;</ListGroup.Item>
+            <ListGroup.Item className="price-tag">
+              {product.price} &euro;
+            </ListGroup.Item>
             <ListGroup.Item>
               <p>{product.description}</p>
             </ListGroup.Item>

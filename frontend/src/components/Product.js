@@ -1,8 +1,11 @@
-import { faCartPlus } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCartCircleXmark,
+  faCartPlus,
+} from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import React, { useContext } from 'react';
-import { Card, Button } from 'react-bootstrap';
+import { Card, Button, Badge } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { Store } from '../Store';
 import Rating from './Rating';
@@ -46,20 +49,29 @@ function Product(props) {
           </Link>
           <Card.Text>{product.price} &euro;</Card.Text>
         </div>
-        <div className="mb-3">
+        <div>
           <Rating rating={product.rating} numReviews={product.numReviews} />
         </div>
-        {product.countInStock <= 0 ? (
-          <Button variant="secondary" disabled className="w-100">
-            Epuisé
-          </Button>
-        ) : (
+
+        <div className="mt-2 mb-3">
+          {product.countInStock > 0 ? (
+            <Badge bg="success">{product.countInStock} En stock</Badge>
+          ) : (
+            <Badge bg="danger">Epuisé</Badge>
+          )}
+        </div>
+
+        {product.countInStock > 0 ? (
           <Button
             onClick={() => addToCartHandler(product)}
             className="w-100"
             variant="primary"
           >
             <FontAwesomeIcon icon={faCartPlus} /> Ajouter au panier
+          </Button>
+        ) : (
+          <Button variant="secondary" disabled className="w-100">
+            <FontAwesomeIcon icon={faCartCircleXmark} />
           </Button>
         )}
       </Card.Body>

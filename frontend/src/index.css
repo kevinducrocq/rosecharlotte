@@ -8,19 +8,19 @@ body {
   background-color: #fff2f2;
 }
 
-main {
-  margin-top: 100px;
-}
-
 .site-container {
   height: 100vh;
 }
+
 main {
+  margin-top: 100px;
   flex: 1;
 }
 
+/*IMAGES*/
+
 .img-thumbnail {
-  max-width: 60%;
+  max-width: 80px;
   height: auto;
   object-fit: cover;
   border: none;
@@ -62,7 +62,7 @@ main {
 /*CARDS*/
 
 .card {
-  border: solid 0.5px #ef9f9f;
+  border: solid 2px #f1f1f1;
 }
 
 .card-img-top {
@@ -83,6 +83,12 @@ main {
 .navbar2 .nav-link {
   text-decoration: none;
   color: #f1f1f1;
+}
+
+/*PRIX*/
+.price-tag {
+  font-size: 20px;
+  font-weight: 500;
 }
 
 /*CAROUSEL*/

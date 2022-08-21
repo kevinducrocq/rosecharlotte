@@ -7,9 +7,9 @@ import MessageBox from '../components/MessageBox';
 import { Store } from '../Store';
 import axios from 'axios';
 import { getError } from '../utils';
-import { Button, Container } from 'react-bootstrap';
+import { Button, Container, Table } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEye } from '@fortawesome/free-solid-svg-icons';
+import { faEye } from '@fortawesome/pro-solid-svg-icons';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -59,7 +59,7 @@ const OrderHistoryPage = () => {
       ) : error ? (
         <MessageBox></MessageBox>
       ) : (
-        <table className="table">
+        <Table className="table table-striped">
           <thead>
             <tr className="to-upper">
               <th>N°</th>
@@ -97,7 +97,7 @@ const OrderHistoryPage = () => {
               </tr>
             ))}
           </tbody>
-        </table>
+        </Table>
       )}
     </Container>
   );

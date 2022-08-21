@@ -143,13 +143,12 @@ orderRouter.put(
       const updatedOrder = await order.save();
 
       const { orderItems } = order;
-
-      for (order of orderItems) {
-        const product = await Product.findOne({ _id: order._id });
+      for (let orderItem of orderItems) {
+        const product = await Product.findOne({ _id: orderItem._id });
         if (product) {
           const modifiedProduct = await Product.findOneAndUpdate(
-            { _id: mongoose.Types.ObjectId(order.product) },
-            { countInStock: product.countInStock - order.quantity }
+            { _id: mongoose.Types.ObjectId(orderItem.product) },
+            { countInStock: product.countInStock - orderItem.quantity }
           );
           console.log(modifiedProduct);
         }

@@ -9,7 +9,7 @@ import { getError } from '../../utils';
 import LoadingBox from '../../components/LoadingBox';
 import MessageBox from '../../components/MessageBox';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faTrash } from '@fortawesome/pro-solid-svg-icons';
 import AdminMenu from '../../components/AdminMenu';
 
 const reducer = (state, action) => {
@@ -92,9 +92,6 @@ export default function ProductEditPage() {
     };
     fetchData();
   }, [productId]);
-
-  
-  
 
   const submitHandler = async (e) => {
     e.preventDefault();

@@ -64,11 +64,11 @@ const ProfilePage = () => {
   };
 
   return (
-    <Container className="my-5 bg3 shadow rounded-3 p-4">
+    <Container className="my-5 bg3 shadow rounded-3 p-4 small-container">
       <Helmet>
         <title>Profil</title>
       </Helmet>
-      <h1 className="my-3 text-center">Profil de {userInfo.name}</h1>
+      <h1 className="my-3 mb-5 text-center">Profil de {userInfo.name}</h1>
       <Form onSubmit={submitHandler}>
         <Row>
           <Col md={6}>
@@ -94,6 +94,7 @@ const ProfilePage = () => {
             <Form.Group className="mb-3" controlId="address">
               <Form.Label>Adresse</Form.Label>
               <Form.Control
+                autoCapitalize
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
               ></Form.Control>
@@ -113,27 +114,29 @@ const ProfilePage = () => {
               ></Form.Control>
             </Form.Group>
           </Col>
-
-          <Form.Group className="mb-3 my-4" controlId="password">
-            <h2>Changer le mot de passe </h2>
-            <Form.Label>Mot de passe</Form.Label>
-            <Form.Control
-              type="password"
-              onChange={(e) => setPassword(e.target.value)}
-            ></Form.Control>
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="confirmPassword">
-            <Form.Label>Répétez le Mot de passe</Form.Label>
-            <Form.Control
-              type="password"
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            ></Form.Control>
-          </Form.Group>
-          <div className="mb-3">
-            <Button type="submit">
-              {loadingUpdate ? <LoadingBox /> : 'Mettre à jour'}
-            </Button>
-          </div>
+          <Col>
+            <Form.Group className="mb-3 my-4" controlId="password">
+              <h2 className="h3 mb-4">Changer votre mot de passe </h2>
+              <Form.Label>Nouveau mot de passe</Form.Label>
+              <Form.Control
+                autoComplete="off"
+                type="password"
+                onChange={(e) => setPassword(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="confirmPassword">
+              <Form.Label>Répétez le Mot de passe</Form.Label>
+              <Form.Control
+                type="password"
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+            <div className="mb-3">
+              <Button type="submit">
+                {loadingUpdate ? <LoadingBox /> : 'Mettre à jour'}
+              </Button>
+            </div>
+          </Col>
         </Row>
       </Form>
     </Container>

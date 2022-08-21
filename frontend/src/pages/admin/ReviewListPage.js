@@ -1,8 +1,4 @@
-import {
-  faCheck,
-  faEyeSlash,
-  faTrash,
-} from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faEyeSlash, faTrash } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import React, { useContext, useEffect, useReducer, useRef } from 'react';

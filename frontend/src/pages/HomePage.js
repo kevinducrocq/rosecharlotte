@@ -48,7 +48,7 @@ function HomePage() {
       <section>
         <div className="title mb-3">
           <img
-            src="../images/logo-site.png"
+            src="../logo-site.png"
             alt="Rose Charlotte"
             width={150}
             className="img-fluid mb-3"

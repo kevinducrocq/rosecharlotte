@@ -1,6 +1,6 @@
 import React from 'react';
-import { faStar, faStarHalfAlt } from '@fortawesome/free-solid-svg-icons';
-import { faStar as faStarReg } from '@fortawesome/free-regular-svg-icons';
+import { faStar, faStarHalfAlt } from '@fortawesome/pro-solid-svg-icons';
+import { faStar as faStarReg } from '@fortawesome/pro-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function Rating(props) {

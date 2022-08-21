@@ -2,21 +2,12 @@ import {
   faArrowRightToBracket,
   faPen,
   faShoppingCart,
-  faSquare,
-} from '@fortawesome/free-solid-svg-icons';
+} from '@fortawesome/pro-solid-svg-icons';
+import { faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
-import {
-  Badge,
-  Col,
-  Container,
-  Image,
-  Nav,
-  Navbar,
-  NavDropdown,
-  Row,
-} from 'react-bootstrap';
+import { Badge, Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -54,8 +45,9 @@ function NavigationBar() {
         <Navbar variant="light" expand="lg">
           <Container>
             <LinkContainer to="/">
-              <Navbar.Brand>Logo</Navbar.Brand>
+              <Navbar.Brand></Navbar.Brand>
             </LinkContainer>
+
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="me-auto w-100 justify-content-end">
@@ -72,7 +64,7 @@ function NavigationBar() {
                   Contact
                 </Link>
 
-                <Link to="/cart" className="nav-link">
+                <Link to="/cart" className="nav-link bg4 rounded-5 ms-4">
                   <FontAwesomeIcon icon={faShoppingCart} /> Panier{' '}
                   {cart.cartItems.length > 0 && (
                     <Badge pill bg="danger">
@@ -83,8 +75,13 @@ function NavigationBar() {
               </Nav>
             </Navbar.Collapse>
 
-            <div className="mx-5 bg3 p-2 rounded-5 d-flex justify-content-between">
-              réseaux
+            <div className="mx-4 p-2 d-flex justify-content-between">
+              <span className="mx-2">
+                <FontAwesomeIcon icon={faFacebook} size="2x" />
+              </span>
+              <span>
+                <FontAwesomeIcon icon={faInstagram} size="2x" />
+              </span>
             </div>
           </Container>
         </Navbar>

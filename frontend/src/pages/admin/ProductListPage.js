@@ -12,7 +12,7 @@ import {
   faPenToSquare,
   faPlus,
   faTrash,
-} from '@fortawesome/free-solid-svg-icons';
+} from '@fortawesome/pro-solid-svg-icons';
 import AdminMenu from '../../components/AdminMenu';
 
 import 'jquery/dist/jquery.min.js';

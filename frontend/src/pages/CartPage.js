@@ -10,7 +10,7 @@ import {
   faMinusCircle,
   faPlusCircle,
   faTrash,
-} from '@fortawesome/free-solid-svg-icons';
+} from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 export default function CartPage() {
@@ -46,7 +46,7 @@ export default function CartPage() {
   };
 
   return (
-    <Container>
+    <Container className="my-5">
       <Helmet>
         <title>Panier</title>
       </Helmet>
@@ -112,19 +112,24 @@ export default function CartPage() {
         </Col>
         <Col md={4}>
           <Card>
-            <Card.Body className="bg3">
+            <Card.Body className="bg4">
               <ListGroup variant="flush">
-                <ListGroup.Item className="bg3">
-                  <h3>
-                    Sous-total ({cartItems.reduce((a, c) => a + c.quantity, 0)}{' '}
-                    produit{itemsQuantity <= 1 ? '' : 's'}) :{' '}
-                    {cartItems
-                      .reduce((a, c) => a + c.price * c.quantity, 0)
-                      .toFixed(2)}{' '}
-                    &euro;
-                  </h3>
+                <ListGroup.Item className="bg4">
+                  <div className="text-center d-flex flex-column">
+                    <h3 className="text-center">Sous-total</h3>
+                    <span className="h6 text-muted">
+                      ({cartItems.reduce((a, c) => a + c.quantity, 0)} produit
+                      {itemsQuantity <= 1 ? '' : 's'})
+                    </span>
+                    <span className="h3">
+                      {cartItems
+                        .reduce((a, c) => a + c.price * c.quantity, 0)
+                        .toFixed(2)}{' '}
+                      &euro;
+                    </span>
+                  </div>
                 </ListGroup.Item>
-                <ListGroup.Item className="bg3">
+                <ListGroup.Item className="bg4">
                   <div className="d-grid">
                     <Button
                       type="button"

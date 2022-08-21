@@ -8,7 +8,7 @@ import { Store } from '../../Store';
 import { getError } from '../../utils';
 import LoadingBox from '../../components/LoadingBox';
 import MessageBox from '../../components/MessageBox';
-import { faEye, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faEye, faTrash } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Col, Container, Row, Table } from 'react-bootstrap';
 import AdminMenu from '../../components/AdminMenu';

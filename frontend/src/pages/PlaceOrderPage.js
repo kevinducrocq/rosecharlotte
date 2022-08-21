@@ -8,7 +8,7 @@ import CheckoutSteps from '../components/CheckoutSteps';
 import { Store } from '../Store';
 import axios from 'axios';
 import LoadingBox from '../components/LoadingBox';
-import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { faPenToSquare } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const reducer = (state, action) => {
@@ -44,16 +44,22 @@ export default function PlaceOrderPage() {
   ));
 
   const deliveryPrice = () => {
-    if (totalWeight <= 200) {
+    if (totalWeight <= 200 && cart.itemsPrice <= 85) {
       return 4.4;
-    } else if (totalWeight >= 200 && totalWeight <= 250) {
+    } else if (
+      totalWeight >= 200 &&
+      totalWeight <= 250 &&
+      cart.itemsPrice <= 85
+    ) {
       return 5.4;
-    } else {
+    } else if (totalWeight >= 250 && cart.itemsPrice <= 85) {
       return 6.9;
+    } else if (cart.itemsPrice >= 85) {
+      return 0;
     }
   };
 
-  cart.shippingPrice = deliveryPrice(totalWeight);
+  cart.shippingPrice = deliveryPrice();
 
   cart.totalPrice = round2(cart.itemsPrice + cart.shippingPrice);
   console.log(cart.totalPrice);
@@ -115,7 +121,7 @@ export default function PlaceOrderPage() {
                         <img
                           src={item.image}
                           alt={item.name}
-                          className="img-fluid rounded img-thumbnail"
+                          className="img-thumbnail"
                         />{' '}
                         <Link to={`/product/${item.slug}`}>{item.name}</Link>
                       </Col>
@@ -135,8 +141,10 @@ export default function PlaceOrderPage() {
         </Col>
         <Col md={4}>
           <Card>
-            <Card.Body>
-              <Card.Title>Montant de la commande</Card.Title>
+            <Card.Body className="shadow">
+              <Card.Title className="text-center mb-2">
+                Montant de la commande
+              </Card.Title>
               <ListGroup variant="flush">
                 <ListGroup.Item>
                   <Row>
@@ -147,7 +155,13 @@ export default function PlaceOrderPage() {
                 <ListGroup.Item>
                   <Row>
                     <Col>Livraison</Col>
-                    <Col>{cart.shippingPrice.toFixed(2)} &euro;</Col>
+
+                    <Col>
+                      {cart.shippingPrice === 0
+                        ? 'Offerte'
+                        : cart.shippingPrice.toFixed(2)}
+                      &euro;
+                    </Col>
                   </Row>
                 </ListGroup.Item>
                 <ListGroup.Item>
