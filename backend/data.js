@@ -213,7 +213,7 @@ const data = {
         'https://picsum.photos/id/38/600/800',
         'https://picsum.photos/id/39/600/800',
       ],
-      price: 12.9,
+      price: 30.5,
       weight: 10,
       countInStock: 10,
       rating: 4.5,

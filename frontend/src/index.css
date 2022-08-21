@@ -8,10 +8,13 @@ body {
   background-color: #fff2f2;
 }
 
+main {
+  margin-top: 100px;
+}
+
 .site-container {
   height: 100vh;
 }
-
 main {
   flex: 1;
 }

@@ -39,7 +39,6 @@ export default function CartPage() {
 
   const removeItemHandler = (item) => {
     ctxDispatch({ type: 'CART_REMOVE_ITEM', payload: item });
-    toast.success('Produit supprimé', { autoClose: 1500 });
   };
 
   const checkoutHandler = () => {
