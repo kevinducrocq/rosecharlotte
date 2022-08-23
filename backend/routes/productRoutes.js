@@ -41,7 +41,9 @@ productRouter.post(
       image: req.body.image,
       images: req.body.images,
       category: req.body.category,
+      categorySlug: slugify(req.body.category),
       subCategory: req.body.subCategory,
+      subCategorySlug: slugify(req.body.subCategory),
       otherCategory: req.body.otherCategory,
       countInStock: req.body.countInStock,
       numReviews: 0,
@@ -58,7 +60,9 @@ productRouter.post(
       image: product.image,
       images: product.images,
       category: product.category,
+      categorySlug: product.categorySlug,
       subCategory: product.subCategory,
+      subCategorySlug: product.subCategorySlug,
       otherCategory: product.otherCategory,
       countInStock: product.countInStock,
       numReviews: 0,
@@ -278,9 +282,19 @@ productRouter.get(
 productRouter.get(
   '/categories',
   expressAsyncHandler(async (req, res) => {
-    const categories = await Product.find()
-      .distinct('category')
-      .populate('subCategory');
+    const categories = await Product.find().distinct('category');
+    res.send(categories);
+  })
+);
+
+// RECUPERER LES PRODUITS EN FONCTION DE LEUR CATEGORIE
+productRouter.get(
+  '/category/:categorySlug',
+  expressAsyncHandler(async (req, res) => {
+    const categories = await Product.find({
+      category: req.params.categorySlug,
+    });
+    console.log(categories);
     res.send(categories);
   })
 );

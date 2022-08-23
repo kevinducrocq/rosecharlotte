@@ -45,7 +45,7 @@ function Product(props) {
       <Card.Body>
         <div className="d-flex justify-content-between align-items-center">
           <Link to={`/product/${product.slug}`}>
-            <Card.Title className="text-nowrap">{product.name}</Card.Title>
+            <Card.Title>{product.name}</Card.Title>
           </Link>
           <Card.Text className="text-nowrap fw-bold bg3 p-2 rounded-5">
             {product.price} &euro;

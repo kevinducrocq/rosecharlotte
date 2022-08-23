@@ -238,19 +238,19 @@ main {
   .site-cart {
     display: none;
   }
-  .categories-menu {
-    display: none;
-  }
 }
 
 @media screen and (min-width: 991px) {
   .mobile-cart {
     display: none;
   }
-  .categories-menu-mobile {
-    display: none;
-  }
   .categories-menu {
     display: flex;
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .signup-button {
+    display: none;
   }
 }

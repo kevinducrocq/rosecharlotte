@@ -83,12 +83,21 @@ function NavigationBar() {
                 <Link className="nav-link" to="/contact">
                   Contact
                 </Link>
-                <Link className="nav-link" to="/contact">
+
+                <a
+                  href="https://www.facebook.com/Rose-Charlotte-compagnie-261590004642619"
+                  target="_blank"
+                  className="nav-link"
+                >
                   <FontAwesomeIcon icon={faFacebook} size="2x" />
-                </Link>
-                <Link className="nav-link" to="/contact">
+                </a>
+                <a
+                  href="https://www.instagram.com/rosecharlotteetcie/"
+                  target="_blank"
+                  className="nav-link"
+                >
                   <FontAwesomeIcon icon={faInstagram} size="2x" />
-                </Link>
+                </a>
               </Nav>
 
               <Nav>
@@ -109,7 +118,7 @@ function NavigationBar() {
 
         <Nav className="navbar2">
           <Container className="d-flex">
-            <div className="categories-menu">
+            <div className="categories-menu d-none d-md-flex">
               {categories.map((category) => (
                 <LinkContainer
                   to={`/boutique/search?category=${category}`}
@@ -161,7 +170,7 @@ function NavigationBar() {
               )}
               {!userInfo && (
                 <Link
-                  className="nav-link d-flex align-items-center"
+                  className="nav-link d-flex align-items-center d-none d-md-flex"
                   to="/signup"
                 >
                   <FontAwesomeIcon icon={faPen} />{' '}
