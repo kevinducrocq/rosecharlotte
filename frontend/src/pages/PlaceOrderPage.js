@@ -91,7 +91,7 @@ export default function PlaceOrderPage() {
           shippingPrice: cart.shippingPrice,
           totalPrice: cart.totalPrice,
         },
-        { headers: { authorization: `Bearer ${userInfo.token}` } }
+        {baseURL: 'http://localhost:9123',  headers: { authorization: `Bearer ${userInfo.token}` } }
       );
       ctxDispatch({ type: 'CART_CLEAR' });
       dispatch({ type: 'CREATE-SUCCESS' });

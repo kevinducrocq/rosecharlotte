@@ -25,7 +25,7 @@ export default function SigninPage() {
       const { data } = await axios.post('/api/users/signin', {
         email,
         password,
-      });
+      }, {baseURL: 'http://localhost:9123', });
       ctxDispatch({ type: 'USER_SIGNIN', payload: data });
       localStorage.setItem('userInfo', JSON.stringify(data));
       navigate(redirect || '/');

@@ -96,7 +96,7 @@ export default function ProductEditPage() {
     const fetchData = async () => {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
-        const { data } = await axios.get(`/api/products/${productId}`);
+        const { data } = await axios.get(`/api/products/${productId}`, {baseURL: 'http://localhost:9123', });
         setName(data.name);
         setSlug(data.slug);
         setPrice(data.price);
@@ -200,6 +200,7 @@ export default function ProductEditPage() {
           customizable,
         },
         {
+          baseURL: 'http://localhost:9123',
           headers: { Authorization: `Bearer ${userInfo.token}` },
         }
       );
@@ -220,7 +221,7 @@ export default function ProductEditPage() {
     try {
       dispatch({ type: 'UPLOAD_REQUEST' });
       const { data } = await axios.post('/api/upload', bodyFormData, {
-        headers: {
+        baseURL: 'http://localhost:9123', headers: {
           'Content-Type': 'multipart/form-data',
           authorization: `Bearer ${userInfo.token}`,
         },

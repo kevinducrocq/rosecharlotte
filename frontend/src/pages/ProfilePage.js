@@ -58,7 +58,7 @@ const ProfilePage = () => {
           city,
           country,
         },
-        { headers: { Authorization: `Bearer ${userInfo.token}` } }
+        { baseURL: 'http://localhost:9123', headers: { Authorization: `Bearer ${userInfo.token}` } }
       );
       dispatch({ type: 'UPDATE_SUCCESS' });
       ctxDispatch({ type: 'USER_SIGNIN', payload: data });

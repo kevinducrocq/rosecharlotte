@@ -98,7 +98,7 @@ export default function ReviewListPage() {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
         const { data } = await axios.get(`/api/products/reviews`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          baseURL: 'http://localhost:9123', headers: { Authorization: `Bearer ${userInfo.token}` },
         });
 
         const table = $(tableRef.current).DataTable({
@@ -186,6 +186,7 @@ export default function ReviewListPage() {
     }
   };
 
+  console.log(reviews);
   return (
     <Container className="my-5">
       <Helmet>

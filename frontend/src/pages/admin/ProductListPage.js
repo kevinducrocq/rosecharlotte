@@ -143,7 +143,7 @@ export default function ProductListScreen() {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
         const { data } = await axios.get(`/api/products/admin?page=${page} `, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          baseURL: 'http://localhost:9123', headers: { Authorization: `Bearer ${userInfo.token}` },
         });
 
         const table = $(tableRef.current).DataTable({
@@ -210,7 +210,7 @@ export default function ProductListScreen() {
     if (window.confirm('Confirmer ?')) {
       try {
         await axios.delete(`/api/products/${product._id}`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          baseURL: 'http://localhost:9123', headers: { Authorization: `Bearer ${userInfo.token}` },
         });
         toast.success('Produit supprimé');
         dispatch({ type: 'DELETE_SUCCESS' });

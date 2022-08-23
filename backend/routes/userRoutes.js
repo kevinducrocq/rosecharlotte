@@ -109,6 +109,7 @@ userRouter.post(
   expressAsyncHandler(async (req, res) => {
     const user = await User.findOne({ email: req.body.email });
     if (user) {
+        console.log(user);
       if (bcrypt.compareSync(req.body.password, user.password)) {
         res.send({
           _id: user._id,
@@ -123,6 +124,7 @@ userRouter.post(
         return;
       }
     }
+    console.log('patrouvé');
     res.status(401).send({ message: 'Email ou mot de passe erroné' });
   })
 );

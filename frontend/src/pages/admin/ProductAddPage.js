@@ -152,7 +152,7 @@ export default function ProductAddPage() {
           customizable,
         },
         {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          baseURL: 'http://localhost:9123', headers: { Authorization: `Bearer ${userInfo.token}` },
         }
       );
       toast.success('Produit ajouté');
@@ -171,7 +171,7 @@ export default function ProductAddPage() {
       const { data } = await axios.post('/api/upload', bodyFormData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          authorization: `Bearer ${userInfo.token}`,
+          baseURL: 'http://localhost:9123', authorization: `Bearer ${userInfo.token}`,
         },
       });
       dispatch({ type: 'UPLOAD_SUCCESS' });

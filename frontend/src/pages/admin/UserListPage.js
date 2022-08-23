@@ -68,7 +68,7 @@ export default function UserListScreen() {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
         const { data } = await axios.get(`/api/users`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          baseURL: 'http://localhost:9123', headers: { Authorization: `Bearer ${userInfo.token}` },
         });
         const table = $(tableRef.current).DataTable({
           language: {
@@ -95,7 +95,7 @@ export default function UserListScreen() {
       try {
         dispatch({ type: 'DELETE_REQUEST' });
         await axios.delete(`/api/users/${user._id}`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          baseURL: 'http://localhost:9123', headers: { Authorization: `Bearer ${userInfo.token}` },
         });
         toast.success('Utilisateur supprimé');
         dispatch({ type: 'DELETE_SUCCESS' });

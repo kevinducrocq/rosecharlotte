@@ -38,7 +38,7 @@ export default function SignupPage() {
         name,
         email,
         password,
-      });
+      }, {baseURL: 'http://localhost:9123', });
       ctxDispatch({ type: 'USER_SIGNIN', payload: data });
       localStorage.setItem('userInfo', JSON.stringify(data));
       navigate(redirect || '/');

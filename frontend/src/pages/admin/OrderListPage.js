@@ -66,7 +66,7 @@ export default function OrderListPage() {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
         const { data } = await axios.get(`/api/orders`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          baseURL: 'http://localhost:9123', headers: { Authorization: `Bearer ${userInfo.token}` },
         });
         const table = $(tableRef.current).DataTable({
           language: {
@@ -94,7 +94,7 @@ export default function OrderListPage() {
       try {
         dispatch({ type: 'DELETE_REQUEST' });
         await axios.delete(`/api/orders/${order._id}`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          baseURL: 'http://localhost:9123', headers: { Authorization: `Bearer ${userInfo.token}` },
         });
         dispatch({ type: 'DELETE_SUCCESS' });
       } catch (err) {

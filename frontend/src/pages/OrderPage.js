@@ -117,7 +117,7 @@ export default function OrderPage() {
         const { data } = await axios.put(
           `/api/orders/${order._id}/pay`,
           details,
-          { headers: { authorization: `Bearer ${userInfo.token}` } }
+          { baseURL: 'http://localhost:9123', headers: { authorization: `Bearer ${userInfo.token}` } }
         );
         dispatch({ type: 'PAY_SUCCESS', payload: data });
         toast.success('Commande payée avec succès');
@@ -137,7 +137,7 @@ export default function OrderPage() {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
         const { data } = await axios.get(`/api/orders/${orderId}`, {
-          headers: { authorization: `Bearer ${userInfo.token}` },
+          headers: { baseURL: 'http://localhost:9123', authorization: `Bearer ${userInfo.token}` },
         });
         if (data.paymentMethod === 'Chèque' && !data.isPaid) {
           setShowModalCheque(true);
@@ -171,7 +171,7 @@ export default function OrderPage() {
     } else {
       const loadPaypalScript = async () => {
         const { data: clientId } = await axios.get('/api/keys/paypal', {
-          headers: { authorization: `Bearer ${userInfo.token}` },
+          baseURL: 'http://localhost:9123', headers: { authorization: `Bearer ${userInfo.token}` },
         });
         paypalDispatch({
           type: 'resetOptions',
@@ -199,7 +199,7 @@ export default function OrderPage() {
         `/api/orders/${order._id}/deliver`,
         {},
         {
-          headers: { authorization: `Bearer ${userInfo.token}` },
+          baseURL: 'http://localhost:9123', headers: { authorization: `Bearer ${userInfo.token}` },
         }
       );
       dispatch({ type: 'DELIVER_SUCCESS', payload: data });

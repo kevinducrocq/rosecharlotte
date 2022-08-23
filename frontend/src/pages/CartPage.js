@@ -33,7 +33,7 @@ export default function CartPage() {
   const itemsQuantity = cartItems.reduce((a, c) => a + c.quantity, 0);
 
   const updateCartHandler = async (item, quantity) => {
-    const { data } = await axios.get(`/api/products/${item._id}`);
+    const { data } = await axios.get(`/api/products/${item._id}`, {baseURL: 'http://localhost:9123', });
     if (item.variant) {
       const variantItem = data.variants.filter((v) => {
         return v._id === item.variant._id;

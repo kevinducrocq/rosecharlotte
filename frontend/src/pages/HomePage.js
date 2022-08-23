@@ -62,7 +62,7 @@ function HomePage() {
     const fetchData = async () => {
       dispatch({ type: 'FETCH_REQUEST' });
       try {
-        const result = await axios.get('/api/products/last-products');
+        const result = await axios.get('/api/products/last-products', {baseURL: 'http://localhost:9123', });
         dispatch({ type: 'FETCH_SUCCESS', payload: result.data });
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: err.message });

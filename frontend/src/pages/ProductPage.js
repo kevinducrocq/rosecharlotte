@@ -78,7 +78,7 @@ function ProductScreen() {
     const fetchData = async () => {
       dispatch({ type: 'FETCH_REQUEST' });
       try {
-        const result = await axios.get(`/api/products/slug/${slug}`);
+        const result = await axios.get(`/api/products/slug/${slug}`, {baseURL: 'http://localhost:9123', });
         dispatch({ type: 'FETCH_SUCCESS', payload: result.data });
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
@@ -97,7 +97,7 @@ function ProductScreen() {
         (x.variant === null || x.variant._id === variantId)
     );
     const quantity = existItem ? existItem.quantity + 1 : 1;
-    const { data } = await axios.get(`/api/products/${product._id}`);
+    const { data } = await axios.get(`/api/products/${product._id}`, {baseURL: 'http://localhost:9123', });
 
     if (variantId) {
       const variantItem = data.variants.filter((v) => {
@@ -150,7 +150,7 @@ function ProductScreen() {
         `/api/products/${product._id}/reviews`,
         { rating, comment, name: userInfo.name },
         {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          baseURL: 'http://localhost:9123', headers: { Authorization: `Bearer ${userInfo.token}` },
         }
       );
 
