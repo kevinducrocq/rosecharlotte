@@ -13,7 +13,7 @@ import Product from '../components/Product';
 import LinkContainer from 'react-router-bootstrap/LinkContainer';
 import SearchBox from '../components/SearchBox';
 
-import { Container } from 'react-bootstrap';
+import { Container, ListGroup, ListGroupItem } from 'react-bootstrap';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -112,13 +112,13 @@ export default function SearchScreen() {
       <Helmet>
         <title>Boutique</title>
       </Helmet>
-
-      <Row className="my-5">
-        <Col md={10}>
+      <h1 className="text-center">Boutique</h1>
+      <Row className="my-5 align-items-center">
+        <Col md={10} className="mt-2">
           <SearchBox />
         </Col>
-        <Col md={1}>
-          Filtrer par{' '}
+        <Col md={2} className="mt-2">
+          Filtrer{' '}
           <select
             value={order}
             onChange={(e) => {
@@ -134,28 +134,23 @@ export default function SearchScreen() {
       </Row>
       <Row>
         <Col md={2}>
-          <h3>Catégories</h3>
-          <div>
-            <ul className="list-unstyled">
-              <li>
+          <h4>Catégories</h4>
+          <div className="boutique-categories-menu">
+            <ListGroup variant="flush">
+              <ListGroupItem>
                 <Link
                   className={'all' === category ? 'text-bold' : ''}
                   to={getFilterUrl({ category: 'all' })}
                 >
                   Tout
                 </Link>
-              </li>
+              </ListGroupItem>
               {categories.map((c) => (
-                <li key={c}>
-                  <Link
-                    className={c === category ? 'text-bold' : ''}
-                    to={getFilterUrl({ category: c })}
-                  >
-                    {c}
-                  </Link>
-                </li>
+                <ListGroup.Item>
+                  <Link to={getFilterUrl({ category: c })}>{c}</Link>
+                </ListGroup.Item>
               ))}
-            </ul>
+            </ListGroup>
           </div>
         </Col>
         <Col md={8}>
@@ -168,12 +163,11 @@ export default function SearchScreen() {
               <Row className="justify-content-between mb-3">
                 <Col md={6}>
                   <div>
-                    <h4>
-                      {countProducts === 0 ? 'Pas de' : countProducts} Produit
-                      {countProducts <= 1 ? '' : 's'} <br />
-                    </h4>
                     {query !== 'all' && ' : ' + query}
-                    <h2> {category !== 'all' && ' ' + category}</h2>
+                    <h2>
+                      {category === 'all' ? 'Tout' : ''}
+                      {category !== 'all' && '' + category}
+                    </h2>
                     {price !== 'all' && ' : Prix ' + price}
                     {query !== 'all' ||
                     category !== 'all' ||
@@ -192,9 +186,15 @@ export default function SearchScreen() {
 
               <Row>
                 {products.map((product) => (
-                  <Col sm={6} lg={4} className="mb-3" key={product._id}>
-                    <Product product={product}></Product>
-                  </Col>
+                  <>
+                    <Row>
+                      <h4>{product.subCategory}</h4>
+                      <hr />
+                      <Col sm={6} lg={4} className="mb-3" key={product._id}>
+                        <Product product={product}></Product>
+                      </Col>
+                    </Row>
+                  </>
                 ))}
               </Row>
 

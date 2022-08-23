@@ -1,6 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=DynaPuff&display=swap');
+
 body {
   margin: 0;
   background-color: #fff2f2;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'DynaPuff', cursive;
 }
 
 .site-container {
@@ -77,9 +88,14 @@ main {
   text-transform: uppercase;
 }
 
+.navbar img {
+  cursor: pointer;
+}
+
 .menu-principal a:hover {
   color: black;
-  border-bottom: 1px solid #000;
+  transition: all ease-out;
+  transition-duration: 1s;
 }
 
 .navbar2 {
@@ -88,7 +104,13 @@ main {
 
 .navbar2 .nav-link {
   text-decoration: none;
-  color: #f1f1f1;
+  color: #fff2f2;
+}
+.navbar2 .nav-link:hover {
+  text-decoration: none;
+  color: #000;
+  transition: all ease-out;
+  transition-duration: 0.5s;
 }
 
 .cart-link {
@@ -99,6 +121,12 @@ main {
   text-align: center;
   font-weight: 400;
   color: #f47c7c;
+}
+.cart-link:hover {
+  background-color: #ef9f9f;
+  color: #fff2f2;
+  transition: all ease-out;
+  transition-duration: 0.5s;
 }
 
 /*PRIX*/
@@ -142,7 +170,7 @@ main {
 /*FORMULAIRES*/
 
 .small-container {
-  max-width: 600px;
+  max-width: 800px;
 }
 
 /*CHECKOUT STEPS*/
@@ -159,6 +187,7 @@ main {
 
 .card {
   background-color: #fff2f2;
+  border-color: lightgray;
 }
 .card a {
   text-decoration: none;
@@ -203,10 +232,19 @@ main {
   .site-cart {
     display: none;
   }
+  .categories-menu {
+    display: none;
+  }
 }
 
 @media screen and (min-width: 991px) {
   .mobile-cart {
     display: none;
+  }
+  .categories-menu-mobile {
+    display: none;
+  }
+  .categories-menu {
+    display: flex;
   }
 }

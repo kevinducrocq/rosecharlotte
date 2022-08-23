@@ -71,6 +71,7 @@ export default function OrderListPage() {
           language: {
             url: 'https://cdn.datatables.net/plug-ins/1.12.1/i18n/fr-FR.json',
           },
+          order: [[2, 'desc']],
         });
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {
@@ -107,7 +108,7 @@ export default function OrderListPage() {
   return (
     <Container className="my-5">
       <Helmet>
-        <title>Orders</title>
+        <title>Commandes</title>
       </Helmet>
       <Row>
         <Col md={2}>

@@ -119,7 +119,7 @@ const ProfilePage = () => {
               <h2 className="h3 mb-4">Changer votre mot de passe </h2>
               <Form.Label>Nouveau mot de passe</Form.Label>
               <Form.Control
-                autoComplete="off"
+                autoComplete="new-password"
                 type="password"
                 onChange={(e) => setPassword(e.target.value)}
               ></Form.Control>
@@ -132,7 +132,11 @@ const ProfilePage = () => {
               ></Form.Control>
             </Form.Group>
             <div className="mb-3">
-              <Button type="submit">
+              <Button
+                className="bg1 w-100"
+                variant="outline-light"
+                type="submit"
+              >
                 {loadingUpdate ? <LoadingBox /> : 'Mettre à jour'}
               </Button>
             </div>

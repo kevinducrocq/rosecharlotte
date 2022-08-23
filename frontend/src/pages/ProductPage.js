@@ -293,7 +293,7 @@ function ProductScreen() {
               <div className="mb-3 p-4">
                 <h2 ref={reviewsRef}>Avis des clients</h2>
                 {product.reviews.length === 0 && (
-                  <MessageBox>Il n'y a pas encore d'avis</MessageBox>
+                  <MessageBox bg2>Il n'y a pas encore d'avis</MessageBox>
                 )}
               </div>
               {product.reviews.map((review) =>

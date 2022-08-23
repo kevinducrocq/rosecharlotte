@@ -49,7 +49,7 @@ export default function CartPage() {
       <Helmet>
         <title>Panier</title>
       </Helmet>
-      <h1 className="my-5">Panier</h1>
+      <h1 className="my-5 text-center">Panier</h1>
       <Row>
         <Col md={8}>
           {cartItems.length === 0 ? (
@@ -110,7 +110,7 @@ export default function CartPage() {
           )}
         </Col>
         <Col md={4}>
-          <Card>
+          <Card className="shadow">
             <Card.Body className="bg4">
               <ListGroup variant="flush">
                 <ListGroup.Item className="bg4">

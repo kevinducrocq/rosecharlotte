@@ -20,6 +20,7 @@ import 'jquery/dist/jquery.min.js';
 import 'datatables.net-dt/js/dataTables.dataTables';
 import 'datatables.net-dt/css/jquery.dataTables.min.css';
 import $ from 'jquery';
+import { Helmet } from 'react-helmet-async';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -126,6 +127,9 @@ export default function ProductListScreen() {
 
   return (
     <Container className="my-5">
+      <Helmet>
+        <title>Produits</title>
+      </Helmet>
       <Row>
         <Col md={2}>
           <AdminMenu link3 />

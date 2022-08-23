@@ -13,7 +13,8 @@ orderRouter.get(
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
-    const orders = await Order.find().populate('user', 'name');
+    const orders = await Order.aggregate([{ $sort: { createdAt: -1 } }]);
+    await User.populate(orders, 'user');
     res.send(orders);
   })
 );
@@ -76,7 +77,13 @@ orderRouter.get(
         },
       },
     ]);
-    res.send({ users, orders, dailyOrders, productCategories });
+
+    res.send({
+      users,
+      orders,
+      dailyOrders,
+      productCategories,
+    });
   })
 );
 

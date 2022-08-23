@@ -43,11 +43,13 @@ function Product(props) {
         />
       </Link>
       <Card.Body>
-        <div className="d-flex justify-content-between">
+        <div className="d-flex justify-content-between align-items-center">
           <Link to={`/product/${product.slug}`}>
             <Card.Title className="text-nowrap">{product.name}</Card.Title>
           </Link>
-          <Card.Text className="text-nowrap">{product.price} &euro;</Card.Text>
+          <Card.Text className="text-nowrap fw-bold bg3 p-2 rounded-5">
+            {product.price} &euro;
+          </Card.Text>
         </div>
         <div>
           <Rating rating={product.rating} numReviews={product.numReviews} />
@@ -62,15 +64,17 @@ function Product(props) {
         </div>
 
         {product.countInStock > 0 ? (
-          <Button
-            onClick={() => addToCartHandler(product)}
-            className="w-100"
-            bsClass="custom-btn"
-          >
-            <FontAwesomeIcon icon={faCartPlus} /> Ajouter au panier
-          </Button>
+          <div className="d-flex">
+            <Button
+              onClick={() => addToCartHandler(product)}
+              className="bg1 w-100"
+              variant="outline-light"
+            >
+              <FontAwesomeIcon icon={faCartPlus} /> Ajouter
+            </Button>
+          </div>
         ) : (
-          <Button variant="secondary" disabled className="w-100">
+          <Button className="bg3 w-100" disabled>
             <FontAwesomeIcon icon={faCartCircleXmark} />
           </Button>
         )}

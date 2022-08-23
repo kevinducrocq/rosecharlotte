@@ -278,7 +278,9 @@ productRouter.get(
 productRouter.get(
   '/categories',
   expressAsyncHandler(async (req, res) => {
-    const categories = await Product.find().distinct('category');
+    const categories = await Product.find()
+      .distinct('category')
+      .populate('subCategory');
     res.send(categories);
   })
 );

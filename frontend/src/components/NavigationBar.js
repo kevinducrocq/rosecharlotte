@@ -48,7 +48,7 @@ function NavigationBar() {
 
   return (
     <>
-      <div className="fixed-top">
+      <div className="fixed-top shadow">
         <Navbar variant="light" expand="lg">
           <Container>
             <LinkContainer to="/">
@@ -60,7 +60,7 @@ function NavigationBar() {
                 <div className="cart-link">
                   <FontAwesomeIcon icon={faShoppingCart} /> Panier{' '}
                   {cart.cartItems.length > 0 && (
-                    <Badge pill bg="danger">
+                    <Badge pill bg="primary" className="bg2">
                       {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
                     </Badge>
                   )}
@@ -96,7 +96,7 @@ function NavigationBar() {
                   <div className="cart-link">
                     <FontAwesomeIcon icon={faShoppingCart} /> Panier{' '}
                     {cart.cartItems.length > 0 && (
-                      <Badge pill bg="danger">
+                      <Badge pill bg="primary">
                         {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
                       </Badge>
                     )}
@@ -109,7 +109,19 @@ function NavigationBar() {
 
         <Nav className="navbar2">
           <Container className="d-flex">
-            <NavDropdown title="Catégories">
+            <div className="categories-menu">
+              {categories.map((category) => (
+                <LinkContainer
+                  to={`/boutique/search?category=${category}`}
+                  key={category}
+                >
+                  <Link className="nav-link" to={category}>
+                    {category}
+                  </Link>
+                </LinkContainer>
+              ))}
+            </div>
+            <NavDropdown title="Catégories" className="categories-menu-mobile">
               {categories.map((category) => (
                 <LinkContainer
                   to={`/boutique/search?category=${category}`}
