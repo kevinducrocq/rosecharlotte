@@ -31,7 +31,6 @@ import ContactPage from './pages/ContactPage';
 import CgvPage from './pages/CgvPage';
 import MentionsLegalesPage from './pages/MentionsLegalesPage';
 import ServiceClientPage from './pages/ServiceClientPage';
-import CategoryPage from './pages/CategoryPage';
 
 function App() {
   return (
@@ -65,10 +64,6 @@ function App() {
               <Route path="/serviceclient" element={<ServiceClientPage />} />
               <Route path="/boutique/search" element={<SearchPage />} />
               <Route path="/product/:slug" element={<ProductPage />} />
-              <Route
-                path="/category/:categorySlug"
-                element={<CategoryPage />}
-              />
               <Route path="/cart" element={<CartPage />} />
               <Route path="/signin" element={<SigninPage />} />
               <Route path="/signup" element={<SignupPage />} />

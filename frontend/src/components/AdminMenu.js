@@ -19,7 +19,7 @@ export default function AdminMenu(props) {
         className={props.link1 ? 'activee py-3' : 'py-3'}
       >
         <Link to="/admin/dashboard">
-          <FontAwesomeIcon icon={faGauge} size="2x" />
+          <FontAwesomeIcon icon={faGauge} />
           <span className="ms-2">Tableau de bord</span>
         </Link>
       </ListGroup.Item>
@@ -29,7 +29,7 @@ export default function AdminMenu(props) {
         className={props.link2 ? 'activee py-3' : 'py-3'}
       >
         <Link to="/admin/orders">
-          <FontAwesomeIcon icon={faBagShopping} size="2x" />
+          <FontAwesomeIcon icon={faBagShopping} />
           <span className="ms-2">Commandes</span>
         </Link>
       </ListGroup.Item>
@@ -38,7 +38,7 @@ export default function AdminMenu(props) {
         className={props.link3 ? 'activee  py-3' : 'py-3'}
       >
         <Link to="/admin/products">
-          <FontAwesomeIcon icon={faShirt} size="2x" />
+          <FontAwesomeIcon icon={faShirt} />
           <span className="ms-2">Produits</span>
         </Link>
       </ListGroup.Item>
@@ -47,7 +47,7 @@ export default function AdminMenu(props) {
         className={props.link4 ? 'activee  py-3' : 'py-3'}
       >
         <Link to="/admin/product/add">
-          <FontAwesomeIcon icon={faPlus} size="2x" />
+          <FontAwesomeIcon icon={faPlus} />
           <span className="ms-2">Ajouter un produit</span>
         </Link>
       </ListGroup.Item>
@@ -56,7 +56,7 @@ export default function AdminMenu(props) {
         className={props.link5 ? 'activee  py-3' : 'py-3'}
       >
         <Link to="/admin/users">
-          <FontAwesomeIcon icon={faUsers} size="2x" />
+          <FontAwesomeIcon icon={faUsers} />
           <span className="ms-2">Utilisateurs</span>
         </Link>
       </ListGroup.Item>
@@ -65,7 +65,7 @@ export default function AdminMenu(props) {
         className={props.link6 ? 'activee  py-3' : 'py-3'}
       >
         <Link to="/admin/reviews">
-          <FontAwesomeIcon icon={faComments} size="2x" />
+          <FontAwesomeIcon icon={faComments} />
           <span className="ms-2">Commentaires</span>
         </Link>
       </ListGroup.Item>

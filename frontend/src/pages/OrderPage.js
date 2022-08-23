@@ -191,7 +191,10 @@ export default function OrderPage() {
       <Helmet>
         <title>Commande {orderId}</title>
       </Helmet>
-      <h1 className="my-5">Commande {orderId}</h1>
+      <h1 className="my-5">
+        Commande <br />
+        <small>N° {orderId.substring(0, 5)}</small>
+      </h1>
       <Row>
         <Col md={8}>
           <Card className="mb-3">

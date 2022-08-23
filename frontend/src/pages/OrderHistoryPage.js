@@ -59,7 +59,7 @@ const OrderHistoryPage = () => {
       ) : error ? (
         <MessageBox></MessageBox>
       ) : (
-        <Table className="table table-striped">
+        <Table responsive className="table table-striped">
           <thead>
             <tr className="to-upper">
               <th>N°</th>

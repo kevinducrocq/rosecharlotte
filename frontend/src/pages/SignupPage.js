@@ -114,7 +114,9 @@ export default function SignupPage() {
           </InputGroup>
         </Form.Group>
         <div className="mb-3">
-          <Button type="submit">Inscritpion</Button>
+          <Button type="submit" className="w-100 bg1" variant="outline-light">
+            Inscription
+          </Button>
         </div>
         <div className="mb-3">
           Déjà client ? <Link to={`/signin`}>Connectez-vous!</Link>

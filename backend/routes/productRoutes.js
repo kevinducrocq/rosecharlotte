@@ -193,13 +193,10 @@ productRouter.get(
   '/boutique/search',
   expressAsyncHandler(async (req, res) => {
     const { query } = req;
-    const pageSize = query.pageSize || PAGE_SIZE;
-    const page = query.page || 1;
     const category = query.category || '';
     const subCategory = query.subCategory || '';
     const otherCategory = query.otherCategory || '';
     const price = query.price || '';
-    const rating = query.rating || '';
     const order = query.order || '';
     const searchQuery = query.query || '';
 
@@ -212,19 +209,15 @@ productRouter.get(
             },
           }
         : {};
+
     const categoryFilter = category && category !== 'all' ? { category } : {};
+
     const subCategoryFilter =
       subCategory && subCategory !== 'all' ? { subCategory } : {};
+
     const otherCategoryFilter =
       otherCategory && otherCategory !== 'all' ? { otherCategory } : {};
-    const ratingFilter =
-      rating && rating !== 'all'
-        ? {
-            rating: {
-              $gte: Number(rating),
-            },
-          }
-        : {};
+
     const priceFilter =
       price && price !== 'all'
         ? {
@@ -243,8 +236,6 @@ productRouter.get(
         ? { price: 1 }
         : order === 'highest'
         ? { price: -1 }
-        : order === 'toprated'
-        ? { rating: -1 }
         : order === 'newest'
         ? { createdAt: -1 }
         : { _id: -1 };
@@ -255,25 +246,10 @@ productRouter.get(
       ...subCategoryFilter,
       ...otherCategoryFilter,
       ...priceFilter,
-      ...ratingFilter,
-    })
-      .sort(sortOrder)
-      .skip(pageSize * (page - 1))
-      .limit(pageSize);
+    }).sort(sortOrder);
 
-    const countProducts = await Product.countDocuments({
-      ...queryFilter,
-      ...categoryFilter,
-      ...subCategoryFilter,
-      ...otherCategoryFilter,
-      ...priceFilter,
-      ...ratingFilter,
-    });
     res.send({
       products,
-      countProducts,
-      page,
-      pages: Math.ceil(countProducts / pageSize),
     });
   })
 );
@@ -283,19 +259,14 @@ productRouter.get(
   '/categories',
   expressAsyncHandler(async (req, res) => {
     const categories = await Product.find().distinct('category');
-    res.send(categories);
-  })
-);
-
-// RECUPERER LES PRODUITS EN FONCTION DE LEUR CATEGORIE
-productRouter.get(
-  '/category/:categorySlug',
-  expressAsyncHandler(async (req, res) => {
-    const categories = await Product.find({
-      category: req.params.categorySlug,
-    });
-    console.log(categories);
-    res.send(categories);
+    const result = {};
+    for (const category of categories) {
+      const subCategories = await Product.find({ category: category }).distinct(
+        'subCategory'
+      );
+      result[category] = subCategories;
+    }
+    res.send(result);
   })
 );
 

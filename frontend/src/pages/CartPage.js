@@ -57,11 +57,11 @@ export default function CartPage() {
               Votre panier est vide, <Link to="/">Go Shopping</Link>
             </MessageBox>
           ) : (
-            <ListGroup>
+            <ListGroup className="mb-3">
               {cartItems.map((item) => (
                 <ListGroup.Item key={item._id}>
                   <Row className="align-items-center">
-                    <Col md={4}>
+                    <Col>
                       <img
                         src={item.image}
                         alt={item.name}
@@ -70,7 +70,7 @@ export default function CartPage() {
                       <Link to={`/product/${item.slug}`}>{item.name}</Link>
                     </Col>
 
-                    <Col md={3}>
+                    <Col>
                       <Button
                         variant="light"
                         onClick={() =>
@@ -79,8 +79,8 @@ export default function CartPage() {
                         disabled={item.quantity === 1}
                       >
                         <FontAwesomeIcon icon={faMinusCircle} />{' '}
-                      </Button>{' '}
-                      <span>{item.quantity}</span>
+                      </Button>
+                      <span className="mx-3">{item.quantity}</span>
                       <Button
                         variant="light"
                         onClick={() =>
@@ -92,9 +92,9 @@ export default function CartPage() {
                       </Button>
                     </Col>
 
-                    <Col md={3}>{item.price}&euro;</Col>
+                    <Col>{item.price}&euro;</Col>
 
-                    <Col md={2} sm={12}>
+                    <Col className="d-flex flex-end">
                       <Button
                         className="btn btn-sm"
                         onClick={() => removeItemHandler(item)}
@@ -132,7 +132,8 @@ export default function CartPage() {
                   <div className="d-grid">
                     <Button
                       type="button"
-                      variant="primary"
+                      variant="outline-light"
+                      className="bg1"
                       disabled={cartItems.length === 0}
                       onClick={checkoutHandler}
                     >

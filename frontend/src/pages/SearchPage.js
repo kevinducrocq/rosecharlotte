@@ -10,10 +10,15 @@ import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import Button from 'react-bootstrap/Button';
 import Product from '../components/Product';
-import LinkContainer from 'react-router-bootstrap/LinkContainer';
 import SearchBox from '../components/SearchBox';
 
-import { Badge, Container, ListGroup, ListGroupItem } from 'react-bootstrap';
+import {
+  Accordion,
+  Badge,
+  Container,
+  ListGroup,
+  ListGroupItem,
+} from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimesCircle } from '@fortawesome/pro-solid-svg-icons';
 
@@ -47,21 +52,18 @@ export default function SearchScreen() {
   const otherCategory = sp.get('otherCategory') || 'all';
   const query = sp.get('query') || 'all';
   const price = sp.get('price') || 'all';
-  const rating = sp.get('rating') || 'all';
   const order = sp.get('order') || 'newest';
-  const page = sp.get('page') || 1;
 
-  const [{ loading, error, products, pages, countProducts }, dispatch] =
-    useReducer(reducer, {
-      loading: true,
-      error: '',
-    });
+  const [{ loading, error, products }, dispatch] = useReducer(reducer, {
+    loading: true,
+    error: '',
+  });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const { data } = await axios.get(
-          `/api/products/boutique/search?page=${page}&query=${query}&category=${category}&subCategory=${subCategory}&otherCategory=${otherCategory}&price=${price}&rating=${rating}&order=${order}`
+          `/api/products/boutique/search?&query=${query}&category=${category}&subCategory=${subCategory}&otherCategory=${otherCategory}&price=${price}&order=${order}`
         );
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {
@@ -72,17 +74,7 @@ export default function SearchScreen() {
       }
     };
     fetchData();
-  }, [
-    category,
-    subCategory,
-    otherCategory,
-    error,
-    order,
-    page,
-    price,
-    query,
-    rating,
-  ]);
+  }, [category, subCategory, otherCategory, error, order, price, query]);
 
   const [categories, setCategories] = useState([]);
 
@@ -99,16 +91,44 @@ export default function SearchScreen() {
   }, [dispatch]);
 
   const getFilterUrl = (filter) => {
-    const filterPage = filter.page || page;
     const filterCategory = filter.category || category;
     const filterSubCategory = filter.subCategory || subCategory;
     const filterOtherCategory = filter.otherCategory || otherCategory;
     const filterQuery = filter.query || query;
-    const filterRating = filter.rating || rating;
     const filterPrice = filter.price || price;
     const sortOrder = filter.order || order;
-    return `/boutique/search?category=${filterCategory}&subCategory=${filterSubCategory}&otherCategory=${filterOtherCategory}&query=${filterQuery}&price=${filterPrice}&rating=${filterRating}&order=${sortOrder}&page=${filterPage}`;
+    return `/boutique/search?category=${filterCategory}&subCategory=${filterSubCategory}&otherCategory=${filterOtherCategory}&query=${filterQuery}&price=${filterPrice}&order=${sortOrder}`;
   };
+
+  const renderedCategories = [];
+  Object.keys(categories).forEach(function (category) {
+    renderedCategories.push(
+      <Accordion.Item key={category} eventKey={category}>
+        <Accordion.Header>{category}</Accordion.Header>
+        <Accordion.Body>
+          <div className="d-flex flex-column">
+            <Link
+              className="nav-link"
+              to={`/boutique/search?category=${category}`}
+            >
+              Tous les produits {category}
+            </Link>
+            {categories[category].map((key) => {
+              return (
+                <Link
+                  to={`/boutique/search?subCategory=${key}`}
+                  className="nav-link"
+                >
+                  {key}
+                </Link>
+              );
+            })}
+          </div>
+        </Accordion.Body>
+      </Accordion.Item>
+    );
+  });
+
   return (
     <Container className="my-5">
       <Helmet>
@@ -130,32 +150,32 @@ export default function SearchScreen() {
             <option value="newest">Les nouveaux produits</option>
             <option value="lowest">Prix : du - au +</option>
             <option value="highest">Prix : du + au -</option>
-            <option value="toprated">Note des clients</option>
           </select>
         </Col>
       </Row>
       <Row>
-        <Col md={2}>
-          <h4>Catégories</h4>
+        <Col md={3}>
+          <div className="d-flex my-3">
+            <h4>Catégories</h4>
+            <Link
+              className="badge align-items-center text-muted bg2 ms-5"
+              to={'/boutique/search?category=all'}
+            >
+              Voir tout
+            </Link>
+          </div>
+
           <div className="boutique-categories-menu">
-            <ListGroup variant="flush">
-              <ListGroupItem>
-                <Link
-                  className={'all' === category ? 'text-bold' : ''}
-                  to={getFilterUrl({ category: 'all' })}
-                >
-                  Tout
-                </Link>
-              </ListGroupItem>
-              {categories.map((c) => (
-                <ListGroup.Item>
-                  <Link to={getFilterUrl({ category: c })}>{c}</Link>
-                </ListGroup.Item>
-              ))}
-            </ListGroup>
+            {loading ? (
+              <LoadingBox></LoadingBox>
+            ) : error ? (
+              <MessageBox variant="danger">{error}</MessageBox>
+            ) : (
+              <Accordion>{renderedCategories}</Accordion>
+            )}
           </div>
         </Col>
-        <Col md={8}>
+        <Col md={9}>
           {loading ? (
             <LoadingBox></LoadingBox>
           ) : error ? (
@@ -166,8 +186,8 @@ export default function SearchScreen() {
                 <Col md={6}>
                   <div>
                     <h2>
-                      {category === 'all' ? 'Tout' : ''}
-                      {category !== 'all' && '' + category}
+                      {category === 'all' ? '' : ''}
+                      {category !== 'all' && '' + ''}
                     </h2>
 
                     {price !== 'all' && ' : Prix ' + price}
@@ -175,7 +195,6 @@ export default function SearchScreen() {
                     category !== 'all' ||
                     subCategory !== 'all' ||
                     otherCategory !== 'all' ||
-                    rating !== 'all' ||
                     price !== 'all' ? (
                       <Button
                         className="btn btn-sm bg-secondary"
@@ -184,7 +203,7 @@ export default function SearchScreen() {
                         <Badge bg="secondary">
                           {query !== 'all' && ' ' + '"' + query + '"'}
                         </Badge>
-                        <FontAwesomeIcon icon={faTimesCircle} />
+                        <FontAwesomeIcon icon={faTimesCircle} /> EFFACER
                       </Button>
                     ) : null}
                   </div>
@@ -195,35 +214,14 @@ export default function SearchScreen() {
               )}
 
               <Row>
-                {products.map((product) => (
-                  <>
-                    <Row>
-                      <h4>{product.subCategory}</h4>
-                      <hr />
-                      <Col sm={6} lg={4} className="mb-3" key={product._id}>
-                        <Product product={product}></Product>
-                      </Col>
-                    </Row>
-                  </>
-                ))}
+                <Row>
+                  {products.map((product) => (
+                    <Col key={product._id} sm={6} lg={4} className="mb-3">
+                      <Product product={product}></Product>
+                    </Col>
+                  ))}
+                </Row>
               </Row>
-
-              <div>
-                {[...Array(pages).keys()].map((x) => (
-                  <LinkContainer
-                    key={x + 1}
-                    className="mx-1"
-                    to={getFilterUrl({ page: x + 1 })}
-                  >
-                    <Button
-                      className={Number(page) === x + 1 ? 'text-bold' : ''}
-                      variant="light"
-                    >
-                      {x + 1}
-                    </Button>
-                  </LinkContainer>
-                ))}
-              </div>
             </>
           )}
         </Col>

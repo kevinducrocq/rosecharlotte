@@ -258,7 +258,7 @@ export default function CgvPage() {
           et la Grande Bretagne, des frais de douane supplémentaires peuvent
           être appliqués et sont à la charge du client.
         </p>
-        <Table>
+        <Table responsive>
           <thead>
             <tr>
               <th colSpan={2}>LIVRAISON</th>

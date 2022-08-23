@@ -73,7 +73,7 @@ export default function PaymentMethodPage() {
             </div>
           </div>
           <div className="mb-3">
-            <Button type="submit" className="w-100 bg1">
+            <Button type="submit" className="w-100 bg1" variant="outline-light">
               Continuer
             </Button>
           </div>

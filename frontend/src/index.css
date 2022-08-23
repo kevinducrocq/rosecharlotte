@@ -26,7 +26,9 @@ main {
 /*IMAGES*/
 
 .img-thumbnail {
-  max-width: 80px;
+  width: 80px;
+  min-height: 80px;
+  max-height: 80px;
   height: auto;
   object-fit: cover;
   border: none;
@@ -112,12 +114,6 @@ main {
   text-decoration: none;
   color: #fff2f2;
 }
-.navbar2 .nav-link:hover {
-  text-decoration: none;
-  color: #000;
-  transition: all ease-out;
-  transition-duration: 0.5s;
-}
 
 .cart-link {
   background-color: #fff2f2;
@@ -133,6 +129,10 @@ main {
   color: #fff2f2;
   transition: all ease-out;
   transition-duration: 0.5s;
+}
+
+.offcanvas {
+  max-width: 70%;
 }
 
 /*PRIX*/

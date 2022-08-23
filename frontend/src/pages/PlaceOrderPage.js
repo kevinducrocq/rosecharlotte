@@ -159,8 +159,7 @@ export default function PlaceOrderPage() {
                     <Col>
                       {cart.shippingPrice === 0
                         ? 'Offerte'
-                        : cart.shippingPrice.toFixed(2)}
-                      &euro;
+                        : cart.shippingPrice.toFixed(2) + ' €'}
                     </Col>
                   </Row>
                 </ListGroup.Item>
@@ -174,6 +173,8 @@ export default function PlaceOrderPage() {
                   <div className="d-grid">
                     <Button
                       type="button"
+                      className="bg1"
+                      variant="outline-light"
                       onClick={placeOrderHandler}
                       disabled={cart.cartItems.length === 0}
                     >

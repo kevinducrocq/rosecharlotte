@@ -153,11 +153,12 @@ function ProductScreen() {
           </div>
         </Col>
         <Col md={4} className="mt-2">
-          <div className="product-page-main-image-container">
+          <div>
             <Image
               src={selectedImage || product.image}
               alt={product.name}
               fluid
+              className="product-page-main-image"
             />
           </div>
         </Col>
