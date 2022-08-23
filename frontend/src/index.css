@@ -1,10 +1,5 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   background-color: #fff2f2;
 }
 
@@ -89,7 +84,6 @@ main {
 
 .navbar2 {
   background-color: #ef9f9f;
-  overflow-x: auto;
 }
 
 .navbar2 .nav-link {
@@ -209,16 +203,10 @@ main {
   .site-cart {
     display: none;
   }
-  .categories-menu {
-    display: none;
-  }
 }
 
 @media screen and (min-width: 991px) {
   .mobile-cart {
-    display: none;
-  }
-  .categories-menu {
     display: none;
   }
 }

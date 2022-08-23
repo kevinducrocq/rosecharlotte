@@ -109,18 +109,16 @@ function NavigationBar() {
 
         <Nav className="navbar2">
           <Container className="d-flex">
-            <div className="categories-menu d-flex">
+            <NavDropdown title="Catégories">
               {categories.map((category) => (
                 <LinkContainer
                   to={`/boutique/search?category=${category}`}
                   key={category}
                 >
-                  <Link className="nav-link" to={category}>
-                    {category}
-                  </Link>
+                  <NavDropdown.Item>{category}</NavDropdown.Item>
                 </LinkContainer>
               ))}
-            </div>
+            </NavDropdown>
 
             <div className="d-flex ms-auto">
               {userInfo ? (
