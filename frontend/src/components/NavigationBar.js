@@ -1,6 +1,7 @@
 import {
   faArrowRightToBracket,
   faPen,
+  faReel,
   faShoppingCart,
 } from '@fortawesome/pro-solid-svg-icons';
 import { faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons';
@@ -61,7 +62,7 @@ function NavigationBar() {
         <Accordion.Body>
           <div className="d-flex flex-column">
             <Link
-              className="nav-link"
+              className="nav-link mb-2"
               to={`/boutique/search?category=${category}`}
             >
               Tous les produits {category}
@@ -70,7 +71,7 @@ function NavigationBar() {
               return (
                 <Link
                   to={`/boutique/search?subCategory=${key}`}
-                  className="nav-link"
+                  className="nav-link my-2"
                 >
                   {key}
                 </Link>
@@ -119,9 +120,9 @@ function NavigationBar() {
                 <div className="cart-link">
                   <FontAwesomeIcon icon={faShoppingCart} /> Panier{' '}
                   {cart.cartItems.length > 0 && (
-                    <Badge pill bg="primary" className="bg2">
+                    <div className="bg1 text-white rounded-5 badge">
                       {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
-                    </Badge>
+                    </div>
                   )}
                 </div>
               </Link>
@@ -164,9 +165,9 @@ function NavigationBar() {
                   <div className="cart-link">
                     <FontAwesomeIcon icon={faShoppingCart} /> Panier{' '}
                     {cart.cartItems.length > 0 && (
-                      <Badge pill bg="primary">
+                      <div className="bg3 text-dark rounded-5 badge">
                         {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
-                      </Badge>
+                      </div>
                     )}
                   </div>
                 </Link>
@@ -177,34 +178,35 @@ function NavigationBar() {
 
         <Nav className="navbar2">
           <Container className="d-flex">
-            <div className="d-lg-none">
+            <div className="d-lg-none text-nowrap">
               <Button
-                variant="outline-light"
-                className="bg2 border-0"
+                variant="outline-none"
+                className="nav-link border-0"
                 onClick={handleShow}
               >
-                Catégories
+                <FontAwesomeIcon icon={faReel} />
+                &nbsp; Catégories
               </Button>
 
               <Offcanvas show={show} onHide={handleClose}>
                 <Offcanvas.Header closeButton>
-                  <Offcanvas.Title>Catégories</Offcanvas.Title>
+                  <Offcanvas.Title className="d-flex align-items-center">
+                    <FontAwesomeIcon icon={faReel} size="2x" />
+                    &nbsp;
+                    <h4>Catégories</h4>
+                  </Offcanvas.Title>
                 </Offcanvas.Header>
                 <Offcanvas.Body>
-                  <Accordion>
-                    <Accordion.Item eventKey="all">
-                      <Accordion.Header>Tout</Accordion.Header>
-                      <Accordion.Body>
-                        <Link
-                          className="nav-link"
-                          to={`/boutique/search?category=all`}
-                        >
-                          Tout
-                        </Link>
-                      </Accordion.Body>
-                    </Accordion.Item>
-                    {renderedCategories2}
-                  </Accordion>
+                  <div className="d-flex my-3 align-items-center justify-content-between">
+                    <Link
+                      className="badge nav-link bg1 p-2"
+                      variant="outline-light"
+                      to={'/boutique/search?category=all'}
+                    >
+                      Voir tout
+                    </Link>
+                  </div>
+                  <Accordion>{renderedCategories2}</Accordion>
                 </Offcanvas.Body>
               </Offcanvas>
             </div>

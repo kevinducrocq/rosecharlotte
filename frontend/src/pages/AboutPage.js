@@ -22,9 +22,9 @@ export default function AboutPage() {
                 mari !) de couture, de tissus… c’est un accident de la vie qui a
                 poussé Marie, maman de trois petits cœurs, créative dans l’âme,
                 à entreprendre cette belle aventure. C’est en 2018 que « Rose
-                Charlotte & compagnie » voit le jour. Le nom de la marque est né
-                en 2012 lorsque cette future maman arpentait les magasins de
-                tissus afin de préparer l’arrivée de ses jumelles. Comme une
+                Charlotte &amp; compagnie » voit le jour. Le nom de la marque
+                est né en 2012 lorsque cette future maman arpentait les magasins
+                de tissus afin de préparer l’arrivée de ses jumelles. Comme une
                 boutade, le nom était lancé, l’idée était là mais il fallait
                 sauter le pas ! Difficile de laisser son cartable et ses copies,
                 pour se lancer dans la grande aventure de l'entrepreneuriat !
@@ -33,7 +33,7 @@ export default function AboutPage() {
                 fois… une bonne étoile veille et l’histoire se finit bien, comme
                 dans les contes de fées. Alors la magie se poursuit et c’est
                 portée par son mari et ses enfants qu’elle franchit le cap et
-                donne réellement vie à « Rose Charlotte & compagnie ». C’est
+                donne réellement vie à « Rose Charlotte &amp; compagnie ». C’est
                 dans cet univers fait de douceur et de poésie qu’elle trouve son
                 équilibre et s’accomplit enfin. Apporter de la joie, des
                 sourires, de la gaieté, offrir à chacun la possibilité de créer

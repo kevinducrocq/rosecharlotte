@@ -172,7 +172,6 @@ productRouter.post(
 );
 
 // AFFICHER LE NOMBRE TOTAL DE PRODUIT SUR LE TABLEAU DE BORD
-const PAGE_SIZE = 9;
 
 productRouter.get(
   '/admin',
@@ -189,10 +188,13 @@ productRouter.get(
 );
 
 // PAGE BOUTIQUE
+const PAGE_SIZE = 6;
 productRouter.get(
   '/boutique/search',
   expressAsyncHandler(async (req, res) => {
     const { query } = req;
+    const pageSize = query.pageSize || PAGE_SIZE;
+    const page = query.page || 1;
     const category = query.category || '';
     const subCategory = query.subCategory || '';
     const otherCategory = query.otherCategory || '';
@@ -246,10 +248,24 @@ productRouter.get(
       ...subCategoryFilter,
       ...otherCategoryFilter,
       ...priceFilter,
-    }).sort(sortOrder);
+    })
+      .sort(sortOrder)
+      .skip(pageSize * (page - 1))
+      .limit(pageSize);
+
+    const countProducts = await Product.countDocuments({
+      ...queryFilter,
+      ...categoryFilter,
+      ...otherCategoryFilter,
+      ...priceFilter,
+      ...subCategoryFilter,
+    });
 
     res.send({
       products,
+      countProducts,
+      page,
+      pages: Math.ceil(countProducts / pageSize),
     });
   })
 );

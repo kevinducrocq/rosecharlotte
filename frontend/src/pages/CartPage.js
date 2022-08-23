@@ -70,7 +70,7 @@ export default function CartPage() {
                       <Link to={`/product/${item.slug}`}>{item.name}</Link>
                     </Col>
 
-                    <Col>
+                    <Col className="text-nowrap">
                       <Button
                         variant="light"
                         onClick={() =>
@@ -94,14 +94,16 @@ export default function CartPage() {
 
                     <Col>{item.price}&euro;</Col>
 
-                    <Col className="d-flex flex-end">
-                      <Button
-                        className="btn btn-sm"
-                        onClick={() => removeItemHandler(item)}
-                        variant="danger"
-                      >
-                        <FontAwesomeIcon icon={faTrash} />
-                      </Button>
+                    <Col className="d-flex">
+                      <div className="ms-auto me-2 my-2">
+                        <Button
+                          className="btn btn-sm"
+                          onClick={() => removeItemHandler(item)}
+                          variant="danger"
+                        >
+                          <FontAwesomeIcon icon={faTrash} />
+                        </Button>
+                      </div>
                     </Col>
                   </Row>
                 </ListGroup.Item>
