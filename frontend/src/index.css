@@ -32,6 +32,12 @@ main {
   border: none;
 }
 
+.product-page-main-image-container {
+  max-width: 380px;
+  object-position: center;
+}
+
+/*MENUS*/
 .list-group .activee {
   background-color: #ef9f9f;
 }

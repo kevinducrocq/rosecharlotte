@@ -13,7 +13,9 @@ import Product from '../components/Product';
 import LinkContainer from 'react-router-bootstrap/LinkContainer';
 import SearchBox from '../components/SearchBox';
 
-import { Container, ListGroup, ListGroupItem } from 'react-bootstrap';
+import { Badge, Container, ListGroup, ListGroupItem } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimesCircle } from '@fortawesome/pro-solid-svg-icons';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -163,20 +165,28 @@ export default function SearchScreen() {
               <Row className="justify-content-between mb-3">
                 <Col md={6}>
                   <div>
-                    {query !== 'all' && ' : ' + query}
                     <h2>
                       {category === 'all' ? 'Tout' : ''}
                       {category !== 'all' && '' + category}
                     </h2>
+
                     {price !== 'all' && ' : Prix ' + price}
                     {query !== 'all' ||
                     category !== 'all' ||
                     subCategory !== 'all' ||
                     otherCategory !== 'all' ||
                     rating !== 'all' ||
-                    price !== 'all'
-                      ? ''
-                      : null}
+                    price !== 'all' ? (
+                      <Button
+                        className="btn btn-sm bg-secondary"
+                        onClick={() => navigate('/boutique/search')}
+                      >
+                        <Badge bg="secondary">
+                          {query !== 'all' && ' ' + '"' + query + '"'}
+                        </Badge>
+                        <FontAwesomeIcon icon={faTimesCircle} />
+                      </Button>
+                    ) : null}
                   </div>
                 </Col>
               </Row>

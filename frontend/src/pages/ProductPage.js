@@ -132,6 +132,9 @@ function ProductScreen() {
     <MessageBox variant="danger">{error}</MessageBox>
   ) : (
     <Container className="my-5">
+      <Helmet>
+        <title>{product.name}</title>
+      </Helmet>
       <Row>
         <Col md={2} className="product-vignettes">
           <div className="d-flex flex-column align-items-end">
@@ -139,11 +142,10 @@ function ProductScreen() {
               <Col key={x}>
                 <div className="my-1">
                   <Button
-                    className="img-thumbnail bg3"
-                    type="button"
+                    variant="outline-none"
                     onClick={() => setSelectedImage(x)}
                   >
-                    <Card.Img src={x} alt="product" />
+                    <Card.Img src={x} alt="product" className="img-thumbnail" />
                   </Button>
                 </div>
               </Col>
@@ -151,12 +153,13 @@ function ProductScreen() {
           </div>
         </Col>
         <Col md={4} className="mt-2">
-          <Image
-            src={selectedImage || product.image}
-            fluid
-            alt={product.name}
-            className="img-fluid"
-          />
+          <div className="product-page-main-image-container">
+            <Image
+              src={selectedImage || product.image}
+              alt={product.name}
+              fluid
+            />
+          </div>
         </Col>
         <Col md={2} className="product-vignettes-bottom">
           <div className="d-flex justify-content-center mb-4">
@@ -164,11 +167,10 @@ function ProductScreen() {
               <Col key={x}>
                 <div>
                   <Button
-                    className="img-thumbnail bg3"
-                    type="button"
+                    variant="outline-none"
                     onClick={() => setSelectedImage(x)}
                   >
-                    <Card.Img src={x} alt="product" />
+                    <Card.Img src={x} alt="product" className="img-thumbnail" />
                   </Button>
                 </div>
               </Col>
@@ -176,12 +178,9 @@ function ProductScreen() {
           </div>
         </Col>
         <Col md={6} className="mt-2">
-          <ListGroup variant="flush">
+          <ListGroup>
             <ListGroup.Item>
-              <Helmet>
-                <title>{product.name}</title>
-              </Helmet>
-              <div className="d-flex justify-content-between align-items-center">
+              <div className="d-flex justify-content-between align-items-center p-2">
                 <div>
                   <h1>{product.name}</h1>
                   <h2 className="h6 text-muted">
@@ -200,21 +199,25 @@ function ProductScreen() {
               </div>
             </ListGroup.Item>
             <ListGroup.Item>
-              <Rating
-                rating={product.rating}
-                numReviews={product.numReviews}
-              ></Rating>
+              <div className="p-2">
+                <Rating
+                  rating={product.rating}
+                  numReviews={product.numReviews}
+                ></Rating>
+              </div>
             </ListGroup.Item>
             <ListGroup.Item className="price-tag">
-              {product.price} &euro;
+              <div className="p-2">{product.price} &euro;</div>
             </ListGroup.Item>
             <ListGroup.Item>
-              <p>{product.description}</p>
+              <div className="p-2">
+                <p>{product.description}</p>
+              </div>
             </ListGroup.Item>
 
             {product.countInStock <= 0 ? (
               <ListGroup.Item>
-                <div className="d-grid">
+                <div className="p-2">
                   <Button variant="secondary" disabled>
                     Epuisé
                   </Button>
@@ -222,8 +225,12 @@ function ProductScreen() {
               </ListGroup.Item>
             ) : (
               <ListGroup.Item>
-                <div className="d-grid">
-                  <Button onClick={addToCartHandler} variant="primary">
+                <div className="p-2">
+                  <Button
+                    onClick={addToCartHandler}
+                    className="bg1 w-100"
+                    variant="outline-light"
+                  >
                     Ajouter au panier
                   </Button>
                 </div>
@@ -236,7 +243,7 @@ function ProductScreen() {
 
       <div className="my-3">
         <Row>
-          <Col md={4}>
+          <Col md={4} sm={2}>
             <div className="mb-3 p-4">
               <h2>Ajouter un avis</h2>
               {userInfo ? (
@@ -293,12 +300,16 @@ function ProductScreen() {
               <div className="mb-3 p-4">
                 <h2 ref={reviewsRef}>Avis des clients</h2>
                 {product.reviews.length === 0 && (
-                  <MessageBox bg2>Il n'y a pas encore d'avis</MessageBox>
+                  <MessageBox bg2>
+                    Il n'y a pas encore d'avis sur ce produit
+                  </MessageBox>
                 )}
               </div>
               {product.reviews.map((review) =>
                 review.status === false ? (
-                  ''
+                  <MessageBox bg2>
+                    Il n'y a pas encore d'avis sur ce produit
+                  </MessageBox>
                 ) : (
                   <Col md={4}>
                     <Card key={review._id}>
@@ -315,7 +326,6 @@ function ProductScreen() {
                 )
               )}
             </Row>
-            <ListGroup></ListGroup>
           </Col>
         </Row>
       </div>
