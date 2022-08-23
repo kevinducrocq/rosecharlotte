@@ -76,13 +76,35 @@ main {
   background-color: #f47c7c;
 }
 
+.menu-principal a {
+  color: #f1f1f1;
+  font-weight: 400;
+  text-transform: uppercase;
+}
+
+.menu-principal a:hover {
+  color: black;
+  border-bottom: 1px solid #000;
+}
+
 .navbar2 {
   background-color: #ef9f9f;
+  overflow-x: auto;
 }
 
 .navbar2 .nav-link {
   text-decoration: none;
   color: #f1f1f1;
+}
+
+.cart-link {
+  background-color: #fff2f2;
+  max-width: 150px;
+  padding: 10px 10px;
+  border-radius: 50px;
+  text-align: center;
+  font-weight: 400;
+  color: #f47c7c;
 }
 
 /*PRIX*/
@@ -137,7 +159,7 @@ main {
 }
 
 .checkout-steps > div.active {
-  border-bottom: 0.2rem solid #000;
+  border-bottom: 0.2rem solid #f47c7c;
   color: #f08000;
 }
 
@@ -147,4 +169,56 @@ main {
 .card a {
   text-decoration: none;
   color: #f47c7c;
+}
+
+/*RESPONSIVE*/
+
+@media screen and (max-width: 767px) {
+  .product-vignettes {
+    display: none;
+  }
+  .product-vignettes-bottom {
+    display: block;
+  }
+  .carousel-item {
+    max-height: 400px;
+  }
+  .carousel-item img {
+    height: 300px;
+    object-fit: cover;
+    opacity: 0.7;
+  }
+  .logo-footer {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 767px) {
+  .product-vignettes {
+    display: block;
+  }
+  .product-vignettes-bottom {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .mobile-cart {
+    display: block;
+  }
+  .site-cart {
+    display: none;
+  }
+  .categories-menu {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 991px) {
+  .mobile-cart {
+    display: none;
+  }
+  .categories-menu {
+    display: none;
+  }
 }

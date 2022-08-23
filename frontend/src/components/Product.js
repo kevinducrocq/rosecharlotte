@@ -45,9 +45,9 @@ function Product(props) {
       <Card.Body>
         <div className="d-flex justify-content-between">
           <Link to={`/product/${product.slug}`}>
-            <Card.Title>{product.name}</Card.Title>
+            <Card.Title className="text-nowrap">{product.name}</Card.Title>
           </Link>
-          <Card.Text>{product.price} &euro;</Card.Text>
+          <Card.Text className="text-nowrap">{product.price} &euro;</Card.Text>
         </div>
         <div>
           <Rating rating={product.rating} numReviews={product.numReviews} />
@@ -65,7 +65,7 @@ function Product(props) {
           <Button
             onClick={() => addToCartHandler(product)}
             className="w-100"
-            variant="primary"
+            bsClass="custom-btn"
           >
             <FontAwesomeIcon icon={faCartPlus} /> Ajouter au panier
           </Button>

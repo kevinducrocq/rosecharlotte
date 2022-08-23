@@ -7,7 +7,7 @@ import CheckoutSteps from '../components/CheckoutSteps';
 import { Store } from '../Store';
 import { Container } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCcPaypal, faPaypal } from '@fortawesome/free-brands-svg-icons';
+import { faCcPaypal } from '@fortawesome/free-brands-svg-icons';
 import { faMoneyCheckPen } from '@fortawesome/pro-solid-svg-icons';
 
 export default function PaymentMethodPage() {

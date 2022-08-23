@@ -53,7 +53,7 @@ function HomePage() {
             width={150}
             className="img-fluid mb-3"
           />
-          <h1>Bienvenue sur Rose Charlotte</h1>
+          <h1 className="text-center">Bienvenue sur Rose Charlotte</h1>
         </div>
         <CarouselFade />
       </section>

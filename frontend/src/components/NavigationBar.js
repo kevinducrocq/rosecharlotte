@@ -7,7 +7,14 @@ import { faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
-import { Badge, Container, Nav, Navbar, NavDropdown } from 'react-bootstrap';
+import {
+  Badge,
+  Container,
+  Image,
+  Nav,
+  Navbar,
+  NavDropdown,
+} from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -45,12 +52,25 @@ function NavigationBar() {
         <Navbar variant="light" expand="lg">
           <Container>
             <LinkContainer to="/">
-              <Navbar.Brand></Navbar.Brand>
+              <Image src="../logo-site.png" width={60} />
             </LinkContainer>
+
+            <Nav>
+              <Link to="/cart" className="nav-link mobile-cart">
+                <div className="cart-link">
+                  <FontAwesomeIcon icon={faShoppingCart} /> Panier{' '}
+                  {cart.cartItems.length > 0 && (
+                    <Badge pill bg="danger">
+                      {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
+                    </Badge>
+                  )}
+                </div>
+              </Link>
+            </Nav>
 
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
-              <Nav className="me-auto w-100 justify-content-end">
+              <Nav className="m-auto menu-principal align-items-center">
                 <Link className="nav-link" to="/">
                   Accueil
                 </Link>
@@ -63,32 +83,33 @@ function NavigationBar() {
                 <Link className="nav-link" to="/contact">
                   Contact
                 </Link>
+                <Link className="nav-link" to="/contact">
+                  <FontAwesomeIcon icon={faFacebook} size="2x" />
+                </Link>
+                <Link className="nav-link" to="/contact">
+                  <FontAwesomeIcon icon={faInstagram} size="2x" />
+                </Link>
+              </Nav>
 
-                <Link to="/cart" className="nav-link bg4 rounded-5 ms-4">
-                  <FontAwesomeIcon icon={faShoppingCart} /> Panier{' '}
-                  {cart.cartItems.length > 0 && (
-                    <Badge pill bg="danger">
-                      {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
-                    </Badge>
-                  )}
+              <Nav>
+                <Link to="/cart" className="nav-link site-cart">
+                  <div className="cart-link">
+                    <FontAwesomeIcon icon={faShoppingCart} /> Panier{' '}
+                    {cart.cartItems.length > 0 && (
+                      <Badge pill bg="danger">
+                        {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
+                      </Badge>
+                    )}
+                  </div>
                 </Link>
               </Nav>
             </Navbar.Collapse>
-
-            <div className="mx-4 p-2 d-flex justify-content-between">
-              <span className="mx-2">
-                <FontAwesomeIcon icon={faFacebook} size="2x" />
-              </span>
-              <span>
-                <FontAwesomeIcon icon={faInstagram} size="2x" />
-              </span>
-            </div>
           </Container>
         </Navbar>
 
         <Nav className="navbar2">
           <Container className="d-flex">
-            <div className="d-flex">
+            <div className="categories-menu d-flex">
               {categories.map((category) => (
                 <LinkContainer
                   to={`/boutique/search?category=${category}`}
@@ -100,6 +121,7 @@ function NavigationBar() {
                 </LinkContainer>
               ))}
             </div>
+
             <div className="d-flex ms-auto">
               {userInfo ? (
                 <NavDropdown title={userInfo.name} id="basic-nav-dropdown">
@@ -119,13 +141,21 @@ function NavigationBar() {
                   </Link>
                 </NavDropdown>
               ) : (
-                <Link className="mx-2 nav-link" to="/signin">
-                  <FontAwesomeIcon icon={faArrowRightToBracket} /> Connexion
+                <Link
+                  className="nav-link d-flex align-items-center"
+                  to="/signin"
+                >
+                  <FontAwesomeIcon icon={faArrowRightToBracket} />
+                  <span className="ms-1">Connexion</span>
                 </Link>
               )}
               {!userInfo && (
-                <Link className="mx-2 nav-link" to="/signup">
-                  <FontAwesomeIcon icon={faPen} /> Inscription
+                <Link
+                  className="nav-link d-flex align-items-center"
+                  to="/signup"
+                >
+                  <FontAwesomeIcon icon={faPen} />{' '}
+                  <span className="ms-1">Inscription</span>
                 </Link>
               )}
               {userInfo && userInfo.isAdmin && (

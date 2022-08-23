@@ -133,7 +133,7 @@ function ProductScreen() {
   ) : (
     <Container className="my-5">
       <Row>
-        <Col md={2}>
+        <Col md={2} className="product-vignettes">
           <div className="d-flex flex-column align-items-end">
             {[product.image, ...product.images].map((x) => (
               <Col key={x}>
@@ -157,6 +157,23 @@ function ProductScreen() {
             alt={product.name}
             className="img-fluid"
           />
+        </Col>
+        <Col md={2} className="product-vignettes-bottom">
+          <div className="d-flex justify-content-center mb-4">
+            {[product.image, ...product.images].map((x) => (
+              <Col key={x}>
+                <div>
+                  <Button
+                    className="img-thumbnail bg3"
+                    type="button"
+                    onClick={() => setSelectedImage(x)}
+                  >
+                    <Card.Img src={x} alt="product" />
+                  </Button>
+                </div>
+              </Col>
+            ))}
+          </div>
         </Col>
         <Col md={6} className="mt-2">
           <ListGroup variant="flush">
@@ -251,7 +268,11 @@ function ProductScreen() {
                   </Form.Group>
 
                   <div className="mb-3">
-                    <Button disabled={loadingCreateReview} type="submit">
+                    <Button
+                      disabled={loadingCreateReview}
+                      type="submit"
+                      className="w-100"
+                    >
                       Noter
                     </Button>
                     {loadingCreateReview && <LoadingBox></LoadingBox>}

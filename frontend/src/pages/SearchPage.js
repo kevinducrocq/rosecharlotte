@@ -114,29 +114,23 @@ export default function SearchScreen() {
       </Helmet>
 
       <Row className="my-5">
-        <div className="d-flex align-items-center justify-content-between">
-          <div className="w-100">
-            <Col md={8}>
-              <SearchBox />
-            </Col>
-          </div>
-          <div>
-            <Col md={4}>
-              Filtrer par{' '}
-              <select
-                value={order}
-                onChange={(e) => {
-                  navigate(getFilterUrl({ order: e.target.value }));
-                }}
-              >
-                <option value="newest">Les nouveaux produits</option>
-                <option value="lowest">Prix : du - au +</option>
-                <option value="highest">Prix : du + au -</option>
-                <option value="toprated">Note des clients</option>
-              </select>
-            </Col>
-          </div>
-        </div>
+        <Col md={10}>
+          <SearchBox />
+        </Col>
+        <Col md={1}>
+          Filtrer par{' '}
+          <select
+            value={order}
+            onChange={(e) => {
+              navigate(getFilterUrl({ order: e.target.value }));
+            }}
+          >
+            <option value="newest">Les nouveaux produits</option>
+            <option value="lowest">Prix : du - au +</option>
+            <option value="highest">Prix : du + au -</option>
+            <option value="toprated">Note des clients</option>
+          </select>
+        </Col>
       </Row>
       <Row>
         <Col md={2}>

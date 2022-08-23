@@ -32,7 +32,7 @@ const reducer = (state, action) => {
 export default function ProductAddPage() {
   const navigate = useNavigate();
 
-  const { state, dispatch: ctxDispatch } = useContext(Store);
+  const { state } = useContext(Store);
   const { userInfo } = state;
   const [{ loading, error, loadingAdd, loadingUpload }, dispatch] = useReducer(
     reducer,

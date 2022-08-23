@@ -113,7 +113,7 @@ export default function PlaceOrderPage() {
           <Card className="mb-3">
             <Card.Body>
               <Card.Title>Produits</Card.Title>
-              <ListGroup variant="flush">
+              <ListGroup variant="flush" className="mb-2">
                 {cart.cartItems.map((item) => (
                   <ListGroup.Item key={item._id}>
                     <Row className="align-items-center">
