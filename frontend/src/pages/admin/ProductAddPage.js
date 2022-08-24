@@ -1,14 +1,27 @@
-import React, { useContext, useReducer, useState } from 'react';
+import React, { useContext, useEffect, useReducer, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-import { Container, Button, Form, Row, Col, Image } from 'react-bootstrap';
+import {
+  Container,
+  Button,
+  Form,
+  Row,
+  Col,
+  Image,
+  InputGroup,
+} from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { Store } from '../../Store';
 import { getError } from '../../utils';
 import LoadingBox from '../../components/LoadingBox';
 import MessageBox from '../../components/MessageBox';
-import { faTrash } from '@fortawesome/pro-solid-svg-icons';
+import {
+  faEuroSign,
+  faMinus,
+  faPlus,
+  faTrash,
+} from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AdminMenu from '../../components/AdminMenu';
 
@@ -52,6 +65,50 @@ export default function ProductAddPage() {
   const [otherCategory, setOtherCategory] = useState('');
   const [countInStock, setCountInStock] = useState('');
   const [description, setDescription] = useState('');
+  const [categories, setCategories] = useState([]);
+  const [categoryInputIsVisible, setCategoryInputIsVisible] = useState(false);
+  const [subCategoryInputIsVisible, setSubCategoryInputIsVisible] =
+    useState(false);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const { data } = await axios.get(`/api/products/categories`);
+        setCategories(data);
+      } catch (err) {
+        toast.error(getError(err));
+      }
+    };
+    fetchCategories();
+  }, []);
+
+  const renderedCategories = [];
+  Object.keys(categories).forEach(function (category) {
+    renderedCategories.push(
+      <option
+        key={category}
+        value={category}
+        onChange={(e) => setCategory(e.target.value)}
+      >
+        {category}
+      </option>
+    );
+  });
+
+  const renderedSubCategories = [];
+  Object.keys(categories).forEach(function (category) {
+    renderedSubCategories.push(
+      <>
+        {categories[category].map((key) => {
+          return (
+            <option value={key} key={key}>
+              {key}
+            </option>
+          );
+        })}
+      </>
+    );
+  });
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -132,31 +189,58 @@ export default function ProductAddPage() {
             <MessageBox variant="danger">{error}</MessageBox>
           ) : (
             <Form onSubmit={submitHandler}>
-              <Form.Group className="mb-3" controlId="name">
-                <Form.Label>Nom</Form.Label>
-                <Form.Control
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required
-                />
-              </Form.Group>
-              <Form.Group className="mb-3" controlId="name">
-                <Form.Label>Prix</Form.Label>
-                <Form.Control
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
-                  required
-                />
-              </Form.Group>
-              <Form.Group className="mb-3" controlId="weight">
-                <Form.Label>Poids (grammes)</Form.Label>
-                <Form.Control
-                  type="text"
-                  value={weight}
-                  onChange={(e) => setWeight(e.target.value)}
-                  required
-                />
-              </Form.Group>
+              <Row>
+                <Col md={3} sm={6}>
+                  <Form.Group className="mb-3" controlId="name">
+                    <Form.Label>Nom</Form.Label>
+                    <Form.Control
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      required
+                    />
+                  </Form.Group>
+                </Col>
+                <Col md={3} sm={6}>
+                  <Form.Group className="mb-3" controlId="name">
+                    <Form.Label>Prix</Form.Label>
+                    <InputGroup className="mb-3">
+                      <Form.Control
+                        value={price}
+                        onChange={(e) => setPrice(e.target.value)}
+                        required
+                      />
+                      <InputGroup.Text>
+                        <FontAwesomeIcon icon={faEuroSign} />
+                      </InputGroup.Text>
+                    </InputGroup>
+                  </Form.Group>
+                </Col>
+                <Col md={3}>
+                  <Form.Group className="mb-3" controlId="weight">
+                    <Form.Label>Poids</Form.Label>
+                    <InputGroup className="mb-3">
+                      <Form.Control
+                        type="number"
+                        value={weight}
+                        onChange={(e) => setWeight(e.target.value)}
+                        required
+                      />
+                      <InputGroup.Text>grammes</InputGroup.Text>
+                    </InputGroup>
+                  </Form.Group>
+                </Col>
+                <Col md={3}>
+                  <Form.Group className="mb-3" controlId="countInStock">
+                    <Form.Label>Stock</Form.Label>
+                    <Form.Control
+                      value={countInStock}
+                      onChange={(e) => setCountInStock(e.target.value)}
+                      required
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+              <hr />
               <Row>
                 <Col md={6}>
                   <Form.Group controlId="imageFile">
@@ -211,21 +295,89 @@ export default function ProductAddPage() {
                 <Row> {loadingUpload && <LoadingBox></LoadingBox>}</Row>
               </Row>
 
-              <Form.Group className="mb-3" controlId="category">
-                <Form.Label>Catégorie</Form.Label>
-                <Form.Control
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value)}
-                  required
-                />
-              </Form.Group>
-              <Form.Group className="mb-3" controlId="sousCategory">
-                <Form.Label>Sous Catégorie</Form.Label>
-                <Form.Control
-                  value={subCategory}
-                  onChange={(e) => setSubCategory(e.target.value)}
-                />
-              </Form.Group>
+              <hr />
+              <Row>
+                <>
+                  <Col md={8}>
+                    <Form.Group className="mb-3" controlId="category">
+                      <Form.Label>Séléctionner une catégorie</Form.Label>
+                      <Form.Select
+                        aria-label="category select"
+                        onChange={(e) => setCategory(e.target.value)}
+                      >
+                        <option>Choisissez...</option>
+                        {renderedCategories}
+                      </Form.Select>
+                    </Form.Group>
+                  </Col>
+                  <Col md={4}>
+                    <Form.Group>
+                      <Form.Label>Ajouter une catégorie ?</Form.Label>
+                      <InputGroup size="sm" className="mb-3">
+                        <InputGroup.Text id="inputGroup-sizing-sm">
+                          <Button
+                            variant="none"
+                            className="btn btn-sm"
+                            onClick={() =>
+                              setCategoryInputIsVisible(!categoryInputIsVisible)
+                            }
+                          >
+                            <FontAwesomeIcon
+                              icon={categoryInputIsVisible ? faMinus : faPlus}
+                            />
+                          </Button>
+                        </InputGroup.Text>
+                        <Form.Control
+                          className={categoryInputIsVisible ? '' : 'd-none'}
+                          value={category}
+                          onChange={(e) => setCategory(e.target.value)}
+                          placeholder="Nom"
+                        />
+                      </InputGroup>
+                    </Form.Group>
+                  </Col>
+                </>
+              </Row>
+              <Row>
+                <Col md={8}>
+                  <Form.Label>Séléctionner une sous-catégorie</Form.Label>
+                  <Form.Select
+                    aria-label="category select"
+                    onChange={(e) => setSubCategory(e.target.value)}
+                  >
+                    <option>Choisissez...</option>
+                    {renderedSubCategories}
+                  </Form.Select>
+                </Col>
+                <Col md={4}>
+                  <Form.Group className="mb-3" controlId="category">
+                    <Form.Label>Ajouter une sous-catégorie ?</Form.Label>
+                    <InputGroup size="sm" className="mb-3">
+                      <InputGroup.Text id="inputGroup-sizing-sm">
+                        <Button
+                          variant="none"
+                          className="btn btn-sm"
+                          onClick={() =>
+                            setSubCategoryInputIsVisible(
+                              !subCategoryInputIsVisible
+                            )
+                          }
+                        >
+                          <FontAwesomeIcon
+                            icon={subCategoryInputIsVisible ? faMinus : faPlus}
+                          />
+                        </Button>
+                      </InputGroup.Text>
+                      <Form.Control
+                        className={subCategoryInputIsVisible ? '' : 'd-none'}
+                        value={subCategory}
+                        onChange={(e) => setSubCategory(e.target.value)}
+                        placeholder="Nom"
+                      />
+                    </InputGroup>
+                  </Form.Group>
+                </Col>
+              </Row>
               <Form.Group className="mb-3" controlId="sousCategory">
                 <Form.Label>Autre Catégorie ?</Form.Label>
                 <Form.Control
@@ -233,14 +385,8 @@ export default function ProductAddPage() {
                   onChange={(e) => setOtherCategory(e.target.value)}
                 />
               </Form.Group>
-              <Form.Group className="mb-3" controlId="countInStock">
-                <Form.Label>Stock</Form.Label>
-                <Form.Control
-                  value={countInStock}
-                  onChange={(e) => setCountInStock(e.target.value)}
-                  required
-                />
-              </Form.Group>
+              <hr />
+
               <Form.Group className="mb-3" controlId="description">
                 <Form.Label>Description</Form.Label>
                 <Form.Control

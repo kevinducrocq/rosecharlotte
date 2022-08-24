@@ -162,22 +162,20 @@ function ProductScreen() {
             />
           </div>
         </Col>
-        <Col md={2} className="product-vignettes-bottom">
-          <div className="d-flex justify-content-center mb-4">
-            {[product.image, ...product.images].map((x) => (
-              <Col key={x}>
-                <div>
-                  <Button
-                    variant="outline-none"
-                    onClick={() => setSelectedImage(x)}
-                  >
-                    <Card.Img src={x} alt="product" className="img-thumbnail" />
-                  </Button>
-                </div>
-              </Col>
-            ))}
-          </div>
-        </Col>
+
+        <div className="product-vignettes-bottom">
+          {[product.image, ...product.images].map((x) => (
+            <div key={x}>
+              <Button
+                variant="outline-none"
+                onClick={() => setSelectedImage(x)}
+              >
+                <Card.Img src={x} alt="product" className="img-thumbnail" />
+              </Button>
+            </div>
+          ))}
+        </div>
+
         <Col md={6} className="mt-2">
           <ListGroup>
             <ListGroup.Item>
@@ -279,7 +277,8 @@ function ProductScreen() {
                     <Button
                       disabled={loadingCreateReview}
                       type="submit"
-                      className="w-100"
+                      variant="outline-light"
+                      className="bg1 w-100"
                     >
                       Noter
                     </Button>

@@ -207,7 +207,8 @@ main {
     display: none;
   }
   .product-vignettes-bottom {
-    display: block;
+    display: flex;
+    justify-content: space-between;
   }
   .carousel-item {
     max-height: 400px;
