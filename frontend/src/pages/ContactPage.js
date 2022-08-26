@@ -71,7 +71,11 @@ export default function ContactPage() {
               />
             </Form.Group>
             <div className="mb-3">
-              <Button type="submit" variant="primary" className="w-100">
+              <Button
+                type="submit"
+                variant="outline-light"
+                className="bg1 w-100"
+              >
                 Envoyer
               </Button>
             </div>

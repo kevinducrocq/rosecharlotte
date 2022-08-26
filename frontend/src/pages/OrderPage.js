@@ -219,6 +219,7 @@ export default function OrderPage() {
           <Card className="mb-3">
             <Card.Body>
               <Card.Title>Paiement</Card.Title>
+              <div className="text-muted mb-3">{order.paymentMethod}</div>
               {order.isPaid ? (
                 <MessageBox variant="success">
                   Payé le {order.paidAt.substring(0, 10)}
@@ -228,27 +229,31 @@ export default function OrderPage() {
               )}
             </Card.Body>
           </Card>
-          <Card className="mb-3">
+          <Card className="mb-3 bg-light">
             <Card.Body>
               <Card.Title>Produits</Card.Title>
-              <ListGroup variant="flush">
+              <ListGroup className="mb-3 text-center rounded-3">
                 {order.orderItems.map((item) => (
-                  <ListGroup.Item key={item._id}>
-                    <div className="d-flex justify-content-between align-items-center">
-                      <div>
-                        <Image
-                          src={item.image}
-                          alt={item.name}
-                          thumbnail
-                          width="80"
-                        />
-                        <Link to={`/product/${item.slug}`} className="mx-2">
-                          {item.name}
+                  <ListGroup.Item key={item._id} className="shadow p-3">
+                    <Row className="align-items-center">
+                      <Col md={3} className="d-flex flex-column">
+                        <Link to={`/product/${item.slug}`}>
+                          <Image
+                            src={item.image}
+                            alt={item.name}
+                            fluid
+                            className="rounded-3 img-thumbnail"
+                          />
+                          <div>{item.name}</div>
                         </Link>
-                      </div>
-                      <span>{item.quantity}</span>
-                      {item.price} &euro;
-                    </div>
+                      </Col>
+
+                      <Col md={6}>
+                        <span>x {item.quantity}</span>
+                      </Col>
+
+                      <Col md={3}>{item.price} &euro;</Col>
+                    </Row>
                   </ListGroup.Item>
                 ))}
               </ListGroup>
@@ -260,7 +265,7 @@ export default function OrderPage() {
             <Card.Body>
               <Card.Title>Montant de la commande</Card.Title>
               <ListGroup variant="flush">
-                <ListGroup.Item>
+                <ListGroup.Item className="shadow rounded-3">
                   <Row>
                     <Col>Produits</Col>
                     <Col>{order.itemsPrice.toFixed(2)} &euro;</Col>
@@ -278,7 +283,7 @@ export default function OrderPage() {
                     </Col>
                   </Row>
                 </ListGroup.Item>
-                {!order.isPaid && (
+                {!order.isPaid && order.paymentMethod === 'PayPal' ? (
                   <ListGroup.Item>
                     {isPending ? (
                       <LoadingBox />
@@ -293,12 +298,25 @@ export default function OrderPage() {
                     )}
                     {loadingPay && <LoadingBox></LoadingBox>}
                   </ListGroup.Item>
+                ) : (
+                  <ListGroup.Item className="shadow rounded-3 text-center">
+                    Chèque <br /> libellé à l'ordre de "Rose Charlotte &amp;
+                    Compagnie <br /> à l'adresse : <br />
+                    Rose Charlotte & Compagnie 20 MAIN STREET, <br /> 62190
+                    <br />
+                    Ecquedecques
+                  </ListGroup.Item>
                 )}
                 {userInfo.isAdmin && order.isPaid && !order.isDelivered && (
                   <ListGroup.Item>
                     {loadingDeliver && <LoadingBox></LoadingBox>}
                     <div className="d-grid">
-                      <Button type="button" onClick={deliverOrderHandler}>
+                      <Button
+                        type="button"
+                        variant="outline-light"
+                        className="bg1"
+                        onClick={deliverOrderHandler}
+                      >
                         Livrer
                       </Button>
                     </div>

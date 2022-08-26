@@ -192,7 +192,7 @@ main {
 }
 
 .card {
-  background-color: #fff2f2;
+  background-color: #f1f1f1;
   border-color: lightgray;
 }
 .card a {
@@ -221,6 +221,12 @@ main {
   .logo-footer {
     display: none;
   }
+}
+
+.cat-link:hover,
+.sub-cat-link:hover {
+  background-color: #fad4d4;
+  color: #f47c7c;
 }
 
 @media screen and (min-width: 767px) {

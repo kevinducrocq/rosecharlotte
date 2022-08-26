@@ -9,8 +9,10 @@ import LoadingBox from '../../components/LoadingBox';
 import MessageBox from '../../components/MessageBox';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
+  faMoon,
   faPenToSquare,
   faPlus,
+  faSun,
   faTrash,
 } from '@fortawesome/pro-solid-svg-icons';
 import AdminMenu from '../../components/AdminMenu';
@@ -45,6 +47,30 @@ const reducer = (state, action) => {
       };
     case 'EDIT_FAIL':
       return { ...state, loadingCreate: false };
+    case 'VALIDATE_REQUEST':
+      return { ...state, loadingValidate: true };
+    case 'VALIDATE_SUCCESS':
+      return { ...state, loadingValidate: false, successValidate: true };
+    case 'VALIDATE_FAIL':
+      return { ...state, loadingValidate: false };
+    case 'VALIDATE_RESET':
+      return {
+        ...state,
+        loadingValidate: false,
+        successValidate: false,
+      };
+    case 'HIDE_REQUEST':
+      return { ...state, loadingHide: true };
+    case 'HIDE_SUCCESS':
+      return { ...state, loadingHide: false, successHide: true };
+    case 'HIDE_FAIL':
+      return { ...state, loadingHide: false };
+    case 'HIDE_RESET':
+      return {
+        ...state,
+        loadingHide: false,
+        successHide: false,
+      };
 
     case 'DELETE_REQUEST':
       return { ...state, loadingDelete: true, successDelete: false };
@@ -67,12 +93,30 @@ const reducer = (state, action) => {
 
 export default function ProductListScreen() {
   const [
-    { loading, error, products, loadingCreate, loadingDelete, successDelete },
+    {
+      loading,
+      error,
+      products,
+      loadingCreate,
+      loadingDelete,
+      successDelete,
+      successHide,
+      successValidate,
+    },
     dispatch,
   ] = useReducer(reducer, {
+    successDelete: false,
+    successHide: false,
+    successValidate: false,
+    loadingDelete: false,
+    loadingValidate: false,
+    loadingHide: false,
     loading: true,
     error: '',
   });
+
+  $.DataTable = require('datatables.net');
+  const tableRef = useRef();
 
   const navigate = useNavigate();
   const { search } = useLocation();
@@ -82,15 +126,14 @@ export default function ProductListScreen() {
   const { state } = useContext(Store);
   const { userInfo } = state;
 
-  $.DataTable = require('datatables.net');
-  const tableRef = useRef();
-
   useEffect(() => {
     const fetchData = async () => {
       try {
+        dispatch({ type: 'FETCH_REQUEST' });
         const { data } = await axios.get(`/api/products/admin?page=${page} `, {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         });
+
         const table = $(tableRef.current).DataTable({
           language: {
             url: 'https://cdn.datatables.net/plug-ins/1.12.1/i18n/fr-FR.json',
@@ -99,15 +142,57 @@ export default function ProductListScreen() {
         });
 
         dispatch({ type: 'FETCH_SUCCESS', payload: data, table });
-      } catch (err) {}
+      } catch (err) {
+        dispatch({
+          type: 'FETCH_FAIL',
+          payload: getError(err),
+        });
+      }
     };
+    fetchData();
 
+    if (successValidate) {
+      dispatch({ type: 'VALIDATE_RESET' });
+      toast.success('Votre produit a été remis en vente');
+    }
+    if (successHide) {
+      dispatch({ type: 'HIDE_RESET' });
+      toast.success('Votre produit a été caché de la vente');
+    }
     if (successDelete) {
       dispatch({ type: 'DELETE_RESET' });
-    } else {
-      fetchData();
     }
-  }, [page, userInfo, successDelete]);
+  }, [page, userInfo, successDelete, successValidate, successHide]);
+
+  const validateHandler = async (product) => {
+    try {
+      dispatch({ type: 'VALIDATE_REQUEST' });
+      await axios.put(`/api/products/${product._id}/validate`, [], {
+        headers: { Authorization: `Bearer ${userInfo.token}` },
+      });
+      dispatch({ type: 'VALIDATE_SUCCESS' });
+    } catch (err) {
+      toast.error(getError(error));
+      dispatch({
+        type: 'VALIDATE_FAIL',
+      });
+    }
+  };
+
+  const hideHandler = async (product) => {
+    try {
+      dispatch({ type: 'HIDE_REQUEST' });
+      await axios.put(`/api/products/${product._id}/hide`, [], {
+        headers: { Authorization: `Bearer ${userInfo.token}` },
+      });
+      dispatch({ type: 'HIDE_SUCCESS' });
+    } catch (err) {
+      toast.error(getError(error));
+      dispatch({
+        type: 'HIDE_FAIL',
+      });
+    }
+  };
 
   const deleteHandler = async (product) => {
     if (window.confirm('Confirmer ?')) {
@@ -195,6 +280,25 @@ export default function ProductListScreen() {
                         >
                           <FontAwesomeIcon icon={faTrash} />
                         </Button>
+                        &nbsp;
+                        {product.isVisible === false ? (
+                          <Button
+                            className="btn btn-sm bg-dark"
+                            type="button"
+                            onClick={() => validateHandler(product)}
+                          >
+                            <FontAwesomeIcon icon={faMoon} />
+                          </Button>
+                        ) : (
+                          <Button
+                            className="btn btn-sm"
+                            type="button"
+                            variant="primary"
+                            onClick={() => hideHandler(product)}
+                          >
+                            <FontAwesomeIcon icon={faSun} color={'yellow'} />
+                          </Button>
+                        )}
                       </td>
                     </tr>
                   ))}

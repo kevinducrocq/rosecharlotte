@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema(
     address: { type: String, uppercase: true },
     zip: { type: String },
     city: { type: String, uppercase: true },
+    country: { type: String, uppercase: true },
     isAdmin: { type: Boolean, default: false, required: true },
   },
   {

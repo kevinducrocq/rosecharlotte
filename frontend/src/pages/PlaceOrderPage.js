@@ -1,5 +1,13 @@
-import React, { useContext, useReducer } from 'react';
-import { Button, Card, Col, Container, ListGroup, Row } from 'react-bootstrap';
+import React, { useContext, useEffect, useReducer } from 'react';
+import {
+  Button,
+  Card,
+  Col,
+  Container,
+  Image,
+  ListGroup,
+  Row,
+} from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -62,7 +70,6 @@ export default function PlaceOrderPage() {
   cart.shippingPrice = deliveryPrice();
 
   cart.totalPrice = round2(cart.itemsPrice + cart.shippingPrice);
-  console.log(cart.totalPrice);
 
   const placeOrderHandler = async () => {
     try {
@@ -72,6 +79,7 @@ export default function PlaceOrderPage() {
         {
           orderItems: cart.cartItems,
           shippingAddress: cart.shippingAddress,
+          paymentMethod: cart.paymentMethod,
           itemsPrice: cart.itemsPrice,
           shippingPrice: cart.shippingPrice,
           totalPrice: cart.totalPrice,
@@ -88,6 +96,12 @@ export default function PlaceOrderPage() {
     }
   };
 
+  useEffect(() => {
+    if (!cart.paymentMethod) {
+      navigate('/payment');
+    }
+  }, [cart, navigate]);
+
   return (
     <Container className="my-5">
       <CheckoutSteps step1 step2 step3 step4></CheckoutSteps>
@@ -95,39 +109,58 @@ export default function PlaceOrderPage() {
       <h1 className="my-5">Récapitulatif de la commande</h1>
       <Row>
         <Col md={8}>
-          <Card className="mb-3">
+          <Card className="mb-3 bg-light">
             <Card.Body>
               <Card.Title>Livraison</Card.Title>
               <Card.Text>
                 <strong>Nom | Prénom : </strong> {cart.shippingAddress.name}
                 <br />
                 <strong>Adresse : </strong> {cart.shippingAddress.address},{' '}
-                {cart.shippingAddress.zip}, {cart.shippingAddress.city},{' '}
+                {cart.shippingAddress.zip}, {cart.shippingAddress.city}{' '}
                 {cart.shippingAddress.country} <br />
+                <strong>Pays : </strong> {cart.shippingAddress.country}
               </Card.Text>
               <Link to="/shipping">
                 <FontAwesomeIcon icon={faPenToSquare} /> Modifier
               </Link>
             </Card.Body>
           </Card>
-          <Card className="mb-3">
+
+          <Card className="mb-3 bg-light">
+            <Card.Body>
+              <Card.Title>Paiement</Card.Title>
+              <Card.Text>
+                <strong>Méthode:</strong> {cart.paymentMethod}
+              </Card.Text>
+              <Link to="/payment">
+                <FontAwesomeIcon icon={faPenToSquare} /> Modifier
+              </Link>
+            </Card.Body>
+          </Card>
+
+          <Card className="mb-3 bg-light">
             <Card.Body>
               <Card.Title>Produits</Card.Title>
-              <ListGroup variant="flush" className="mb-2">
+              <ListGroup className="mb-3 text-center rounded-3">
                 {cart.cartItems.map((item) => (
-                  <ListGroup.Item key={item._id}>
+                  <ListGroup.Item key={item._id} className="shadow p-3">
                     <Row className="align-items-center">
+                      <Col md={3} className="d-flex flex-column">
+                        <Link to={`/product/${item.slug}`}>
+                          <Image
+                            src={item.image}
+                            alt={item.name}
+                            fluid
+                            className="rounded-3 img-thumbnail"
+                          />
+                          <div>{item.name}</div>
+                        </Link>
+                      </Col>
+
                       <Col md={6}>
-                        <img
-                          src={item.image}
-                          alt={item.name}
-                          className="img-thumbnail"
-                        />{' '}
-                        <Link to={`/product/${item.slug}`}>{item.name}</Link>
+                        <span>x {item.quantity}</span>
                       </Col>
-                      <Col md={3}>
-                        <span>{item.quantity}</span>
-                      </Col>
+
                       <Col md={3}>{item.price} &euro;</Col>
                     </Row>
                   </ListGroup.Item>
@@ -140,8 +173,8 @@ export default function PlaceOrderPage() {
           </Card>
         </Col>
         <Col md={4}>
-          <Card>
-            <Card.Body className="shadow">
+          <Card className="bg-light shadow">
+            <Card.Body>
               <Card.Title className="text-center mb-2">
                 Montant de la commande
               </Card.Title>

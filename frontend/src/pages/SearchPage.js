@@ -50,11 +50,13 @@ export default function SearchScreen() {
   const order = sp.get('order') || 'newest';
   const page = sp.get('page') || 1;
 
-  const [{ loading, error, products, pages, countProducts }, dispatch] =
-    useReducer(reducer, {
-      loading: true,
-      error: '',
-    });
+  const [
+    { loading, error, products, pages, countProducts, visibleProducts },
+    dispatch,
+  ] = useReducer(reducer, {
+    loading: true,
+    error: '',
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -104,21 +106,23 @@ export default function SearchScreen() {
       <Accordion.Item key={category} eventKey={category}>
         <Accordion.Header>{category}</Accordion.Header>
         <Accordion.Body>
-          <div className="d-flex flex-column">
+          <div className="d-flex flex-column categories-menu">
             <Link
-              className="nav-link py-1"
+              className="nav-link cat-link p-2 rounded-3"
               to={`/boutique/search?category=${category}`}
             >
               Tous les produits {category}
             </Link>
             {categories[category].map((key) => {
               return (
-                <Link
-                  to={`/boutique/search?subCategory=${key}`}
-                  className="nav-link py-1"
-                >
-                  {key}
-                </Link>
+                <>
+                  <Link
+                    to={`/boutique/search?subCategory=${key}`}
+                    className="nav-link sub-cat-link p-2 rounded-3"
+                  >
+                    {key}
+                  </Link>
+                </>
               );
             })}
           </div>
@@ -211,11 +215,14 @@ export default function SearchScreen() {
 
               <Row>
                 <Row>
-                  {products.map((product) => (
-                    <Col key={product._id} sm={6} lg={4} className="mb-3">
-                      <Product product={product}></Product>
-                    </Col>
-                  ))}
+                  {products.map(
+                    (product) =>
+                      product.isVisible === true && (
+                        <Col key={product._id} sm={6} lg={4} className="mb-3">
+                          <Product product={product}></Product>
+                        </Col>
+                      )
+                  )}
                 </Row>
               </Row>
               <div>

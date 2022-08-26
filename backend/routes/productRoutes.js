@@ -17,14 +17,17 @@ const slugify = (str) =>
 
 // RECUPERER TOUS LES PRODUITS
 productRouter.get('/', async (req, res) => {
-  const products = await Product.find();
+  const products = await Product.find({ isVisible: true });
   res.send(products);
 });
 
-// RECUPERER TOUS LES PRODUITS ORDRE ASCENDANT
+// RECUPERER TOUS LES PRODUITS ORDRE ASCENDANT DATE
 productRouter.get('/last-products', async (req, res) => {
-  const products = await Product.aggregate([{ $sort: { createdAt: -1 } }]);
+  const products = await Product.find({ isVisible: true }).sort({
+    createdAt: -1,
+  });
   res.send(products);
+  console.log(products);
 });
 
 // AJOUTER UN PRODUIT
@@ -49,6 +52,7 @@ productRouter.post(
       numReviews: 0,
       rating: 0,
       description: req.body.description,
+      isVisible: true,
     });
     const product = await newProduct.save();
     res.send({
@@ -68,6 +72,7 @@ productRouter.post(
       numReviews: 0,
       rating: 0,
       description: product.description,
+      isVisible: true,
     });
   })
 );
@@ -93,6 +98,7 @@ productRouter.put(
       product.brand = req.body.brand || product.brand;
       product.countInStock = req.body.countInStock || product.countInStock;
       product.description = req.body.description || product.description;
+      product.isVisible = req.body.isVisible || product.isVisible;
 
       const updatedProduct = await product.save();
       res.send({
@@ -109,7 +115,50 @@ productRouter.put(
         brand: updatedProduct.brand,
         countInStock: updatedProduct.countInStock,
         description: updatedProduct.description,
+        isVisible: updatedProduct.isVisible,
       });
+    } else {
+      res.status(404).send({ message: 'Produit non trouvé' });
+    }
+  })
+);
+
+// RETIRER UN PRODUIT DE LA VENTE
+productRouter.put(
+  '/:id/hide',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const productId = req.params.id;
+    const product = await Product.findById(productId);
+
+    if (product) {
+      product.isVisible = false;
+      const updatedProduct = await product.save();
+      res
+        .status(201)
+        .send({ message: 'Produit remis en vente', product: updatedProduct });
+    } else {
+      res.status(404).send({ message: 'Produit non trouvé' });
+    }
+  })
+);
+
+// REMETTRE UN PRODUIT DE LA VENTE
+productRouter.put(
+  '/:id/validate',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const productId = req.params.id;
+    const product = await Product.findById(productId);
+
+    if (product) {
+      product.isVisible = true;
+      const updatedProduct = await product.save();
+      res
+        .status(201)
+        .send({ message: 'Produit remis en vente', product: updatedProduct });
     } else {
       res.status(404).send({ message: 'Produit non trouvé' });
     }
@@ -232,9 +281,7 @@ productRouter.get(
         : {};
 
     const sortOrder =
-      order === 'featured'
-        ? { featured: -1 }
-        : order === 'lowest'
+      order === 'lowest'
         ? { price: 1 }
         : order === 'highest'
         ? { price: -1 }
@@ -249,6 +296,7 @@ productRouter.get(
       ...otherCategoryFilter,
       ...priceFilter,
     })
+      .find({ isVisible: true })
       .sort(sortOrder)
       .skip(pageSize * (page - 1))
       .limit(pageSize);
@@ -375,21 +423,13 @@ productRouter.delete(
     } else {
       res.status(404).send({ message: 'Commentaire non trouvé' });
     }
-
-    const order = await Order.findById(req.params.id);
-    if (order) {
-      await order.remove();
-      res.send({ message: 'Order Deleted' });
-    } else {
-      res.status(404).send({ message: 'Order Not Found' });
-    }
   })
 );
 
 // AFFICHER LE PRODUIT PAR SON SLUG (CLIENT)
 productRouter.get('/slug/:slug', async (req, res) => {
   const product = await Product.findOne({ slug: req.params.slug });
-  if (product) {
+  if (product && product.isVisible === true) {
     res.send(product);
   } else {
     res.status(404).send({ message: 'Produit non trouvé' });
@@ -402,7 +442,7 @@ productRouter.get('/:id', async (req, res) => {
   if (product) {
     res.send(product);
   } else {
-    res.status(404).send({ message: 'Product Not Found' });
+    res.status(404).send({ message: 'Produit non trouvé' });
   }
 });
 

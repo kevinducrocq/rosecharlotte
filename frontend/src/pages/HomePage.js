@@ -12,7 +12,11 @@ const reducer = (state, action) => {
     case 'FETCH_REQUEST':
       return { ...state, loading: true };
     case 'FETCH_SUCCESS':
-      return { ...state, products: action.payload, loading: false };
+      return {
+        ...state,
+        products: action.payload,
+        loading: false,
+      };
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
     default:
@@ -21,11 +25,14 @@ const reducer = (state, action) => {
 };
 
 function HomePage() {
-  const [{ loading, error, products }, dispatch] = useReducer(reducer, {
-    products: [],
-    loading: true,
-    error: '',
-  });
+  const [{ loading, error, products, isVisible }, dispatch] = useReducer(
+    reducer,
+    {
+      products: [],
+      loading: true,
+      error: '',
+    }
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -53,11 +60,12 @@ function HomePage() {
             width={150}
             className="img-fluid mb-3"
           />
-          <h1 className="text-center">Bienvenue sur Rose Charlotte</h1>
+          <h1 className="text-center">
+            Bienvenue sur Rose Charlotte & Compagnie
+          </h1>
         </div>
         <CarouselFade />
       </section>
-
       <section className="mt-5">
         <h2 className="mb-3">Les derniers produits</h2>
         <div>

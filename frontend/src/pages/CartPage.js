@@ -1,7 +1,15 @@
 import React, { useContext } from 'react';
 import { Store } from '../Store';
 import { Helmet } from 'react-helmet-async';
-import { Row, Col, ListGroup, Button, Card, Container } from 'react-bootstrap';
+import {
+  Row,
+  Col,
+  ListGroup,
+  Button,
+  Card,
+  Container,
+  Image,
+} from 'react-bootstrap';
 import MessageBox from '../components/MessageBox';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -50,6 +58,7 @@ export default function CartPage() {
         <title>Panier</title>
       </Helmet>
       <h1 className="my-5 text-center">Panier</h1>
+
       <Row>
         <Col md={8}>
           {cartItems.length === 0 ? (
@@ -57,20 +66,23 @@ export default function CartPage() {
               Votre panier est vide, <Link to="/">Go Shopping</Link>
             </MessageBox>
           ) : (
-            <ListGroup className="mb-3">
+            <ListGroup className="text-center">
               {cartItems.map((item) => (
                 <ListGroup.Item key={item._id}>
                   <Row className="align-items-center">
-                    <Col>
-                      <img
-                        src={item.image}
-                        alt={item.name}
-                        className="img-fluid rounded img-thumbnail"
-                      />{' '}
-                      <Link to={`/product/${item.slug}`}>{item.name}</Link>
+                    <Col md={3} className="d-flex flex-column">
+                      <Link to={`/product/${item.slug}`}>
+                        <Image
+                          src={item.image}
+                          alt={item.name}
+                          fluid
+                          className="rounded-3 img-thumbnail"
+                        />
+                        <div>{item.name}</div>
+                      </Link>
                     </Col>
 
-                    <Col className="text-nowrap">
+                    <Col md={3} className="text-nowrap">
                       <Button
                         variant="light"
                         onClick={() =>
@@ -80,7 +92,7 @@ export default function CartPage() {
                       >
                         <FontAwesomeIcon icon={faMinusCircle} />{' '}
                       </Button>
-                      <span className="mx-3">{item.quantity}</span>
+                      <span className="mx-1">{item.quantity}</span>
                       <Button
                         variant="light"
                         onClick={() =>
@@ -92,10 +104,10 @@ export default function CartPage() {
                       </Button>
                     </Col>
 
-                    <Col>{item.price}&euro;</Col>
+                    <Col md={3}>{item.price}&euro;</Col>
 
-                    <Col className="d-flex">
-                      <div className="ms-auto me-2 my-2">
+                    <Col md={3}>
+                      <div className="my-2">
                         <Button
                           className="btn btn-sm"
                           onClick={() => removeItemHandler(item)}
