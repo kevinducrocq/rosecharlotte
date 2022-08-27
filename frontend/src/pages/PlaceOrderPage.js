@@ -80,6 +80,7 @@ export default function PlaceOrderPage() {
           orderItems: cart.cartItems,
           shippingAddress: cart.shippingAddress,
           paymentMethod: cart.paymentMethod,
+          deliveryMethod: cart.deliveryMethod,
           itemsPrice: cart.itemsPrice,
           shippingPrice: cart.shippingPrice,
           totalPrice: cart.totalPrice,

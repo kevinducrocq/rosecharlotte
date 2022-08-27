@@ -1,8 +1,6 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
-import { Form, Button, Container, Row, Col } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
-import { Store } from '../Store';
+import { Button, Container, Row, Col } from 'react-bootstrap';
 import CheckoutSteps from '../components/CheckoutSteps';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -14,7 +12,6 @@ import DeliveryAddressModal from '../components/ModalDeliveryAddress';
 
 export default function ShippingAddressScreen() {
   const [modalShow, setModalShow] = useState(false);
-
 
   return (
     <Container className="my-5">
@@ -69,10 +66,6 @@ export default function ShippingAddressScreen() {
         show={modalShow}
         onHide={() => setModalShow(false)}
       />
-
-      <div>
-        <h1 className="my-5 text-center">Adresse de livraison</h1>
-      </div>
     </Container>
   );
 }

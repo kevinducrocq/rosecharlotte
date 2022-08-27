@@ -114,6 +114,7 @@ orderRouter.get(
 orderRouter.put(
   '/:id/deliver',
   isAuth,
+  isAdmin,
   expressAsyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id);
 
@@ -126,6 +127,26 @@ orderRouter.put(
       res.send({ message: 'Order Delivered' });
     } else {
       res.status(404).send({ message: 'Order Not Found' });
+    }
+  })
+);
+
+orderRouter.put(
+  '/:id/is-paid',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.id);
+
+    if (order) {
+      order.isPaid = true;
+      order.paidAt = Date.now();
+
+      await order.save();
+
+      res.send({ message: 'Commande payée' });
+    } else {
+      res.status(404).send({ message: 'Commande non trouvée' });
     }
   })
 );

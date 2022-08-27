@@ -42,16 +42,15 @@ export default function PaymentMethodPage() {
         </Helmet>
         <h1 className="my-5 text-center">Moyen de paiement</h1>
 
-        <Form onSubmit={submitHandler}>
-          <Row>
-            <Col md={6}>
+        <Row>
+          <Col md={6}>
+            <Form onSubmit={submitHandler}>
               <Button
                 type="submit"
-                value="PayPal"
+                value="paypal"
                 className="bg2 text-light w-100 p-4"
                 variant="outline-secondary"
                 onClick={(e) => setPaymentMethod(e.target.value)}
-                selected={paymentMethodName === 'paypal'}
               >
                 <h6>Carte bancaire ou PayPal</h6>
                 <FontAwesomeIcon
@@ -62,22 +61,24 @@ export default function PaymentMethodPage() {
                 &nbsp;
                 <FontAwesomeIcon icon={faCcPaypal} size="5x" className="mx-3" />
               </Button>
-            </Col>
-            <Col>
+            </Form>
+          </Col>
+
+          <Col md={6}>
+            <Form onSubmit={submitHandler}>
               <Button
                 type="submit"
-                value="Chèque"
+                value="cheque"
                 className="bg2 text-light w-100 p-4"
                 variant="outline-secondary"
                 onClick={(e) => setPaymentMethod(e.target.value)}
-                selected={paymentMethodName === 'cheque'}
               >
                 <h6>Chèque bancaire</h6>
                 <FontAwesomeIcon icon={faMoneyCheckPen} size="5x" />
               </Button>
-            </Col>
-          </Row>
-        </Form>
+            </Form>
+          </Col>
+        </Row>
       </div>
     </Container>
   );

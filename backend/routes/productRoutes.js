@@ -27,7 +27,6 @@ productRouter.get('/last-products', async (req, res) => {
     createdAt: -1,
   });
   res.send(products);
-  console.log(products);
 });
 
 // AJOUTER UN PRODUIT

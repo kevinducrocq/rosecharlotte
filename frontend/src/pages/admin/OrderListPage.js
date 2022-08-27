@@ -132,6 +132,7 @@ export default function OrderListPage() {
                   {/* <th>Paiement</th> */}
                   <th>Date</th>
                   <th>Total</th>
+                  <th>Méthode</th>
                   <th>Payé</th>
                   <th>Livré</th>
                   <th>Actions</th>
@@ -145,6 +146,7 @@ export default function OrderListPage() {
                     <td>{order.user ? order.user.name : 'Client supprimé'}</td>
                     <td>{order.createdAt.substring(0, 10)}</td>
                     <td>{order.totalPrice.toFixed(2)} &euro;</td>
+                    <td>{order.paymentMethod}</td>
                     <td>
                       <div
                         className={

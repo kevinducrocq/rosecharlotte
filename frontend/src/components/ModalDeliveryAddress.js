@@ -16,7 +16,8 @@ function DeliveryAddressModal(props) {
   const [zip, setZip] = useState(shippingAddress.zip || '');
   const [city, setCity] = useState(shippingAddress.city || '');
   const [country, setCountry] = useState(shippingAddress.city || '');
-  const [deliveryMethod, setDeliveryMethod] = useState('');
+
+  const [deliveryMethodName, setDeliveryMethod] = useState('');
 
   const navigate = useNavigate();
 
@@ -48,6 +49,8 @@ function DeliveryAddressModal(props) {
         country,
       })
     );
+    ctxDispatch({ type: 'SAVE_DELIVERY_METHOD', payload: deliveryMethodName });
+    localStorage.setItem('deliveryMethod', deliveryMethodName);
     navigate('/payment');
   };
 
@@ -58,7 +61,7 @@ function DeliveryAddressModal(props) {
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
-      <Form onSubmit={(submitHandler, deliveryMethod)}>
+      <Form onSubmit={submitHandler}>
         <Modal.Body closeButton>
           <Form.Group className="mb-3" controlId="name">
             <Form.Label>Prénom et nom</Form.Label>
@@ -107,7 +110,8 @@ function DeliveryAddressModal(props) {
             type="submit"
             className="bg1 w-100"
             variant="outline-light"
-            onSubmit={setDeliveryMethod === 'Livraison à domicile'}
+            value="domicile"
+            onClick={(e) => setDeliveryMethod(e.target.value)}
           >
             Continuer
           </Button>

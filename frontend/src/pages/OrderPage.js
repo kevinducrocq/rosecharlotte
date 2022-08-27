@@ -47,6 +47,18 @@ function reducer(state, action) {
         loadingDeliver: false,
         successDeliver: false,
       };
+    case 'IS_PAID_REQUEST':
+      return { ...state, loadingIsPaid: true };
+    case 'IS_PAID_SUCCESS':
+      return { ...state, loadingIsPaid: false, successIsPaid: true };
+    case 'IS_PAID_FAIL':
+      return { ...state, loadingIsPaid: false };
+    case 'IS_PAID_RESET':
+      return {
+        ...state,
+        loadingIsPaid: false,
+        successIsPaid: false,
+      };
     default:
       return state;
   }
@@ -68,6 +80,8 @@ export default function OrderPage() {
       loadingPay,
       loadingDeliver,
       successDeliver,
+      loadingIsPaid,
+      successIsPaid,
     },
     dispatch,
   ] = useReducer(reducer, {
@@ -76,6 +90,10 @@ export default function OrderPage() {
     error: '',
     successPay: false,
     loadingPay: false,
+    isPaid: false,
+    loadingIsPaid: false,
+    loadingDeliver: false,
+    isDelivered: false,
   });
 
   const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
@@ -141,6 +159,9 @@ export default function OrderPage() {
       if (successDeliver) {
         dispatch({ type: 'DELIVER_RESET' });
       }
+      if (successIsPaid) {
+        dispatch({ type: 'IS_PAID_RESET' });
+      }
     } else {
       const loadPaypalScript = async () => {
         const { data: clientId } = await axios.get('/api/keys/paypal', {
@@ -162,6 +183,7 @@ export default function OrderPage() {
     paypalDispatch,
     successPay,
     successDeliver,
+    successIsPaid,
   ]);
 
   async function deliverOrderHandler() {
@@ -179,6 +201,24 @@ export default function OrderPage() {
     } catch (err) {
       toast.error(getError(err));
       dispatch({ type: 'DELIVER_FAIL' });
+    }
+  }
+
+  async function payOrderHandler() {
+    try {
+      dispatch({ type: 'IS_PAID_REQUEST' });
+      const { data } = await axios.put(
+        `/api/orders/${order._id}/is-paid`,
+        {},
+        {
+          headers: { authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+      dispatch({ type: 'IS_PAID_SUCCESS', payload: data });
+      toast.success('La commande a été marquée comme payée');
+    } catch (err) {
+      toast.error(getError(err));
+      dispatch({ type: 'IS_PAID_FAIL' });
     }
   }
 
@@ -283,7 +323,7 @@ export default function OrderPage() {
                     </Col>
                   </Row>
                 </ListGroup.Item>
-                {!order.isPaid && order.paymentMethod === 'PayPal' ? (
+                {!order.isPaid && order.paymentMethod === 'paypal' && (
                   <ListGroup.Item>
                     {isPending ? (
                       <LoadingBox />
@@ -298,7 +338,8 @@ export default function OrderPage() {
                     )}
                     {loadingPay && <LoadingBox></LoadingBox>}
                   </ListGroup.Item>
-                ) : (
+                )}
+                {!order.isPaid && order.paymentMethod === 'cheque' && (
                   <ListGroup.Item className="shadow rounded-3 text-center">
                     Chèque <br /> libellé à l'ordre de "Rose Charlotte &amp;
                     Compagnie <br /> à l'adresse : <br />
@@ -307,6 +348,7 @@ export default function OrderPage() {
                     Ecquedecques
                   </ListGroup.Item>
                 )}
+
                 {userInfo.isAdmin && order.isPaid && !order.isDelivered && (
                   <ListGroup.Item>
                     {loadingDeliver && <LoadingBox></LoadingBox>}
@@ -322,6 +364,24 @@ export default function OrderPage() {
                     </div>
                   </ListGroup.Item>
                 )}
+                {userInfo.isAdmin &&
+                  !order.isPaid &&
+                  !order.isDelivered &&
+                  order.paymentMethod === 'cheque' && (
+                    <ListGroup.Item>
+                      {loadingIsPaid && <LoadingBox></LoadingBox>}
+                      <div className="d-grid">
+                        <Button
+                          type="button"
+                          variant="outline-light"
+                          className="bg1"
+                          onClick={payOrderHandler}
+                        >
+                          Chèque reçu
+                        </Button>
+                      </div>
+                    </ListGroup.Item>
+                  )}
               </ListGroup>
             </Card.Body>
           </Card>
