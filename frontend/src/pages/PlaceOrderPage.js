@@ -103,6 +103,16 @@ export default function PlaceOrderPage() {
     }
   }, [cart, navigate]);
 
+  async function clearPaymentMethod() {
+    ctxDispatch({ type: 'DELIVER_METHOD_CLEAR', payload: cart.deliveryMethod });
+    localStorage.remove('deliveryMethod', cart.deliveryMethod);
+  }
+
+  async function clearPaymentMethod() {
+    ctxDispatch({ type: 'DELIVER_METHOD_CLEAR', payload: cart.deliveryMethod });
+    localStorage.remove('deliveryMethod', cart.deliveryMethod);
+  }
+
   return (
     <Container className="my-5">
       <CheckoutSteps step1 step2 step3 step4></CheckoutSteps>
@@ -121,7 +131,15 @@ export default function PlaceOrderPage() {
                 {cart.shippingAddress.country} <br />
                 <strong>Pays : </strong> {cart.shippingAddress.country}
               </Card.Text>
-              <Link to="/shipping">
+              <Link
+                to="/shipping"
+                onClick={() => {
+                  ctxDispatch({
+                    type: 'DELIVERY_METHOD_CLEAR',
+                    payload: cart.deliveryMethod,
+                  });
+                }}
+              >
                 <FontAwesomeIcon icon={faPenToSquare} /> Modifier
               </Link>
             </Card.Body>
@@ -133,7 +151,15 @@ export default function PlaceOrderPage() {
               <Card.Text>
                 <strong>Méthode:</strong> {cart.paymentMethod}
               </Card.Text>
-              <Link to="/payment">
+              <Link
+                to="/payment"
+                onClick={() => {
+                  ctxDispatch({
+                    type: 'PAYMENT_METHOD_CLEAR',
+                    payload: cart.paymentMethod,
+                  });
+                }}
+              >
                 <FontAwesomeIcon icon={faPenToSquare} /> Modifier
               </Link>
             </Card.Body>

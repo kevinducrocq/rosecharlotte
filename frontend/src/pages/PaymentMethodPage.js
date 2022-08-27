@@ -42,9 +42,9 @@ export default function PaymentMethodPage() {
         </Helmet>
         <h1 className="my-5 text-center">Moyen de paiement</h1>
 
-        <Row>
-          <Col md={6}>
-            <Form onSubmit={submitHandler}>
+        <Form onSubmit={submitHandler}>
+          <Row>
+            <Col md={6}>
               <Button
                 type="submit"
                 value="paypal"
@@ -61,11 +61,9 @@ export default function PaymentMethodPage() {
                 &nbsp;
                 <FontAwesomeIcon icon={faCcPaypal} size="5x" className="mx-3" />
               </Button>
-            </Form>
-          </Col>
+            </Col>
 
-          <Col md={6}>
-            <Form onSubmit={submitHandler}>
+            <Col md={6}>
               <Button
                 type="submit"
                 value="cheque"
@@ -76,9 +74,9 @@ export default function PaymentMethodPage() {
                 <h6>Chèque bancaire</h6>
                 <FontAwesomeIcon icon={faMoneyCheckPen} size="5x" />
               </Button>
-            </Form>
-          </Col>
-        </Row>
+            </Col>
+          </Row>
+        </Form>
       </div>
     </Container>
   );
