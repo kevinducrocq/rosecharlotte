@@ -323,7 +323,7 @@ export default function OrderPage() {
                     </Col>
                   </Row>
                 </ListGroup.Item>
-                {!order.isPaid && order.paymentMethod === 'paypal' && (
+                {!order.isPaid && order.paymentMethod === 'PayPal' && (
                   <ListGroup.Item>
                     {isPending ? (
                       <LoadingBox />
@@ -339,7 +339,7 @@ export default function OrderPage() {
                     {loadingPay && <LoadingBox></LoadingBox>}
                   </ListGroup.Item>
                 )}
-                {!order.isPaid && order.paymentMethod === 'cheque' && (
+                {!order.isPaid && order.paymentMethod === 'Chèque' && (
                   <ListGroup.Item className="shadow rounded-3 text-center">
                     Chèque <br /> libellé à l'ordre de "Rose Charlotte &amp;
                     Compagnie <br /> à l'adresse : <br />
@@ -367,7 +367,7 @@ export default function OrderPage() {
                 {userInfo.isAdmin &&
                   !order.isPaid &&
                   !order.isDelivered &&
-                  order.paymentMethod === 'cheque' && (
+                  order.paymentMethod === 'Chèque' && (
                     <ListGroup.Item>
                       {loadingIsPaid && <LoadingBox></LoadingBox>}
                       <div className="d-grid">
