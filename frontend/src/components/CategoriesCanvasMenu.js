@@ -45,6 +45,7 @@ export default function CategoriesCanvasMenu() {
                 <Link
                   to={`/boutique/search?subCategory=${key}`}
                   className="nav-link my-2"
+                  onClick={handleClose}
                 >
                   {key}
                 </Link>
