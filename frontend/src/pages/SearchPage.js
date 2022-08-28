@@ -141,22 +141,24 @@ export default function SearchScreen() {
           <SearchBox />
         </Col>
         <Col md={2} className="mt-2">
-          Filtrer{' '}
-          <select
-            value={order}
-            onChange={(e) => {
-              navigate(getFilterUrl({ order: e.target.value }));
-            }}
-          >
-            <option value="newest">Les nouveaux produits</option>
-            <option value="lowest">Prix : du - au +</option>
-            <option value="highest">Prix : du + au -</option>
-          </select>
+          <div className="text-center text-nowrap">
+            Filtrer{' '}
+            <select
+              value={order}
+              onChange={(e) => {
+                navigate(getFilterUrl({ order: e.target.value }));
+              }}
+            >
+              <option value="newest">Les nouveaux produits</option>
+              <option value="lowest">Prix : du - au +</option>
+              <option value="highest">Prix : du + au -</option>
+            </select>
+          </div>
         </Col>
       </Row>
       <Row>
         <Col md={3}>
-          <div className="text-center mb-2 d-none d-sm-block d-lg-block">
+          <div className="text-center mb-2 d-none d-lg-block d-md-block">
             <h4>Catégories</h4>
             <Link
               className="badge nav-link bg1 p-2"
@@ -181,7 +183,7 @@ export default function SearchScreen() {
                 {error}
               </MessageBox>
             ) : (
-              <Accordion className="d-none d-sm-block d-lg-block d-md-none">
+              <Accordion className="d-none d-lg-block d-md-block">
                 {renderedCategories}
               </Accordion>
             )}
