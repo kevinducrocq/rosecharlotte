@@ -16,6 +16,7 @@ import { Accordion, Badge, Container } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimesCircle } from '@fortawesome/pro-solid-svg-icons';
 import { LinkContainer } from 'react-router-bootstrap';
+import CategoriesCanvasMenu from '../components/CategoriesCanvasMenu';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -155,7 +156,7 @@ export default function SearchScreen() {
       </Row>
       <Row>
         <Col md={3}>
-          <div className="d-flex my-3 align-items-center justify-content-between">
+          <div className="text-center mb-2 d-none d-sm-block d-lg-block">
             <h4>Catégories</h4>
             <Link
               className="badge nav-link bg1 p-2"
@@ -167,12 +168,20 @@ export default function SearchScreen() {
           </div>
 
           <div className="boutique-categories-menu">
+            <div className="d-lg-none d-md-none text-nowrap mb-3">
+              <CategoriesCanvasMenu />
+            </div>
             {loading ? (
-              <LoadingBox></LoadingBox>
+              <LoadingBox className="d-none d-sm-block d-lg-block"></LoadingBox>
             ) : error ? (
-              <MessageBox variant="danger">{error}</MessageBox>
+              <MessageBox
+                variant="danger"
+                className="d-none d-sm-block d-lg-block"
+              >
+                {error}
+              </MessageBox>
             ) : (
-              <Accordion className="d-none d-sm-block d-lg-block">
+              <Accordion className="d-none d-sm-block d-lg-block d-md-none">
                 {renderedCategories}
               </Accordion>
             )}

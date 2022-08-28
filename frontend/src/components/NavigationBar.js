@@ -10,27 +10,22 @@ import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
 import {
   Accordion,
-  Button,
   Container,
   Image,
   Nav,
   Navbar,
   NavDropdown,
-  Offcanvas,
 } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Store } from '../Store';
 import { getError } from '../utils';
+import CategoriesCanvasMenu from './CategoriesCanvasMenu';
 
 function NavigationBar() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { cart, userInfo } = state;
-  const [show, setShow] = useState(false);
-
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
 
   const signoutHandler = () => {
     ctxDispatch({ type: 'USER_SIGNOUT' });
@@ -52,35 +47,6 @@ function NavigationBar() {
     };
     fetchCategories();
   }, []);
-
-  const renderedCategories2 = [];
-  Object.keys(categories).forEach(function (category) {
-    renderedCategories2.push(
-      <Accordion.Item key={category} eventKey={category}>
-        <Accordion.Header>{category}</Accordion.Header>
-        <Accordion.Body>
-          <div className="d-flex flex-column">
-            <Link
-              className="nav-link mb-2"
-              to={`/boutique/search?category=${category}`}
-            >
-              Tous les produits {category}
-            </Link>
-            {categories[category].map((key) => {
-              return (
-                <Link
-                  to={`/boutique/search?subCategory=${key}`}
-                  className="nav-link my-2"
-                >
-                  {key}
-                </Link>
-              );
-            })}
-          </div>
-        </Accordion.Body>
-      </Accordion.Item>
-    );
-  });
 
   const renderedCategories = [];
   Object.keys(categories).forEach(function (category) {
@@ -190,36 +156,7 @@ function NavigationBar() {
         <Nav className="navbar2">
           <Container className="d-flex">
             <div className="d-lg-none text-nowrap">
-              <Button
-                variant="outline-none"
-                className="nav-link border-0"
-                onClick={handleShow}
-              >
-                <FontAwesomeIcon icon={faReel} />
-                &nbsp; Catégories
-              </Button>
-
-              <Offcanvas show={show} onHide={handleClose}>
-                <Offcanvas.Header closeButton>
-                  <Offcanvas.Title className="d-flex align-items-center">
-                    <FontAwesomeIcon icon={faReel} size="2x" />
-                    &nbsp;
-                    <h4>Catégories</h4>
-                  </Offcanvas.Title>
-                </Offcanvas.Header>
-                <Offcanvas.Body>
-                  <div className="d-flex my-3 align-items-center justify-content-between">
-                    <Link
-                      className="badge nav-link bg1 p-2"
-                      variant="outline-light"
-                      to={'/boutique/search?category=all'}
-                    >
-                      Voir tout
-                    </Link>
-                  </div>
-                  <Accordion>{renderedCategories2}</Accordion>
-                </Offcanvas.Body>
-              </Offcanvas>
+              <CategoriesCanvasMenu />
             </div>
 
             <div className="d-none d-lg-flex">{renderedCategories}</div>
