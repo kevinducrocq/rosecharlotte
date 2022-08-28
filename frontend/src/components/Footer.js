@@ -1,39 +1,41 @@
-import { Image } from 'react-bootstrap';
+import { Col, Container, Image, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 export default function Footer() {
   return (
-    <footer className="bg1 text-white">
-      <div className="d-flex justify-content-around align-items-center p-5">
-        <div className="text-center logo-footer">
-          <Image src="../logo-site.png" width={150} />
-        </div>
-        <div className="text-center">
-          <Link className="nav-link" to="/cgv">
-            Condition générales de vente
-          </Link>
-          <Link className="nav-link" to="/mentions">
-            Mentions Légales
-          </Link>
-          <Link className="nav-link" to="/serviceclient">
-            Service Client
-          </Link>
-        </div>
-        <div className="text-center">
-          <Link className="nav-link" to="/">
-            Accueil
-          </Link>
-          <Link className="nav-link" to="/boutique/search">
-            Boutique
-          </Link>
-          <Link className="nav-link" to="/about">
-            A propos
-          </Link>
-          <Link className="nav-link" to="/contact">
-            Contact
-          </Link>
-        </div>
-      </div>
+    <footer className="bg1 text-white p-3">
+      <Container>
+        <Row className="justify-content-between align-items-center">
+          <Col md={4} className="text-center d-sm-none d-md-block d-lg-block">
+            <Image src="../logo-site.png" width={150} />
+          </Col>
+          <Col md={4} className="text-center">
+            <Link className="nav-link" to="/cgv">
+              Condition générales de vente
+            </Link>
+            <Link className="nav-link" to="/mentions">
+              Mentions Légales
+            </Link>
+            <Link className="nav-link" to="/serviceclient">
+              Service Client
+            </Link>
+          </Col>
+          <Col md={4} className="text-center">
+            <Link className="nav-link" to="/">
+              Accueil
+            </Link>
+            <Link className="nav-link" to="/boutique/search">
+              Boutique
+            </Link>
+            <Link className="nav-link" to="/about">
+              A propos
+            </Link>
+            <Link className="nav-link" to="/contact">
+              Contact
+            </Link>
+          </Col>
+        </Row>
+      </Container>
     </footer>
   );
 }

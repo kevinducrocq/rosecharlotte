@@ -10,7 +10,6 @@ import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
 import {
   Accordion,
-  Badge,
   Button,
   Container,
   Image,
@@ -109,40 +108,50 @@ function NavigationBar() {
   return (
     <>
       <div className="fixed-top shadow">
-        <Navbar variant="light" expand="lg">
+        <Navbar variant="light" expand="lg" collapseOnSelect={true}>
           <Container>
             <LinkContainer to="/">
               <Image src="../logo-site.png" width={60} />
             </LinkContainer>
 
             <Nav>
-              <Link to="/cart" className="nav-link mobile-cart">
-                <div className="cart-link">
-                  <FontAwesomeIcon icon={faShoppingCart} /> Panier{' '}
-                  {cart.cartItems.length > 0 && (
-                    <div className="bg1 text-white rounded-5 badge">
-                      {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
-                    </div>
-                  )}
-                </div>
-              </Link>
+              <Nav.Link eventKey="i">
+                <Link to="/cart" className="nav-link mobile-cart">
+                  <div className="cart-link">
+                    <FontAwesomeIcon icon={faShoppingCart} /> Panier{' '}
+                    {cart.cartItems.length > 0 && (
+                      <div className="bg1 text-white rounded-5 badge">
+                        {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
+                      </div>
+                    )}
+                  </div>
+                </Link>
+              </Nav.Link>
             </Nav>
 
             <Navbar.Toggle aria-controls="basic-navbar-nav" />
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="m-auto menu-principal align-items-center">
-                <Link className="nav-link" to="/">
-                  Accueil
-                </Link>
-                <Link className="nav-link" to="/boutique/search">
-                  Boutique
-                </Link>
-                <Link className="nav-link" to="/about">
-                  A propos
-                </Link>
-                <Link className="nav-link" to="/contact">
-                  Contact
-                </Link>
+                <Nav.Link eventKey="i">
+                  <Link className="nav-link" to="/">
+                    Accueil
+                  </Link>
+                </Nav.Link>
+                <Nav.Link eventKey="i">
+                  <Link className="nav-link" to="/boutique/search">
+                    Boutique
+                  </Link>
+                </Nav.Link>
+                <Nav.Link eventKey="i">
+                  <Link className="nav-link" to="/about">
+                    A propos
+                  </Link>
+                </Nav.Link>
+                <Nav.Link eventKey="i">
+                  <Link className="nav-link" to="/contact">
+                    Contact
+                  </Link>
+                </Nav.Link>
 
                 <a
                   href="https://www.facebook.com/Rose-Charlotte-compagnie-261590004642619"
@@ -161,16 +170,18 @@ function NavigationBar() {
               </Nav>
 
               <Nav>
-                <Link to="/cart" className="nav-link site-cart">
-                  <div className="cart-link">
-                    <FontAwesomeIcon icon={faShoppingCart} /> Panier{' '}
-                    {cart.cartItems.length > 0 && (
-                      <div className="bg3 text-dark rounded-5 badge">
-                        {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
-                      </div>
-                    )}
-                  </div>
-                </Link>
+                <Nav.Link eventKey="i">
+                  <Link to="/cart" className="nav-link site-cart">
+                    <div className="cart-link">
+                      <FontAwesomeIcon icon={faShoppingCart} /> Panier{' '}
+                      {cart.cartItems.length > 0 && (
+                        <div className="bg3 text-dark rounded-5 badge">
+                          {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
+                        </div>
+                      )}
+                    </div>
+                  </Link>
+                </Nav.Link>
               </Nav>
             </Navbar.Collapse>
           </Container>

@@ -329,7 +329,6 @@ export default function ProductAddPage() {
                         </InputGroup.Text>
                         <Form.Control
                           className={categoryInputIsVisible ? '' : 'd-none'}
-                          value={category}
                           onChange={(e) => setCategory(e.target.value)}
                           placeholder="Nom"
                         />

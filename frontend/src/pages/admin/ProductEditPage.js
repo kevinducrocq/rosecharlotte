@@ -123,7 +123,7 @@ export default function ProductEditPage() {
   Object.keys(categories).forEach(function (category) {
     renderedCategories.push(
       <option
-        selected={category}
+        selected={productId.category}
         key={category}
         value={category}
         onChange={(e) => setCategory(e.target.value)}
@@ -376,7 +376,6 @@ export default function ProductEditPage() {
                         </InputGroup.Text>
                         <Form.Control
                           className={categoryInputIsVisible ? '' : 'd-none'}
-                          value={category}
                           onChange={(e) => setCategory(e.target.value)}
                           placeholder="Nom"
                         />
@@ -417,7 +416,6 @@ export default function ProductEditPage() {
                       </InputGroup.Text>
                       <Form.Control
                         className={subCategoryInputIsVisible ? '' : 'd-none'}
-                        value={subCategory}
                         onChange={(e) => setSubCategory(e.target.value)}
                         placeholder="Nom"
                       />

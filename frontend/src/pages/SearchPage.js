@@ -172,7 +172,9 @@ export default function SearchScreen() {
             ) : error ? (
               <MessageBox variant="danger">{error}</MessageBox>
             ) : (
-              <Accordion>{renderedCategories}</Accordion>
+              <Accordion className="d-none d-sm-block d-lg-block">
+                {renderedCategories}
+              </Accordion>
             )}
           </div>
         </Col>

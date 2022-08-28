@@ -1,9 +1,13 @@
 import React from 'react';
 import { Col, Container, Image, Row } from 'react-bootstrap';
+import { Helmet } from 'react-helmet-async';
 
 export default function AboutPage() {
   return (
     <Container className="my-5">
+      <Helmet>
+        <title>A propos</title>
+      </Helmet>
       <h1 className="text-center">A propos de Rose Charlotte</h1>
       <div className="mt-5">
         <hr />
