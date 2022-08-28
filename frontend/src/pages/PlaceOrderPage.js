@@ -103,16 +103,6 @@ export default function PlaceOrderPage() {
     }
   }, [cart, navigate]);
 
-  async function clearPaymentMethod() {
-    ctxDispatch({ type: 'DELIVER_METHOD_CLEAR', payload: cart.deliveryMethod });
-    localStorage.remove('deliveryMethod', cart.deliveryMethod);
-  }
-
-  async function clearPaymentMethod() {
-    ctxDispatch({ type: 'DELIVER_METHOD_CLEAR', payload: cart.deliveryMethod });
-    localStorage.remove('deliveryMethod', cart.deliveryMethod);
-  }
-
   return (
     <Container className="my-5">
       <CheckoutSteps step1 step2 step3 step4></CheckoutSteps>
@@ -127,19 +117,10 @@ export default function PlaceOrderPage() {
                 <strong>Nom | Prénom : </strong> {cart.shippingAddress.name}
                 <br />
                 <strong>Adresse : </strong> {cart.shippingAddress.address},{' '}
-                {cart.shippingAddress.zip}, {cart.shippingAddress.city}{' '}
-                {cart.shippingAddress.country} <br />
+                {cart.shippingAddress.zip}, {cart.shippingAddress.city} <br />
                 <strong>Pays : </strong> {cart.shippingAddress.country}
               </Card.Text>
-              <Link
-                to="/shipping"
-                onClick={() => {
-                  ctxDispatch({
-                    type: 'DELIVERY_METHOD_CLEAR',
-                    payload: cart.deliveryMethod,
-                  });
-                }}
-              >
+              <Link to="/shipping">
                 <FontAwesomeIcon icon={faPenToSquare} /> Modifier
               </Link>
             </Card.Body>
@@ -151,15 +132,7 @@ export default function PlaceOrderPage() {
               <Card.Text>
                 <strong>Méthode:</strong> {cart.paymentMethod}
               </Card.Text>
-              <Link
-                to="/payment"
-                onClick={() => {
-                  ctxDispatch({
-                    type: 'PAYMENT_METHOD_CLEAR',
-                    payload: cart.paymentMethod,
-                  });
-                }}
-              >
+              <Link to="/payment">
                 <FontAwesomeIcon icon={faPenToSquare} /> Modifier
               </Link>
             </Card.Body>

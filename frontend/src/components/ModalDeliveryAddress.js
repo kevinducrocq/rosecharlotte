@@ -1,5 +1,11 @@
+import {
+  faHouse,
+  faPersonCarryBox,
+  faStore,
+} from '@fortawesome/pro-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useContext, useEffect, useState } from 'react';
-import { Form } from 'react-bootstrap';
+import { Col, Form, Row } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from 'react-router-dom';
@@ -18,6 +24,7 @@ function DeliveryAddressModal(props) {
   const [country, setCountry] = useState(shippingAddress.city || '');
 
   const [deliveryMethodName, setDeliveryMethod] = useState('');
+  const [modalShow, setModalShow] = useState(false);
 
   const navigate = useNavigate();
 
@@ -55,69 +62,108 @@ function DeliveryAddressModal(props) {
   };
 
   return (
-    <Modal
-      {...props}
-      size="lg"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
-    >
-      <Form onSubmit={submitHandler}>
-        <Modal.Body closeButton>
-          <Form.Group className="mb-3" controlId="name">
-            <Form.Label>Prénom et nom</Form.Label>
-            <Form.Control
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="address">
-            <Form.Label>Adresse</Form.Label>
-            <Form.Control
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-              required
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="zip">
-            <Form.Label>Code postal</Form.Label>
-            <Form.Control
-              value={zip}
-              onChange={(e) => setZip(e.target.value)}
-              required
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="city">
-            <Form.Label>Ville</Form.Label>
-            <Form.Control
-              value={city}
-              onChange={(e) => setCity(e.target.value)}
-              required
-            />
-          </Form.Group>
-
-          <Form.Group className="mb-3" controlId="city">
-            <Form.Label>Pays</Form.Label>
-            <Form.Control
-              value={country}
-              onChange={(e) => setCountry(e.target.value)}
-              required
-            />
-          </Form.Group>
-        </Modal.Body>
-        <Modal.Footer>
+    <>
+      <Row>
+        <Col md={4}>
           <Button
-            type="submit"
-            className="bg1 w-100"
-            variant="outline-light"
             value="domicile"
-            onClick={(e) => setDeliveryMethod(e.target.value)}
+            className="bg2 text-light w-100 p-4 mb-2"
+            variant="outline-secondary"
+            // onClick={(e) => setDeliveryMethod(e.target.value)}
+            onClick={() => setModalShow(true)}
           >
-            Continuer
+            <h6>À domicile</h6>
+            <FontAwesomeIcon icon={faHouse} size="5x" />
           </Button>
-        </Modal.Footer>
-      </Form>
-    </Modal>
+        </Col>
+        <Col md={4}>
+          <Button
+            value="pointRelais"
+            className="bg2 text-light w-100 p-4 mb-2"
+            variant="outline-secondary"
+            // onClick={(e) => setDeliveryMethod(e.target.value)}
+          >
+            <h6>Point relais</h6>
+            <FontAwesomeIcon icon={faStore} size="5x" />
+          </Button>
+        </Col>
+        <Col md={4}>
+          <Button
+            value="domicile"
+            className="bg2 text-light w-100 p-4"
+            variant="outline-secondary"
+            // onClick={(e) => setDeliveryMethod(e.target.value)}
+          >
+            <h6>Dans nos locaux</h6>
+            <FontAwesomeIcon icon={faPersonCarryBox} size="5x" />
+          </Button>
+        </Col>
+      </Row>
+      <Modal
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        <Form onSubmit={submitHandler}>
+          <Modal.Body closeButton>
+            <Form.Group className="mb-3" controlId="name">
+              <Form.Label>Prénom et nom</Form.Label>
+              <Form.Control
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="address">
+              <Form.Label>Adresse</Form.Label>
+              <Form.Control
+                value={address}
+                onChange={(e) => setAddress(e.target.value)}
+                required
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="zip">
+              <Form.Label>Code postal</Form.Label>
+              <Form.Control
+                value={zip}
+                onChange={(e) => setZip(e.target.value)}
+                required
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="city">
+              <Form.Label>Ville</Form.Label>
+              <Form.Control
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+                required
+              />
+            </Form.Group>
+
+            <Form.Group className="mb-3" controlId="city">
+              <Form.Label>Pays</Form.Label>
+              <Form.Control
+                value={country}
+                onChange={(e) => setCountry(e.target.value)}
+                required
+              />
+            </Form.Group>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button
+              type="submit"
+              className="bg1 w-100"
+              variant="outline-light"
+              value="domicile"
+              onClick={(e) => setDeliveryMethod(e.target.value)}
+            >
+              Continuer
+            </Button>
+          </Modal.Footer>
+        </Form>
+      </Modal>
+    </>
   );
 }
 
