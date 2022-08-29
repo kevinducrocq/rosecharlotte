@@ -48,7 +48,9 @@ export default function SignupPage() {
   };
 
   useEffect(() => {
-    if (userInfo) navigate(redirect);
+    if (userInfo) {
+      navigate(redirect);
+    }
   }, [navigate, redirect, userInfo]);
 
   return (
@@ -128,7 +130,8 @@ export default function SignupPage() {
               </Button>
             </div>
             <div className="mb-3">
-              Déjà client ? <Link to={`/signin`}>Connectez-vous!</Link>
+              Déjà client ?{' '}
+              <Link to={`/signin?redirect=${redirect}`}>Connectez-vous!</Link>
             </div>
           </Form>
         </Col>

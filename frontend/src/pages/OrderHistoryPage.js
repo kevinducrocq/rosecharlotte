@@ -73,7 +73,7 @@ const OrderHistoryPage = () => {
           <tbody>
             {orders.map((order) => (
               <tr key={order._id}>
-                <td>{order._id.substring(0, 5)}</td>
+                <td>{order._id.substring(0, 7)}</td>
                 <td>{order.createdAt.substring(0, 10)}</td>
                 <td>{order.totalPrice.toFixed(2)} &euro;</td>
                 <td>{order.isPaid ? order.paidAt.substring(0, 10) : 'Non'}</td>

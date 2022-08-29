@@ -16,6 +16,7 @@ userRouter.put(
       user.address = req.body.address || user.address;
       user.zip = req.body.zip || user.zip;
       user.city = req.body.city || user.city;
+      user.country = req.body.country || user.country;
       if (req.body.password) {
         user.password = bcrypt.hashSync(req.body.password, 8);
       }
@@ -28,6 +29,7 @@ userRouter.put(
         address: updatedUser.address,
         zip: updatedUser.zip,
         city: updatedUser.city,
+        country: updatedUser.country,
         isAdmin: updatedUser.isAdmin,
         token: generateToken(updatedUser),
       });

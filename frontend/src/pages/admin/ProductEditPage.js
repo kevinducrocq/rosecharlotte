@@ -108,6 +108,7 @@ export default function ProductEditPage() {
       }
     };
     fetchData();
+
     const fetchCategories = async () => {
       try {
         const { data } = await axios.get(`/api/products/categories`);
@@ -120,15 +121,14 @@ export default function ProductEditPage() {
   }, [productId]);
 
   const renderedCategories = [];
-  Object.keys(categories).forEach(function (category) {
+  Object.keys(categories).forEach(function (mapCategory) {
     renderedCategories.push(
       <option
-        selected={productId.category}
-        key={category}
-        value={category}
+        key={mapCategory}
+        value={mapCategory}
         onChange={(e) => setCategory(e.target.value)}
       >
-        {category}
+        {mapCategory}
       </option>
     );
   });
@@ -139,7 +139,7 @@ export default function ProductEditPage() {
       <>
         {categories[category].map((key) => {
           return (
-            <option value={key} key={key} selected={key}>
+            <option value={key} key={key}>
               {key}
             </option>
           );
@@ -347,12 +347,15 @@ export default function ProductEditPage() {
                 <>
                   <Col md={8}>
                     <Form.Group className="mb-3" controlId="category">
-                      <Form.Label>Séléctionner une catégorie &nbsp;</Form.Label>
+                      <Form.Label>
+                        Séléctionner une catégorie &nbsp; (Choix :{' '}
+                        <strong> {category}</strong>)
+                      </Form.Label>
                       <Form.Select
                         aria-label="category select"
                         onChange={(e) => setCategory(e.target.value)}
                       >
-                        <option value="1">Choisissez...</option>
+                        <option>Choisir si changement</option>
                         {renderedCategories}
                       </Form.Select>
                     </Form.Group>
@@ -386,12 +389,15 @@ export default function ProductEditPage() {
               </Row>
               <Row>
                 <Col md={8}>
-                  <Form.Label>Séléctionner une sous-catégorie</Form.Label>
+                  <Form.Label>
+                    Séléctionner une sous-catégorie (Choix :{' '}
+                    <strong>{subCategory}</strong>)
+                  </Form.Label>
                   <Form.Select
                     aria-label="category select"
                     onChange={(e) => setSubCategory(e.target.value)}
                   >
-                    <option>Choisissez...</option>
+                    <option>Choisir si changement</option>
                     {renderedSubCategories}
                   </Form.Select>
                 </Col>

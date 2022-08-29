@@ -141,7 +141,7 @@ export default function OrderListPage() {
               <tbody>
                 {orders.map((order) => (
                   <tr key={order._id}>
-                    <td>{order._id.substring(0, 5)}</td>
+                    <td>{order._id.substring(0, 7)}</td>
                     {/* <td>{order.paymentMethod}</td> */}
                     <td>{order.user ? order.user.name : 'Client supprimé'}</td>
                     <td>{order.createdAt.substring(0, 10)}</td>

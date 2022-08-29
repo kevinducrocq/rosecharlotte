@@ -36,7 +36,9 @@ export default function SigninPage() {
   };
 
   useEffect(() => {
-    if (userInfo) navigate(redirect);
+    if (userInfo) {
+      navigate(redirect);
+    }
   }, [navigate, redirect, userInfo]);
 
   return (
@@ -74,7 +76,8 @@ export default function SigninPage() {
               </Button>
             </div>
             <div className="mb-3">
-              Nouveau client ? <Link to={`/signup`}>Inscrivez-vous !</Link>
+              Nouveau client ?{' '}
+              <Link to={`/signup?redirect=${redirect}`}>Inscrivez-vous !</Link>
             </div>
           </Form>
         </Col>
