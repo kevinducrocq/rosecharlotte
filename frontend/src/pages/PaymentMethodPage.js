@@ -22,11 +22,11 @@ export default function PaymentMethodPage() {
 
   let [paymentMethodName, setPaymentMethod] = useState('');
 
-  useEffect(() => {
-    if (!shippingAddress.address) {
-      navigate('/shipping');
-    }
-  }, [shippingAddress, navigate]);
+  // useEffect(() => {
+  //   if (!shippingAddress.address) {
+  //     navigate('/shipping');
+  //   }
+  // }, [shippingAddress, navigate]);
 
   const submitPaypalHandler = (e) => {
     e.preventDefault();

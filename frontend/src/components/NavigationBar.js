@@ -1,21 +1,13 @@
 import {
   faArrowRightToBracket,
   faPen,
-  faReel,
   faShoppingCart,
 } from '@fortawesome/pro-solid-svg-icons';
 import { faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import { useContext, useEffect, useState } from 'react';
-import {
-  Accordion,
-  Container,
-  Image,
-  Nav,
-  Navbar,
-  NavDropdown,
-} from 'react-bootstrap';
+import { Container, Image, Nav, Navbar, NavDropdown } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';

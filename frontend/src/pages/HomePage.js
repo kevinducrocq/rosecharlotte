@@ -86,7 +86,14 @@ function HomePage() {
       </section>
 
       <section className="mt-5">
-        <h2>Les avis des clients</h2>
+        <h2>Les dernières promotions</h2>
+        <Row>
+          {products.slice(0, 8).map((product) => (
+            <Col key={product.slug} sm={6} md={4} lg={3} className="mb-3">
+              <Product product={product}></Product>
+            </Col>
+          ))}
+        </Row>
       </section>
     </Container>
   );

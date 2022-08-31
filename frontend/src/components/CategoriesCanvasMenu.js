@@ -43,6 +43,7 @@ export default function CategoriesCanvasMenu() {
             {categories[category].map((key) => {
               return (
                 <Link
+                  key={key}
                   to={`/boutique/search?subCategory=${key}`}
                   className="nav-link my-2"
                   onClick={handleClose}
@@ -68,9 +69,9 @@ export default function CategoriesCanvasMenu() {
         {categories[category].map((key) => {
           return (
             <LinkContainer
+              key={key}
               to={`/boutique/search?subCategory=${key}`}
               className="nav-link text-dark"
-              key={key}
             >
               <NavDropdown.Item>{key}</NavDropdown.Item>
             </LinkContainer>

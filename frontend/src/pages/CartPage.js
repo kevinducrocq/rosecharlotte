@@ -63,7 +63,8 @@ export default function CartPage() {
         <Col md={8}>
           {cartItems.length === 0 ? (
             <MessageBox>
-              Votre panier est vide, <Link to="/">Go Shopping</Link>
+              Votre panier est vide,{' '}
+              <Link to="/boutique/search">Go Shopping</Link>
             </MessageBox>
           ) : (
             <ListGroup className="text-center">

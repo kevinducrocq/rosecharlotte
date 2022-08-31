@@ -18,6 +18,7 @@ import axios from 'axios';
 import LoadingBox from '../components/LoadingBox';
 import { faPenToSquare } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { send } from 'emailjs-com';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -97,6 +98,24 @@ export default function PlaceOrderPage() {
     }
   };
 
+  // const sendEmail = (e) => {
+  //   e.preventDefault();
+  //   send(
+  //     'service_k6w1mkp',
+  //     'template_q4nenia',
+  //     { senderName, senderEmail, message },
+  //     'avpCoPewjR1-y5tpA'
+  //   )
+  //     .then((response) => {
+  //       console.log('Message envoyé', response.status, response.text);
+  //       navigate('/contact');
+  //       toast.success('Merci pour votre message');
+  //     })
+  //     .catch((err) => {
+  //       console.log('Erreur', err);
+  //     });
+  // };
+
   useEffect(() => {
     if (!cart.paymentMethod) {
       navigate('/payment');
@@ -111,19 +130,33 @@ export default function PlaceOrderPage() {
       <Row>
         <Col md={8}>
           <Card className="mb-3 bg-light">
-            <Card.Body>
-              <Card.Title>Livraison</Card.Title>
-              <Card.Text>
-                <strong>Nom | Prénom : </strong> {cart.shippingAddress.name}
-                <br />
-                <strong>Adresse : </strong> {cart.shippingAddress.address},{' '}
-                {cart.shippingAddress.zip}, {cart.shippingAddress.city} <br />
-                <strong>Pays : </strong> {cart.shippingAddress.country}
-              </Card.Text>
-              <Link to="/shipping">
-                <FontAwesomeIcon icon={faPenToSquare} /> Modifier
-              </Link>
-            </Card.Body>
+            {cart.deliveryMethod === 'Local' ? (
+              <Card.Body>
+                <Card.Title>Commande à retirer dans nos Locaux</Card.Title>
+                <Card.Text>
+                  <strong>Addresse : </strong> 20, MAIN STREET <br />
+                  <strong>Code postal :</strong> 62190 <br />
+                  <strong>Ville : </strong> Ecquedecques
+                </Card.Text>
+                <Link to="/shipping">
+                  <FontAwesomeIcon icon={faPenToSquare} /> Modifier
+                </Link>
+              </Card.Body>
+            ) : (
+              <Card.Body>
+                <Card.Title>Livraison</Card.Title>
+                <Card.Text>
+                  <strong>Nom | Prénom : </strong> {cart.shippingAddress.name}
+                  <br />
+                  <strong>Adresse : </strong> {cart.shippingAddress.address},{' '}
+                  {cart.shippingAddress.zip}, {cart.shippingAddress.city} <br />
+                  <strong>Pays : </strong> {cart.shippingAddress.country}
+                </Card.Text>
+                <Link to="/shipping">
+                  <FontAwesomeIcon icon={faPenToSquare} /> Modifier
+                </Link>
+              </Card.Body>
+            )}
           </Card>
 
           <Card className="mb-3 bg-light">

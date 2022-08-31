@@ -18,11 +18,11 @@ const orderSchema = new mongoose.Schema(
     ],
     deliveryMethod: { type: String, required: true },
     shippingAddress: {
-      name: { type: String, required: true },
-      address: { type: String, required: true },
-      zip: { type: String, required: true },
-      city: { type: String, required: true },
-      country: { type: String, required: true },
+      name: { type: String },
+      address: { type: String },
+      zip: { type: String },
+      city: { type: String },
+      country: { type: String },
     },
     paymentResult: {
       id: String,

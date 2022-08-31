@@ -150,17 +150,18 @@ export default function OrderPage() {
       !order._id ||
       successPay ||
       successDeliver ||
+      successIsPaid ||
       (order._id && order._id !== orderId)
     ) {
       fetchOrder();
       if (successPay) {
         dispatch({ type: 'PAY_RESET' });
       }
-      if (successDeliver) {
-        dispatch({ type: 'DELIVER_RESET' });
-      }
       if (successIsPaid) {
         dispatch({ type: 'IS_PAID_RESET' });
+      }
+      if (successDeliver) {
+        dispatch({ type: 'DELIVER_RESET' });
       }
     } else {
       const loadPaypalScript = async () => {
@@ -238,15 +239,25 @@ export default function OrderPage() {
       <Row>
         <Col md={8}>
           <Card className="mb-3">
+            {order.shippingAddress ? (
+              <Card.Body>
+                <Card.Title>Livraison</Card.Title>
+                <Card.Text>
+                  <strong>Nom | Prénom :</strong> {order.shippingAddress.name}{' '}
+                  <br />
+                  <strong>Adresse : </strong> {order.shippingAddress.address},{' '}
+                  {order.shippingAddress.zip}, {order.shippingAddress.city},{' '}
+                  {order.shippingAddress.country} <br />
+                </Card.Text>
+              </Card.Body>
+            ) : (
+              <Card.Body>
+                <Card.Title>Commande à récupérer pour : </Card.Title>
+                <strong>Nom | Prénom : </strong> {order.user.name} <br />
+                <strong>Email : </strong> {order.user.email}
+              </Card.Body>
+            )}
             <Card.Body>
-              <Card.Title>Livraison</Card.Title>
-              <Card.Text>
-                <strong>Nom | Prénom :</strong> {order.shippingAddress.name}{' '}
-                <br />
-                <strong>Adresse : </strong> {order.shippingAddress.address},{' '}
-                {order.shippingAddress.zip}, {order.shippingAddress.city},{' '}
-                {order.shippingAddress.country} <br />
-              </Card.Text>
               {order.isDelivered ? (
                 <MessageBox variant="success">
                   Commande livrée le {order.deliveredAt.substring(0, 10)}

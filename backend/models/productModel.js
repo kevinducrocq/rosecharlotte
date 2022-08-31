@@ -12,6 +12,12 @@ const reviewSchema = new mongoose.Schema(
   }
 );
 
+const variantSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  weight: { type: Number, required: true },
+  countInStock: { type: Number, required: true },
+});
+
 const productSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
@@ -25,12 +31,16 @@ const productSchema = new mongoose.Schema(
     otherCategory: { type: String },
     description: { type: String, required: true },
     price: { type: Number, required: true },
-    weight: { type: Number, required: true },
-    countInStock: { type: Number, required: true },
+    promoPrice: { type: Number },
+    soldePrice: { type: Number },
+    weight: { type: Number },
+    countInStock: { type: Number },
     rating: { type: Number, required: true },
     numReviews: { type: Number, required: true },
     reviews: [reviewSchema],
     isVisible: { type: Boolean, required: true, default: true },
+    variants: [variantSchema],
+    customizable: { type: Boolean, default: false },
   },
   {
     timestamps: true,

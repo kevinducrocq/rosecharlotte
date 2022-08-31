@@ -39,6 +39,8 @@ productRouter.post(
       name: req.body.name,
       slug: slugify(req.body.name),
       price: req.body.price,
+      promoPrice: req.body.promoPrice,
+      soldePrice: req.body.soldePrice,
       weight: req.body.weight,
       image: req.body.image,
       images: req.body.images,
@@ -52,6 +54,7 @@ productRouter.post(
       rating: 0,
       description: req.body.description,
       isVisible: true,
+      variants: req.body.variants,
     });
     const product = await newProduct.save();
     res.send({
@@ -59,6 +62,8 @@ productRouter.post(
       name: product.name,
       slug: product.slug,
       price: product.price,
+      promoPrice: product.promoPrice,
+      soldePrice: product.soldePrice,
       weight: product.weight,
       image: product.image,
       images: product.images,
@@ -72,6 +77,7 @@ productRouter.post(
       rating: 0,
       description: product.description,
       isVisible: true,
+      variant: product.variants,
     });
   })
 );
@@ -88,6 +94,9 @@ productRouter.put(
       product.name = req.body.name || product.name;
       product.slug = req.body.slug || product.slug;
       product.price = req.body.price || product.price;
+      product.promoPrice = req.body.promoPrice || product.promoPrice;
+      product.soldePrice = req.body.soldePrice || product.soldePrice;
+      product.price = req.body.price || product.price;
       product.weight = req.body.weight || product.weight;
       product.image = req.body.image || product.image;
       product.images = req.body.images || product.images;
@@ -98,6 +107,7 @@ productRouter.put(
       product.countInStock = req.body.countInStock || product.countInStock;
       product.description = req.body.description || product.description;
       product.isVisible = req.body.isVisible || product.isVisible;
+      product.variants = req.body.variants || product.variants;
 
       const updatedProduct = await product.save();
       res.send({
@@ -105,6 +115,8 @@ productRouter.put(
         name: updatedProduct.name,
         slug: updatedProduct.slug,
         price: updatedProduct.price,
+        promoPrice: updatedProduct.promoPrice,
+        soldePrice: updatedProduct.soldePrice,
         weight: updatedProduct.weight,
         image: updatedProduct.image,
         images: updatedProduct.images,
@@ -115,6 +127,7 @@ productRouter.put(
         countInStock: updatedProduct.countInStock,
         description: updatedProduct.description,
         isVisible: updatedProduct.isVisible,
+        variants: updatedProduct.variants,
       });
     } else {
       res.status(404).send({ message: 'Produit non trouvé' });
@@ -220,13 +233,12 @@ productRouter.post(
 );
 
 // AFFICHER LE NOMBRE TOTAL DE PRODUIT SUR LE TABLEAU DE BORD
-
 productRouter.get(
   '/admin',
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
-    const products = await Product.find();
+    const products = await Product.find().sort({ createdAt: -1 });
     const countProducts = await Product.countDocuments();
     res.send({
       products,

@@ -64,6 +64,7 @@ function ProductScreen() {
       loading: true,
       error: '',
     });
+
   useEffect(() => {
     const fetchData = async () => {
       dispatch({ type: 'FETCH_REQUEST' });
@@ -83,7 +84,7 @@ function ProductScreen() {
     const existItem = cart.cartItems.find((x) => x._id === product._id);
     const quantity = existItem ? existItem.quantity + 1 : 1;
     const { data } = await axios.get(`/api/products/${product._id}`);
-    if (data.countInStock < quantity) {
+    if (data.countInStock < quantity && data.variants.length < 1) {
       window.alert('Désolé, le produit est épuisé');
       return;
     }
@@ -179,7 +180,7 @@ function ProductScreen() {
         <Col md={6} className="mt-2">
           <ListGroup>
             <ListGroup.Item>
-              <div className="d-flex justify-content-between align-items-center p-2">
+              <div className="d-flex flex-column justify-content-between p-2">
                 <div>
                   <h1>{product.name}</h1>
                   <h2 className="h6 text-muted">
@@ -188,8 +189,19 @@ function ProductScreen() {
                     {product.otherCategory ? ' - ' + product.otherCategory : ''}
                   </h2>
                 </div>
-                <div>
-                  {product.countInStock > 0 ? (
+                <div className="mt-3">
+                  {product.variants.length >= 1 ? (
+                    <>
+                      <span>Variantes disponibles : </span>
+                      {product.variants.map((variant) => {
+                        return (
+                          <span key={variant._id} value={variant}>
+                            {variant.name},&nbsp;
+                          </span>
+                        );
+                      })}
+                    </>
+                  ) : product.countInStock && product.countInStock > 0 ? (
                     <Badge bg="success">{product.countInStock} En stock</Badge>
                   ) : (
                     <Badge bg="danger">Epuisé</Badge>
@@ -214,15 +226,24 @@ function ProductScreen() {
               </div>
             </ListGroup.Item>
 
-            {product.countInStock <= 0 ? (
-              <ListGroup.Item>
-                <div className="p-2">
-                  <Button variant="secondary" disabled>
-                    Epuisé
-                  </Button>
-                </div>
-              </ListGroup.Item>
-            ) : (
+            {product.variants.length >= 1 && (
+              <>
+                <ListGroup.Item>
+                  <Form.Select>
+                    <option>Choisissez...</option>
+                    {product.variants.map((variant) => {
+                      return (
+                        <option key={variant._id} value={variant}>
+                          {variant.name}&nbsp;
+                        </option>
+                      );
+                    })}
+                  </Form.Select>
+                </ListGroup.Item>
+              </>
+            )}
+
+            {product.variants.length >= 1 ? (
               <ListGroup.Item>
                 <div className="p-2">
                   <Button
@@ -231,6 +252,24 @@ function ProductScreen() {
                     variant="outline-light"
                   >
                     Ajouter au panier
+                  </Button>
+                </div>
+              </ListGroup.Item>
+            ) : product.countInStock > 0 ? (
+              <div className="p-2">
+                <Button
+                  onClick={addToCartHandler}
+                  className="bg1 w-100"
+                  variant="outline-light"
+                >
+                  ddjouter au panier
+                </Button>
+              </div>
+            ) : (
+              <ListGroup.Item>
+                <div className="p-2">
+                  <Button variant="secondary" disabled>
+                    Epuisé
                   </Button>
                 </div>
               </ListGroup.Item>

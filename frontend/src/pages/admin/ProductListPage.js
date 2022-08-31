@@ -138,7 +138,7 @@ export default function ProductListScreen() {
           language: {
             url: 'https://cdn.datatables.net/plug-ins/1.12.1/i18n/fr-FR.json',
           },
-          order: [[6, 'desc']],
+          order: [[5, 'desc']],
         });
 
         dispatch({ type: 'FETCH_SUCCESS', payload: data, table });
@@ -247,7 +247,6 @@ export default function ProductListScreen() {
                     <th>Sous-catégorie</th>
                     <th>Stock</th>
                     <th>Prix</th>
-                    <th>Poids</th>
                     <th>Action</th>
                   </tr>
                 </thead>
@@ -259,7 +258,6 @@ export default function ProductListScreen() {
                       <td>{product.subCategory}</td>
                       <td>{product.countInStock}</td>
                       <td>{product.price} &euro;</td>
-                      <td>{product.weight} g</td>
                       <td className="text-nowrap">
                         <Button
                           className="btn btn-sm"

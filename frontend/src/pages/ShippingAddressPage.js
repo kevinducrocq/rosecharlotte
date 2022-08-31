@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Container } from 'react-bootstrap';
 import CheckoutSteps from '../components/CheckoutSteps';
-import DeliveryAddressModal from '../components/ModalDeliveryAddress';
+import DeliveryAddressModal from '../components/ModalDelivery';
 
 export default function ShippingAddressScreen() {
   const [modalShow, setModalShow] = useState(false);

@@ -61,15 +61,21 @@ function DeliveryAddressModal(props) {
     navigate('/payment');
   };
 
+  const homeHandler = (e) => {
+    e.preventDefault();
+    ctxDispatch({ type: 'SAVE_DELIVERY_METHOD', payload: deliveryMethodName });
+    localStorage.setItem('deliveryMethod', deliveryMethodName);
+    localStorage.removeItem('shippingAddress');
+    navigate('/payment');
+  };
+
   return (
     <>
       <Row>
         <Col md={4}>
           <Button
-            value="domicile"
             className="bg2 text-light w-100 p-4 mb-2"
             variant="outline-secondary"
-            // onClick={(e) => setDeliveryMethod(e.target.value)}
             onClick={() => setModalShow(true)}
           >
             <h6>À domicile</h6>
@@ -88,17 +94,20 @@ function DeliveryAddressModal(props) {
           </Button>
         </Col>
         <Col md={4}>
-          <Button
-            value="domicile"
-            className="bg2 text-light w-100 p-4"
-            variant="outline-secondary"
-            // onClick={(e) => setDeliveryMethod(e.target.value)}
-          >
-            <h6>Dans nos locaux</h6>
-            <FontAwesomeIcon icon={faPersonCarryBox} size="5x" />
-          </Button>
+          <Form onSubmit={homeHandler}>
+            <Button
+              type="submit"
+              className="bg2 text-light w-100 p-4"
+              variant="outline-secondary"
+              onClick={(e) => setDeliveryMethod('Local')}
+            >
+              <h6>Dans nos locaux</h6>
+              <FontAwesomeIcon icon={faPersonCarryBox} size="5x" />
+            </Button>
+          </Form>
         </Col>
       </Row>
+
       <Modal
         show={modalShow}
         onHide={() => setModalShow(false)}
@@ -155,7 +164,7 @@ function DeliveryAddressModal(props) {
               type="submit"
               className="bg1 w-100"
               variant="outline-light"
-              value="domicile"
+              value="Domicile"
               onClick={(e) => setDeliveryMethod(e.target.value)}
             >
               Continuer
