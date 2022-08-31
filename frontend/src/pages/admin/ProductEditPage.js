@@ -24,6 +24,7 @@ import {
   faTrash,
 } from '@fortawesome/pro-solid-svg-icons';
 import AdminMenu from '../../components/AdminMenu';
+import ProductVariants from '../../components/ProductVariants';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -70,6 +71,8 @@ export default function ProductEditPage() {
   const [name, setName] = useState('');
   const [slug, setSlug] = useState('');
   const [price, setPrice] = useState('');
+  const [promoPrice, setPromoPrice] = useState('');
+  const [soldePrice, setSoldePrice] = useState('');
   const [weight, setWeight] = useState('');
   const [image, setImage] = useState('');
   const [images, setImages] = useState([]);
@@ -79,9 +82,14 @@ export default function ProductEditPage() {
   const [countInStock, setCountInStock] = useState('');
   const [description, setDescription] = useState('');
   const [categories, setCategories] = useState([]);
+  const [promoInputIsVisible, setPromoInputIsVisible] = useState(false);
+  const [soldeInputIsVisible, setSoldeInputIsVisible] = useState(false);
   const [categoryInputIsVisible, setCategoryInputIsVisible] = useState(false);
   const [subCategoryInputIsVisible, setSubCategoryInputIsVisible] =
     useState(false);
+  const [variantIsVisible, setVariantIsVisible] = useState(false);
+  const [variants, setVariants] = useState([]);
+  const [customizable, setCustomizable] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -91,6 +99,8 @@ export default function ProductEditPage() {
         setName(data.name);
         setSlug(data.slug);
         setPrice(data.price);
+        setPromoPrice(data.promoPrice);
+        setSoldePrice(data.soldePrice);
         setWeight(data.weight);
         setImage(data.image);
         setImages(data.images);
@@ -99,6 +109,9 @@ export default function ProductEditPage() {
         setOtherCategory(data.otherCategory);
         setCountInStock(data.countInStock);
         setDescription(data.description);
+        setVariants(data.variants);
+        setCustomizable(data.customizable);
+        setVariantIsVisible(data.variants.length);
         dispatch({ type: 'FETCH_SUCCESS' });
       } catch (err) {
         dispatch({
@@ -120,32 +133,43 @@ export default function ProductEditPage() {
     fetchCategories();
   }, [productId]);
 
+  useEffect(() => {
+    setSubCategory(null);
+  }, [category]);
+
   const renderedCategories = [];
-  Object.keys(categories).forEach(function (mapCategory) {
+  Object.keys(categories).forEach(function (mappedCategory) {
     renderedCategories.push(
       <option
-        key={mapCategory}
-        value={mapCategory}
+        selected={category === mappedCategory}
+        key={mappedCategory}
+        value={mappedCategory}
         onChange={(e) => setCategory(e.target.value)}
       >
-        {mapCategory}
+        {mappedCategory}
       </option>
     );
   });
 
   const renderedSubCategories = [];
-  Object.keys(categories).forEach(function (category) {
-    renderedSubCategories.push(
-      <>
-        {categories[category].map((key) => {
-          return (
-            <option value={key} key={key}>
-              {key}
-            </option>
-          );
-        })}
-      </>
-    );
+  Object.keys(categories).forEach(function (mappedCategory) {
+    if (category === mappedCategory) {
+      renderedSubCategories.push(
+        <>
+          {categories[mappedCategory].map((subCat) => {
+            return (
+              <option
+                value={subCat}
+                key={subCat}
+                selected={subCat === subCategory}
+              >
+                {subCat}
+              </option>
+            );
+          })}
+        </>
+      );
+    }
   });
 
   const submitHandler = async (e) => {
@@ -159,6 +183,8 @@ export default function ProductEditPage() {
           name,
           slug,
           price,
+          promoPrice,
+          soldePrice,
           weight,
           image,
           images,
@@ -167,6 +193,8 @@ export default function ProductEditPage() {
           otherCategory,
           countInStock,
           description,
+          variants,
+          customizable,
         },
         {
           headers: { Authorization: `Bearer ${userInfo.token}` },
@@ -208,14 +236,20 @@ export default function ProductEditPage() {
     }
   };
   const deleteFileHandler = async (fileName, f) => {
-    console.log(fileName, f);
-    console.log(images);
-    console.log(images.filter((x) => x !== fileName));
     setImages(images.filter((x) => x !== fileName));
-    toast.success(
-      'Image supprimée, cliquer sur "mettre à jour" pour appliquer les changements'
-    );
   };
+
+  const addNewVariants = () => {
+    setVariants([...variants, { name: '', countInStock: '', weight: '' }]);
+  };
+
+  const removeVariant = async (index) => {
+    const newVariants = [...variants];
+    newVariants.splice(index, 1);
+    setVariants(newVariants);
+    console.log(index);
+  };
+
   return (
     <Container className="my-5">
       <Helmet>
@@ -236,229 +270,345 @@ export default function ProductEditPage() {
           ) : error ? (
             <MessageBox variant="danger">{error}</MessageBox>
           ) : (
-            <Form onSubmit={submitHandler}>
-              <Row>
-                <Col md={3} sm={6}>
-                  <Form.Group className="mb-3" controlId="name">
-                    <Form.Label>Nom</Form.Label>
-                    <Form.Control
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                      required
-                    />
-                  </Form.Group>
-                </Col>
-                <Col md={3} sm={6}>
-                  <Form.Group className="mb-3" controlId="name">
-                    <Form.Label>Prix</Form.Label>
-                    <InputGroup className="mb-3">
+            <>
+              <Form onSubmit={submitHandler}>
+                <Row className="align-items-center">
+                  <Col>
+                    <Form.Group className="mb-3" controlId="name">
+                      <Form.Label>Nom du produit</Form.Label>
                       <Form.Control
-                        value={price}
-                        onChange={(e) => setPrice(e.target.value)}
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
                         required
                       />
-                      <InputGroup.Text>
-                        <FontAwesomeIcon icon={faEuroSign} />
-                      </InputGroup.Text>
-                    </InputGroup>
-                  </Form.Group>
-                </Col>
-                <Col md={3}>
-                  <Form.Group className="mb-3" controlId="weight">
-                    <Form.Label>Poids</Form.Label>
-                    <InputGroup className="mb-3">
-                      <Form.Control
-                        type="number"
-                        value={weight}
-                        onChange={(e) => setWeight(e.target.value)}
-                        required
-                      />
-                      <InputGroup.Text>grammes</InputGroup.Text>
-                    </InputGroup>
-                  </Form.Group>
-                </Col>
-                <Col md={3}>
-                  <Form.Group className="mb-3" controlId="countInStock">
-                    <Form.Label>Stock</Form.Label>
-                    <Form.Control
-                      value={countInStock}
-                      onChange={(e) => setCountInStock(e.target.value)}
-                      required
+                    </Form.Group>
+                  </Col>
+                  <Col>
+                    <Form.Check
+                      type="checkBox"
+                      checked={customizable}
+                      id="custom-switch"
+                      label="Ce produit est personnalisable"
+                      onChange={() => {
+                        setCustomizable(!customizable);
+                      }}
                     />
-                  </Form.Group>
-                </Col>
-              </Row>
-              <hr />
-              <Row>
-                <Col md={6}>
-                  <Form.Group controlId="imageFile">
-                    <Form.Label>Image principale</Form.Label>
-                    <Form.Control
-                      className="mb-2"
-                      type="file"
-                      onChange={uploadFileHandler}
+                    <Form.Check
+                      type="checkBox"
+                      id="custom-switch2"
+                      label="Ce produit a des variantes"
+                      checked={variantIsVisible}
+                      onChange={() => {
+                        setVariantIsVisible(!variantIsVisible);
+                        if (!variantIsVisible && variants.length === 0) {
+                          addNewVariants();
+                        } else {
+                          setVariants([]);
+                        }
+                      }}
                     />
-                    <div className="d-flex flex-column align-items-center">
-                      {image ? (
-                        <Image
-                          thumbnail
-                          src={image}
-                          onChange={(e) => setImage(e.target.value)}
-                          width="80"
-                        />
-                      ) : (
-                        ''
-                      )}
-                    </div>
-                  </Form.Group>
-                </Col>
-                <Col md={6}>
-                  <Form.Group className="mb-2" controlId="additionalImageFile">
-                    <Form.Label>Ajouter des images</Form.Label>
-                    <Form.Control
-                      type="file"
-                      onChange={(e) => uploadFileHandler(e, true)}
-                    />
-                  </Form.Group>
-
-                  <Form.Group controlId="additionalImage">
-                    <div className="d-flex" variant="flush">
-                      {images.map((x) => (
-                        <div
-                          key={x}
-                          className="d-flex flex-column align-items-center mx-1"
+                  </Col>
+                  <div>
+                    {!!variantIsVisible && (
+                      <>
+                        <hr />
+                        {variants.map((variant, key) => {
+                          return (
+                            <ProductVariants
+                              variant={variant}
+                              onChange={(v) => {
+                                variants[key] = v;
+                                console.log(v);
+                                setVariants(variants);
+                              }}
+                              key={key}
+                              index={key}
+                              removeVariant={removeVariant}
+                            />
+                          );
+                        })}
+                        <Button
+                          onClick={() => {
+                            addNewVariants();
+                          }}
                         >
-                          <Image fluid thumbnail src={x} alt={x} />
-                          <Button
-                            variant="warning"
-                            onClick={() => deleteFileHandler(x)}
-                          >
-                            <FontAwesomeIcon icon={faTrash} />
-                          </Button>
-                        </div>
-                      ))}
-                    </div>
-                  </Form.Group>
-                </Col>
-                <Row> {loadingUpload && <LoadingBox></LoadingBox>}</Row>
-              </Row>
-              <hr />
-              <Row>
-                <>
-                  <Col md={8}>
-                    <Form.Group className="mb-3" controlId="category">
-                      <Form.Label>
-                        Séléctionner une catégorie &nbsp; (Choix :{' '}
-                        <strong> {category}</strong>)
-                      </Form.Label>
-                      <Form.Select
-                        aria-label="category select"
-                        onChange={(e) => setCategory(e.target.value)}
-                      >
-                        <option>Choisir si changement</option>
-                        {renderedCategories}
-                      </Form.Select>
+                          <FontAwesomeIcon icon={faPlus} />
+                        </Button>
+                        <hr />
+                      </>
+                    )}
+                  </div>
+                </Row>
+                {!variantIsVisible && (
+                  <Row>
+                    <Col md={4}>
+                      <Form.Group className="mb-3" controlId="weight">
+                        <Form.Label>Poids</Form.Label>
+                        <InputGroup className="mb-3">
+                          <Form.Control
+                            type="number"
+                            value={weight}
+                            onChange={(e) => setWeight(e.target.value)}
+                            required
+                          />
+                          <InputGroup.Text>grammes</InputGroup.Text>
+                        </InputGroup>
+                      </Form.Group>
+                    </Col>
+                    <Col md={4}>
+                      <Form.Group className="mb-3" controlId="countInStock">
+                        <Form.Label>Stock</Form.Label>
+                        <Form.Control
+                          value={countInStock}
+                          onChange={(e) => setCountInStock(e.target.value)}
+                          required
+                        />
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                )}
+                <Row>
+                  <Col md={4}>
+                    <Form.Group className="mb-3" controlId="price">
+                      <Form.Label>Prix</Form.Label>
+                      <InputGroup className="mb-3">
+                        <Form.Control
+                          value={price}
+                          onChange={(e) => setPrice(e.target.value)}
+                          required
+                        />
+                        <InputGroup.Text>
+                          <FontAwesomeIcon icon={faEuroSign} />
+                        </InputGroup.Text>
+                      </InputGroup>
                     </Form.Group>
                   </Col>
                   <Col md={4}>
-                    <Form.Group>
-                      <Form.Label>Ajouter une catégorie ?</Form.Label>
+                    <Form.Group className="mb-3" controlId="promoPrice">
+                      <Form.Label>Prix Promo ?</Form.Label>
                       <InputGroup size="sm" className="mb-3">
                         <InputGroup.Text id="inputGroup-sizing-sm">
                           <Button
                             variant="none"
                             className="btn btn-sm"
                             onClick={() =>
-                              setCategoryInputIsVisible(!categoryInputIsVisible)
+                              setPromoInputIsVisible(!promoInputIsVisible)
                             }
                           >
                             <FontAwesomeIcon
-                              icon={categoryInputIsVisible ? faMinus : faPlus}
+                              icon={promoInputIsVisible ? faMinus : faPlus}
+                            />
+                          </Button>
+                        </InputGroup.Text>
+
+                        <Form.Control
+                          className={promoInputIsVisible ? '' : 'd-none'}
+                          onChange={(e) => setPromoPrice(e.target.value)}
+                          placeholder="€"
+                        />
+                      </InputGroup>
+                    </Form.Group>
+                  </Col>
+                  <Col md={4}>
+                    <Form.Group className="mb-3" controlId="soldePrice">
+                      <Form.Label>Prix Soldé ?</Form.Label>
+                      <InputGroup size="sm" className="mb-3">
+                        <InputGroup.Text id="inputGroup-sizing-sm">
+                          <Button
+                            variant="none"
+                            className="btn btn-sm"
+                            onClick={() =>
+                              setSoldeInputIsVisible(!soldeInputIsVisible)
+                            }
+                          >
+                            <FontAwesomeIcon
+                              icon={soldeInputIsVisible ? faMinus : faPlus}
+                            />
+                          </Button>
+                        </InputGroup.Text>
+
+                        <Form.Control
+                          className={soldeInputIsVisible ? '' : 'd-none'}
+                          onChange={(e) => setSoldePrice(e.target.value)}
+                          placeholder="€"
+                        />
+                      </InputGroup>
+                    </Form.Group>
+                  </Col>
+                </Row>
+
+                <Row>
+                  <Col md={6}>
+                    <Form.Group controlId="imageFile">
+                      <Form.Label>Image principale</Form.Label>
+                      <Form.Control
+                        className="mb-2"
+                        type="file"
+                        onChange={uploadFileHandler}
+                      />
+                      <div className="d-flex flex-column align-items-center">
+                        {image ? (
+                          <Image
+                            thumbnail
+                            src={image}
+                            onChange={(e) => setImage(e.target.value)}
+                            width="80"
+                          />
+                        ) : (
+                          ''
+                        )}
+                      </div>
+                    </Form.Group>
+                  </Col>
+                  <Col md={6}>
+                    <Form.Group
+                      className="mb-2"
+                      controlId="additionalImageFile"
+                    >
+                      <Form.Label>Ajouter des images</Form.Label>
+                      <Form.Control
+                        type="file"
+                        onChange={(e) => uploadFileHandler(e, true)}
+                      />
+                    </Form.Group>
+
+                    <Form.Group controlId="additionalImage">
+                      <div className="d-flex" variant="flush">
+                        {images.map((x) => (
+                          <div
+                            key={x}
+                            className="d-flex flex-column align-items-center mx-1"
+                          >
+                            <Image fluid thumbnail src={x} alt={x} />
+                            <Button
+                              variant="warning"
+                              onClick={() => deleteFileHandler(x)}
+                            >
+                              <FontAwesomeIcon icon={faTrash} />
+                            </Button>
+                          </div>
+                        ))}
+                      </div>
+                    </Form.Group>
+                  </Col>
+                  <Row> {loadingUpload && <LoadingBox></LoadingBox>}</Row>
+                </Row>
+                <hr />
+                <Row>
+                  <>
+                    <Col md={8}>
+                      <Form.Group className="mb-3" controlId="category">
+                        <Form.Label>Séléctionner une catégorie </Form.Label>
+                        <Form.Select
+                          aria-label="category select"
+                          onChange={(e) => setCategory(e.target.value)}
+                        >
+                          <option>Choisissez...</option>
+                          {renderedCategories}
+                        </Form.Select>
+                      </Form.Group>
+                    </Col>
+                    <Col md={4}>
+                      <Form.Group>
+                        <Form.Label>Ajouter une catégorie ?</Form.Label>
+                        <InputGroup size="sm" className="mb-3">
+                          <InputGroup.Text id="inputGroup-sizing-sm">
+                            <Button
+                              variant="none"
+                              className="btn btn-sm"
+                              onClick={() =>
+                                setCategoryInputIsVisible(
+                                  !categoryInputIsVisible
+                                )
+                              }
+                            >
+                              <FontAwesomeIcon
+                                icon={categoryInputIsVisible ? faMinus : faPlus}
+                              />
+                            </Button>
+                          </InputGroup.Text>
+                          <Form.Control
+                            className={categoryInputIsVisible ? '' : 'd-none'}
+                            onChange={(e) => setCategory(e.target.value)}
+                            placeholder="Nom"
+                          />
+                        </InputGroup>
+                      </Form.Group>
+                    </Col>
+                  </>
+                </Row>
+                <Row>
+                  <Col md={8}>
+                    <Form.Label>Séléctionner une sous-catégorie</Form.Label>
+                    <Form.Select
+                      aria-label="category select"
+                      onChange={(e) => setSubCategory(e.target.value)}
+                    >
+                      <option>Choisissez...</option>
+                      {renderedSubCategories}
+                    </Form.Select>
+                  </Col>
+                  <Col md={4}>
+                    <Form.Group className="mb-3" controlId="category">
+                      <Form.Label>Ajouter une sous-catégorie ?</Form.Label>
+                      <InputGroup size="sm" className="mb-3">
+                        <InputGroup.Text id="inputGroup-sizing-sm">
+                          <Button
+                            variant="none"
+                            className="btn btn-sm"
+                            onClick={() =>
+                              setSubCategoryInputIsVisible(
+                                !subCategoryInputIsVisible
+                              )
+                            }
+                          >
+                            <FontAwesomeIcon
+                              icon={
+                                subCategoryInputIsVisible ? faMinus : faPlus
+                              }
                             />
                           </Button>
                         </InputGroup.Text>
                         <Form.Control
-                          className={categoryInputIsVisible ? '' : 'd-none'}
-                          onChange={(e) => setCategory(e.target.value)}
+                          className={subCategoryInputIsVisible ? '' : 'd-none'}
+                          onChange={(e) => setSubCategory(e.target.value)}
                           placeholder="Nom"
                         />
                       </InputGroup>
                     </Form.Group>
                   </Col>
-                </>
-              </Row>
-              <Row>
-                <Col md={8}>
-                  <Form.Label>
-                    Séléctionner une sous-catégorie (Choix :{' '}
-                    <strong>{subCategory}</strong>)
-                  </Form.Label>
-                  <Form.Select
-                    aria-label="category select"
-                    onChange={(e) => setSubCategory(e.target.value)}
+                </Row>
+                <Form.Group className="mb-3" controlId="sousCategory">
+                  <Form.Label>Autre Catégorie ?</Form.Label>
+                  <Form.Control
+                    value={otherCategory}
+                    onChange={(e) => setOtherCategory(e.target.value)}
+                  />
+                </Form.Group>
+                <hr />
+                <Form.Group className="mb-3" controlId="description">
+                  <Form.Label>Description</Form.Label>
+                  <Form.Control
+                    as="textarea"
+                    rows={6}
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    required
+                  />
+                </Form.Group>
+                <div className="mb-3">
+                  <Button
+                    disabled={loadingUpdate}
+                    type="submit"
+                    className="bg1 w-100"
+                    variant="outline-light"
                   >
-                    <option>Choisir si changement</option>
-                    {renderedSubCategories}
-                  </Form.Select>
-                </Col>
-                <Col md={4}>
-                  <Form.Group className="mb-3" controlId="category">
-                    <Form.Label>Ajouter une sous-catégorie ?</Form.Label>
-                    <InputGroup size="sm" className="mb-3">
-                      <InputGroup.Text id="inputGroup-sizing-sm">
-                        <Button
-                          variant="none"
-                          className="btn btn-sm"
-                          onClick={() =>
-                            setSubCategoryInputIsVisible(
-                              !subCategoryInputIsVisible
-                            )
-                          }
-                        >
-                          <FontAwesomeIcon
-                            icon={subCategoryInputIsVisible ? faMinus : faPlus}
-                          />
-                        </Button>
-                      </InputGroup.Text>
-                      <Form.Control
-                        className={subCategoryInputIsVisible ? '' : 'd-none'}
-                        onChange={(e) => setSubCategory(e.target.value)}
-                        placeholder="Nom"
-                      />
-                    </InputGroup>
-                  </Form.Group>
-                </Col>
-              </Row>
-              <Form.Group className="mb-3" controlId="sousCategory">
-                <Form.Label>Autre Catégorie ?</Form.Label>
-                <Form.Control
-                  value={otherCategory}
-                  onChange={(e) => setOtherCategory(e.target.value)}
-                />
-              </Form.Group>
-              <hr />
-              <Form.Group className="mb-3" controlId="description">
-                <Form.Label>Description</Form.Label>
-                <Form.Control
-                  as="textarea"
-                  rows={6}
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  required
-                />
-              </Form.Group>
-              <div className="mb-3">
-                <Button
-                  disabled={loadingUpdate}
-                  type="submit"
-                  className="bg1 w-100"
-                  variant="outline-light"
-                >
-                  Mettre à jour
-                </Button>
-                {loadingUpdate && <LoadingBox></LoadingBox>}
-              </div>
-            </Form>
+                    Mettre à jour
+                  </Button>
+                  {loadingUpdate && <LoadingBox></LoadingBox>}
+                </div>
+              </Form>
+            </>
           )}
         </Col>
       </Row>

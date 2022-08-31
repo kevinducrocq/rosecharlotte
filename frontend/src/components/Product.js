@@ -1,37 +1,12 @@
-import {
-  faCartCircleXmark,
-  faCartPlus,
-} from '@fortawesome/pro-solid-svg-icons';
+import { faEye } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import axios from 'axios';
-import React, { useContext } from 'react';
+import React from 'react';
 import { Card, Button, Badge } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { Store } from '../Store';
 import Rating from './Rating';
 
 function Product(props) {
   const { product } = props;
-  const { state, dispatch: ctxDispatch } = useContext(Store);
-  const {
-    cart: { cartItems },
-  } = state;
-
-  const addToCartHandler = async (item) => {
-    const existItem = cartItems.find((x) => x._id === product._id);
-    const quantity = existItem ? existItem.quantity + 1 : 1;
-    const { data } = await axios.get(`/api/products/${item._id}`);
-    if (data.countInStock < quantity) {
-      window.alert(
-        "Désolé, il n'y a plus de quantité disponible pour ce produit"
-      );
-      return;
-    }
-    ctxDispatch({
-      type: 'CART_ADD_ITEM',
-      payload: { ...item, quantity },
-    });
-  };
 
   return (
     <Card key={product.slug} className="shadow">
@@ -63,21 +38,11 @@ function Product(props) {
           )}
         </div>
 
-        {product.countInStock > 0 ? (
-          <div className="d-flex">
-            <Button
-              onClick={() => addToCartHandler(product)}
-              className="bg1 w-100"
-              variant="outline-light"
-            >
-              <FontAwesomeIcon icon={faCartPlus} /> Ajouter
-            </Button>
-          </div>
-        ) : (
-          <Button className="bg3 w-100" disabled>
-            <FontAwesomeIcon icon={faCartCircleXmark} />
+        <Link to={`/product/${product.slug}`}>
+          <Button className="bg1 w-100" variant="outline-light">
+            <FontAwesomeIcon icon={faEye} /> Voir
           </Button>
-        )}
+        </Link>
       </Card.Body>
     </Card>
   );

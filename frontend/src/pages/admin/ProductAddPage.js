@@ -189,12 +189,18 @@ export default function ProductAddPage() {
 
   const deleteFileHandler = async (fileName, f) => {
     setImages(images.filter((x) => x !== fileName));
-    toast.success('Image supprimée');
   };
 
-  const addNewVariants = async () => {
-    variants.push({ name: '', countInStock: '', weight: '' });
-    setVariants(variants);
+  const addNewVariants = () => {
+    setVariants([...variants, { name: '', countInStock: '', weight: '' }]);
+  };
+
+  const removeVariant = async (x) => {
+    setVariants([
+      ...variants.filter((v) => {
+        return x !== v;
+      }),
+    ]);
   };
 
   return (
@@ -232,18 +238,20 @@ export default function ProductAddPage() {
                       type="checkBox"
                       id="custom-switch"
                       label="Ce produit est personnalisable"
-                      onChange={() => {
-                        setCustomizable(true);
+                      onChange={(e) => {
+                        e ? setCustomizable(true) : setCustomizable(false);
                       }}
                     />
                     <Form.Check
                       type="checkBox"
-                      id="custom-switch"
+                      id="custom-switch2"
                       label="Ce produit a des variantes"
                       onChange={() => {
                         setVariantIsVisible(!variantIsVisible);
                         if (!variantIsVisible && variants.length === 0) {
                           addNewVariants();
+                        } else {
+                          setVariants([]);
                         }
                       }}
                     />
@@ -261,11 +269,12 @@ export default function ProductAddPage() {
                                 setVariants(variants);
                               }}
                               key={key}
+                              removeVariant={removeVariant}
                             />
                           );
                         })}
                         <Button
-                          onClickCapture={() => {
+                          onClick={() => {
                             addNewVariants();
                           }}
                         >

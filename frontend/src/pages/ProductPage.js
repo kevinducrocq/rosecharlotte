@@ -53,6 +53,12 @@ function ProductScreen() {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
   const [selectedImage, setSelectedImage] = useState('');
+  const [customization, setCustomization] = useState('');
+
+  const getNames = (list) =>
+    list.map((item) => {
+      return item.name;
+    });
 
   const navigate = useNavigate();
   const params = useParams();
@@ -137,6 +143,13 @@ function ProductScreen() {
         <title>{product.name}</title>
       </Helmet>
       <Row>
+        <div>
+          {userInfo.isAdmin && (
+            <Link to={`/admin/product/${product._id}`}>
+              <Button>Editer</Button>
+            </Link>
+          )}
+        </div>
         <Col md={2} className="product-vignettes">
           <div className="d-flex flex-column align-items-end">
             {[product.image, ...product.images].map((x) => (
@@ -193,13 +206,7 @@ function ProductScreen() {
                   {product.variants.length >= 1 ? (
                     <>
                       <span>Variantes disponibles : </span>
-                      {product.variants.map((variant) => {
-                        return (
-                          <span key={variant._id} value={variant}>
-                            {variant.name},&nbsp;
-                          </span>
-                        );
-                      })}
+                      {getNames(product.variants).join(', ')}
                     </>
                   ) : product.countInStock && product.countInStock > 0 ? (
                     <Badge bg="success">{product.countInStock} En stock</Badge>
@@ -229,16 +236,26 @@ function ProductScreen() {
             {product.variants.length >= 1 && (
               <>
                 <ListGroup.Item>
-                  <Form.Select>
-                    <option>Choisissez...</option>
-                    {product.variants.map((variant) => {
-                      return (
-                        <option key={variant._id} value={variant}>
-                          {variant.name}&nbsp;
-                        </option>
-                      );
-                    })}
-                  </Form.Select>
+                  <Form>
+                    <Form.Select className="mb-3">
+                      <option>Choisissez...</option>
+                      {product.variants.map((variant) => {
+                        return (
+                          <option key={variant._id} value={variant}>
+                            {variant.name}&nbsp;
+                          </option>
+                        );
+                      })}
+                    </Form.Select>
+                    {product.customizable && (
+                      <Form.Group className="mb-3">
+                        <Form.Control
+                          value={customization}
+                          placeHolder="Saisissez votre texte personnalisation"
+                        ></Form.Control>
+                      </Form.Group>
+                    )}
+                  </Form>
                 </ListGroup.Item>
               </>
             )}
@@ -262,7 +279,7 @@ function ProductScreen() {
                   className="bg1 w-100"
                   variant="outline-light"
                 >
-                  ddjouter au panier
+                  Ajouter au panier
                 </Button>
               </div>
             ) : (

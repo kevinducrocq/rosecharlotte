@@ -55,30 +55,37 @@ productRouter.post(
       description: req.body.description,
       isVisible: true,
       variants: req.body.variants,
+      customizable: req.body.customizable,
     });
-    const product = await newProduct.save();
-    res.send({
-      _id: product._id,
-      name: product.name,
-      slug: product.slug,
-      price: product.price,
-      promoPrice: product.promoPrice,
-      soldePrice: product.soldePrice,
-      weight: product.weight,
-      image: product.image,
-      images: product.images,
-      category: product.category,
-      categorySlug: product.categorySlug,
-      subCategory: product.subCategory,
-      subCategorySlug: product.subCategorySlug,
-      otherCategory: product.otherCategory,
-      countInStock: product.countInStock,
-      numReviews: 0,
-      rating: 0,
-      description: product.description,
-      isVisible: true,
-      variant: product.variants,
-    });
+
+    try {
+      const product = await newProduct.save();
+      res.send({
+        _id: product._id,
+        name: product.name,
+        slug: product.slug,
+        price: product.price,
+        promoPrice: product.promoPrice,
+        soldePrice: product.soldePrice,
+        weight: product.weight,
+        image: product.image,
+        images: product.images,
+        category: product.category,
+        categorySlug: product.categorySlug,
+        subCategory: product.subCategory,
+        subCategorySlug: product.subCategorySlug,
+        otherCategory: product.otherCategory,
+        countInStock: product.countInStock,
+        numReviews: 0,
+        rating: 0,
+        description: product.description,
+        isVisible: true,
+        variant: product.variants,
+        customizable: product.customizable,
+      });
+    } catch (err) {
+      console.log(err);
+    }
   })
 );
 
@@ -108,6 +115,7 @@ productRouter.put(
       product.description = req.body.description || product.description;
       product.isVisible = req.body.isVisible || product.isVisible;
       product.variants = req.body.variants || product.variants;
+      product.customizable = req.body.customizable || product.customizable;
 
       const updatedProduct = await product.save();
       res.send({
@@ -128,6 +136,7 @@ productRouter.put(
         description: updatedProduct.description,
         isVisible: updatedProduct.isVisible,
         variants: updatedProduct.variants,
+        customizable: updatedProduct.customizable,
       });
     } else {
       res.status(404).send({ message: 'Produit non trouvé' });

@@ -14,6 +14,7 @@ const orderSchema = new mongoose.Schema(
           ref: 'Product',
           required: true,
         },
+        customization: { type: String },
       },
     ],
     deliveryMethod: { type: String, required: true },
