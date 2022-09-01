@@ -287,7 +287,7 @@ export default function OrderPage() {
                 {order.orderItems.map((item) => (
                   <ListGroup.Item key={item._id} className="shadow p-3">
                     <Row className="align-items-center">
-                      <Col md={3} className="d-flex flex-column">
+                      <Col md={4} className="d-flex flex-column">
                         <Link to={`/product/${item.slug}`}>
                           <Image
                             src={item.image}
@@ -298,12 +298,15 @@ export default function OrderPage() {
                           <div>{item.name}</div>
                         </Link>
                       </Col>
+                      <Col md={4}>
+                        <span>{item.variant.name}</span>
+                      </Col>
 
-                      <Col md={6}>
+                      <Col md={2}>
                         <span>x {item.quantity}</span>
                       </Col>
 
-                      <Col md={3}>{item.price} &euro;</Col>
+                      <Col md={2}>{item.price} &euro;</Col>
                     </Row>
                   </ListGroup.Item>
                 ))}

@@ -150,7 +150,7 @@ function DeliveryAddressModal(props) {
               />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="city">
+            <Form.Group className="mb-3" controlId="country">
               <Form.Label>Pays</Form.Label>
               <Form.Control
                 value={country}

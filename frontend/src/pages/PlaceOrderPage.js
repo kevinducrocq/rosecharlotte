@@ -18,7 +18,6 @@ import axios from 'axios';
 import LoadingBox from '../components/LoadingBox';
 import { faPenToSquare } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { send } from 'emailjs-com';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -78,7 +77,14 @@ export default function PlaceOrderPage() {
       const { data } = await axios.post(
         '/api/orders',
         {
-          orderItems: cart.cartItems,
+          orderItems: cart.cartItems.map((cartItem) => {
+            return {
+              ...cartItem,
+              variant: cartItem.variants.filter((v) => {
+                return v._id === cartItem.variant;
+              })[0],
+            };
+          }),
           shippingAddress: cart.shippingAddress,
           paymentMethod: cart.paymentMethod,
           deliveryMethod: cart.deliveryMethod,
@@ -97,24 +103,6 @@ export default function PlaceOrderPage() {
       toast.error(getError(err));
     }
   };
-
-  // const sendEmail = (e) => {
-  //   e.preventDefault();
-  //   send(
-  //     'service_k6w1mkp',
-  //     'template_q4nenia',
-  //     { senderName, senderEmail, message },
-  //     'avpCoPewjR1-y5tpA'
-  //   )
-  //     .then((response) => {
-  //       console.log('Message envoyé', response.status, response.text);
-  //       navigate('/contact');
-  //       toast.success('Merci pour votre message');
-  //     })
-  //     .catch((err) => {
-  //       console.log('Erreur', err);
-  //     });
-  // };
 
   useEffect(() => {
     if (!cart.paymentMethod) {
@@ -178,7 +166,7 @@ export default function PlaceOrderPage() {
                 {cart.cartItems.map((item) => (
                   <ListGroup.Item key={item._id} className="shadow p-3">
                     <Row className="align-items-center">
-                      <Col md={3} className="d-flex flex-column">
+                      <Col md={4} className="d-flex flex-column">
                         <Link to={`/product/${item.slug}`}>
                           <Image
                             src={item.image}
@@ -190,11 +178,21 @@ export default function PlaceOrderPage() {
                         </Link>
                       </Col>
 
-                      <Col md={6}>
+                      <Col md={4}>
+                        <span>
+                          {
+                            item.variants.filter((v) => {
+                              return v._id === item.variant;
+                            })[0].name
+                          }
+                        </span>
+                      </Col>
+
+                      <Col md={2}>
                         <span>x {item.quantity}</span>
                       </Col>
 
-                      <Col md={3}>{item.price} &euro;</Col>
+                      <Col md={2}>{item.price} &euro;</Col>
                     </Row>
                   </ListGroup.Item>
                 ))}

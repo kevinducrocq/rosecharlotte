@@ -1,5 +1,10 @@
 import mongoose from 'mongoose';
 
+const variantSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  weight: { type: Number, required: true },
+});
+
 const orderSchema = new mongoose.Schema(
   {
     orderItems: [
@@ -15,6 +20,7 @@ const orderSchema = new mongoose.Schema(
           required: true,
         },
         customization: { type: String },
+        variant: variantSchema,
       },
     ],
     deliveryMethod: { type: String, required: true },

@@ -54,6 +54,7 @@ function ProductScreen() {
   const [comment, setComment] = useState('');
   const [selectedImage, setSelectedImage] = useState('');
   const [customization, setCustomization] = useState('');
+  const [variant, setVariant] = useState('');
 
   const getNames = (list) =>
     list.map((item) => {
@@ -86,6 +87,7 @@ function ProductScreen() {
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { cart, userInfo } = state;
+
   const addToCartHandler = async () => {
     const existItem = cart.cartItems.find((x) => x._id === product._id);
     const quantity = existItem ? existItem.quantity + 1 : 1;
@@ -96,7 +98,7 @@ function ProductScreen() {
     }
     ctxDispatch({
       type: 'CART_ADD_ITEM',
-      payload: { ...product, quantity },
+      payload: { ...product, quantity, variant, customization },
     });
     navigate('/cart');
   };
@@ -237,11 +239,16 @@ function ProductScreen() {
               <>
                 <ListGroup.Item>
                   <Form>
-                    <Form.Select className="mb-3">
+                    <Form.Select
+                      className="mb-3"
+                      onChange={(e) => {
+                        setVariant(e.target.value);
+                      }}
+                    >
                       <option>Choisissez...</option>
                       {product.variants.map((variant) => {
                         return (
-                          <option key={variant._id} value={variant}>
+                          <option key={variant._id} value={variant._id}>
                             {variant.name}&nbsp;
                           </option>
                         );

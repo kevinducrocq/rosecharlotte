@@ -24,7 +24,11 @@ orderRouter.post(
   isAuth,
   expressAsyncHandler(async (req, res) => {
     const newOrder = new Order({
-      orderItems: req.body.orderItems.map((x) => ({ ...x, product: x._id })),
+      orderItems: req.body.orderItems.map((x) => ({
+        ...x,
+        product: x._id,
+        variant: x.variant,
+      })),
       deliveryMethod: req.body.deliveryMethod,
       shippingAddress: req.body.shippingAddress,
       itemsPrice: req.body.itemsPrice,
