@@ -23,6 +23,7 @@ import 'datatables.net-dt/js/dataTables.dataTables';
 import 'datatables.net-dt/css/jquery.dataTables.min.css';
 import $ from 'jquery';
 import { Helmet } from 'react-helmet-async';
+import AdminCanvasMenu from '../../components/AdminCanvasMenu';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -217,8 +218,13 @@ export default function ProductListScreen() {
         <title>Produits</title>
       </Helmet>
       <Row>
-        <Col md={2} className="mb-3">
-          <AdminMenu link3 />
+        <Col md={2}>
+          <div className="d-none d-lg-block d-md-block">
+            <AdminMenu link3 />
+          </div>
+          <div className="d-lg-none d-md-none text-nowrap mb-3">
+            <AdminCanvasMenu />
+          </div>
         </Col>
         <Col md={10} className="shadow p-5">
           <div className="d-flex justify-content-between align-items-center">

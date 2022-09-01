@@ -16,6 +16,7 @@ import 'jquery/dist/jquery.min.js';
 import 'datatables.net-dt/js/dataTables.dataTables';
 import 'datatables.net-dt/css/jquery.dataTables.min.css';
 import $ from 'jquery';
+import AdminCanvasMenu from '../../components/AdminCanvasMenu';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -192,7 +193,12 @@ export default function ReviewListPage() {
       </Helmet>
       <Row>
         <Col md={2}>
-          <AdminMenu link6 />
+          <div className="d-none d-lg-block d-md-block">
+            <AdminMenu link6 />
+          </div>
+          <div className="d-lg-none d-md-none text-nowrap mb-3">
+            <AdminCanvasMenu />
+          </div>
         </Col>
         <Col md={10} className="shadow p-5">
           <h1>Commentaires</h1>

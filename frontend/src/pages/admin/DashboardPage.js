@@ -7,6 +7,7 @@ import MessageBox from '../../components/MessageBox';
 import { Row, Col, Card, Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import AdminMenu from '../../components/AdminMenu';
+import AdminCanvasMenu from '../../components/AdminCanvasMenu';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -53,7 +54,12 @@ export default function DashboardScreen() {
     <Container className="my-5">
       <Row>
         <Col md={2}>
-          <AdminMenu link1 />
+          <div className="d-none d-lg-block d-md-block">
+            <AdminMenu link1 />
+          </div>
+          <div className="d-lg-none d-md-none text-nowrap mb-3">
+            <AdminCanvasMenu />
+          </div>
         </Col>
         <Col md={10} className="shadow p-5">
           <h1>Tableau de bord</h1>

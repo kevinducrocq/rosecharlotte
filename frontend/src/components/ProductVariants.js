@@ -28,54 +28,57 @@ function ProductVariants(props) {
   }, [name, countInStock, weight]);
 
   return (
-    <div>
-      <Row>
-        <Col>
-          <Form.Group className="mb-3" controlId="name">
-            <Form.Control
-              placeholder="Nom de la variante"
-              value={name}
-              onChange={(e) => {
-                setName(e.target.value);
-              }}
-            />
-          </Form.Group>
-        </Col>
-        <Col>
-          <Form.Group className="mb-3" controlId="weight">
-            <InputGroup className="mb-3">
+    <>
+      <div className="my-3">
+        <Row>
+          <Col md={3}>
+            <Form.Group className="mb-3" controlId="name">
               <Form.Control
-                placeholder="poids"
-                value={weight}
+                placeholder="Nom de la variante"
+                value={name}
                 onChange={(e) => {
-                  setWeight(e.target.value);
+                  setName(e.target.value);
                 }}
               />
-              <InputGroup.Text>grammes</InputGroup.Text>
-            </InputGroup>
-          </Form.Group>
-        </Col>
-        <Col>
-          <Form.Group className="mb-3" controlId="countInStock">
-            <Form.Control
-              placeholder="Stock"
-              value={countInStock}
-              onChange={(e) => {
-                setCountInStock(e.target.value);
-              }}
-            />
-          </Form.Group>
-        </Col>
-        <Col>
-          <Button
-            variant="warning"
-            onClick={() => props.removeVariant(props.index)}
-          >
-            <FontAwesomeIcon icon={faTrash} />
-          </Button>
-        </Col>
-      </Row>
-    </div>
+            </Form.Group>
+          </Col>
+          <Col md={3}>
+            <Form.Group className="mb-3" controlId="weight">
+              <InputGroup className="mb-3">
+                <Form.Control
+                  placeholder="poids"
+                  value={weight}
+                  onChange={(e) => {
+                    setWeight(e.target.value);
+                  }}
+                />
+                <InputGroup.Text>grammes</InputGroup.Text>
+              </InputGroup>
+            </Form.Group>
+          </Col>
+          <Col md={3}>
+            <Form.Group className="mb-3" controlId="countInStock">
+              <Form.Control
+                placeholder="Stock"
+                value={countInStock}
+                onChange={(e) => {
+                  setCountInStock(e.target.value);
+                }}
+              />
+            </Form.Group>
+          </Col>
+          <Col md={3}>
+            <Button
+              variant="warning"
+              onClick={() => props.removeVariant(props.index)}
+            >
+              <FontAwesomeIcon icon={faTrash} />
+            </Button>
+          </Col>
+        </Row>
+      </div>
+      <hr />
+    </>
   );
 }
 

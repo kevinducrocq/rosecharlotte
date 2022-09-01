@@ -25,6 +25,7 @@ import {
 } from '@fortawesome/pro-solid-svg-icons';
 import AdminMenu from '../../components/AdminMenu';
 import ProductVariants from '../../components/ProductVariants';
+import AdminCanvasMenu from '../../components/AdminCanvasMenu';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -257,7 +258,12 @@ export default function ProductEditPage() {
       </Helmet>
       <Row>
         <Col md={2}>
-          <AdminMenu />
+          <div className="d-none d-lg-block d-md-block">
+            <AdminMenu />
+          </div>
+          <div className="d-lg-none d-md-none text-nowrap mb-3">
+            <AdminCanvasMenu />
+          </div>
         </Col>
         <Col md={10} className="shadow p-5">
           <div className="mb-3">
@@ -273,7 +279,7 @@ export default function ProductEditPage() {
             <>
               <Form onSubmit={submitHandler}>
                 <Row className="align-items-center">
-                  <Col>
+                  <Col md={8}>
                     <Form.Group className="mb-3" controlId="name">
                       <Form.Label>Nom du produit</Form.Label>
                       <Form.Control
@@ -283,7 +289,7 @@ export default function ProductEditPage() {
                       />
                     </Form.Group>
                   </Col>
-                  <Col>
+                  <Col md={4}>
                     <Form.Check
                       type="checkBox"
                       checked={customizable}
