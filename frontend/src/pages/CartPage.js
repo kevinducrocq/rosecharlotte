@@ -32,16 +32,33 @@ export default function CartPage() {
 
   const updateCartHandler = async (item, quantity) => {
     const { data } = await axios.get(`/api/products/${item._id}`);
-    if (data.countInStock < quantity) {
-      window.alert(
-        "Désolé, il n'y a plus de quantité disponible pour ce produit"
-      );
-      return;
+    if (item.variant) {
+      const variantItem = data.variants.filter((v) => {
+        return v._id === item.variant._id;
+      })[0];
+
+      if (variantItem.countInStock < quantity) {
+        window.alert(
+          "Désolé, il n'y a plus de quantité disponible pour ce produit"
+        );
+        return;
+      }
+      ctxDispatch({
+        type: 'CART_ADD_ITEM',
+        payload: { ...item, quantity },
+      });
+    } else {
+      if (data.countInStock < quantity) {
+        window.alert(
+          "Désolé, il n'y a plus de quantité disponible pour ce produit"
+        );
+        return;
+      }
+      ctxDispatch({
+        type: 'CART_ADD_ITEM',
+        payload: { ...item, quantity },
+      });
     }
-    ctxDispatch({
-      type: 'CART_ADD_ITEM',
-      payload: { ...item, quantity },
-    });
   };
 
   const removeItemHandler = (item) => {
@@ -69,7 +86,7 @@ export default function CartPage() {
           ) : (
             <ListGroup className="text-center">
               {cartItems.map((item) => (
-                <ListGroup.Item key={item._id}>
+                <ListGroup.Item key={item._id+item.variant?._id}>
                   <Row className="align-items-center">
                     <Col md={3} className="d-flex flex-column">
                       <Link to={`/product/${item.slug}`}>
@@ -82,6 +99,8 @@ export default function CartPage() {
                         <div>{item.name}</div>
                       </Link>
                     </Col>
+
+                    <Col>{item.variant?.name}</Col>
 
                     <Col md={3} className="text-nowrap">
                       <Button

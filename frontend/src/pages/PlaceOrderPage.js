@@ -77,14 +77,7 @@ export default function PlaceOrderPage() {
       const { data } = await axios.post(
         '/api/orders',
         {
-          orderItems: cart.cartItems.map((cartItem) => {
-            return {
-              ...cartItem,
-              variant: cartItem.variants.filter((v) => {
-                return v._id === cartItem.variant;
-              })[0],
-            };
-          }),
+          orderItems: cart.cartItems,
           shippingAddress: cart.shippingAddress,
           paymentMethod: cart.paymentMethod,
           deliveryMethod: cart.deliveryMethod,
@@ -164,7 +157,10 @@ export default function PlaceOrderPage() {
               <Card.Title>Produits</Card.Title>
               <ListGroup className="mb-3 text-center rounded-3">
                 {cart.cartItems.map((item) => (
-                  <ListGroup.Item key={item._id} className="shadow p-3">
+                  <ListGroup.Item
+                    key={item._id + item.variant?._id}
+                    className="shadow p-3"
+                  >
                     <Row className="align-items-center">
                       <Col md={4} className="d-flex flex-column">
                         <Link to={`/product/${item.slug}`}>
@@ -179,13 +175,7 @@ export default function PlaceOrderPage() {
                       </Col>
 
                       <Col md={4}>
-                        <span>
-                          {
-                            item.variants.filter((v) => {
-                              return v._id === item.variant;
-                            })[0].name
-                          }
-                        </span>
+                        <span>{item.variant?.name}</span>
                       </Col>
 
                       <Col md={2}>

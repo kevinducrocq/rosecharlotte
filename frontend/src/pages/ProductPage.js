@@ -54,7 +54,7 @@ function ProductScreen() {
   const [comment, setComment] = useState('');
   const [selectedImage, setSelectedImage] = useState('');
   const [customization, setCustomization] = useState('');
-  const [variant, setVariant] = useState('');
+  const [variantId, setVariant] = useState('');
 
   const getNames = (list) =>
     list.map((item) => {
@@ -89,17 +89,51 @@ function ProductScreen() {
   const { cart, userInfo } = state;
 
   const addToCartHandler = async () => {
-    const existItem = cart.cartItems.find((x) => x._id === product._id);
+    const existItem = cart.cartItems.find(
+      (x) =>
+        x._id === product._id &&
+        (x.variant === null || x.variant._id === variantId)
+    );
     const quantity = existItem ? existItem.quantity + 1 : 1;
     const { data } = await axios.get(`/api/products/${product._id}`);
-    if (data.countInStock < quantity && data.variants.length < 1) {
-      window.alert('Désolé, le produit est épuisé');
-      return;
+
+    if (variantId) {
+      const variantItem = data.variants.filter((v) => {
+        return v._id === variantId;
+      })[0];
+
+      if (variantItem.countInStock < quantity) {
+        window.alert(
+          "Désolé, il n'y a plus de quantité disponible pour ce produit"
+        );
+        return;
+      }
+      ctxDispatch({
+        type: 'CART_ADD_ITEM',
+        payload: {
+          ...product,
+          quantity,
+          variant: product.variants.filter((v) => {
+            return v._id === variantId;
+          })[0],
+          customization,
+        },
+      });
+    } else {
+      if (data.countInStock < quantity) {
+        window.alert('Désolé, le produit est épuisé');
+        return;
+      }
+      ctxDispatch({
+        type: 'CART_ADD_ITEM',
+        payload: {
+          ...product,
+          quantity,
+          variant: null,
+          customization,
+        },
+      });
     }
-    ctxDispatch({
-      type: 'CART_ADD_ITEM',
-      payload: { ...product, quantity, variant, customization },
-    });
     navigate('/cart');
   };
 
@@ -259,6 +293,9 @@ function ProductScreen() {
                         <Form.Control
                           value={customization}
                           placeHolder="Saisissez votre texte personnalisation"
+                          onChange={(e) => {
+                            setCustomization(e.target.value);
+                          }}
                         ></Form.Control>
                       </Form.Group>
                     )}
