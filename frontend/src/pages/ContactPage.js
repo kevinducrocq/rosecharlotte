@@ -1,34 +1,56 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
-import { send } from 'emailjs-com';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { Store } from '../Store';
+import { getError } from '../utils';
+import { useReducer } from 'react';
+import LoadingBox from '../components/LoadingBox';
+
+function reducer(state, action) {
+  switch (action.type) {
+    case 'SEND_REQUEST':
+      return { ...state, loading: true, error: '' };
+    case 'SEND_SUCCESS':
+      return { ...state, loading: false, error: '' };
+    case 'SEND_FAIL':
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+}
 
 export default function ContactPage() {
+  const { state } = useContext(Store);
+  const { userInfo } = state;
+
+  const [{ loading, error }, dispatch] = useReducer(reducer, {
+    loading: false,
+    error: '',
+  });
+
   const [senderName, setSenderName] = useState('');
   const [senderEmail, setSenderEmail] = useState('');
   const [message, setMessage] = useState('');
 
-  const navigate = useNavigate();
-
-  const sendEmail = (e) => {
+  async function sendEmail(e) {
     e.preventDefault();
-    send(
-      'service_k6w1mkp',
-      'template_q4nenia',
-      { senderName, senderEmail, message },
-      'avpCoPewjR1-y5tpA'
-    )
-      .then((response) => {
-        console.log('Message envoyé', response.status, response.text);
-        navigate('/contact');
-        toast.success('Merci pour votre message');
-      })
-      .catch((err) => {
-        console.log('Erreur', err);
+    try {
+      dispatch({ type: 'SEND_REQUEST' });
+      await axios.post('/api/users/contact/send', {
+        message,
+        senderName,
+        senderEmail,
       });
-  };
+      dispatch({ type: 'SEND_SUCCESS' });
+      toast.success('Votre message a été envoyé');
+    } catch (err) {
+      toast.error(getError(err));
+      dispatch({ type: 'SEND_FAIL' });
+    }
+  }
 
   return (
     <Container className="my-5">
@@ -45,7 +67,9 @@ export default function ContactPage() {
                 placeholder="Prénom et nom"
                 name="senderName"
                 value={senderName}
-                onChange={(e) => setSenderName(e.target.value)}
+                onChange={(e) => {
+                  setSenderName(e.target.value);
+                }}
                 required
               />
             </Form.Group>
@@ -55,7 +79,9 @@ export default function ContactPage() {
                 placeholder="Votre email"
                 name="senderEmail"
                 value={senderEmail}
-                onChange={(e) => setSenderEmail(e.target.value)}
+                onChange={(e) => {
+                  setSenderEmail(e.target.value);
+                }}
                 required
               />
             </Form.Group>
@@ -66,7 +92,9 @@ export default function ContactPage() {
                 rows={6}
                 name="message"
                 value={message}
-                onChange={(e) => setMessage(e.target.value)}
+                onChange={(e) => {
+                  setMessage(e.target.value);
+                }}
                 required
               />
             </Form.Group>
@@ -78,6 +106,7 @@ export default function ContactPage() {
               >
                 Envoyer
               </Button>
+              <div>{loading ? <LoadingBox /> : error}</div>
             </div>
           </Form>
         </Col>

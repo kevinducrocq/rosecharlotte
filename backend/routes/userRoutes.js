@@ -3,6 +3,8 @@ import bcrypt from 'bcryptjs';
 import expressAsyncHandler from 'express-async-handler';
 import User from '../models/userModel.js';
 import { isAuth, isAdmin, generateToken } from '../utils.js';
+import transporter, { sender } from '../email.js';
+import { contactEmail } from '../emails/ContactEmail.js';
 
 const userRouter = express.Router();
 userRouter.put(
@@ -141,6 +143,22 @@ userRouter.post(
       isAdmin: user.isAdmin,
       token: generateToken(user),
     });
+  })
+);
+
+userRouter.post(
+  '/contact/send',
+  expressAsyncHandler(async (req, res) => {
+    const senderName = req.body.senderName;
+    const senderEmail = req.body.senderEmail;
+    const message = req.body.message;
+
+    const sent = await transporter.sendMail({
+      from: senderEmail,
+      to: 'contact@rosecharlotte.fr',
+      ...contactEmail(senderName, senderEmail, message),
+    });
+    res.status(201).send({ message: 'message envoyé' });
   })
 );
 
