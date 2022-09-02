@@ -75,6 +75,11 @@ main {
 
 /*CARDS*/
 
+.hover-shadow:hover {
+  box-shadow: 5px 5px 5px #fad4d4bb;
+  transform: scale(1.025);
+}
+
 .card {
   border: solid 2px #f1f1f1;
 }
@@ -198,6 +203,21 @@ main {
 .card a {
   text-decoration: none;
   color: #f47c7c;
+}
+
+/*
+LOGO
+*/
+
+.btrr-lg {
+  border-top-right-radius: 110px;
+}
+.btlr-lg {
+  border-top-left-radius: 110px;
+}
+.bbr-lg {
+  border-bottom-left-radius: 200px;
+  border-bottom-right-radius: 200px;
 }
 
 /*RESPONSIVE*/

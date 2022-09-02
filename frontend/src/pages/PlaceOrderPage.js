@@ -43,24 +43,30 @@ export default function PlaceOrderPage() {
 
   const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100;
   cart.itemsPrice = round2(
-    cart.cartItems.reduce((a, c) => a + c.quantity * c.price, 0)
+    cart.cartItems.reduce(
+      (price, item) => price + item.quantity * item.price,
+      0
+    )
   );
 
-  const totalWeight = (cart.itemsWeight = cart.cartItems.reduce(
-    (a, c) => a + c.quantity * c.weight,
-    0
-  ));
+  const totalWeight = cart.cartItems.reduce((weight, item) => {
+    if (item.variant) {
+      return weight + item.quantity * item.variant.weight;
+    }
+    return weight + item.quantity * item.weight;
+  }, 0);
+  cart.itemsWeight = totalWeight;
 
   const deliveryPrice = () => {
-    if (totalWeight <= 200 && cart.itemsPrice <= 85) {
+    if (totalWeight <= 200 && cart.itemsPrice < 85) {
       return 4.4;
     } else if (
       totalWeight >= 200 &&
       totalWeight <= 250 &&
-      cart.itemsPrice <= 85
+      cart.itemsPrice < 85
     ) {
       return 5.4;
-    } else if (totalWeight >= 250 && cart.itemsPrice <= 85) {
+    } else if (totalWeight >= 250 && cart.itemsPrice < 85) {
       return 6.9;
     } else if (cart.itemsPrice >= 85) {
       return 0;

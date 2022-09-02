@@ -25,14 +25,11 @@ const reducer = (state, action) => {
 };
 
 function HomePage() {
-  const [{ loading, error, products, isVisible }, dispatch] = useReducer(
-    reducer,
-    {
-      products: [],
-      loading: true,
-      error: '',
-    }
-  );
+  const [{ loading, error, products }, dispatch] = useReducer(reducer, {
+    products: [],
+    loading: true,
+    error: '',
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -47,55 +44,62 @@ function HomePage() {
     fetchData();
   }, []);
   return (
-    <Container>
+    <>
       <Helmet>
-        <title>RoseCharlotte</title>
+        <title>RoseCharlotte & Compagnie</title>
       </Helmet>
 
+      <h1 className="d-none">Rose Charlotte & Compagnie</h1>
       <section>
-        <div className="title mb-3">
-          <img
-            src="../logo-site.png"
-            alt="Rose Charlotte"
-            width={150}
-            className="img-fluid mb-3"
-          />
-          <h1 className="text-center">
-            Bienvenue sur Rose Charlotte & Compagnie
-          </h1>
-        </div>
         <CarouselFade />
-      </section>
-      <section className="mt-5">
-        <h2 className="mb-3">Les derniers produits</h2>
-        <div>
-          {loading ? (
-            <LoadingBox />
-          ) : error ? (
-            <MessageBox variant="danger">{error}</MessageBox>
-          ) : (
-            <Row>
-              {products.slice(0, 8).map((product) => (
-                <Col key={product.slug} sm={6} md={4} lg={3} className="mb-3">
-                  <Product product={product}></Product>
-                </Col>
-              ))}
-            </Row>
-          )}
+        <div className="d-flex bg3">
+          <div className="flex-fill bg4 btrr-lg mt-4"></div>
+          <div className="bg4">
+            <div className="text-center bg3 bbr-lg p-4">
+              <img
+                src="../logo-site.png"
+                alt="Rose Charlotte"
+                width={150}
+                className="img-fluid mb-3 mt-2"
+              />
+            </div>
+          </div>
+          <div className="flex-fill bg4 btlr-lg mt-4"></div>
         </div>
       </section>
 
-      <section className="mt-5">
-        <h2>Les dernières promotions</h2>
-        <Row>
-          {products.slice(0, 8).map((product) => (
-            <Col key={product.slug} sm={6} md={4} lg={3} className="mb-3">
-              <Product product={product}></Product>
-            </Col>
-          ))}
-        </Row>
-      </section>
-    </Container>
+      <Container>
+        <section>
+          <h2 className="mb-3">Les derniers produits</h2>
+          <div>
+            {loading ? (
+              <LoadingBox />
+            ) : error ? (
+              <MessageBox variant="danger">{error}</MessageBox>
+            ) : (
+              <Row>
+                {products.slice(0, 8).map((product) => (
+                  <Col key={product.slug} sm={6} md={4} lg={3} className="mb-3">
+                    <Product product={product}></Product>
+                  </Col>
+                ))}
+              </Row>
+            )}
+          </div>
+        </section>
+
+        <section className="mt-5">
+          <h2>Les dernières promotions</h2>
+          <Row>
+            {products.slice(0, 8).map((product) => (
+              <Col key={product.slug} sm={6} md={4} lg={3} className="mb-3">
+                <Product product={product}></Product>
+              </Col>
+            ))}
+          </Row>
+        </section>
+      </Container>
+    </>
   );
 }
 

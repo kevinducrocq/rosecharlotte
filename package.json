@@ -18,7 +18,5 @@
     "url": "https://github.com/kevinducrocq/rosecharlotte/issues"
   },
   "homepage": "https://github.com/kevinducrocq/rosecharlotte#readme",
-  "dependencies": {
-    "nodemailer-react": "^1.0.2"
-  }
+  "dependencies": {}
 }

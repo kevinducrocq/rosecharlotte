@@ -9,7 +9,7 @@ function Product(props) {
   const { product } = props;
 
   return (
-    <Card key={product.slug} className="shadow">
+    <Card key={product.slug} className="hover-shadow">
       <Link to={`/product/${product.slug}`}>
         <img
           src={product.image}

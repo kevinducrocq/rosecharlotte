@@ -5,6 +5,8 @@ import User from '../models/userModel.js';
 import Product from '../models/productModel.js';
 import { isAuth, isAdmin } from '../utils.js';
 import mongoose from 'mongoose';
+import transporter, { sender } from '../email.js';
+import { orderEmail } from '../emails/OrderEmail.js';
 
 const orderRouter = express.Router();
 
@@ -37,8 +39,15 @@ orderRouter.post(
       totalPrice: req.body.totalPrice,
       user: req.user._id,
     });
-
     const order = await newOrder.save();
+
+    const user = await User.findOne({ _id: order.user.toString() });
+    await transporter.sendMail({
+      from: sender,
+      to: user.email,
+      ...orderEmail(order, user),
+    });
+
     res.status(201).send({ message: 'Nouvelle commande crée', order });
   })
 );

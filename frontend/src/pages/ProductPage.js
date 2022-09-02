@@ -292,7 +292,7 @@ function ProductScreen() {
                       <Form.Group className="mb-3">
                         <Form.Control
                           value={customization}
-                          placeHolder="Saisissez votre texte personnalisation"
+                          placeholder="Saisissez votre texte personnalisation"
                           onChange={(e) => {
                             setCustomization(e.target.value);
                           }}

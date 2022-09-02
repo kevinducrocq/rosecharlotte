@@ -1,4 +1,4 @@
-import React, { useReducer, useContext, useEffect } from 'react';
+import React, { useReducer, useContext, useEffect, useState } from 'react';
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
 import { useNavigate, useParams } from 'react-router-dom';
 import LoadingBox from '../components/LoadingBox';
@@ -15,6 +15,7 @@ import {
   Container,
   Image,
   ListGroup,
+  Modal,
   Row,
 } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -70,6 +71,7 @@ export default function OrderPage() {
   const params = useParams();
   const { id: orderId } = params;
   const navigate = useNavigate();
+  const [showModalCheque, setShowModalCheque] = useState(false);
 
   const [
     {
@@ -137,6 +139,9 @@ export default function OrderPage() {
         const { data } = await axios.get(`/api/orders/${orderId}`, {
           headers: { authorization: `Bearer ${userInfo.token}` },
         });
+        if (data.paymentMethod === 'Chèque' && !data.isPaid) {
+          setShowModalCheque(true);
+        }
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
@@ -357,13 +362,55 @@ export default function OrderPage() {
                   </ListGroup.Item>
                 )}
                 {!order.isPaid && order.paymentMethod === 'Chèque' && (
-                  <ListGroup.Item className="shadow rounded-3 text-center">
-                    Chèque <br /> libellé à l'ordre de "Rose Charlotte &amp;
-                    Compagnie <br /> à l'adresse : <br />
-                    Rose Charlotte & Compagnie 20 MAIN STREET, <br /> 62190
-                    <br />
-                    Ecquedecques
-                  </ListGroup.Item>
+                  <>
+                    <ListGroup.Item className="shadow rounded-3 text-center">
+                      <p>
+                        Merci de l'envoyer, à l'ordre de{' '}
+                        <strong>"Rose Charlotte &amp; Compagnie"</strong> à
+                        l'adresse suivante :&nbsp;
+                      </p>
+                      <p className="text-center">
+                        Rose Charlotte & Compagnie <br /> 20 rue Principale{' '}
+                        <br />
+                        62190 Ecquedecques
+                      </p>
+                    </ListGroup.Item>
+                    <Modal
+                      show={showModalCheque}
+                      onHide={() => {
+                        setShowModalCheque(false);
+                      }}
+                      dialogClassName="custom-modal"
+                    >
+                      <Modal.Header closeButton>
+                        <Modal.Title id="contained-modal-title-lg">
+                          Paiement par Chèque
+                        </Modal.Title>
+                      </Modal.Header>
+                      <Modal.Body>
+                        <p>
+                          Merci de l'envoyer, à l'ordre de{' '}
+                          <strong>"Rose Charlotte &amp; Compagnie"</strong> à
+                          l'adresse suivante :
+                        </p>
+                        <p className="text-center">
+                          Rose Charlotte & Compagnie <br /> 20 rue Principale
+                          <br /> 62190 Ecquedecques
+                        </p>
+                      </Modal.Body>
+                      <Modal.Footer>
+                        <Button
+                          className="bg1"
+                          variant="outline-light no-border"
+                          onClick={() => {
+                            setShowModalCheque(false);
+                          }}
+                        >
+                          Femer
+                        </Button>
+                      </Modal.Footer>
+                    </Modal>
+                  </>
                 )}
 
                 {userInfo.isAdmin && order.isPaid && !order.isDelivered && (

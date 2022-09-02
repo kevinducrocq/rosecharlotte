@@ -1,7 +1,15 @@
 import React, { useContext, useEffect, useReducer, useRef } from 'react';
 import axios from 'axios';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Button, Row, Col, Container, Table } from 'react-bootstrap';
+import {
+  Button,
+  Row,
+  Col,
+  Container,
+  Table,
+  Popover,
+  OverlayTrigger,
+} from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { Store } from '../../Store';
 import { getError } from '../../utils';
@@ -9,6 +17,7 @@ import LoadingBox from '../../components/LoadingBox';
 import MessageBox from '../../components/MessageBox';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
+  faEye,
   faMoon,
   faPenToSquare,
   faPlus,
@@ -139,7 +148,7 @@ export default function ProductListScreen() {
           language: {
             url: 'https://cdn.datatables.net/plug-ins/1.12.1/i18n/fr-FR.json',
           },
-          order: [[5, 'desc']],
+          order: [[6, 'desc']],
         });
 
         dispatch({ type: 'FETCH_SUCCESS', payload: data, table });
@@ -252,60 +261,89 @@ export default function ProductListScreen() {
                     <th>Catégorie</th>
                     <th>Sous-catégorie</th>
                     <th>Stock</th>
+                    <th>Variantes</th>
                     <th>Prix</th>
                     <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {products.map((product) => (
-                    <tr key={product._id}>
-                      <td>{product.name}</td>
-                      <td>{product.category}</td>
-                      <td>{product.subCategory}</td>
-                      <td>{product.countInStock}</td>
-                      <td>{product.price} &euro;</td>
-                      <td className="text-nowrap">
-                        <Button
-                          className="btn btn-sm"
-                          type="button"
-                          variant="light"
-                          onClick={() =>
-                            navigate(`/admin/product/${product._id}`)
-                          }
-                        >
-                          <FontAwesomeIcon icon={faPenToSquare} />
-                        </Button>
-                        &nbsp;
-                        <Button
-                          className="btn btn-sm"
-                          type="button"
-                          variant="danger"
-                          onClick={() => deleteHandler(product)}
-                        >
-                          <FontAwesomeIcon icon={faTrash} />
-                        </Button>
-                        &nbsp;
-                        {product.isVisible === false ? (
-                          <Button
-                            className="btn btn-sm bg-dark"
-                            type="button"
-                            onClick={() => validateHandler(product)}
-                          >
-                            <FontAwesomeIcon icon={faMoon} />
-                          </Button>
+                  {products.map((product) => {
+                    const stockPopover = (
+                      <Popover
+                        id="popover-basic"
+                        placement="center"
+                        title={'sdfgvb'}
+                      >
+                        And here's some <strong>amazing</strong> content. It's
+                        very engaging. right?
+                      </Popover>
+                    );
+                    return (
+                      <tr key={product._id}>
+                        <td>{product.name}</td>
+                        <td>{product.category}</td>
+                        <td>{product.subCategory}</td>
+
+                        {product.variants.length ? (
+                          <td>
+                            <OverlayTrigger
+                              trigger="click"
+                              placement="top"
+                              overlay={stockPopover}
+                            >
+                              <Button className="btn btn-sm">
+                                <FontAwesomeIcon icon={faEye} />
+                              </Button>
+                            </OverlayTrigger>
+                          </td>
                         ) : (
+                          <td>{product.countInStock}</td>
+                        )}
+                        <td>{product.variants.length >= 0 ? 'Non' : 'Oui'}</td>
+                        <td>{product.price} &euro;</td>
+                        <td className="text-nowrap">
                           <Button
                             className="btn btn-sm"
                             type="button"
-                            variant="primary"
-                            onClick={() => hideHandler(product)}
+                            variant="light"
+                            onClick={() =>
+                              navigate(`/admin/product/${product._id}`)
+                            }
                           >
-                            <FontAwesomeIcon icon={faSun} color={'yellow'} />
+                            <FontAwesomeIcon icon={faPenToSquare} />
                           </Button>
-                        )}
-                      </td>
-                    </tr>
-                  ))}
+                          &nbsp;
+                          <Button
+                            className="btn btn-sm"
+                            type="button"
+                            variant="danger"
+                            onClick={() => deleteHandler(product)}
+                          >
+                            <FontAwesomeIcon icon={faTrash} />
+                          </Button>
+                          &nbsp;
+                          {product.isVisible === false ? (
+                            <Button
+                              className="btn btn-sm bg-dark"
+                              type="button"
+                              onClick={() => validateHandler(product)}
+                            >
+                              <FontAwesomeIcon icon={faMoon} />
+                            </Button>
+                          ) : (
+                            <Button
+                              className="btn btn-sm"
+                              type="button"
+                              variant="primary"
+                              onClick={() => hideHandler(product)}
+                            >
+                              <FontAwesomeIcon icon={faSun} color={'yellow'} />
+                            </Button>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </Table>
             </>

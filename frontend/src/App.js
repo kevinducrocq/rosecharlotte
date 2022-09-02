@@ -54,7 +54,7 @@ function App() {
         </header>
 
         <main>
-          <Container>
+          <div>
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/about" element={<AboutPage />} />
@@ -168,7 +168,7 @@ function App() {
                 }
               ></Route>
             </Routes>
-          </Container>
+          </div>
         </main>
         <Footer />
       </div>

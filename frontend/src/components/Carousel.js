@@ -2,7 +2,8 @@ import Carousel from 'react-bootstrap/Carousel';
 
 function CarouselFade() {
   return (
-    <Carousel fade wrap="true" className="carousel shadow p-4">
+
+    <Carousel fade wrap="true" className="carousel">
       <Carousel.Item className="carousel-item">
         <img
           className="d-block w-100"
@@ -10,19 +11,25 @@ function CarouselFade() {
           alt="First slide"
         />
         <Carousel.Caption>
-          <h3>First slide label</h3>
-          <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+          <div className="title mb-3">
+            <h2 className="text-center">
+              Bienvenue sur Rose Charlotte & Compagnie
+            </h2>
+          </div>
         </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item className="carousel-item">
         <img
           className="d-block w-100"
           src="../images/car2.jpg"
-          alt="Second slide"
+          alt="First slide"
         />
         <Carousel.Caption>
-          <h3>Second slide label</h3>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+          <div className="title mb-3">
+            <h2 className="text-center">
+              Bienvenue sur Rose Charlotte & Compagnie
+            </h2>
+          </div>
         </Carousel.Caption>
       </Carousel.Item>
       <Carousel.Item className="carousel-item">
@@ -32,10 +39,11 @@ function CarouselFade() {
           alt="Third slide"
         />
         <Carousel.Caption>
-          <h3>Third slide label</h3>
-          <p>
-            Praesent commodo cursus magna, vel scelerisque nisl consectetur.
-          </p>
+          <div className="title mb-3">
+            <h2 className="text-center">
+              Bienvenue sur Rose Charlotte & Compagnie
+            </h2>
+          </div>
         </Carousel.Caption>
       </Carousel.Item>
     </Carousel>
