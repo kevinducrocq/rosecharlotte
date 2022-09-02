@@ -17,12 +17,15 @@ import LoadingBox from '../../components/LoadingBox';
 import MessageBox from '../../components/MessageBox';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
+  faCheck,
   faEye,
   faMoon,
   faPenToSquare,
   faPlus,
   faSun,
   faTrash,
+  faX,
+  faXmark,
 } from '@fortawesome/pro-solid-svg-icons';
 import AdminMenu from '../../components/AdminMenu';
 
@@ -271,11 +274,20 @@ export default function ProductListScreen() {
                     const stockPopover = (
                       <Popover
                         id="popover-basic"
-                        placement="center"
-                        title={'sdfgvb'}
+                        placement="top"
+                        title={product.name}
+                        key={product._id}
+                        className="p-2"
                       >
-                        And here's some <strong>amazing</strong> content. It's
-                        very engaging. right?
+                        {product.variants.map((variant) => {
+                          return (
+                            <div key={variant._id}>
+                              <strong>Variante : </strong> {variant.name} -{' '}
+                              <strong>Stock : </strong>
+                              {variant.countInStock}
+                            </div>
+                          );
+                        })}
                       </Popover>
                     );
                     return (
@@ -291,15 +303,22 @@ export default function ProductListScreen() {
                               placement="top"
                               overlay={stockPopover}
                             >
-                              <Button className="btn btn-sm">
-                                <FontAwesomeIcon icon={faEye} />
-                              </Button>
+                              <FontAwesomeIcon
+                                icon={faEye}
+                                style={{ cursor: 'pointer' }}
+                              />
                             </OverlayTrigger>
                           </td>
                         ) : (
                           <td>{product.countInStock}</td>
                         )}
-                        <td>{product.variants.length >= 0 ? 'Non' : 'Oui'}</td>
+                        <td>
+                          {product.variants.length ? (
+                            <FontAwesomeIcon icon={faCheck} />
+                          ) : (
+                            <FontAwesomeIcon icon={faXmark} />
+                          )}
+                        </td>
                         <td>{product.price} &euro;</td>
                         <td className="text-nowrap">
                           <Button

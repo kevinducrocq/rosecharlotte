@@ -90,7 +90,7 @@ export default function ProductEditPage() {
     useState(false);
   const [variantIsVisible, setVariantIsVisible] = useState(false);
   const [variants, setVariants] = useState([]);
-  const [customizable, setCustomizable] = useState('');
+  const [customizable, setCustomizable] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {

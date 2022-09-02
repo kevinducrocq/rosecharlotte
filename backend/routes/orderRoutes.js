@@ -9,7 +9,32 @@ import transporter, { sender } from '../email.js';
 import { orderEmail } from '../emails/OrderEmail.js';
 
 const orderRouter = express.Router();
+const updateStock = async (order) => {
+  const { orderItems } = order;
+  for (let orderItem of orderItems) {
+    const product = await Product.findOne({ _id: orderItem._id });
+    if (orderItem.variant) {
+      const variants = product.variants.map((variant) => {
+        if (variant._id.toString() === orderItem.variant._id.toString()) {
+          variant.countInStock = variant.countInStock - orderItem.quantity;
+        }
+        return variant;
+      });
 
+      const modifiedProductVariant = await Product.findOneAndUpdate(
+        { _id: mongoose.Types.ObjectId(orderItem.product) },
+        {
+          variants: variants,
+        }
+      );
+    } else {
+      const modifiedProduct = await Product.findOneAndUpdate(
+        { _id: mongoose.Types.ObjectId(orderItem.product) },
+        { countInStock: product.countInStock - orderItem.quantity }
+      );
+    }
+  }
+};
 orderRouter.get(
   '/',
   isAuth,
@@ -39,7 +64,11 @@ orderRouter.post(
       totalPrice: req.body.totalPrice,
       user: req.user._id,
     });
+
     const order = await newOrder.save();
+    if (order.paymentMethod === 'Chèque') {
+      updateStock(order);
+    }
 
     const user = await User.findOne({ _id: order.user.toString() });
     await transporter.sendMail({
@@ -135,7 +164,6 @@ orderRouter.put(
   isAdmin,
   expressAsyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id);
-
     if (order) {
       order.isDelivered = true;
       order.deliveredAt = Date.now();
@@ -161,7 +189,6 @@ orderRouter.put(
       order.paidAt = Date.now();
 
       await order.save();
-
       res.send({ message: 'Commande payée' });
     } else {
       res.status(404).send({ message: 'Commande non trouvée' });
@@ -188,19 +215,10 @@ orderRouter.put(
         email_address: req.body.email_address,
       };
 
+      updateStock(order);
+
       const updatedOrder = await order.save();
 
-      const { orderItems } = order;
-      for (let orderItem of orderItems) {
-        const product = await Product.findOne({ _id: orderItem._id });
-        if (product) {
-          const modifiedProduct = await Product.findOneAndUpdate(
-            { _id: mongoose.Types.ObjectId(orderItem.product) },
-            { countInStock: product.countInStock - orderItem.quantity }
-          );
-          console.log(modifiedProduct);
-        }
-      }
       res.send({
         message: 'Commande payée',
         order: updatedOrder,

@@ -240,10 +240,7 @@ function ProductScreen() {
                 </div>
                 <div className="mt-3">
                   {product.variants.length >= 1 ? (
-                    <>
-                      <span>Variantes disponibles : </span>
-                      {getNames(product.variants).join(', ')}
-                    </>
+                    ''
                   ) : product.countInStock && product.countInStock > 0 ? (
                     <Badge bg="success">{product.countInStock} En stock</Badge>
                   ) : (
@@ -268,13 +265,12 @@ function ProductScreen() {
                 <p>{product.description}</p>
               </div>
             </ListGroup.Item>
-
             {product.variants.length >= 1 && (
               <>
                 <ListGroup.Item>
                   <Form>
                     <Form.Select
-                      className="mb-3"
+                      className="my-3"
                       onChange={(e) => {
                         setVariant(e.target.value);
                       }}
@@ -284,6 +280,9 @@ function ProductScreen() {
                         return (
                           <option key={variant._id} value={variant._id}>
                             {variant.name}&nbsp;
+                            {variant.countInStock === 0
+                              ? '- Non-disponible'
+                              : ''}
                           </option>
                         );
                       })}
@@ -304,19 +303,7 @@ function ProductScreen() {
               </>
             )}
 
-            {product.variants.length >= 1 ? (
-              <ListGroup.Item>
-                <div className="p-2">
-                  <Button
-                    onClick={addToCartHandler}
-                    className="bg1 w-100"
-                    variant="outline-light"
-                  >
-                    Ajouter au panier
-                  </Button>
-                </div>
-              </ListGroup.Item>
-            ) : product.countInStock > 0 ? (
+            {product.countInStock > 0 || product.variants.length ? (
               <div className="p-2">
                 <Button
                   onClick={addToCartHandler}

@@ -115,7 +115,7 @@ productRouter.put(
       product.description = req.body.description || product.description;
       product.isVisible = req.body.isVisible || product.isVisible;
       product.variants = req.body.variants || product.variants;
-      product.customizable = req.body.customizable || product.customizable;
+      product.customizable = req.body.customizable;
 
       const updatedProduct = await product.save();
       res.send({
