@@ -178,9 +178,9 @@ function ProductScreen() {
       <Helmet>
         <title>{product.name}</title>
       </Helmet>
-      <Row>
+      <Row className="product-infos">
         <div>
-          {userInfo.isAdmin && (
+          {userInfo && userInfo.isAdmin && (
             <Link to={`/admin/product/${product._id}`}>
               <Button>Editer</Button>
             </Link>

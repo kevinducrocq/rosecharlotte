@@ -32,7 +32,7 @@ function Product(props) {
 
         <div className="mt-2 mb-3">
           {product.countInStock > 0 ? (
-            <Badge bg="success">{product.countInStock} En stock</Badge>
+            <Badge bg="success"> En stock</Badge>
           ) : (
             <Badge bg="danger">Epuisé</Badge>
           )}

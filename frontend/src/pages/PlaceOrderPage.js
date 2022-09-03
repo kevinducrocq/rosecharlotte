@@ -121,7 +121,7 @@ export default function PlaceOrderPage() {
               <Card.Body>
                 <Card.Title>Commande à retirer dans nos Locaux</Card.Title>
                 <Card.Text>
-                  <strong>Addresse : </strong> 20, MAIN STREET <br />
+                  <strong>Addresse : </strong> 20 rue Principale <br />
                   <strong>Code postal :</strong> 62190 <br />
                   <strong>Ville : </strong> Ecquedecques
                 </Card.Text>

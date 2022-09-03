@@ -72,7 +72,7 @@ function DeliveryAddressModal(props) {
   return (
     <>
       <Row>
-        <Col md={4}>
+        <Col md={6}>
           <Button
             className="bg2 text-light w-100 p-4 mb-2"
             variant="outline-secondary"
@@ -82,7 +82,7 @@ function DeliveryAddressModal(props) {
             <FontAwesomeIcon icon={faHouse} size="5x" />
           </Button>
         </Col>
-        <Col md={4}>
+        {/* <Col md={4}>
           <Button
             value="pointRelais"
             className="bg2 text-light w-100 p-4 mb-2"
@@ -92,8 +92,8 @@ function DeliveryAddressModal(props) {
             <h6>Point relais</h6>
             <FontAwesomeIcon icon={faStore} size="5x" />
           </Button>
-        </Col>
-        <Col md={4}>
+        </Col> */}
+        <Col md={6}>
           <Form onSubmit={homeHandler}>
             <Button
               type="submit"
@@ -116,7 +116,7 @@ function DeliveryAddressModal(props) {
         centered
       >
         <Form onSubmit={submitHandler}>
-          <Modal.Body closeButton>
+          <Modal.Body closeButton className="my-4 p-4">
             <Form.Group className="mb-3" controlId="name">
               <Form.Label>Prénom et nom</Form.Label>
               <Form.Control

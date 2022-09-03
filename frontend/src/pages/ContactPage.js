@@ -2,7 +2,6 @@ import React, { useContext, useState } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Store } from '../Store';
 import { getError } from '../utils';
@@ -44,7 +43,12 @@ export default function ContactPage() {
         senderName,
         senderEmail,
       });
-      dispatch({ type: 'SEND_SUCCESS' });
+      dispatch({
+        type: 'SEND_SUCCESS',
+      });
+      setMessage('');
+      setSenderName('');
+      setSenderEmail('');
       toast.success('Votre message a été envoyé');
     } catch (err) {
       toast.error(getError(err));

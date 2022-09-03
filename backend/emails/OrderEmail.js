@@ -9,7 +9,9 @@ export function orderEmail(order, user) {
       <div style="border: 1px solid;padding: 5px;">
   
       ${order.orderItems.map((item) => {
-        return `<div class="order-unit" style="overflow:hidden;margin:5px 0;">
+        return `<div key=${
+          item._id
+        }class="order-unit" style="overflow:hidden;margin:5px 0;">
   
       <div style="max-width: 300px;float: left;margin-left: 5px; object-fit:cover">
         <img src="${item.image}"  style="width:100px;height:100px;" alt="${

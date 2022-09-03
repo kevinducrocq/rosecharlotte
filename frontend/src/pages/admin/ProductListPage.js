@@ -292,7 +292,11 @@ export default function ProductListScreen() {
                     );
                     return (
                       <tr key={product._id}>
-                        <td>{product.name}</td>
+                        <td>
+                          <Link to={`/product/${product.slug}`}>
+                            {product.name}
+                          </Link>
+                        </td>
                         <td>{product.category}</td>
                         <td>{product.subCategory}</td>
 
