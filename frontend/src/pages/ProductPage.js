@@ -56,10 +56,10 @@ function ProductScreen() {
   const [customization, setCustomization] = useState('');
   const [variantId, setVariant] = useState('');
 
-  const getNames = (list) =>
-    list.map((item) => {
-      return item.name;
-    });
+  // const getNames = (list) =>
+  //   list.map((item) => {
+  //     return item.name;
+  //   });
 
   const navigate = useNavigate();
   const params = useParams();
