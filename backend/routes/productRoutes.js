@@ -1,5 +1,7 @@
 import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
+import transporter, { sender } from '../email.js';
+import { reviewEmail } from '../emails/ReviewEmail.js';
 import Product from '../models/productModel.js';
 import { isAuth, isAdmin } from '../utils.js';
 
@@ -224,11 +226,20 @@ productRouter.post(
       };
 
       product.reviews.push(review);
+
       product.numReviews = product.reviews.length;
       product.rating =
         product.reviews.reduce((a, c) => c.rating + a, 0) /
         product.reviews.length;
+
       const updatedProduct = await product.save();
+
+      await transporter.sendMail({
+        from: sender,
+        to: sender,
+        ...reviewEmail(review, product),
+      });
+
       res.status(201).send({
         message: 'Avis créé',
         review: updatedProduct.reviews[updatedProduct.reviews.length - 1],

@@ -242,12 +242,14 @@ export default function ProductEditPage() {
 
   const addNewVariants = () => {
     setVariants([...variants, { name: '', countInStock: '', weight: '' }]);
+    setWeight('');
   };
 
   const removeVariant = async (index) => {
     const newVariants = [...variants];
     newVariants.splice(index, 1);
     setVariants(newVariants);
+
     console.log(index);
   };
 

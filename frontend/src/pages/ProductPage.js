@@ -332,6 +332,7 @@ function ProductScreen() {
           <Col md={4} sm={2}>
             <div className="mb-3 p-4">
               <h2>Ajouter un avis</h2>
+
               {userInfo ? (
                 <form onSubmit={submitHandler}>
                   <Form.Group className="mb-3" controlId="rating">

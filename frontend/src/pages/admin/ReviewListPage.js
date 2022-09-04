@@ -1,8 +1,22 @@
-import { faCheck, faEyeSlash, faTrash } from '@fortawesome/pro-solid-svg-icons';
+import {
+  faCheck,
+  faEye,
+  faEyeSlash,
+  faTrash,
+} from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import React, { useContext, useEffect, useReducer, useRef } from 'react';
-import { Button, Col, Container, Row, Table } from 'react-bootstrap';
+import {
+  Button,
+  Col,
+  Container,
+  OverlayTrigger,
+  Popover,
+  Row,
+  Table,
+  Tooltip,
+} from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { toast } from 'react-toastify';
 import AdminMenu from '../../components/AdminMenu';
@@ -216,9 +230,9 @@ export default function ReviewListPage() {
               <thead>
                 <tr>
                   <th>Auteur</th>
+                  <th>Commentaire</th>
                   <th>Produit</th>
                   <th>Note</th>
-                  <th>Commentaire</th>
                   <th>Crée le</th>
                   <th>Statut</th>
                   <th>Actions</th>
@@ -228,9 +242,9 @@ export default function ReviewListPage() {
                 {reviews.map((review) => (
                   <tr key={review._id}>
                     <td>{review.name}</td>
+                    <td>{review.comment}</td>
                     <td>{review.product.name}</td>
                     <td>{review.rating}</td>
-                    <td>{review.comment}</td>
                     <td>{review.createdAt.substring(0, 10)}</td>
                     <td>
                       <div

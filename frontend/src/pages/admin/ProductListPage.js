@@ -24,7 +24,6 @@ import {
   faPlus,
   faSun,
   faTrash,
-  faX,
   faXmark,
 } from '@fortawesome/pro-solid-svg-icons';
 import AdminMenu from '../../components/AdminMenu';

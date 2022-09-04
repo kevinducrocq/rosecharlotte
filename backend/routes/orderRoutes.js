@@ -7,6 +7,8 @@ import { isAuth, isAdmin } from '../utils.js';
 import mongoose from 'mongoose';
 import transporter, { sender } from '../email.js';
 import { orderEmail } from '../emails/OrderEmail.js';
+import { orderAdminEmail } from '../emails/OrderAdminEmail.js';
+import { sentOrderEmail } from '../emails/SentOrderEmail.js';
 
 const orderRouter = express.Router();
 const updateStock = async (order) => {
@@ -75,6 +77,11 @@ orderRouter.post(
       from: sender,
       to: user.email,
       ...orderEmail(order, user),
+    });
+    await transporter.sendMail({
+      from: sender,
+      to: sender,
+      ...orderAdminEmail(order, user),
     });
 
     res.status(201).send({ message: 'Nouvelle commande crée', order });
@@ -169,6 +176,13 @@ orderRouter.put(
       order.deliveredAt = Date.now();
 
       await order.save();
+
+      const user = await User.findOne({ _id: order.user.toString() });
+      await transporter.sendMail({
+        from: sender,
+        to: user.email,
+        ...sentOrderEmail(order, user),
+      });
 
       res.send({ message: 'Order Delivered' });
     } else {
