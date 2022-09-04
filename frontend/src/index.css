@@ -54,7 +54,11 @@ main {
   font-weight: 600;
   color: #000;
 }
-
+.admin-product-link {
+  font-weight: 600;
+  color: #000;
+  text-decoration: none;
+}
 /*COULEURS GENERALES*/
 
 .bg1 {
