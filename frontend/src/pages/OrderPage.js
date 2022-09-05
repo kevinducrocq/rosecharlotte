@@ -414,7 +414,6 @@ export default function OrderPage() {
                     )}
                   </>
                 )}
-
                 {userInfo.isAdmin && order.isPaid && !order.isDelivered && (
                   <ListGroup.Item>
                     {loadingDeliver && <LoadingBox></LoadingBox>}

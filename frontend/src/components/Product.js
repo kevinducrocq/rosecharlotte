@@ -22,9 +22,21 @@ function Product(props) {
           <Link to={`/product/${product.slug}`}>
             <Card.Title>{product.name}</Card.Title>
           </Link>
-          <Card.Text className="text-nowrap fw-bold bg3 p-2 rounded-5">
-            {product.price} &euro;
-          </Card.Text>
+          {!product.promoPrice && !product.soldePrice && (
+            <Card.Text className="text-nowrap fw-bold bg3 p-2 rounded-5">
+              {product.price} &euro;
+            </Card.Text>
+          )}
+          {product.promoPrice && (
+            <>
+              <Card.Text className="text-nowrap fw-bold bg3 p-2 rounded-5">
+                <s>{product.price} &euro;</s>
+              </Card.Text>
+              <Card.Text className="text-nowrap fw-bold bg3 p-2 rounded-5">
+                {product.promoPrice} &euro;
+              </Card.Text>
+            </>
+          )}
         </div>
         <div>
           <Rating rating={product.rating} numReviews={product.numReviews} />

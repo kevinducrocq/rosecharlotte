@@ -1,7 +1,14 @@
 import {
   faArrowRightToBracket,
+  faBagShopping,
+  faClothesHanger,
+  faComments,
+  faGauge,
   faPen,
+  faPlus,
+  faShirt,
   faShoppingCart,
+  faUsers,
 } from '@fortawesome/pro-solid-svg-icons';
 import { faFacebook, faInstagram } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -192,22 +199,45 @@ function NavigationBar() {
               {userInfo && userInfo.isAdmin && (
                 <NavDropdown title="Admin" id="admin-nav-dropdown">
                   <LinkContainer to="/admin/dashboard">
-                    <NavDropdown.Item>Tableau de bord</NavDropdown.Item>
+                    <NavDropdown.Item>
+                      <FontAwesomeIcon icon={faGauge} />
+                      &nbsp; Tableau de bord
+                    </NavDropdown.Item>
                   </LinkContainer>
+
                   <LinkContainer to="/admin/product/add">
-                    <NavDropdown.Item>Ajouter un produit</NavDropdown.Item>
+                    <NavDropdown.Item>
+                      <FontAwesomeIcon icon={faPlus} />
+                      &nbsp; Ajouter un produit
+                    </NavDropdown.Item>
                   </LinkContainer>
+
                   <LinkContainer to="/admin/products">
-                    <NavDropdown.Item>Produits</NavDropdown.Item>
+                    <NavDropdown.Item>
+                      <FontAwesomeIcon icon={faClothesHanger} />
+                      &nbsp; Produits
+                    </NavDropdown.Item>
                   </LinkContainer>
+
                   <LinkContainer to="/admin/orders">
-                    <NavDropdown.Item>Commandes</NavDropdown.Item>
+                    <NavDropdown.Item>
+                      <FontAwesomeIcon icon={faBagShopping} />
+                      &nbsp; Commandes
+                    </NavDropdown.Item>
                   </LinkContainer>
+
                   <LinkContainer to="/admin/users">
-                    <NavDropdown.Item>Utilisateurs</NavDropdown.Item>
+                    <NavDropdown.Item>
+                      <FontAwesomeIcon icon={faUsers} />
+                      &nbsp; Utilisateurs
+                    </NavDropdown.Item>
                   </LinkContainer>
+
                   <LinkContainer to="/admin/reviews">
-                    <NavDropdown.Item>Commentaires</NavDropdown.Item>
+                    <NavDropdown.Item>
+                      <FontAwesomeIcon icon={faComments} />
+                      &nbsp; Commentaires
+                    </NavDropdown.Item>
                   </LinkContainer>
                 </NavDropdown>
               )}

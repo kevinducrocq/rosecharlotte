@@ -43,6 +43,15 @@ function HomePage() {
     };
     fetchData();
   }, []);
+
+  const promoProducts = products.filter((product) => {
+    return !!product.promoPrice;
+  });
+
+  const soldeProducts = products.filter((product) => {
+    return !!product.soldePrice;
+  });
+
   return (
     <>
       <Helmet>
@@ -50,6 +59,7 @@ function HomePage() {
       </Helmet>
 
       <h1 className="d-none">Rose Charlotte & Compagnie</h1>
+
       <section>
         <CarouselFade />
         <div className="d-flex bg3">
@@ -69,35 +79,74 @@ function HomePage() {
       </section>
 
       <Container>
-        <section>
-          <h2 className="mb-3">Les derniers produits</h2>
-          <div>
-            {loading ? (
-              <LoadingBox />
-            ) : error ? (
-              <MessageBox variant="danger">{error}</MessageBox>
+        {loading ? (
+          <LoadingBox />
+        ) : error ? (
+          <MessageBox variant="danger">{error}</MessageBox>
+        ) : (
+          <>
+            {soldeProducts.length > 0 ? (
+              <section className="mt-3 mb-5">
+                <h2>Les Soldes</h2>
+                <Row>
+                  {soldeProducts.slice(0, 8).map((product) => (
+                    <Col
+                      key={product.slug}
+                      sm={6}
+                      md={4}
+                      lg={3}
+                      className="mb-3"
+                    >
+                      <Product product={product}></Product>
+                    </Col>
+                  ))}
+                </Row>
+              </section>
             ) : (
-              <Row>
-                {products.slice(0, 8).map((product) => (
-                  <Col key={product.slug} sm={6} md={4} lg={3} className="mb-3">
-                    <Product product={product}></Product>
-                  </Col>
-                ))}
-              </Row>
+              ''
             )}
-          </div>
-        </section>
 
-        <section className="mt-5">
-          <h2>Les dernières promotions</h2>
-          <Row>
-            {products.slice(0, 8).map((product) => (
-              <Col key={product.slug} sm={6} md={4} lg={3} className="mb-3">
-                <Product product={product}></Product>
-              </Col>
-            ))}
-          </Row>
-        </section>
+            <section>
+              <h2 className="mb-3">Les derniers produits</h2>
+              <div>
+                <Row>
+                  {products.slice(0, 8).map((product) => (
+                    <Col
+                      key={product.slug}
+                      sm={6}
+                      md={4}
+                      lg={3}
+                      className="mb-3"
+                    >
+                      <Product product={product}></Product>
+                    </Col>
+                  ))}
+                </Row>
+              </div>
+            </section>
+
+            {promoProducts.length > 0 ? (
+              <section className="mt-5">
+                <h2>Les dernières promotions</h2>
+                <Row>
+                  {promoProducts.slice(0, 8).map((product) => (
+                    <Col
+                      key={product.slug}
+                      sm={6}
+                      md={4}
+                      lg={3}
+                      className="mb-3"
+                    >
+                      <Product product={product}></Product>
+                    </Col>
+                  ))}
+                </Row>
+              </section>
+            ) : (
+              ''
+            )}
+          </>
+        )}
       </Container>
     </>
   );

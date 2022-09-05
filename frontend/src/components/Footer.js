@@ -10,25 +10,25 @@ export default function Footer() {
             <Image src="../logo-site.png" width={150} />
           </Col>
 
-          <Col md={4} className="text-center mb-3">
-            <Link className="nav-link" to="/">
+          <Col md={4} className="text-center mb-3 footer-link">
+            <Link className="nav-link mb-2" to="/">
               Accueil
             </Link>
-            <Link className="nav-link" to="/boutique/search">
+            <Link className="nav-link mb-2" to="/boutique/search">
               Boutique
             </Link>
-            <Link className="nav-link" to="/about">
+            <Link className="nav-link mb-2" to="/about">
               A propos
             </Link>
             <Link className="nav-link" to="/contact">
               Contact
             </Link>
           </Col>
-          <Col md={4} className="text-center">
-            <Link className="nav-link" to="/cgv">
+          <Col md={4} className="text-center footer-link">
+            <Link className="nav-link mb-2" to="/cgv">
               Condition générales de vente
             </Link>
-            <Link className="nav-link" to="/mentions">
+            <Link className="nav-link mb-2" to="/mentions">
               Mentions Légales
             </Link>
             <Link className="nav-link" to="/serviceclient">

@@ -99,8 +99,7 @@ export default function CgvPage() {
       </div>
       <div>
         <h3>
-          3. Données personnelles - cookies – protection des mineurs - liens
-          hypertextes
+          3. Données personnelles - protection des mineurs - liens hypertextes
         </h3>
         <div>
           <h4> 3.1. Traitement des données personnelles</h4>
@@ -114,27 +113,6 @@ export default function CgvPage() {
             respecter les dispositions du règlement (UE) n°2016/679 du 27 avril
             2016 relatif à la protection des données à caractère personnel
             (RGPD) et de la loi n°78-17 du 6 janvier 1978 modifiée.
-          </p>
-        </div>
-        <div>
-          <h4>3.2. Cookies</h4>
-          <p>
-            L’Utilisateur reconnaît et accepte la possibilité que Rose Charlotte
-            &amp; COMPAGNIE puisse placer de manière anonyme un ou plusieurs
-            cookies en vue d’améliorer en permanence le Site notamment pour
-            faciliter la gestion du Site et la reconnaissance des Clients.{' '}
-          </p>
-        </div>
-        <div>
-          <h4>3.3. Protection des mineurs</h4>
-          <p>
-            En application de l'article 1146 du code civil, les mineurs non
-            émancipés sont incapables de contracter. Par conséquent, les
-            Commandes destinées aux mineurs doivent être passées par l'autorité
-            parentale. En cas de collecte accidentelle de données personnelles
-            relatives à un mineur, l'autorité parentale a la faculté de
-            s'opposer à leur conservation en envoyant un message à
-            rosecharlotteetcompagnie@gmail.com
           </p>
         </div>
         <div>
@@ -545,29 +523,6 @@ export default function CgvPage() {
           tout moment et sans préavis par Rose Charlotte &amp; COMPAGNIE, les
           conditions applicables étant celles en vigueur à la date de la
           commande faite par le client. <br /> <br />
-        </p>
-      </div>
-      <div>
-        <h3>17. Cookies </h3>
-        <p>
-          Afin de traiter la commande du Client, et dans le but de mieux
-          connaître ses besoins et de personnaliser les services proposés sur le
-          site, Rose Charlotte & COMPAGNIE fait usage de cookies. Le cookie est
-          un fichier informatique, stocké sur le disque dur du micro-ordinateur
-          du Client qui a pour but de signaler son passage sur le site. <br />{' '}
-          <br />
-          Les cookies mémorisent, le temps de visite du client sur le site, son
-          identité (connue grâce à son adresse électronique et son mot de passe)
-          et le contenu de son panier. Une fois déconnecté du site, ces
-          informations sont mémorisées pendant 30 jours (30) avant d'être
-          définitivement effacées. <br /> <br />
-          Le client peut s'opposer à l'enregistrement des cookies en configurant
-          son navigateur internet. Il perd alors toute personnalisation du
-          service qui lui est proposé sur le site. Nous déclinons toute
-          responsabilité pour les conséquences liées au fonctionnement dégradé
-          de nos services résultant de l'impossibilité pour nous d'enregistrer
-          ou de consulter les cookies nécessaires à leur fonctionnement et que
-          vous auriez refusés ou supprimés.
         </p>
       </div>
     </Container>

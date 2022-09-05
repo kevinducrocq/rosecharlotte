@@ -1,5 +1,6 @@
 import {
   faBagShopping,
+  faClothesHanger,
   faComments,
   faGauge,
   faPlus,
@@ -38,7 +39,7 @@ export default function AdminMenu(props) {
         className={props.link3 ? 'activee  py-3' : 'py-3'}
       >
         <Link to="/admin/products">
-          <FontAwesomeIcon icon={faShirt} />
+          <FontAwesomeIcon icon={faClothesHanger} />
           <span className="ms-2">Produits</span>
         </Link>
       </ListGroup.Item>
