@@ -403,6 +403,9 @@ export default function ProductEditPage() {
                             setPromoIsVisible(!promoIsVisible);
                             if (promoIsVisible) {
                               setPromoPrice('');
+                            } else {
+                              setSoldeIsVisible(false);
+                              setSoldePrice('');
                             }
                           }}
                           checked={promoIsVisible}
@@ -438,6 +441,9 @@ export default function ProductEditPage() {
                             setSoldeIsVisible(!soldeIsVisible);
                             if (soldeIsVisible) {
                               setSoldePrice('');
+                            } else {
+                              setPromoIsVisible(false);
+                              setPromoPrice('');
                             }
                           }}
                           checked={soldeIsVisible}

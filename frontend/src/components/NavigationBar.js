@@ -6,7 +6,6 @@ import {
   faGauge,
   faPen,
   faPlus,
-  faShirt,
   faShoppingCart,
   faUsers,
 } from '@fortawesome/pro-solid-svg-icons';
@@ -21,8 +20,30 @@ import { toast } from 'react-toastify';
 import { Store } from '../Store';
 import { getError } from '../utils';
 import CategoriesCanvasMenu from './CategoriesCanvasMenu';
+import { useReducer } from 'react';
+
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'FETCH_REQUEST':
+      return { ...state, loading: true };
+    case 'FETCH_SUCCESS':
+      return {
+        ...state,
+        products: action.payload,
+        loading: false,
+      };
+    case 'FETCH_FAIL':
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
 
 function NavigationBar() {
+  const [{ products }, dispatch] = useReducer(reducer, {
+    products: [],
+  });
+
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { cart, userInfo } = state;
 
@@ -46,6 +67,27 @@ function NavigationBar() {
     };
     fetchCategories();
   }, []);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      dispatch({ type: 'FETCH_REQUEST' });
+      try {
+        const result = await axios.get('/api/products/last-products');
+        dispatch({ type: 'FETCH_SUCCESS', payload: result.data });
+      } catch (err) {
+        dispatch({ type: 'FETCH_FAIL', payload: err.message });
+      }
+    };
+    fetchProducts();
+  }, []);
+
+  const promoProducts = products.filter((product) => {
+    return !!product.promoPrice;
+  });
+
+  const soldeProducts = products.filter((product) => {
+    return !!product.soldePrice;
+  });
 
   const renderedCategories = [];
   Object.keys(categories).forEach(function (category) {
@@ -107,6 +149,23 @@ function NavigationBar() {
                     Boutique
                   </Link>
                 </Nav.Link>
+
+                {promoProducts.length > 0 && (
+                  <Nav.Link eventKey="i">
+                    <Link className="nav-link" to="/promotions">
+                      Promotions
+                    </Link>
+                  </Nav.Link>
+                )}
+
+                {soldeProducts.length > 0 && (
+                  <Nav.Link eventKey="i">
+                    <Link className="nav-link" to="/soldes">
+                      Soldes
+                    </Link>
+                  </Nav.Link>
+                )}
+
                 <Nav.Link eventKey="i">
                   <Link className="nav-link" to="/about">
                     A propos

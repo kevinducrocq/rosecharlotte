@@ -22,7 +22,6 @@ import OrderListPage from './pages/admin/OrderListPage';
 import UserListPage from './pages/admin/UserListPage';
 import UserEditPage from './pages/admin/UserEditPage';
 import NavigationBar from './components/NavigationBar';
-import { Container } from 'react-bootstrap';
 import Footer from './components/Footer';
 import AboutPage from './pages/AboutPage';
 import PaymentMethodPage from './pages/PaymentMethodPage';
@@ -31,6 +30,8 @@ import ContactPage from './pages/ContactPage';
 import CgvPage from './pages/CgvPage';
 import MentionsLegalesPage from './pages/MentionsLegalesPage';
 import ServiceClientPage from './pages/ServiceClientPage';
+import PromoPage from './pages/PromoPage';
+import SoldePage from './pages/SoldesPage';
 
 function App() {
   return (
@@ -63,6 +64,8 @@ function App() {
               <Route path="/mentions" element={<MentionsLegalesPage />} />
               <Route path="/serviceclient" element={<ServiceClientPage />} />
               <Route path="/boutique/search" element={<SearchPage />} />
+              <Route path="/promotions" element={<PromoPage />} />
+              <Route path="/soldes" element={<SoldePage />} />
               <Route path="/product/:slug" element={<ProductPage />} />
               <Route path="/cart" element={<CartPage />} />
               <Route path="/signin" element={<SigninPage />} />

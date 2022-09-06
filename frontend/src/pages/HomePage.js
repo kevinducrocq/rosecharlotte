@@ -1,11 +1,14 @@
 import axios from 'axios';
 import React, { useEffect, useReducer } from 'react';
-import { Col, Container, Row } from 'react-bootstrap';
+import OwlCarousel from 'react-owl-carousel';
+import 'owl.carousel/dist/assets/owl.carousel.css';
+import { Button, Col, Container, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import Product from '../components/Product';
 import CarouselFade from '../components/Carousel';
+import { Link } from 'react-router-dom';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -30,6 +33,30 @@ function HomePage() {
     loading: true,
     error: '',
   });
+  const options = {
+    loop: true,
+    margin: 10,
+    autoplay: true,
+    autoplayTimeout: 3000,
+    autoplayHoverPause: true,
+    responsive: {
+      0: {
+        items: 1,
+      },
+      400: {
+        items: 1,
+      },
+      600: {
+        items: 2,
+      },
+      800: {
+        items: 3,
+      },
+      1000: {
+        items: 4,
+      },
+    },
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -87,19 +114,50 @@ function HomePage() {
           <>
             {soldeProducts.length > 0 ? (
               <section className="mt-3 mb-5">
-                <h2>Les Soldes</h2>
+                <h2>Les dernières soldes</h2> &nbsp;
+                <Button className="bg3" variant="outline-light">
+                  <Link to={'/soldes'}>Voir tout</Link>
+                </Button>
+                <hr />
                 <Row>
-                  {soldeProducts.slice(0, 8).map((product) => (
-                    <Col
-                      key={product.slug}
-                      sm={6}
-                      md={4}
-                      lg={3}
-                      className="mb-3"
-                    >
-                      <Product product={product}></Product>
-                    </Col>
-                  ))}
+                  <OwlCarousel
+                    className="slider-items owl-carousel owl-theme"
+                    {...options}
+                    id="slider_soldes"
+                  >
+                    <div className="item">
+                      {soldeProducts.slice(0, 8).map((product) => (
+                        <div key={product.slug} className="item">
+                          <Product product={product}></Product>
+                        </div>
+                      ))}
+                    </div>
+                  </OwlCarousel>
+                </Row>
+              </section>
+            ) : (
+              ''
+            )}
+
+            {promoProducts.length > 0 ? (
+              <section className="mt-5 mb-5">
+                <h2>Les dernières poromotions</h2> &nbsp;
+                <Button className="bg3" variant="outline-light">
+                  <Link to={'/promotions'}>Voir tout</Link>
+                </Button>
+                <hr />
+                <Row>
+                  <OwlCarousel
+                    className="slider-items owl-carousel"
+                    {...options}
+                    id="slider_promos"
+                  >
+                    {promoProducts.slice(0, 8).map((product) => (
+                      <div key={product.slug} className="item">
+                        <Product product={product}></Product>
+                      </div>
+                    ))}
+                  </OwlCarousel>
                 </Row>
               </section>
             ) : (
@@ -124,27 +182,6 @@ function HomePage() {
                 </Row>
               </div>
             </section>
-
-            {promoProducts.length > 0 ? (
-              <section className="mt-5">
-                <h2>Les dernières promotions</h2>
-                <Row>
-                  {promoProducts.slice(0, 8).map((product) => (
-                    <Col
-                      key={product.slug}
-                      sm={6}
-                      md={4}
-                      lg={3}
-                      className="mb-3"
-                    >
-                      <Product product={product}></Product>
-                    </Col>
-                  ))}
-                </Row>
-              </section>
-            ) : (
-              ''
-            )}
           </>
         )}
       </Container>
