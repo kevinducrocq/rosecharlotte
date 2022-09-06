@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Button, Col, Container, Form, Row } from 'react-bootstrap';
+import { Breadcrumb, Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { toast } from 'react-toastify';
 import axios from 'axios';
@@ -7,6 +7,7 @@ import { Store } from '../Store';
 import { getError } from '../utils';
 import { useReducer } from 'react';
 import LoadingBox from '../components/LoadingBox';
+import { LinkContainer } from 'react-router-bootstrap';
 
 function reducer(state, action) {
   switch (action.type) {
@@ -58,6 +59,12 @@ export default function ContactPage() {
 
   return (
     <Container className="my-5">
+      <Breadcrumb>
+        <LinkContainer to={'/'} exact>
+          <Breadcrumb.Item>Accueil</Breadcrumb.Item>
+        </LinkContainer>
+        <Breadcrumb.Item active>Contact</Breadcrumb.Item>
+      </Breadcrumb>
       <Helmet>
         <title>Contact</title>
       </Helmet>

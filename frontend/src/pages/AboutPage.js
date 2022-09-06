@@ -1,14 +1,21 @@
 import React from 'react';
-import { Col, Container, Image, Row } from 'react-bootstrap';
+import { Breadcrumb, Col, Container, Image, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
+import { LinkContainer } from 'react-router-bootstrap';
 
 export default function AboutPage() {
   return (
     <Container className="my-5">
+      <Breadcrumb>
+        <LinkContainer to={'/'} exact>
+          <Breadcrumb.Item>Accueil</Breadcrumb.Item>
+        </LinkContainer>
+        <Breadcrumb.Item active>À propos</Breadcrumb.Item>
+      </Breadcrumb>
       <Helmet>
-        <title>A propos</title>
+        <title>À propos</title>
       </Helmet>
-      <h1 className="text-center">A propos de Rose Charlotte</h1>
+      <h1 className="text-center">À propos de Rose Charlotte</h1>
       <div className="mt-5">
         <hr />
         <Row className="my-5">

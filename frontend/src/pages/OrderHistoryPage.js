@@ -7,9 +7,10 @@ import MessageBox from '../components/MessageBox';
 import { Store } from '../Store';
 import axios from 'axios';
 import { getError } from '../utils';
-import { Button, Container, Table } from 'react-bootstrap';
+import { Breadcrumb, Button, Container, Table } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye } from '@fortawesome/pro-solid-svg-icons';
+import { LinkContainer } from 'react-router-bootstrap';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -50,10 +51,16 @@ const OrderHistoryPage = () => {
 
   return (
     <Container className="my-5">
+      <Breadcrumb>
+        <LinkContainer to={'/'} exact>
+          <Breadcrumb.Item>Accueil</Breadcrumb.Item>
+        </LinkContainer>
+        <Breadcrumb.Item active>Historique de commandes</Breadcrumb.Item>
+      </Breadcrumb>
       <Helmet>
         <title>Historique de commandes</title>
       </Helmet>
-      <h1>Historique de commandes</h1>
+      <h1 className="my-5">Historique de commandes</h1>
       {loading ? (
         <LoadingBox></LoadingBox>
       ) : error ? (

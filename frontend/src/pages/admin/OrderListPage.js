@@ -90,7 +90,7 @@ export default function OrderListPage() {
   }, [userInfo, successDelete]);
 
   const deleteHandler = async (order) => {
-    if (window.confirm('Are you sure to delete?')) {
+    if (!order.isPaid) {
       try {
         dispatch({ type: 'DELETE_REQUEST' });
         await axios.delete(`/api/orders/${order._id}`, {
@@ -192,14 +192,16 @@ export default function OrderListPage() {
                         <FontAwesomeIcon icon={faEye} />
                       </Button>
                       &nbsp;
-                      <Button
-                        className="btn btn-sm"
-                        type="button"
-                        variant="danger"
-                        onClick={() => deleteHandler(order)}
-                      >
-                        <FontAwesomeIcon icon={faTrash} />
-                      </Button>
+                      {!order.isPaid && (
+                        <Button
+                          className="btn btn-sm"
+                          type="button"
+                          variant="danger"
+                          onClick={() => deleteHandler(order)}
+                        >
+                          <FontAwesomeIcon icon={faTrash} />
+                        </Button>
+                      )}
                     </td>
                   </tr>
                 ))}

@@ -9,6 +9,7 @@ import {
   Card,
   Container,
   Image,
+  Breadcrumb,
 } from 'react-bootstrap';
 import MessageBox from '../components/MessageBox';
 import { Link, useNavigate } from 'react-router-dom';
@@ -19,6 +20,7 @@ import {
   faTrash,
 } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { LinkContainer } from 'react-router-bootstrap';
 
 export default function CartPage() {
   const navigate = useNavigate();
@@ -71,6 +73,12 @@ export default function CartPage() {
 
   return (
     <Container className="my-5">
+      <Breadcrumb>
+        <LinkContainer to={'/'} exact>
+          <Breadcrumb.Item>Accueil</Breadcrumb.Item>
+        </LinkContainer>
+        <Breadcrumb.Item active>Panier</Breadcrumb.Item>
+      </Breadcrumb>
       <Helmet>
         <title>Panier</title>
       </Helmet>
@@ -86,7 +94,7 @@ export default function CartPage() {
           ) : (
             <ListGroup className="text-center">
               {cartItems.map((item) => (
-                <ListGroup.Item key={item._id+item.variant?._id}>
+                <ListGroup.Item key={item._id + item.variant?._id}>
                   <Row className="align-items-center">
                     <Col md={3} className="d-flex flex-column">
                       <Link to={`/product/${item.slug}`}>

@@ -1,10 +1,17 @@
 import React from 'react';
-import { Container } from 'react-bootstrap';
+import { Breadcrumb, Container } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 
 const ServiceClientPage = () => {
   return (
     <Container className="my-5">
-      <h1 className="text-center">Service client</h1>
+      <Breadcrumb>
+        <LinkContainer to={'/'} exact>
+          <Breadcrumb.Item>Accueil</Breadcrumb.Item>
+        </LinkContainer>
+        <Breadcrumb.Item active>Service client</Breadcrumb.Item>
+      </Breadcrumb>
+      <h1 className="my-5">Service client</h1>
       <div>
         <h3>Livraison</h3>
         <p>

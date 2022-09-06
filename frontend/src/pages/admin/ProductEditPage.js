@@ -84,7 +84,7 @@ export default function ProductEditPage() {
   const [description, setDescription] = useState('');
   const [categories, setCategories] = useState([]);
   const [promoIsVisible, setPromoIsVisible] = useState(false);
-  const [soldeIsVisible, setSoldeIsVisible] = useState(false);
+  const [soldeIsVisible, setSoldeIsVisible] = useState();
   const [categoryInputIsVisible, setCategoryInputIsVisible] = useState(false);
   const [subCategoryInputIsVisible, setSubCategoryInputIsVisible] =
     useState(false);
@@ -114,7 +114,7 @@ export default function ProductEditPage() {
         setCustomizable(data.customizable);
         setVariantIsVisible(data.variants.length);
         setPromoIsVisible(data.promoPrice);
-        setSoldeIsVisible(data.soldeIsVisible);
+        setSoldeIsVisible(data.soldePrice);
         dispatch({ type: 'FETCH_SUCCESS' });
       } catch (err) {
         dispatch({
@@ -179,7 +179,6 @@ export default function ProductEditPage() {
     e.preventDefault();
     try {
       dispatch({ type: 'UPDATE_REQUEST' });
-      console.log(promoPrice);
       await axios.put(
         `/api/products/${productId}`,
         {

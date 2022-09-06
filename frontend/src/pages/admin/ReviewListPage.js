@@ -181,7 +181,7 @@ export default function ReviewListPage() {
   };
 
   const deleteHandler = async (review) => {
-    if (window.confirm('Are you sure to delete?')) {
+    if (window.confirm('Supprimer le commentaire?')) {
       try {
         dispatch({ type: 'DELETE_REQUEST' });
         await axios.delete(

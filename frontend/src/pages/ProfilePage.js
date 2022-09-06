@@ -1,11 +1,20 @@
 import React, { useContext, useReducer, useState } from 'react';
-import { Accordion, Button, Col, Container, Form, Row } from 'react-bootstrap';
+import {
+  Accordion,
+  Breadcrumb,
+  Button,
+  Col,
+  Container,
+  Form,
+  Row,
+} from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { Store } from '../Store';
 import { getError } from '../utils';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import LoadingBox from '../components/LoadingBox';
+import { LinkContainer } from 'react-router-bootstrap';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -88,127 +97,143 @@ const ProfilePage = () => {
   };
 
   return (
-    <Container className="my-5 bg3 shadow rounded-3 p-4 small-container">
-      <Helmet>
-        <title>Profil</title>
-      </Helmet>
-      <h1 className="my-3 mb-5 text-center">Profil de {userInfo.name}</h1>
+    <>
+      <Container className="my-5">
+        <Breadcrumb>
+          <LinkContainer to={'/'} exact>
+            <Breadcrumb.Item>Accueil</Breadcrumb.Item>
+          </LinkContainer>
+          <Breadcrumb.Item active>Profil</Breadcrumb.Item>
+        </Breadcrumb>
 
-      <Form onSubmit={submitHandler} className="mb-5">
-        <Row>
-          <Col>
-            <Form.Group className="mb-3" controlId="name">
-              <Form.Label>Nom et Prénom</Form.Label>
-              <Form.Control
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group className="mb-3" controlId="email">
-              <Form.Label>Email</Form.Label>
-              <Form.Control
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-              ></Form.Control>
-            </Form.Group>
-          </Col>
-        </Row>
-        <hr />
-        <Row>
-          <Col>
-            <Form.Group className="mb-3" controlId="address">
-              <Form.Label>Adresse</Form.Label>
-              <Form.Control
-                autoCapitalize
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group className="mb-3" controlId="zip">
-              <Form.Label>Code postal</Form.Label>
-              <Form.Control
-                value={zip}
-                onChange={(e) => setZip(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <Form.Group className="mb-3" controlId="city">
-              <Form.Label>Ville</Form.Label>
-              <Form.Control
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group className="mb-3" controlId="country">
-              <Form.Label>Pays</Form.Label>
-              <Form.Control
-                value={country}
-                onChange={(e) => setCountry(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
-          </Col>
-        </Row>
+        <div className=" container bg3 shadow rounded-3 p-4 small-container">
+          <Helmet>
+            <title>Profil</title>
+          </Helmet>
 
-        <div className="mb-3">
-          <Button className="bg1 w-100" variant="outline-light" type="submit">
-            {loadingUpdate ? <LoadingBox /> : 'Mettre à jour'}
-          </Button>
+          <h1 className="my-3 mb-5 text-center">Profil de {userInfo.name}</h1>
+
+          <Form onSubmit={submitHandler} className="mb-5">
+            <Row>
+              <Col>
+                <Form.Group className="mb-3" controlId="name">
+                  <Form.Label>Nom et Prénom</Form.Label>
+                  <Form.Control
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  ></Form.Control>
+                </Form.Group>
+              </Col>
+              <Col>
+                <Form.Group className="mb-3" controlId="email">
+                  <Form.Label>Email</Form.Label>
+                  <Form.Control
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  ></Form.Control>
+                </Form.Group>
+              </Col>
+            </Row>
+            <hr />
+            <Row>
+              <Col>
+                <Form.Group className="mb-3" controlId="address">
+                  <Form.Label>Adresse</Form.Label>
+                  <Form.Control
+                    autoCapitalize
+                    value={address}
+                    onChange={(e) => setAddress(e.target.value)}
+                  ></Form.Control>
+                </Form.Group>
+              </Col>
+              <Col>
+                <Form.Group className="mb-3" controlId="zip">
+                  <Form.Label>Code postal</Form.Label>
+                  <Form.Control
+                    value={zip}
+                    onChange={(e) => setZip(e.target.value)}
+                  ></Form.Control>
+                </Form.Group>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <Form.Group className="mb-3" controlId="city">
+                  <Form.Label>Ville</Form.Label>
+                  <Form.Control
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
+                  ></Form.Control>
+                </Form.Group>
+              </Col>
+              <Col>
+                <Form.Group className="mb-3" controlId="country">
+                  <Form.Label>Pays</Form.Label>
+                  <Form.Control
+                    value={country}
+                    onChange={(e) => setCountry(e.target.value)}
+                  ></Form.Control>
+                </Form.Group>
+              </Col>
+            </Row>
+
+            <div className="mb-3">
+              <Button
+                className="bg1 w-100"
+                variant="outline-light"
+                type="submit"
+              >
+                {loadingUpdate ? <LoadingBox /> : 'Mettre à jour'}
+              </Button>
+            </div>
+          </Form>
+
+          <hr />
+
+          <Accordion>
+            <Accordion.Item eventKey="0" className="bg3">
+              <Accordion.Header>Changer le mot de passe</Accordion.Header>
+              <Accordion.Body>
+                <Form onSubmit={updtadePasswordHandler}>
+                  <Row className="mb-3">
+                    <Col>
+                      <Form.Group className="" controlId="password">
+                        <Form.Label>Nouveau mot de passe</Form.Label>
+                        <Form.Control
+                          autoComplete="new-password"
+                          type="password"
+                          onChange={(e) => setPassword(e.target.value)}
+                        ></Form.Control>
+                      </Form.Group>
+                    </Col>
+                    <Col>
+                      <Form.Group className="" controlId="confirmPassword">
+                        <Form.Label>Répétez le Mot de passe</Form.Label>
+                        <Form.Control
+                          type="password"
+                          onChange={(e) => setConfirmPassword(e.target.value)}
+                        ></Form.Control>
+                      </Form.Group>
+                    </Col>
+                  </Row>
+                  <div className="mb-3">
+                    <Button
+                      className="bg1 w-100"
+                      variant="outline-light"
+                      type="submit"
+                    >
+                      {loadingUpdate ? <LoadingBox /> : 'Enregistrer'}
+                    </Button>
+                  </div>
+                </Form>
+              </Accordion.Body>
+            </Accordion.Item>
+          </Accordion>
         </div>
-      </Form>
-
-      <hr />
-
-      <Accordion>
-        <Accordion.Item eventKey="0" className="bg3">
-          <Accordion.Header>Changer le mot de passe</Accordion.Header>
-          <Accordion.Body>
-            <Form onSubmit={updtadePasswordHandler}>
-              <Row className="mb-3">
-                <Col>
-                  <Form.Group className="" controlId="password">
-                    <Form.Label>Nouveau mot de passe</Form.Label>
-                    <Form.Control
-                      autoComplete="new-password"
-                      type="password"
-                      onChange={(e) => setPassword(e.target.value)}
-                    ></Form.Control>
-                  </Form.Group>
-                </Col>
-                <Col>
-                  <Form.Group className="" controlId="confirmPassword">
-                    <Form.Label>Répétez le Mot de passe</Form.Label>
-                    <Form.Control
-                      type="password"
-                      onChange={(e) => setConfirmPassword(e.target.value)}
-                    ></Form.Control>
-                  </Form.Group>
-                </Col>
-              </Row>
-              <div className="mb-3">
-                <Button
-                  className="bg1 w-100"
-                  variant="outline-light"
-                  type="submit"
-                >
-                  {loadingUpdate ? <LoadingBox /> : 'Enregistrer'}
-                </Button>
-              </div>
-            </Form>
-          </Accordion.Body>
-        </Accordion.Item>
-      </Accordion>
-    </Container>
+      </Container>
+    </>
   );
 };
 

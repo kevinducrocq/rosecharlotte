@@ -12,7 +12,7 @@ import Button from 'react-bootstrap/Button';
 import Product from '../components/Product';
 import SearchBox from '../components/SearchBox';
 
-import { Accordion, Badge, Container } from 'react-bootstrap';
+import { Accordion, Badge, Breadcrumb, Container } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimesCircle } from '@fortawesome/pro-solid-svg-icons';
 import { LinkContainer } from 'react-router-bootstrap';
@@ -132,6 +132,21 @@ export default function SearchScreen() {
 
   return (
     <Container className="my-5">
+      <Breadcrumb>
+        <LinkContainer to={'/'} exact>
+          <Breadcrumb.Item>Accueil</Breadcrumb.Item>
+        </LinkContainer>
+        <LinkContainer to={'/boutique/search'}>
+          <Breadcrumb.Item>Boutique</Breadcrumb.Item>
+        </LinkContainer>
+        <LinkContainer to={`/boutique/search?category=${category}`}>
+          <Breadcrumb.Item>{category ? category : ''}</Breadcrumb.Item>
+        </LinkContainer>
+        <LinkContainer to={`/boutique/search?subCategory=${subCategory}`}>
+          <Breadcrumb.Item active>{subCategory}</Breadcrumb.Item>
+        </LinkContainer>
+      </Breadcrumb>
+
       <Helmet>
         <title>Boutique</title>
       </Helmet>

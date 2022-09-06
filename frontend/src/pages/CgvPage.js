@@ -1,25 +1,32 @@
 import React from 'react';
-import { Container, Table } from 'react-bootstrap';
+import { Breadcrumb, Container, Table } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
+import { LinkContainer } from 'react-router-bootstrap';
 
 export default function CgvPage() {
   return (
     <Container className="my-5">
+      <Breadcrumb>
+        <LinkContainer to={'/'} exact>
+          <Breadcrumb.Item>Accueil</Breadcrumb.Item>
+        </LinkContainer>
+        <Breadcrumb.Item active>Conditions générales de vente</Breadcrumb.Item>
+      </Breadcrumb>
       <Helmet>
         <title>Conditions générales de vente</title>
       </Helmet>
-      <h1 className="my-5 text-center">Conditions générales de vente</h1>
+      <h1 className="my-5">Conditions générales de vente</h1>
       <div>
         <p>
-          Le site www.rosecharlotte.com (ci-après dénommé le « Site ») est édité
+          Le site www.rosecharlotte.fr (ci-après dénommé le « Site ») est édité
           par la microentreprise Rose Charlotte &amp; COMPAGNIE (ci-après
           dénommée Rose Charlotte &amp; COMPAGNIE), représentée par Mme Marie
-          FARDEL. Le site internet www.rosecharlotte.com est hébergé
-          ……………………………. Le client internaute est dénommé le Client. L’accès et
-          l’utilisation du Site sont réservés à des personnes physiques,
-          majeures à l’exclusion de toute vente à des professionnels ou aux fins
-          de revente à des tiers. Dans tous les cas, l’accès ou l’utilisation du
-          Site, par un Client, sont soumis au respect des Conditions générales
+          FARDEL. Le site internet www.rosecharlotte.fr est hébergé par ni-host.
+          Le client internaute est dénommé le Client. L’accès et l’utilisation
+          du Site sont réservés à des personnes physiques, majeures à
+          l’exclusion de toute vente à des professionnels ou aux fins de revente
+          à des tiers. Dans tous les cas, l’accès ou l’utilisation du Site, par
+          un Client, sont soumis au respect des Conditions générales
           d’Utilisation ainsi que des présentes Conditions générales de Vente du
           site internet Rose Charlotte &amp; COMPAGNIE (ci-après les «
           Conditions générales de Vente »). Le Site propose à la vente des

@@ -1,10 +1,17 @@
 import React from 'react';
-import { Container } from 'react-bootstrap';
+import { Breadcrumb, Container } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 
 const MentionsLegalesPage = () => {
   return (
     <Container className="my-5">
-      <h1 className="text-center">Mentions légales</h1>
+      <Breadcrumb>
+        <LinkContainer to={'/'} exact>
+          <Breadcrumb.Item>Accueil</Breadcrumb.Item>
+        </LinkContainer>
+        <Breadcrumb.Item active>Mentions légales</Breadcrumb.Item>
+      </Breadcrumb>
+      <h1 className="my-5">Mentions légales</h1>
       <div>
         <p>
           Marie FARDEL, propriétaire de Rose Charlotte &amp; COMPAGNIE, boutique

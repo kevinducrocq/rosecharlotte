@@ -17,6 +17,7 @@ import {
   Button,
   Image,
   Container,
+  Breadcrumb,
 } from 'react-bootstrap';
 import Rating from '../components/Rating';
 import { Helmet } from 'react-helmet-async';
@@ -25,6 +26,7 @@ import MessageBox from '../components/MessageBox';
 import { getError } from '../utils';
 import { Store } from '../Store';
 import { toast } from 'react-toastify';
+import { LinkContainer } from 'react-router-bootstrap';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -175,6 +177,24 @@ function ProductScreen() {
     <MessageBox variant="danger">{error}</MessageBox>
   ) : (
     <Container className="my-5">
+      <Breadcrumb>
+        <LinkContainer to={'/'} exact>
+          <Breadcrumb.Item>Accueil</Breadcrumb.Item>
+        </LinkContainer>
+        <LinkContainer to={'/boutique/search'}>
+          <Breadcrumb.Item>Boutique</Breadcrumb.Item>
+        </LinkContainer>
+        <LinkContainer to={`/boutique/search?category=${product.category}`}>
+          <Breadcrumb.Item>{product.category}</Breadcrumb.Item>
+        </LinkContainer>
+        <LinkContainer
+          to={`/boutique/search?subCategory=${product.subCategory}`}
+        >
+          <Breadcrumb.Item>{product.subCategory}</Breadcrumb.Item>
+        </LinkContainer>
+        <Breadcrumb.Item active>{product.name}</Breadcrumb.Item>
+      </Breadcrumb>
+
       <Helmet>
         <title>{product.name}</title>
       </Helmet>

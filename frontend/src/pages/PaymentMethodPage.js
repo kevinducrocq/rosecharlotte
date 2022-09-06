@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
@@ -15,18 +15,9 @@ import {
 
 export default function PaymentMethodPage() {
   const navigate = useNavigate();
-  const { state, dispatch: ctxDispatch } = useContext(Store);
-  const {
-    cart: { shippingAddress },
-  } = state;
+  const { dispatch: ctxDispatch } = useContext(Store);
 
   let [paymentMethodName, setPaymentMethod] = useState('');
-
-  // useEffect(() => {
-  //   if (!shippingAddress.address) {
-  //     navigate('/shipping');
-  //   }
-  // }, [shippingAddress, navigate]);
 
   const submitPaypalHandler = (e) => {
     e.preventDefault();
