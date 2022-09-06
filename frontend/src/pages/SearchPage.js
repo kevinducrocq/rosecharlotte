@@ -114,14 +114,14 @@ export default function SearchScreen() {
             </Link>
             {categories[category].map((key) => {
               return (
-                <>
+                <div key={key}>
                   <Link
                     to={`/boutique/search?subCategory=${key}`}
                     className="nav-link sub-cat-link p-2 rounded-3"
                   >
                     {key}
                   </Link>
-                </>
+                </div>
               );
             })}
           </div>
