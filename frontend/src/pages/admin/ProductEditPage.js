@@ -189,6 +189,7 @@ export default function ProductEditPage() {
           price,
           promoPrice,
           soldePrice,
+          weight,
           image,
           images,
           category,
