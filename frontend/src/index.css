@@ -23,6 +23,26 @@ main {
   flex: 1;
 }
 
+.category-button {
+  border: none;
+  border-radius: 10px;
+  background-color: #fff;
+  padding: 3px 7px;
+}
+
+.homepage-button {
+  border: none;
+  border-radius: 10px;
+  background-color: #fff;
+  padding: 3px 7px;
+}
+
+.homepage-button a {
+  text-decoration: none;
+  color: #000;
+  font-weight: 600;
+}
+
 /*IMAGES*/
 
 .img-thumbnail {
@@ -77,6 +97,21 @@ main {
   background-color: #fff2f2;
 }
 
+/*BREADCRUMB*/
+
+.breadcrumb-item a {
+  text-decoration: none;
+  color: #000;
+  font-weight: 600;
+}
+.breadcrumb-item a:hover {
+  border-bottom: solid 2px #000;
+}
+
+.breadcrumb-item {
+  padding: 5px;
+}
+
 /*CARDS*/
 
 .hover-shadow:hover {
@@ -91,6 +126,10 @@ main {
 .card-img-top {
   height: 200px;
   object-fit: cover;
+}
+
+.price {
+  font-size: 18px;
 }
 
 /*NAVBAR*/

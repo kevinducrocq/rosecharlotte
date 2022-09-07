@@ -44,7 +44,9 @@ export default function PlaceOrderPage() {
   const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100;
   cart.itemsPrice = round2(
     cart.cartItems.reduce(
-      (price, item) => price + item.quantity * item.price,
+      (price, item) =>
+        price +
+        item.quantity * (item.promoPrice ?? item.soldePrice ?? item.price),
       0
     )
   );

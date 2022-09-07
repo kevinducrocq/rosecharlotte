@@ -113,7 +113,7 @@ productRouter.put(
       product.subCategory = req.body.subCategory || product.subCategory;
       product.otherCategory = req.body.otherCategory || product.otherCategory;
       product.brand = req.body.brand || product.brand;
-      product.countInStock = req.body.countInStock || product.countInStock;
+      product.countInStock = req.body.countInStock;
       product.description = req.body.description || product.description;
       product.isVisible = req.body.isVisible || product.isVisible;
       product.variants = req.body.variants || product.variants;

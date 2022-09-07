@@ -82,14 +82,10 @@ export default function CategoriesCanvasMenu() {
   });
   return (
     <div>
-      <Button
-        variant="outline-light"
-        className="bg2 p-1 mt-1 nav-link border-0"
-        onClick={handleShow}
-      >
+      <button className="category-button" onClick={handleShow}>
         <FontAwesomeIcon icon={faReel} />
         &nbsp; Catégories
-      </Button>
+      </button>
 
       <Offcanvas show={show} onHide={handleClose}>
         <Offcanvas.Header closeButton>
