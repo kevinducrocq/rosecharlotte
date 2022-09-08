@@ -214,7 +214,7 @@ function NavigationBar() {
         </Navbar>
 
         <Nav className="navbar2">
-          <Container className="d-flex align-items-center">
+          <Container className="d-flex">
             <div className="d-lg-none text-nowrap">
               <CategoriesCanvasMenu />
             </div>

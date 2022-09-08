@@ -9,8 +9,6 @@ import MessageBox from '../components/MessageBox';
 import Product from '../components/Product';
 import CarouselFade from '../components/Carousel';
 import { Link } from 'react-router-dom';
-import { faEye } from '@fortawesome/pro-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -36,7 +34,7 @@ function HomePage() {
     error: '',
   });
   const options = {
-    loop: false,
+    loop: true,
     margin: 10,
     autoplay: true,
     autoplayTimeout: 3000,
@@ -117,11 +115,9 @@ function HomePage() {
             {soldeProducts.length > 0 ? (
               <section className="mt-3 mb-5">
                 <h2>Les dernières soldes</h2> &nbsp;
-                <button className="homepage-button">
-                  <Link to={'/soldes'}>
-                    <FontAwesomeIcon icon={faEye} /> &nbsp; Voir tout
-                  </Link>
-                </button>
+                <Button className="bg3" variant="outline-light">
+                  <Link to={'/soldes'}>Voir tout</Link>
+                </Button>
                 <hr />
                 <Row>
                   <OwlCarousel
@@ -146,9 +142,9 @@ function HomePage() {
             {promoProducts.length > 0 ? (
               <section className="mt-5 mb-5">
                 <h2>Les dernières poromotions</h2> &nbsp;
-                <button className="category-button">
+                <Button className="bg3" variant="outline-light">
                   <Link to={'/promotions'}>Voir tout</Link>
-                </button>
+                </Button>
                 <hr />
                 <Row>
                   <OwlCarousel
