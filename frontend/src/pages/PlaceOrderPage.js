@@ -165,10 +165,7 @@ export default function PlaceOrderPage() {
               <Card.Title>Produits</Card.Title>
               <ListGroup className="mb-3 text-center rounded-3">
                 {cart.cartItems.map((item) => (
-                  <ListGroup.Item
-                    key={item._id + item.variant?._id}
-                    className="shadow p-3"
-                  >
+                  <ListGroup.Item key={item._id} className="shadow p-3">
                     <Row className="align-items-center">
                       <Col md={4} className="d-flex flex-column">
                         <Link to={`/product/${item.slug}`}>
