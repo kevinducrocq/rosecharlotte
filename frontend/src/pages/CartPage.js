@@ -132,12 +132,7 @@ export default function CartPage() {
                       </Button>
                     </Col>
 
-                    <Col md={3}>
-                      {item.promoPrice || item.soldePrice
-                        ? item.promoPrice ?? item.soldePrice
-                        : item.price}
-                      &euro;
-                    </Col>
+                    <Col md={3}>{item.price}&euro;</Col>
 
                     <Col md={3}>
                       <div className="my-2">
@@ -169,13 +164,7 @@ export default function CartPage() {
                     </span>
                     <span className="h3">
                       {cartItems
-                        .reduce(
-                          (a, c) =>
-                            a +
-                            (c.promoPrice ?? c.soldePrice ?? c.price) *
-                              c.quantity,
-                          0
-                        )
+                        .reduce((a, c) => a + c.price * c.quantity, 0)
                         .toFixed(2)}{' '}
                       &euro;
                     </span>

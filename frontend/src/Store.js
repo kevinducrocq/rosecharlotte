@@ -21,9 +21,6 @@ function reducer(state, action) {
     case 'CART_ADD_ITEM':
       // add to cart
       const newItem = action.payload;
-
-      // const price = newItem.promoPrice ? newItem.promoPrice : newItem.price;
-
       const existItem = state.cart.cartItems.find(
         (item) =>
           item._id === newItem._id &&

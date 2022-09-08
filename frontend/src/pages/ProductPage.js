@@ -277,32 +277,8 @@ function ProductScreen() {
                 ></Rating>
               </div>
             </ListGroup.Item>
-            <ListGroup.Item className="d-flex justify-content-between align-items-center">
-              {!product.promoPrice && !product.soldePrice && (
-                <div className="text-nowrap fw-bold price">
-                  {product.price} &euro;
-                </div>
-              )}
-              {product.promoPrice && (
-                <div className="price d-flex align-items-center">
-                  <div className="text-nowrap">
-                    <s>{product.price} &euro;</s>
-                  </div>
-                  <div className="text-nowrap fw-bold ms-2 price">
-                    {product.promoPrice} &euro;
-                  </div>
-                </div>
-              )}
-              {product.soldePrice && (
-                <div className="d-flex align-items-center">
-                  <div className="text-nowrap">
-                    <s>{product.price} &euro;</s>
-                  </div>
-                  <div className="text-nowrap fw-bold ms-2 price">
-                    {product.soldePrice} &euro;
-                  </div>
-                </div>
-              )}
+            <ListGroup.Item className="price-tag">
+              <div className="p-2">{product.price} &euro;</div>
             </ListGroup.Item>
             <ListGroup.Item>
               <div className="p-2">

@@ -311,7 +311,6 @@ export default function ProductEditPage() {
                         setVariantIsVisible(!variantIsVisible);
                         if (!variantIsVisible && variants.length === 0) {
                           addNewVariants();
-                          setCountInStock('');
                         } else {
                           setVariants([]);
                         }
