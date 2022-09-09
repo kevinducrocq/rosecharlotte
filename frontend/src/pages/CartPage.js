@@ -93,61 +93,63 @@ export default function CartPage() {
             </MessageBox>
           ) : (
             <ListGroup className="text-center">
-              {cartItems.map((item) => (
-                <ListGroup.Item key={item._id + item.variant?._id}>
-                  <Row className="align-items-center">
-                    <Col md={3} className="d-flex flex-column">
-                      <Link to={`/product/${item.slug}`}>
-                        <Image
-                          src={item.image}
-                          alt={item.name}
-                          fluid
-                          className="rounded-3 img-thumbnail"
-                        />
-                        <div>{item.name}</div>
-                      </Link>
-                    </Col>
+              {cartItems.map((item) => {
+                return (
+                  <ListGroup.Item key={item._id + item.variant?._id}>
+                    <Row className="align-items-center">
+                      <Col md={3} className="d-flex flex-column">
+                        <Link to={`/product/${item.slug}`}>
+                          <Image
+                            src={item.image}
+                            alt={item.name}
+                            fluid
+                            className="rounded-3 img-thumbnail"
+                          />
+                          <div>{item.name}</div>
+                        </Link>
+                      </Col>
 
-                    <Col>{item.variant?.name}</Col>
+                      <Col>{item.variant?.name}</Col>
 
-                    <Col md={3} className="text-nowrap">
-                      <Button
-                        variant="light"
-                        onClick={() =>
-                          updateCartHandler(item, item.quantity - 1)
-                        }
-                        disabled={item.quantity === 1}
-                      >
-                        <FontAwesomeIcon icon={faMinusCircle} />{' '}
-                      </Button>
-                      <span className="mx-1">{item.quantity}</span>
-                      <Button
-                        variant="light"
-                        onClick={() =>
-                          updateCartHandler(item, item.quantity + 1)
-                        }
-                        disabled={item.quantity === item.countInStock}
-                      >
-                        <FontAwesomeIcon icon={faPlusCircle} />
-                      </Button>
-                    </Col>
-
-                    <Col md={3}>{item.price}&euro;</Col>
-
-                    <Col md={3}>
-                      <div className="my-2">
+                      <Col md={3} className="text-nowrap">
                         <Button
-                          className="btn btn-sm"
-                          onClick={() => removeItemHandler(item)}
-                          variant="danger"
+                          variant="light"
+                          onClick={() =>
+                            updateCartHandler(item, item.quantity - 1)
+                          }
+                          disabled={item.quantity === 1}
                         >
-                          <FontAwesomeIcon icon={faTrash} />
+                          <FontAwesomeIcon icon={faMinusCircle} />{' '}
                         </Button>
-                      </div>
-                    </Col>
-                  </Row>
-                </ListGroup.Item>
-              ))}
+                        <span className="mx-1">{item.quantity}</span>
+                        <Button
+                          variant="light"
+                          onClick={() =>
+                            updateCartHandler(item, item.quantity + 1)
+                          }
+                          disabled={item.quantity === item.countInStock}
+                        >
+                          <FontAwesomeIcon icon={faPlusCircle} />
+                        </Button>
+                      </Col>
+
+                      <Col md={3}>{item.price}&euro;</Col>
+
+                      <Col md={3}>
+                        <div className="my-2">
+                          <Button
+                            className="btn btn-sm"
+                            onClick={() => removeItemHandler(item)}
+                            variant="danger"
+                          >
+                            <FontAwesomeIcon icon={faTrash} />
+                          </Button>
+                        </div>
+                      </Col>
+                    </Row>
+                  </ListGroup.Item>
+                );
+              })}
             </ListGroup>
           )}
         </Col>

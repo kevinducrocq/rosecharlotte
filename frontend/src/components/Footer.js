@@ -1,5 +1,6 @@
 import { Col, Container, Image, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import React, { useContext } from 'react';
 
 export default function Footer() {
   return (

@@ -21,6 +21,7 @@ import { Store } from '../Store';
 import { getError } from '../utils';
 import CategoriesCanvasMenu from './CategoriesCanvasMenu';
 import { useReducer } from 'react';
+import React from 'react';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -90,7 +91,7 @@ function NavigationBar() {
   });
 
   const renderedCategories = [];
-  Object.keys(categories).forEach(function (category) {
+  Object.keys(categories).forEach(function(category) {
     renderedCategories.push(
       <NavDropdown key={category} eventKey={category} title={category}>
         <LinkContainer to={`/boutique/search?category=${category}`}>
