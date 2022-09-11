@@ -112,6 +112,7 @@ export default function CartPage() {
                       <Col>{item.variant?.name}</Col>
 
 <<<<<<< HEAD
+<<<<<<< HEAD
                     <Col md={3} className="text-nowrap">
                       <Button
                         variant="light"
@@ -138,6 +139,9 @@ export default function CartPage() {
 
                     <Col md={3}>
                       <div className="my-2">
+=======
+                      <Col md={3} className="text-nowrap">
+>>>>>>> parent of c02c2ea (avant mise en prod)
 =======
                       <Col md={3} className="text-nowrap">
 >>>>>>> parent of c02c2ea (avant mise en prod)
