@@ -3,9 +3,13 @@ import React from 'react';
 import { Col, Container, Image, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 import React from 'react';
 >>>>>>> 866e9ec (bug fixed)
+=======
+import React from 'react';
+>>>>>>> c02c2ea87e697fa7930e925dc14f0a9d94205244
 
 export default function Footer() {
   return (

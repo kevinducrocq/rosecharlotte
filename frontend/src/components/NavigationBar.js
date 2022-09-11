@@ -23,6 +23,7 @@ import { Store } from '../Store';
 import { getError } from '../utils';
 import CategoriesCanvasMenu from './CategoriesCanvasMenu';
 import { useReducer } from 'react';
+import React from 'react';
 
 const reducer = (state, action) => {
   switch (action.type) {

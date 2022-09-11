@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 import React from 'react';
 
 import {
@@ -9,6 +10,9 @@ import {
 =======
 import { faHouse, faPersonCarryBox } from '@fortawesome/pro-solid-svg-icons';
 >>>>>>> 866e9ec (bug fixed)
+=======
+import { faHouse, faPersonCarryBox } from '@fortawesome/pro-solid-svg-icons';
+>>>>>>> c02c2ea87e697fa7930e925dc14f0a9d94205244
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useContext, useEffect, useState } from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
@@ -16,6 +20,7 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from 'react-router-dom';
 import { Store } from '../Store';
+import React from 'react';
 
 function DeliveryAddressModal(props) {
   const { state, dispatch: ctxDispatch } = useContext(Store);
