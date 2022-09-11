@@ -44,9 +44,7 @@ export default function PlaceOrderPage() {
   const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100;
   cart.itemsPrice = round2(
     cart.cartItems.reduce(
-      (price, item) =>
-        price +
-        item.quantity * (item.promoPrice ?? item.soldePrice ?? item.price),
+      (price, item) => price + item.quantity * item.price,
       0
     )
   );
@@ -165,7 +163,10 @@ export default function PlaceOrderPage() {
               <Card.Title>Produits</Card.Title>
               <ListGroup className="mb-3 text-center rounded-3">
                 {cart.cartItems.map((item) => (
-                  <ListGroup.Item key={item._id} className="shadow p-3">
+                  <ListGroup.Item
+                    key={item._id + item.variant?._id}
+                    className="shadow p-3"
+                  >
                     <Row className="align-items-center">
                       <Col md={4} className="d-flex flex-column">
                         <Link to={`/product/${item.slug}`}>
