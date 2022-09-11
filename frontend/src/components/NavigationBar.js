@@ -91,7 +91,7 @@ function NavigationBar() {
   });
 
   const renderedCategories = [];
-  Object.keys(categories).forEach(function(category) {
+  Object.keys(categories).forEach(function (category) {
     renderedCategories.push(
       <NavDropdown key={category} eventKey={category} title={category}>
         <LinkContainer to={`/boutique/search?category=${category}`}>
@@ -213,7 +213,7 @@ function NavigationBar() {
         </Navbar>
 
         <Nav className="navbar2">
-          <Container className="d-flex">
+          <Container className="d-flex align-items-center">
             <div className="d-lg-none text-nowrap">
               <CategoriesCanvasMenu />
             </div>

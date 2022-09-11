@@ -142,9 +142,9 @@ function HomePage() {
             {promoProducts.length > 0 ? (
               <section className="mt-5 mb-5">
                 <h2>Les dernières poromotions</h2> &nbsp;
-                <Button className="bg3" variant="outline-light">
+                <button className="homepage-button">
                   <Link to={'/promotions'}>Voir tout</Link>
-                </Button>
+                </button>
                 <hr />
                 <Row>
                   <OwlCarousel
