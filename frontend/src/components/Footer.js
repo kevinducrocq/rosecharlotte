@@ -2,6 +2,10 @@ import React from 'react';
 
 import { Col, Container, Image, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+<<<<<<< HEAD
+=======
+import React from 'react';
+>>>>>>> 866e9ec (bug fixed)
 
 export default function Footer() {
   return (

@@ -4,7 +4,6 @@ import {
   faComments,
   faGauge,
   faPlus,
-  faShirt,
   faUsers,
 } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React from 'react';
 
 import {
@@ -5,6 +6,9 @@ import {
   faPersonCarryBox,
   faStore,
 } from '@fortawesome/pro-solid-svg-icons';
+=======
+import { faHouse, faPersonCarryBox } from '@fortawesome/pro-solid-svg-icons';
+>>>>>>> 866e9ec (bug fixed)
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useContext, useEffect, useState } from 'react';
 import { Col, Form, Row } from 'react-bootstrap';

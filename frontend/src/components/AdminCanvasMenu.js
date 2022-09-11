@@ -3,7 +3,6 @@ import {
   faBagShopping,
   faGauge,
   faPlus,
-  faReel,
   faShirt,
   faUsers,
   faManhole,
@@ -20,14 +19,14 @@ export default function AdminCanvasMenu(props) {
 
   return (
     <div>
-      <Button
+      <button
         variant="outline-light"
-        className="bg2 p-1 mt-1 nav-link border-0"
+        className="category-button"
         onClick={handleShow}
       >
         <FontAwesomeIcon icon={faManhole} />
         &nbsp; Menu Administrateur
-      </Button>
+      </button>
 
       <Offcanvas show={show} onHide={handleClose} className="bg1">
         <Offcanvas.Header closeButton>

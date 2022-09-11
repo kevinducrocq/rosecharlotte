@@ -23,6 +23,46 @@ main {
   flex: 1;
 }
 
+.category-button {
+  border: none;
+  border-radius: 10px;
+  background-color: #fff;
+  padding: 3px 7px;
+}
+
+.category-button:hover {
+  background-color: #ef9f9f;
+  color: #f1f1f1;
+}
+
+.homepage-button {
+  border: none;
+  border-radius: 10px;
+  background-color: #fff;
+  padding: 3px 7px;
+}
+
+.homepage-button a {
+  text-decoration: none;
+  color: #000;
+  font-weight: 600;
+}
+
+/*BREADCRUMB*/
+
+.breadcrumb-item a {
+  text-decoration: none;
+  color: #000;
+  font-weight: 600;
+}
+.breadcrumb-item a:hover {
+  border-bottom: solid 2px #000;
+}
+
+.breadcrumb-item {
+  padding: 5px;
+}
+
 /*IMAGES*/
 
 .img-thumbnail {

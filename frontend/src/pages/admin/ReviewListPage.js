@@ -1,22 +1,8 @@
-import {
-  faCheck,
-  faEye,
-  faEyeSlash,
-  faTrash,
-} from '@fortawesome/pro-solid-svg-icons';
+import { faCheck, faEyeSlash, faTrash } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import React, { useContext, useEffect, useReducer, useRef } from 'react';
-import {
-  Button,
-  Col,
-  Container,
-  OverlayTrigger,
-  Popover,
-  Row,
-  Table,
-  Tooltip,
-} from 'react-bootstrap';
+import { Button, Col, Container, Row, Table } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { toast } from 'react-toastify';
 import AdminMenu from '../../components/AdminMenu';
