@@ -73,6 +73,7 @@ orderRouter.post(
     }
 
     const user = await User.findOne({ _id: order.user.toString() });
+    console.log(user.email);
     await transporter.sendMail({
       from: sender,
       to: user.email,

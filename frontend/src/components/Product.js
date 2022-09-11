@@ -28,14 +28,24 @@ function Product(props) {
             </Card.Text>
           )}
           {product.promoPrice && (
-            <>
-              <Card.Text className="text-nowrap fw-bold bg3 p-2 rounded-5">
+            <Card.Text className="d-flex align-items-center">
+              <div className="text-nowrap fw-bold p-2 rounded-5">
                 <s>{product.price} &euro;</s>
-              </Card.Text>
-              <Card.Text className="text-nowrap fw-bold bg3 p-2 rounded-5">
+              </div>
+              <div className="text-nowrap fw-bold bg3 p-2 rounded-5">
                 {product.promoPrice} &euro;
-              </Card.Text>
-            </>
+              </div>
+            </Card.Text>
+          )}
+          {product.soldePrice && (
+            <Card.Text className="d-flex align-items-center">
+              <div className="text-nowrap fw-bold p-2 rounded-5">
+                <s>{product.price} &euro;</s>
+              </div>
+              <div className="text-nowrap fw-bold bg3 p-2 rounded-5">
+                {product.soldePrice} &euro;
+              </div>
+            </Card.Text>
           )}
         </div>
         <div>
@@ -43,7 +53,10 @@ function Product(props) {
         </div>
 
         <div className="mt-2 mb-3">
-          {product.countInStock > 0 ? (
+          {product.variants.reduce(
+            (countInStock, variant) => countInStock + variant.countInStock,
+            product.countInStock
+          ) > 0 ? (
             <Badge bg="success"> En stock</Badge>
           ) : (
             <Badge bg="danger">Epuisé</Badge>
