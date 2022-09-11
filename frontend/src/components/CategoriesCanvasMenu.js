@@ -82,11 +82,7 @@ export default function CategoriesCanvasMenu() {
   });
   return (
     <div>
-      <button
-        variant="outline-light"
-        className="category-button"
-        onClick={handleShow}
-      >
+      <button className="category-button" onClick={handleShow}>
         <FontAwesomeIcon icon={faReel} />
         &nbsp; Catégories
       </button>
