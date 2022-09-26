@@ -42,7 +42,7 @@ function HomePage() {
   return (
     <div className="mt-5">
       <Helmet>
-        <title>Full Eshop</title>
+        <title>Rose Charlotte - Accueil</title>
       </Helmet>
       <h1 className="my-5">Nos produits</h1>
       <div className="products">

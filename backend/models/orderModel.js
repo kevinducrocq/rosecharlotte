@@ -17,8 +17,7 @@ const orderSchema = new mongoose.Schema(
       },
     ],
     shippingAddress: {
-      firstName: { type: String, required: true },
-      lastName: { type: String, required: true },
+      name: { type: String, required: true },
       address: { type: String, required: true },
       zip: { type: String, required: true },
       city: { type: String, required: true },
@@ -27,7 +26,7 @@ const orderSchema = new mongoose.Schema(
         lat: Number,
         lng: Number,
         address: String,
-        firstName: String,
+        name: String,
         vicinity: String,
         googleAddressId: String,
       },

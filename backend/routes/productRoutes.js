@@ -104,14 +104,14 @@ productRouter.post(
     const productId = req.params.id;
     const product = await Product.findById(productId);
     if (product) {
-      if (product.reviews.find((x) => x.firstName === req.user.firstName)) {
+      if (product.reviews.find((x) => x.name === req.user.name)) {
         return res
           .status(400)
           .send({ message: 'Vous avez déjà laissé un commentaire' });
       }
 
       const review = {
-        firstName: req.user.firstName,
+        name: req.user.name,
         rating: Number(req.body.rating),
         comment: req.body.comment,
       };
@@ -244,6 +244,19 @@ productRouter.get(
   })
 );
 
+productRouter.get(
+  '/category/:category',
+  expressAsyncHandler(async (req, res) => {
+    const category = await Product.find().distinct('category');
+    if (category) {
+      res.send(category);
+    } else {
+      res.status(404).send({ message: 'Catégorie non trouvée' });
+    }
+    res.send(category);
+  })
+);
+
 productRouter.get('/slug/:slug', async (req, res) => {
   const product = await Product.findOne({ slug: req.params.slug });
   if (product) {
@@ -252,6 +265,7 @@ productRouter.get('/slug/:slug', async (req, res) => {
     res.status(404).send({ message: 'Product Not Found' });
   }
 });
+
 productRouter.get('/:id', async (req, res) => {
   const product = await Product.findById(req.params.id);
   if (product) {

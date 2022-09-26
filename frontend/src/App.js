@@ -27,14 +27,14 @@ import axios from 'axios';
 import SearchBox from './components/SearchBox';
 import SearchPage from './pages/SearchPage';
 import ProtectedRoute from './components/ProtectedRoute';
-import DashboardPage from './pages/DashboardPage';
+import DashboardPage from './pages/admin/DashboardPage';
 import AdminRoute from './components/AdminRoute';
-import ProductListPage from './pages/ProductListPage';
-import ProductAddPage from './pages/ProductAddPage';
-import ProductEditPage from './pages/ProductEditPage';
-import OrderListPage from './pages/OrderListPage';
-import UserListPage from './pages/UserListPage';
-import UserEditPage from './pages/UserEditPage';
+import ProductListPage from './pages/admin/ProductListPage';
+import ProductAddPage from './pages/admin/ProductAddPage';
+import ProductEditPage from './pages/admin/ProductEditPage';
+import OrderListPage from './pages/admin/OrderListPage';
+import UserListPage from './pages/admin/UserListPage';
+import UserEditPage from './pages/admin/UserEditPage';
 import MapPage from './pages/MapPage';
 
 function App() {
@@ -86,17 +86,14 @@ function App() {
               </Button>
 
               <LinkContainer to="/">
-                <Navbar.Brand>full Eshop</Navbar.Brand>
+                <Navbar.Brand>Rose Charlotte</Navbar.Brand>
               </LinkContainer>
               <Navbar.Toggle aria-controls="basic-navbar-nav" />
               <Navbar.Collapse id="basic-navbar-nav">
                 <SearchBox />
-                <Nav className="me-auto  w-100  justify-content-end">
+                <Nav className="me-auto  w-100 justify-content-end">
                   {userInfo ? (
-                    <NavDropdown
-                      title={userInfo.lastName + ' ' + userInfo.firstName}
-                      id="basic-nav-dropdown"
-                    >
+                    <NavDropdown title={userInfo.name} id="basic-nav-dropdown">
                       <LinkContainer to="/profile">
                         <NavDropdown.Item>Profil</NavDropdown.Item>
                       </LinkContainer>

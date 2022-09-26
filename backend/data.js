@@ -3,8 +3,7 @@ import bcrypt from 'bcryptjs';
 const data = {
   users: [
     {
-      firstName: 'Ducrocq',
-      lastName: 'Kévin',
+      name: 'Kévin Ducrocq',
       email: 'kducrocq.dev@gmail.com',
       password: bcrypt.hashSync('123456'),
       isAdmin: true,
@@ -19,6 +18,7 @@ const data = {
       category: 'Shirts',
       image: '/images/p1.jpg',
       price: 120,
+      weight: 10,
       countInStock: 10,
       brand: 'Nike',
       rating: 4.5,
@@ -32,6 +32,7 @@ const data = {
       category: 'Shirts',
       image: '/images/p2.jpg',
       price: 250,
+      weight: 10,
       countInStock: 20,
       brand: 'Adidas',
       rating: 4.0,
@@ -45,6 +46,7 @@ const data = {
       category: 'Pants',
       image: '/images/p3.jpg',
       price: 25,
+      weight: 10,
       countInStock: 15,
       brand: 'Nike',
       rating: 4.2,
@@ -58,6 +60,7 @@ const data = {
       category: 'Shirts',
       image: '/images/p4.jpg',
       price: 62,
+      weight: 10,
       countInStock: 0,
       brand: 'Nike',
       rating: 3.7,

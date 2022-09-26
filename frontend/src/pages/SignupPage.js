@@ -13,8 +13,7 @@ export default function SignupPage() {
   const redirectInUrl = new URLSearchParams(search).get('redirect');
   const redirect = redirectInUrl ? redirectInUrl : '/';
 
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -29,8 +28,7 @@ export default function SignupPage() {
     }
     try {
       const { data } = await axios.post('/api/users/signup', {
-        firstName,
-        lastName,
+        name,
         email,
         password,
       });
@@ -54,22 +52,15 @@ export default function SignupPage() {
       <h1 className="my-5">Inscription</h1>
 
       <Form onSubmit={submitHandler}>
-        <Form.Group className="mb-3" controlId="firstName">
-          <Form.Label>Nom</Form.Label>
+        <Form.Group className="mb-3" controlId="name">
+          <Form.Label>Prénom et nom</Form.Label>
           <Form.Control
             type="text"
             required
-            onChange={(e) => setFirstName(e.target.value)}
+            onChange={(e) => setName(e.target.value)}
           />
         </Form.Group>
-        <Form.Group className="mb-3" controlId="lastName">
-          <Form.Label>Prénom</Form.Label>
-          <Form.Control
-            type="text"
-            required
-            onChange={(e) => setLastName(e.target.value)}
-          />
-        </Form.Group>
+
         <Form.Group className="mb-3" controlId="email">
           <Form.Label>Email</Form.Label>
           <Form.Control
