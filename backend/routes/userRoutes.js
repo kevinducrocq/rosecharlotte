@@ -3,6 +3,9 @@ import bcrypt from 'bcryptjs';
 import expressAsyncHandler from 'express-async-handler';
 import User from '../models/userModel.js';
 import { isAuth, isAdmin, generateToken } from '../utils.js';
+import transporter, { sender } from '../email.js';
+import { contactEmail } from '../emails/ContactEmail.js';
+import jwt from 'jsonwebtoken';
 
 const userRouter = express.Router();
 userRouter.put(
@@ -13,6 +16,10 @@ userRouter.put(
     if (user) {
       user.name = req.body.name || user.name;
       user.email = req.body.email || user.email;
+      user.address = req.body.address || user.address;
+      user.zip = req.body.zip || user.zip;
+      user.city = req.body.city || user.city;
+      user.country = req.body.country || user.country;
       if (req.body.password) {
         user.password = bcrypt.hashSync(req.body.password, 8);
       }
@@ -22,6 +29,10 @@ userRouter.put(
         _id: updatedUser._id,
         name: updatedUser.name,
         email: updatedUser.email,
+        address: updatedUser.address,
+        zip: updatedUser.zip,
+        city: updatedUser.city,
+        country: updatedUser.country,
         isAdmin: updatedUser.isAdmin,
         token: generateToken(updatedUser),
       });
@@ -104,6 +115,9 @@ userRouter.post(
           _id: user._id,
           name: user.name,
           email: user.email,
+          address: user.address,
+          zip: user.zip,
+          city: user.city,
           isAdmin: user.isAdmin,
           token: generateToken(user),
         });
@@ -119,7 +133,6 @@ userRouter.post(
   expressAsyncHandler(async (req, res) => {
     const newUser = new User({
       name: req.body.name,
-      lastName: req.body.lastName,
       email: req.body.email,
       password: bcrypt.hashSync(req.body.password),
     });
@@ -131,6 +144,22 @@ userRouter.post(
       isAdmin: user.isAdmin,
       token: generateToken(user),
     });
+  })
+);
+
+userRouter.post(
+  '/contact/send',
+  expressAsyncHandler(async (req, res) => {
+    const senderName = req.body.senderName;
+    const senderEmail = req.body.senderEmail;
+    const message = req.body.message;
+
+    const sent = await transporter.sendMail({
+      from: senderEmail,
+      to: 'contact@rosecharlotte.fr',
+      ...contactEmail(senderName, senderEmail, message),
+    });
+    res.status(201).send({ message: 'message envoyé' });
   })
 );
 

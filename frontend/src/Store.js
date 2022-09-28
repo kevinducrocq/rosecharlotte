@@ -3,7 +3,6 @@ import React, { createContext, useReducer } from 'react';
 export const Store = createContext();
 
 const initialState = {
-  fullBox: false,
   userInfo: localStorage.getItem('userInfo')
     ? JSON.parse(localStorage.getItem('userInfo'))
     : null,
@@ -19,27 +18,32 @@ const initialState = {
 };
 function reducer(state, action) {
   switch (action.type) {
-    case 'SET_FULLBOX_ON':
-      return { ...state, fullBox: true };
-    case 'SET_FULLBOX_OFF':
-      return { ...state, fullBox: false };
-
     case 'CART_ADD_ITEM':
       // add to cart
       const newItem = action.payload;
       const existItem = state.cart.cartItems.find(
-        (item) => item._id === newItem._id
+        (item) =>
+          item._id === newItem._id &&
+          (item.variant === null || item.variant._id === newItem.variant._id)
       );
       const cartItems = existItem
         ? state.cart.cartItems.map((item) =>
-            item._id === existItem._id ? newItem : item
+            item._id === existItem._id &&
+            (item.variant === null || item.variant._id === newItem.variant._id)
+              ? newItem
+              : item
           )
         : [...state.cart.cartItems, newItem];
       localStorage.setItem('cartItems', JSON.stringify(cartItems));
       return { ...state, cart: { ...state.cart, cartItems } };
     case 'CART_REMOVE_ITEM': {
       const cartItems = state.cart.cartItems.filter(
-        (item) => item._id !== action.payload._id
+        (item) =>
+          !(
+            item._id === action.payload._id &&
+            (item.variant === null ||
+              item.variant._id === action.payload.variant._id)
+          )
       );
       localStorage.setItem('cartItems', JSON.stringify(cartItems));
       return { ...state, cart: { ...state.cart, cartItems } };
@@ -66,23 +70,20 @@ function reducer(state, action) {
           shippingAddress: action.payload,
         },
       };
-    case 'SAVE_SHIPPING_ADDRESS_MAP_LOCATION':
-      return {
-        ...state,
-        cart: {
-          ...state.cart,
-          shippingAddress: {
-            ...state.cart.shippingAddress,
-            location: action.payload,
-          },
-        },
-      };
-
     case 'SAVE_PAYMENT_METHOD':
       return {
         ...state,
         cart: { ...state.cart, paymentMethod: action.payload },
       };
+    case 'PAYMENT_METHOD_CLEAR':
+      return { ...state, cart: { ...state.cart, paymentMethod: '' } };
+    case 'SAVE_DELIVERY_METHOD':
+      return {
+        ...state,
+        cart: { ...state.cart, deliveryMethod: action.payload },
+      };
+    case 'DELIVERY_METHOD_CLEAR':
+      return { ...state, cart: { ...state.cart, deliveryMethod: '' } };
     default:
       return state;
   }

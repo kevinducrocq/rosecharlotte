@@ -1,3 +1,5 @@
+import { faSearch } from '@fortawesome/pro-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
 import { Button, Form, FormControl, InputGroup } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
@@ -8,7 +10,7 @@ export default function SearchBox() {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    navigate(query ? `/search/?query=${query}` : '/search');
+    navigate(query ? `/boutique/search/?query=${query}` : '/boutique/search');
   };
 
   return (
@@ -23,8 +25,8 @@ export default function SearchBox() {
           aria-label="rechercher"
           aria-describedby="button-search"
         ></FormControl>
-        <Button variant="outline-primary" type="submit" id="button-search">
-          <i className="fas fa-search"></i>
+        <Button variant="secondary" type="submit" id="button-search">
+          <FontAwesomeIcon icon={faSearch} color="#f1f1f1" />
         </Button>
       </InputGroup>
     </Form>

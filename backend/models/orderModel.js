@@ -1,5 +1,10 @@
 import mongoose from 'mongoose';
 
+const variantSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  weight: { type: Number, required: true },
+});
+
 const orderSchema = new mongoose.Schema(
   {
     orderItems: [
@@ -14,22 +19,17 @@ const orderSchema = new mongoose.Schema(
           ref: 'Product',
           required: true,
         },
+        customization: { type: String },
+        variant: variantSchema,
       },
     ],
+    deliveryMethod: { type: String, required: true },
     shippingAddress: {
-      name: { type: String, required: true },
-      address: { type: String, required: true },
-      zip: { type: String, required: true },
-      city: { type: String, required: true },
-      country: { type: String, required: true },
-      location: {
-        lat: Number,
-        lng: Number,
-        address: String,
-        name: String,
-        vicinity: String,
-        googleAddressId: String,
-      },
+      name: { type: String },
+      address: { type: String },
+      zip: { type: String },
+      city: { type: String },
+      country: { type: String },
     },
     paymentResult: {
       id: String,
@@ -37,9 +37,9 @@ const orderSchema = new mongoose.Schema(
       update_time: String,
       email_address: String,
     },
+    paymentMethod: { type: String, required: true },
     itemsPrice: { type: Number, required: true },
     shippingPrice: { type: Number, required: true },
-    taxPrice: { type: Number, required: true },
     totalPrice: { type: Number, required: true },
     user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     isPaid: { type: Boolean, default: false },

@@ -1,13 +1,22 @@
 import axios from 'axios';
-import React, { useContext, useEffect, useReducer } from 'react';
+import React, { useContext, useEffect, useReducer, useRef } from 'react';
 import { toast } from 'react-toastify';
 import Button from 'react-bootstrap/Button';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
+import { Store } from '../../Store';
+import { dateFr, getError } from '../../utils';
 import LoadingBox from '../../components/LoadingBox';
 import MessageBox from '../../components/MessageBox';
-import { Store } from '../../Store';
-import { getError } from '../../utils';
+import { faEye, faTrash } from '@fortawesome/pro-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Col, Container, Row, Table } from 'react-bootstrap';
+import AdminMenu from '../../components/AdminMenu';
+
+import 'datatables.net-dt/js/dataTables.dataTables';
+import 'datatables.net-dt/css/jquery.dataTables.min.css';
+import $ from 'jquery';
+import AdminCanvasMenu from '../../components/AdminCanvasMenu';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -41,13 +50,14 @@ export default function OrderListPage() {
   const navigate = useNavigate();
   const { state } = useContext(Store);
   const { userInfo } = state;
-  const [
-    { loading, error, orders, loadingDelete, successDelete },
-    dispatch,
-  ] = useReducer(reducer, {
-    loading: true,
-    error: '',
-  });
+  const [{ loading, error, orders, loadingDelete, successDelete }, dispatch] =
+    useReducer(reducer, {
+      loading: true,
+      error: '',
+    });
+
+  $.DataTable = require('datatables.net');
+  const tableRef = useRef();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -55,6 +65,12 @@ export default function OrderListPage() {
         dispatch({ type: 'FETCH_REQUEST' });
         const { data } = await axios.get(`/api/orders`, {
           headers: { Authorization: `Bearer ${userInfo.token}` },
+        });
+        const table = $(tableRef.current).DataTable({
+          language: {
+            url: 'https://cdn.datatables.net/plug-ins/1.12.1/i18n/fr-FR.json',
+          },
+          order: [[2, 'desc']],
         });
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {
@@ -72,13 +88,12 @@ export default function OrderListPage() {
   }, [userInfo, successDelete]);
 
   const deleteHandler = async (order) => {
-    if (window.confirm('Are you sure to delete?')) {
+    if (!order.isPaid) {
       try {
         dispatch({ type: 'DELETE_REQUEST' });
         await axios.delete(`/api/orders/${order._id}`, {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         });
-        toast.success('order deleted successfully');
         dispatch({ type: 'DELETE_SUCCESS' });
       } catch (err) {
         toast.error(getError(error));
@@ -90,69 +105,107 @@ export default function OrderListPage() {
   };
 
   return (
-    <div>
+    <Container className="my-5">
       <Helmet>
-        <title>Orders</title>
+        <title>Commandes</title>
       </Helmet>
-      <h1>Orders</h1>
-      {loadingDelete && <LoadingBox></LoadingBox>}
-      {loading ? (
-        <LoadingBox></LoadingBox>
-      ) : error ? (
-        <MessageBox variant="danger">{error}</MessageBox>
-      ) : (
-        <table className="table">
-          <thead>
-            <tr>
-              <th>N°</th>
-              <th>Client</th>
-              <th>Date</th>
-              <th>Total</th>
-              <th>Payé?</th>
-              <th>Livré?</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {orders.map((order) => (
-              <tr key={order._id}>
-                <td>{order._id}</td>
-                <td>{order.user ? order.user.firstName : 'Client supprimé'}</td>
-                <td>{order.createdAt.substring(0, 10)}</td>
-                <td>{order.totalPrice.toFixed(2)}</td>
-                <td>{order.isPaid ? order.paidAt.substring(0, 10) : 'Non'}</td>
+      <Row>
+        <Col md={2}>
+          <div className="d-none d-lg-block d-md-block">
+            <AdminMenu link2 />
+          </div>
+          <div className="d-lg-none d-md-none text-nowrap mb-3">
+            <AdminCanvasMenu />
+          </div>
+        </Col>
 
-                <td>
-                  {order.isDelivered
-                    ? order.deliveredAt.substring(0, 10)
-                    : 'Non'}
-                </td>
-                <td>
-                  <Button
-                    className="btn btn-sm"
-                    type="button"
-                    variant="light"
-                    onClick={() => {
-                      navigate(`/order/${order._id}`);
-                    }}
-                  >
-                    <i className="fa-solid fa-eye"></i>
-                  </Button>
-                  &nbsp;
-                  <Button
-                    className="btn btn-sm"
-                    type="button"
-                    variant="danger"
-                    onClick={() => deleteHandler(order)}
-                  >
-                    <i className="fa-solid fa-trash"></i>
-                  </Button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-    </div>
+        <Col md={10} className="shadow p-5">
+          <h1>Commandes</h1>
+          <hr />
+          {loadingDelete && <LoadingBox></LoadingBox>}
+          {loading ? (
+            <LoadingBox></LoadingBox>
+          ) : error ? (
+            <MessageBox variant="danger">{error}</MessageBox>
+          ) : (
+            <Table ref={tableRef} responsive className="table table-striped">
+              <thead>
+                <tr>
+                  <th>N°</th>
+                  <th>Client</th>
+                  <th>Paiement</th>
+                  <th>Date</th>
+                  <th>Total</th>
+                  <th>Méthode</th>
+                  <th>Payé</th>
+                  <th>Livré</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {orders.map((order) => (
+                  <tr key={order._id}>
+                    <td>{order._id.substring(0, 7)}</td>
+                    <td>{order.paymentMethod}</td>
+                    <td>{order.user ? order.user.name : 'Client supprimé'}</td>
+                    <td>{dateFr(order.createdAt)}</td>
+                    <td>{order.totalPrice.toFixed(2)} &euro;</td>
+                    <td>{order.paymentMethod}</td>
+                    <td>
+                      <div
+                        className={
+                          order.isPaid
+                            ? 'badge bg-success text-light rounded'
+                            : 'bg-warning badge text-light'
+                        }
+                      >
+                        {order.isPaid ? 'Le ' + dateFr(order.paidAt) : 'Non'}
+                      </div>
+                    </td>
+
+                    <td>
+                      <div
+                        className={
+                          order.isDelivered
+                            ? 'bg-success badge text-light rounded'
+                            : 'bg-warning badge text-light'
+                        }
+                      >
+                        {order.isDelivered
+                          ? 'Le ' + dateFr(order.deliveredAt)
+                          : 'Non'}
+                      </div>
+                    </td>
+                    <td>
+                      <Button
+                        className="btn btn-sm"
+                        type="button"
+                        variant="light"
+                        onClick={() => {
+                          navigate(`/order/${order._id}`);
+                        }}
+                      >
+                        <FontAwesomeIcon icon={faEye} />
+                      </Button>
+                      &nbsp;
+                      {!order.isPaid && (
+                        <Button
+                          className="btn btn-sm"
+                          type="button"
+                          variant="danger"
+                          onClick={() => deleteHandler(order)}
+                        >
+                          <FontAwesomeIcon icon={faTrash} />
+                        </Button>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          )}
+        </Col>
+      </Row>
+    </Container>
   );
 }

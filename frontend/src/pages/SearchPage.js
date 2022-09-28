@@ -6,12 +6,17 @@ import { getError } from '../utils';
 import { Helmet } from 'react-helmet-async';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import Rating from '../components/Rating';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import Button from 'react-bootstrap/Button';
 import Product from '../components/Product';
-import LinkContainer from 'react-router-bootstrap/LinkContainer';
+import SearchBox from '../components/SearchBox';
+
+import { Accordion, Badge, Breadcrumb, Container } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTimesCircle } from '@fortawesome/pro-solid-svg-icons';
+import { LinkContainer } from 'react-router-bootstrap';
+import CategoriesCanvasMenu from '../components/CategoriesCanvasMenu';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -34,67 +39,29 @@ const reducer = (state, action) => {
   }
 };
 
-const prices = [
-  {
-    name: '1€ to 50€',
-    value: '1-50',
-  },
-  {
-    name: '51€ to 200€',
-    value: '51-200',
-  },
-  {
-    name: '201€ to 1000€',
-    value: '201-1000',
-  },
-];
-
-export const ratings = [
-  {
-    name: '4 étoiles & +',
-    rating: 4,
-  },
-
-  {
-    name: '3 étoiles & +',
-    rating: 3,
-  },
-
-  {
-    name: '2 étoiles & +',
-    rating: 2,
-  },
-
-  {
-    name: '1 étoile & +',
-    rating: 1,
-  },
-];
-
 export default function SearchScreen() {
   const navigate = useNavigate();
   const { search } = useLocation();
   const sp = new URLSearchParams(search); // /search?category=Shirts
   const category = sp.get('category') || 'all';
+  const subCategory = sp.get('subCategory') || 'all';
+  const otherCategory = sp.get('otherCategory') || 'all';
   const query = sp.get('query') || 'all';
   const price = sp.get('price') || 'all';
-  const rating = sp.get('rating') || 'all';
   const order = sp.get('order') || 'newest';
   const page = sp.get('page') || 1;
 
-  const [
-    { loading, error, products, pages, countProducts },
-    dispatch,
-  ] = useReducer(reducer, {
-    loading: true,
-    error: '',
-  });
+  const [{ loading, error, products, pages, countProducts }, dispatch] =
+    useReducer(reducer, {
+      loading: true,
+      error: '',
+    });
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const { data } = await axios.get(
-          `/api/products/search?page=${page}&query=${query}&category=${category}&price=${price}&rating=${rating}&order=${order}`
+          `/api/products/boutique/search?page=${page}&query=${query}&category=${category}&subCategory=${subCategory}&otherCategory=${otherCategory}&price=${price}&order=${order}`
         );
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {
@@ -105,9 +72,10 @@ export default function SearchScreen() {
       }
     };
     fetchData();
-  }, [category, error, order, page, price, query, rating]);
+  }, [category, subCategory, otherCategory, error, order, price, query, page]);
 
   const [categories, setCategories] = useState([]);
+
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -123,87 +91,113 @@ export default function SearchScreen() {
   const getFilterUrl = (filter) => {
     const filterPage = filter.page || page;
     const filterCategory = filter.category || category;
+    const filterSubCategory = filter.subCategory || subCategory;
+    const filterOtherCategory = filter.otherCategory || otherCategory;
     const filterQuery = filter.query || query;
-    const filterRating = filter.rating || rating;
     const filterPrice = filter.price || price;
     const sortOrder = filter.order || order;
-    return `/search?category=${filterCategory}&query=${filterQuery}&price=${filterPrice}&rating=${filterRating}&order=${sortOrder}&page=${filterPage}`;
+    return `/boutique/search?category=${filterCategory}&subCategory=${filterSubCategory}&otherCategory=${filterOtherCategory}&query=${filterQuery}&price=${filterPrice}&order=${sortOrder}&page=${filterPage}`;
   };
+
+  const renderedCategories = [];
+  Object.keys(categories).forEach(function (category) {
+    renderedCategories.push(
+      <Accordion.Item key={category} eventKey={category}>
+        <Accordion.Header>{category}</Accordion.Header>
+        <Accordion.Body>
+          <div className="d-flex flex-column categories-menu">
+            <Link
+              className="nav-link cat-link p-2 rounded-3"
+              to={`/boutique/search?category=${category}`}
+            >
+              Tous les produits {category}
+            </Link>
+            {categories[category].map((key) => {
+              return (
+                <div key={key}>
+                  <Link
+                    to={`/boutique/search?subCategory=${key}`}
+                    className="nav-link sub-cat-link p-2 rounded-3"
+                  >
+                    {key}
+                  </Link>
+                </div>
+              );
+            })}
+          </div>
+        </Accordion.Body>
+      </Accordion.Item>
+    );
+  });
+
   return (
-    <div>
+    <Container className="my-5">
+      <Breadcrumb>
+        <LinkContainer to={'/'} exact>
+          <Breadcrumb.Item>Accueil</Breadcrumb.Item>
+        </LinkContainer>
+        <LinkContainer to={'/boutique/search'}>
+          <Breadcrumb.Item>Boutique</Breadcrumb.Item>
+        </LinkContainer>
+        <LinkContainer to={`/boutique/search?category=${category}`}>
+          <Breadcrumb.Item>{category ? category : ''}</Breadcrumb.Item>
+        </LinkContainer>
+        <LinkContainer to={`/boutique/search?subCategory=${subCategory}`}>
+          <Breadcrumb.Item active>{subCategory}</Breadcrumb.Item>
+        </LinkContainer>
+      </Breadcrumb>
+
       <Helmet>
-        <title>Search Products</title>
+        <title>Boutique</title>
       </Helmet>
+      <h1 className="text-center">Boutique</h1>
+      <Row className="my-5 align-items-center">
+        <Col md={10} className="mt-2">
+          <SearchBox />
+        </Col>
+        <Col md={2} className="mt-2">
+          <div className="text-center text-nowrap">
+            Filtrer{' '}
+            <select
+              value={order}
+              onChange={(e) => {
+                navigate(getFilterUrl({ order: e.target.value }));
+              }}
+            >
+              <option value="newest">Les nouveaux produits</option>
+              <option value="lowest">Prix : du - au +</option>
+              <option value="highest">Prix : du + au -</option>
+            </select>
+          </div>
+        </Col>
+      </Row>
       <Row>
         <Col md={3}>
-          <h3>Catégorie</h3>
-          <div>
-            <ul>
-              <li>
-                <Link
-                  className={'all' === category ? 'text-bold' : ''}
-                  to={getFilterUrl({ category: 'all' })}
-                >
-                  Tout
-                </Link>
-              </li>
-              {categories.map((c) => (
-                <li key={c}>
-                  <Link
-                    className={c === category ? 'text-bold' : ''}
-                    to={getFilterUrl({ category: c })}
-                  >
-                    {c}
-                  </Link>
-                </li>
-              ))}
-            </ul>
+          <div className="text-center mb-2 d-none d-lg-block d-md-block">
+            <h4>Catégories</h4>
+            <Button className="homepage-button" variant="outline-light">
+              <Link to={'/boutique/search?category=all'}>Voir tout</Link>
+            </Button>
           </div>
-          <div>
-            <h3>Prix</h3>
-            <ul>
-              <li>
-                <Link
-                  className={'all' === price ? 'text-bold' : ''}
-                  to={getFilterUrl({ price: 'all' })}
-                >
-                  Tous les prix
-                </Link>
-              </li>
-              {prices.map((p) => (
-                <li key={p.value}>
-                  <Link
-                    to={getFilterUrl({ price: p.value })}
-                    className={p.value === price ? 'text-bold' : ''}
-                  >
-                    {p.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h3>Notes des clients</h3>
-            <ul>
-              {ratings.map((r) => (
-                <li key={r.name}>
-                  <Link
-                    to={getFilterUrl({ rating: r.rating })}
-                    className={`${r.rating}` === `${rating}` ? 'text-bold' : ''}
-                  >
-                    <Rating caption={' & up'} rating={r.rating}></Rating>
-                  </Link>
-                </li>
-              ))}
-              <li>
-                <Link
-                  to={getFilterUrl({ rating: 'all' })}
-                  className={rating === 'all' ? 'text-bold' : ''}
-                >
-                  <Rating caption={' & up'} rating={0}></Rating>
-                </Link>
-              </li>
-            </ul>
+
+          <div className="boutique-categories-menu">
+            <div className="d-lg-none d-md-none text-nowrap mb-3">
+              <CategoriesCanvasMenu />
+            </div>
+            {loading ? (
+              <LoadingBox className="d-none d-sm-block d-lg-block"></LoadingBox>
+            ) : error ? (
+              <MessageBox
+                variant="danger"
+                className="d-none d-sm-block d-lg-block"
+              >
+                {error}
+              </MessageBox>
+            ) : (
+              <Accordion className="d-none d-lg-block d-md-block">
+                {renderedCategories}
+              </Accordion>
+            )}
           </div>
         </Col>
         <Col md={9}>
@@ -216,37 +210,25 @@ export default function SearchScreen() {
               <Row className="justify-content-between mb-3">
                 <Col md={6}>
                   <div>
-                    {countProducts === 0 ? 'Pas de' : countProducts} Résultats
-                    {query !== 'all' && ' : ' + query}
-                    {category !== 'all' && ' : ' + category}
+                    {countProducts === 0 ? 'Pas de ' : countProducts} résultat
+                    {countProducts <= 1 ? '' : 's'}
                     {price !== 'all' && ' : Prix ' + price}
-                    {rating !== 'all' && ' : Note ' + rating + ' & plus'}
                     {query !== 'all' ||
                     category !== 'all' ||
-                    rating !== 'all' ||
+                    subCategory !== 'all' ||
+                    otherCategory !== 'all' ||
                     price !== 'all' ? (
                       <Button
-                        variant="light"
-                        onClick={() => navigate('/search')}
+                        className="btn btn-sm bg-secondary ms-2"
+                        onClick={() => navigate('/boutique/search')}
                       >
-                        <i className="fas fa-times-circle"></i>
+                        <Badge bg="secondary">
+                          {query !== 'all' && ' ' + '"' + query + '"'}
+                        </Badge>
+                        <FontAwesomeIcon icon={faTimesCircle} /> EFFACER
                       </Button>
                     ) : null}
                   </div>
-                </Col>
-                <Col className="text-end">
-                  Sort by{' '}
-                  <select
-                    value={order}
-                    onChange={(e) => {
-                      navigate(getFilterUrl({ order: e.target.value }));
-                    }}
-                  >
-                    <option value="newest">Les nouveaux produits</option>
-                    <option value="lowest">Prix: du - au +</option>
-                    <option value="highest">Price: du + au -</option>
-                    <option value="toprated">Note des clients</option>
-                  </select>
                 </Col>
               </Row>
               {products.length === 0 && (
@@ -254,13 +236,17 @@ export default function SearchScreen() {
               )}
 
               <Row>
-                {products.map((product) => (
-                  <Col sm={6} lg={4} className="mb-3" key={product._id}>
-                    <Product product={product}></Product>
-                  </Col>
-                ))}
+                <Row>
+                  {products.map(
+                    (product) =>
+                      product.isVisible === true && (
+                        <Col key={product._id} sm={6} lg={4} className="mb-3">
+                          <Product product={product}></Product>
+                        </Col>
+                      )
+                  )}
+                </Row>
               </Row>
-
               <div>
                 {[...Array(pages).keys()].map((x) => (
                   <LinkContainer
@@ -281,6 +267,6 @@ export default function SearchScreen() {
           )}
         </Col>
       </Row>
-    </div>
+    </Container>
   );
 }

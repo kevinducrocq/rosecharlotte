@@ -1,13 +1,15 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useReducer, useState } from 'react';
-import { Form, Button, Container } from 'react-bootstrap';
+import { Form, Button, Container, Row, Col } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import LoadingBox from '../../components/LoadingBox';
-import MessageBox from '../../components/MessageBox';
 import { Store } from '../../Store';
 import { getError } from '../../utils';
+import LoadingBox from '../../components/LoadingBox';
+import MessageBox from '../../components/MessageBox';
+import AdminMenu from '../../components/AdminMenu';
+import AdminCanvasMenu from '../../components/AdminCanvasMenu';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -41,8 +43,7 @@ export default function UserEditScreen() {
   const { id: userId } = params;
   const navigate = useNavigate();
 
-  const [firstName, setfirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [isAdmin, setIsAdmin] = useState(false);
 
@@ -53,8 +54,7 @@ export default function UserEditScreen() {
         const { data } = await axios.get(`/api/users/${userId}`, {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         });
-        setfirstName(data.firstName);
-        setLastName(data.lastName);
+        setName(data.name);
         setEmail(data.email);
         setIsAdmin(data.isAdmin);
         dispatch({ type: 'FETCH_SUCCESS' });
@@ -74,7 +74,7 @@ export default function UserEditScreen() {
       dispatch({ type: 'UPDATE_REQUEST' });
       await axios.put(
         `/api/users/${userId}`,
-        { _id: userId, firstName, lastName, email, isAdmin },
+        { _id: userId, name, email, isAdmin },
         {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         }
@@ -90,61 +90,65 @@ export default function UserEditScreen() {
     }
   };
   return (
-    <Container className="small-container">
+    <Container className="my-5">
       <Helmet>
         <title>Edit user ${userId}</title>
       </Helmet>
-      <h1>Edit User {userId}</h1>
 
-      {loading ? (
-        <LoadingBox></LoadingBox>
-      ) : error ? (
-        <MessageBox variant="danger">{error}</MessageBox>
-      ) : (
-        <Form onSubmit={submitHandler}>
-          <Form.Group className="mb-3" controlId="firstName">
-            <Form.Label>Nom</Form.Label>
-            <Form.Control
-              value={firstName}
-              onChange={(e) => setfirstName(e.target.value)}
-              required
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="lastName">
-            <Form.Label>Prénom</Form.Label>
-            <Form.Control
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-              required
-            />
-          </Form.Group>
-          <Form.Group className="mb-3" controlId="email">
-            <Form.Label>Email</Form.Label>
-            <Form.Control
-              value={email}
-              type="email"
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </Form.Group>
-
-          <Form.Check
-            className="mb-3"
-            type="checkbox"
-            id="isAdmin"
-            label="isAdmin"
-            checked={isAdmin}
-            onChange={(e) => setIsAdmin(e.target.checked)}
-          />
-
-          <div className="mb-3">
-            <Button disabled={loadingUpdate} type="submit">
-              Mettre à jour
-            </Button>
-            {loadingUpdate && <LoadingBox></LoadingBox>}
+      <Row>
+        <Col md={2}>
+          <div className="d-none d-lg-block d-md-block">
+            <AdminMenu />
           </div>
-        </Form>
-      )}
+          <div className="d-lg-none d-md-none text-nowrap mb-3">
+            <AdminCanvasMenu />
+          </div>
+        </Col>
+        <Col md={10} className="shadow p-5">
+          <h1>Edit User {userId}</h1>
+          {loading ? (
+            <LoadingBox></LoadingBox>
+          ) : error ? (
+            <MessageBox variant="danger">{error}</MessageBox>
+          ) : (
+            <Form onSubmit={submitHandler}>
+              <Form.Group className="mb-3" controlId="name">
+                <Form.Label>Nom</Form.Label>
+                <Form.Control
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
+              </Form.Group>
+              <Form.Group className="mb-3" controlId="email">
+                <Form.Label>Email</Form.Label>
+                <Form.Control
+                  value={email}
+                  type="email"
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+              </Form.Group>
+
+              <Form.Check
+                className="mb-3"
+                type="checkbox"
+                id="isAdmin"
+                label="isAdmin"
+                checked={isAdmin}
+                onChange={(e) => setIsAdmin(e.target.checked)}
+              />
+
+              <div className="mb-3">
+                <Button disabled={loadingUpdate} type="submit">
+                  Mettre à jour
+                </Button>
+                {loadingUpdate && <LoadingBox></LoadingBox>}
+              </div>
+            </Form>
+          )}
+        </Col>
+      </Row>
     </Container>
   );
 }

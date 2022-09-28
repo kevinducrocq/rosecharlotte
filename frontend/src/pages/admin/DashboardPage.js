@@ -1,11 +1,13 @@
 import React, { useContext, useEffect, useReducer } from 'react';
-import Chart from 'react-google-charts';
 import axios from 'axios';
 import { Store } from '../../Store';
 import { getError } from '../../utils';
 import LoadingBox from '../../components/LoadingBox';
 import MessageBox from '../../components/MessageBox';
-import { Row, Col, Card } from 'react-bootstrap';
+import { Row, Col, Card, Container } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+import AdminMenu from '../../components/AdminMenu';
+import AdminCanvasMenu from '../../components/AdminCanvasMenu';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -49,89 +51,69 @@ export default function DashboardScreen() {
   }, [userInfo]);
 
   return (
-    <div>
-      <h1>Dashboard</h1>
-      {loading ? (
-        <LoadingBox />
-      ) : error ? (
-        <MessageBox variant="danger">{error}</MessageBox>
-      ) : (
-        <>
-          <Row>
-            <Col md={4}>
-              <Card>
-                <Card.Body>
-                  <Card.Title>
-                    {summary.users && summary.users[0]
-                      ? summary.users[0].numUsers
-                      : 0}
-                  </Card.Title>
-                  <Card.Text> Users</Card.Text>
-                </Card.Body>
-              </Card>
-            </Col>
-            <Col md={4}>
-              <Card>
-                <Card.Body>
-                  <Card.Title>
-                    {summary.orders && summary.users[0]
-                      ? summary.orders[0].numOrders
-                      : 0}
-                  </Card.Title>
-                  <Card.Text> Orders</Card.Text>
-                </Card.Body>
-              </Card>
-            </Col>
-            <Col md={4}>
-              <Card>
-                <Card.Body>
-                  <Card.Title>
-                    $
-                    {summary.orders && summary.users[0]
-                      ? summary.orders[0].totalSales.toFixed(2)
-                      : 0}
-                  </Card.Title>
-                  <Card.Text> Orders</Card.Text>
-                </Card.Body>
-              </Card>
-            </Col>
-          </Row>
-          <div className="my-3">
-            <h2>Sales</h2>
-            {summary.dailyOrders.length === 0 ? (
-              <MessageBox>No Sale</MessageBox>
-            ) : (
-              <Chart
-                width="100%"
-                height="400px"
-                chartType="AreaChart"
-                loader={<div>Loading Chart...</div>}
-                data={[
-                  ['Date', 'Sales'],
-                  ...summary.dailyOrders.map((x) => [x._id, x.sales]),
-                ]}
-              ></Chart>
-            )}
+    <Container className="my-5">
+      <Row>
+        <Col md={2}>
+          <div className="d-none d-lg-block d-md-block">
+            <AdminMenu link1 />
           </div>
-          <div className="my-3">
-            <h2>Categories</h2>
-            {summary.productCategories.length === 0 ? (
-              <MessageBox>No Category</MessageBox>
-            ) : (
-              <Chart
-                width="100%"
-                height="400px"
-                chartType="PieChart"
-                loader={<div>Loading Chart...</div>}
-                data={[
-                  ['Category', 'Products'],
-                  ...summary.productCategories.map((x) => [x._id, x.count]),
-                ]}
-              ></Chart>
-            )}
+          <div className="d-lg-none d-md-none text-nowrap mb-3">
+            <AdminCanvasMenu />
           </div>
-        </>
-      )}
-    </div>
+        </Col>
+        <Col md={10} className="shadow p-5">
+          <h1>Tableau de bord</h1>
+          {loading ? (
+            <LoadingBox />
+          ) : error ? (
+            <MessageBox variant="danger">{error}</MessageBox>
+          ) : (
+            <>
+              <Row>
+                <Col md={4} className="my-2">
+                  <Card>
+                    <Card.Body>
+                      <Card.Title>
+                        {summary.users && summary.users[0]
+                          ? summary.users[0].numUsers
+                          : 0}
+                      </Card.Title>
+                      <Card.Text> Utilisateurs inscrits</Card.Text>
+                      <Link to="/admin/users">Voir</Link>
+                    </Card.Body>
+                  </Card>
+                </Col>
+                <Col md={4} className="my-2">
+                  <Card>
+                    <Card.Body>
+                      <Card.Title>
+                        {summary.orders && summary.users[0]
+                          ? summary.orders[0].numOrders
+                          : 0}
+                      </Card.Title>
+                      <Card.Text> Commandes</Card.Text>
+                      <Link to="/admin/orders">Voir</Link>
+                    </Card.Body>
+                  </Card>
+                </Col>
+                <Col md={4} className="my-2">
+                  <Card>
+                    <Card.Body>
+                      <Card.Title>
+                        {summary.orders && summary.users[0]
+                          ? summary.orders[0].totalSales.toFixed(2)
+                          : 0}{' '}
+                        &euro;
+                      </Card.Title>
+                      <Card.Text> Total</Card.Text>
+                    </Card.Body>
+                  </Card>
+                </Col>
+              </Row>
+            </>
+          )}
+        </Col>
+      </Row>
+    </Container>
   );
 }

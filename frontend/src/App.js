@@ -1,19 +1,10 @@
-import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
-import { toast, ToastContainer } from 'react-toastify';
+import React from 'react';
+
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import HomePage from './pages/HomePage';
 import ProductPage from './pages/ProductPage';
-import {
-  Navbar,
-  Badge,
-  Nav,
-  NavDropdown,
-  Container,
-  Button,
-} from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
-import React, { useContext, useEffect, useState } from 'react';
-import { Store } from './Store';
 import CartPage from './pages/CartPage';
 import SigninPage from './pages/SigninPage';
 import ShippingAddressPage from './pages/ShippingAddressPage';
@@ -22,9 +13,6 @@ import PlaceOrderPage from './pages/PlaceOrderPage';
 import OrderPage from './pages/OrderPage';
 import OrderHistoryPage from './pages/OrderHistoryPage';
 import ProfilePage from './pages/ProfilePage';
-import { getError } from './utils';
-import axios from 'axios';
-import SearchBox from './components/SearchBox';
 import SearchPage from './pages/SearchPage';
 import ProtectedRoute from './components/ProtectedRoute';
 import DashboardPage from './pages/admin/DashboardPage';
@@ -35,151 +23,57 @@ import ProductEditPage from './pages/admin/ProductEditPage';
 import OrderListPage from './pages/admin/OrderListPage';
 import UserListPage from './pages/admin/UserListPage';
 import UserEditPage from './pages/admin/UserEditPage';
-import MapPage from './pages/MapPage';
+import NavigationBar from './components/NavigationBar';
+import Footer from './components/Footer';
+import AboutPage from './pages/AboutPage';
+import PaymentMethodPage from './pages/PaymentMethodPage';
+import ReviewListPage from './pages/admin/ReviewListPage';
+import ContactPage from './pages/ContactPage';
+import CgvPage from './pages/CgvPage';
+import MentionsLegalesPage from './pages/MentionsLegalesPage';
+import ServiceClientPage from './pages/ServiceClientPage';
+import PromoPage from './pages/PromoPage';
+import SoldePage from './pages/SoldesPage';
+import FilAddPage from './components/FilAdd';
+import FilListPage from './pages/admin/FilListPage';
+import TissuListPage from './pages/admin/TissuListPage';
+import PatchListPage from './pages/admin/PatchListPage';
 
 function App() {
-  const { state, dispatch: ctxDispatch } = useContext(Store);
-  const { fullBox, cart, userInfo } = state;
-
-  const signoutHandler = () => {
-    ctxDispatch({ type: 'USER_SIGNOUT' });
-    localStorage.removeItem('userInfo');
-    localStorage.removeItem('shippingAddress');
-    window.location.href = '/signin';
-  };
-  const [sidebarIsOpen, setSidebarIsOpen] = useState(false);
-  const [categories, setCategories] = useState([]);
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const { data } = await axios.get(`/api/products/categories`);
-        setCategories(data);
-      } catch (err) {
-        toast.error(getError(err));
-      }
-    };
-    fetchCategories();
-  }, []);
   return (
     <BrowserRouter>
-      <div
-        className={
-          sidebarIsOpen
-            ? fullBox
-              ? 'site-container active-cont d-flex flex-column full-box'
-              : 'site-container active-cont d-flex flex-column'
-            : fullBox
-            ? 'site-container d-flex flex-column full-box'
-            : 'site-container d-flex flex-column'
-        }
-      >
-        <ToastContainer position="bottom-center" limit={1} />
+      <div className="d-flex flex-column site-container">
+        <ToastContainer
+          position="bottom-center"
+          limit={1}
+          autoClose={2000}
+          hideProgressBar={true}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover={false}
+        />
+
         <header>
-          <Navbar bg="dark" variant="dark" expand="lg">
-            <Container>
-              <Button
-                variant="dark"
-                onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
-              >
-                <i className="fas fa-bars"></i>
-              </Button>
-
-              <LinkContainer to="/">
-                <Navbar.Brand>Rose Charlotte</Navbar.Brand>
-              </LinkContainer>
-              <Navbar.Toggle aria-controls="basic-navbar-nav" />
-              <Navbar.Collapse id="basic-navbar-nav">
-                <SearchBox />
-                <Nav className="me-auto  w-100 justify-content-end">
-                  {userInfo ? (
-                    <NavDropdown title={userInfo.name} id="basic-nav-dropdown">
-                      <LinkContainer to="/profile">
-                        <NavDropdown.Item>Profil</NavDropdown.Item>
-                      </LinkContainer>
-                      <LinkContainer to="/orderhistory">
-                        <NavDropdown.Item>Historique</NavDropdown.Item>
-                      </LinkContainer>
-                      <NavDropdown.Divider />
-                      <Link
-                        className="dropdown-item"
-                        to="#signout"
-                        onClick={signoutHandler}
-                      >
-                        Déconnexion
-                      </Link>
-                    </NavDropdown>
-                  ) : (
-                    <Link className="nav-link" to="/signin">
-                      <i className="fa-solid fa-arrow-right-to-bracket"></i>{' '}
-                      Connexion
-                    </Link>
-                  )}
-
-                  {!userInfo && (
-                    <Link className="nav-link" to="/signup">
-                      <i className="fa-solid fa-pen"></i> Inscription
-                    </Link>
-                  )}
-
-                  {userInfo && userInfo.isAdmin && (
-                    <NavDropdown title="Admin" id="admin-nav-dropdown">
-                      <LinkContainer to="/admin/dashboard">
-                        <NavDropdown.Item>Tableau de bord</NavDropdown.Item>
-                      </LinkContainer>
-                      <LinkContainer to="/admin/products">
-                        <NavDropdown.Item>Produits</NavDropdown.Item>
-                      </LinkContainer>
-                      <LinkContainer to="/admin/orders">
-                        <NavDropdown.Item>Commandes</NavDropdown.Item>
-                      </LinkContainer>
-                      <LinkContainer to="/admin/users">
-                        <NavDropdown.Item>Utilisateurs</NavDropdown.Item>
-                      </LinkContainer>
-                    </NavDropdown>
-                  )}
-                  <Link to="/cart" className="nav-link">
-                    <i className="fa-solid fa-cart-shopping"></i> Panier{' '}
-                    {cart.cartItems.length > 0 && (
-                      <Badge pill bg="danger">
-                        {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
-                      </Badge>
-                    )}
-                  </Link>
-                </Nav>
-              </Navbar.Collapse>
-            </Container>
-          </Navbar>
+          <NavigationBar />
         </header>
-        <div
-          className={
-            sidebarIsOpen
-              ? 'active-nav side-navbar d-flex justify-content-between flex-wrap flex-column'
-              : 'side-navbar d-flex justify-content-between flex-wrap flex-column'
-          }
-        >
-          <Nav className="flex-column text-white w-100 p-2">
-            <Nav.Item>
-              <strong>Categories</strong>
-            </Nav.Item>
-            {categories.map((category) => (
-              <Nav.Item key={category}>
-                <LinkContainer
-                  to={`/search?category=${category}`}
-                  onClick={() => setSidebarIsOpen(false)}
-                >
-                  <Nav.Link>{category}</Nav.Link>
-                </LinkContainer>
-              </Nav.Item>
-            ))}
-          </Nav>
-        </div>
+
         <main>
-          <Container className="mt-3">
+          <div>
             <Routes>
+              <Route path="/" element={<HomePage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/contact" element={<ContactPage />} />
+              <Route path="/cgv" element={<CgvPage />} />
+              <Route path="/mentions" element={<MentionsLegalesPage />} />
+              <Route path="/serviceclient" element={<ServiceClientPage />} />
+              <Route path="/boutique/search" element={<SearchPage />} />
+              <Route path="/promotions" element={<PromoPage />} />
+              <Route path="/soldes" element={<SoldePage />} />
               <Route path="/product/:slug" element={<ProductPage />} />
               <Route path="/cart" element={<CartPage />} />
-              <Route path="/search" element={<SearchPage />} />
               <Route path="/signin" element={<SigninPage />} />
               <Route path="/signup" element={<SignupPage />} />
               <Route
@@ -187,14 +81,6 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <ProfilePage />
-                  </ProtectedRoute>
-                }
-              />
-              <Route
-                path="/map"
-                element={
-                  <ProtectedRoute>
-                    <MapPage />
                   </ProtectedRoute>
                 }
               />
@@ -216,12 +102,21 @@ function App() {
                 }
               ></Route>
               <Route path="/shipping" element={<ShippingAddressPage />}></Route>
+              <Route path="/payment" element={<PaymentMethodPage />}></Route>
               {/* Admin Routes */}
               <Route
                 path="/admin/dashboard"
                 element={
                   <AdminRoute>
                     <DashboardPage />
+                  </AdminRoute>
+                }
+              ></Route>
+              <Route
+                path="/admin/product/add"
+                element={
+                  <AdminRoute>
+                    <ProductAddPage />
                   </AdminRoute>
                 }
               ></Route>
@@ -234,14 +129,6 @@ function App() {
                 }
               ></Route>
               <Route
-                path="/admin/users"
-                element={
-                  <AdminRoute>
-                    <UserListPage />
-                  </AdminRoute>
-                }
-              ></Route>
-              <Route
                 path="/admin/products"
                 element={
                   <AdminRoute>
@@ -250,10 +137,50 @@ function App() {
                 }
               ></Route>
               <Route
-                path="/admin/product/add"
+                path="/admin/fils"
                 element={
                   <AdminRoute>
-                    <ProductAddPage />
+                    <FilListPage />
+                  </AdminRoute>
+                }
+              ></Route>
+              <Route
+                path="/admin/tissus"
+                element={
+                  <AdminRoute>
+                    <TissuListPage />
+                  </AdminRoute>
+                }
+              ></Route>
+              <Route
+                path="/admin/patches"
+                element={
+                  <AdminRoute>
+                    <PatchListPage />
+                  </AdminRoute>
+                }
+              ></Route>
+              <Route
+                path="/admin/reviews"
+                element={
+                  <AdminRoute>
+                    <ReviewListPage />
+                  </AdminRoute>
+                }
+              ></Route>
+              <Route
+                path="/admin/review/:id/validate"
+                element={
+                  <AdminRoute>
+                    <ReviewListPage />
+                  </AdminRoute>
+                }
+              ></Route>
+              <Route
+                path="/admin/users"
+                element={
+                  <AdminRoute>
+                    <UserListPage />
                   </AdminRoute>
                 }
               ></Route>
@@ -273,14 +200,10 @@ function App() {
                   </AdminRoute>
                 }
               ></Route>
-
-              <Route path="/" element={<HomePage />} />
             </Routes>
-          </Container>
+          </div>
         </main>
-        <footer className="bg-dark p-3 text-white">
-          <div className="text-center bg-dark">All rights reserved</div>
-        </footer>
+        <Footer />
       </div>
     </BrowserRouter>
   );

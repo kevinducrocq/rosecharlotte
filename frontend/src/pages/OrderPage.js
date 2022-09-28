@@ -1,4 +1,4 @@
-import React, { useReducer, useContext, useEffect } from 'react';
+import React, { useReducer, useContext, useEffect, useState } from 'react';
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
 import { useNavigate, useParams } from 'react-router-dom';
 import LoadingBox from '../components/LoadingBox';
@@ -6,9 +6,18 @@ import MessageBox from '../components/MessageBox';
 import { toast } from 'react-toastify';
 import { Store } from '../Store';
 import axios from 'axios';
-import { getError } from '../utils';
+import { dateFr, getError } from '../utils';
 import { Helmet } from 'react-helmet-async';
-import { Card, Col, ListGroup, Row } from 'react-bootstrap';
+import {
+  Button,
+  Card,
+  Col,
+  Container,
+  Image,
+  ListGroup,
+  Modal,
+  Row,
+} from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 function reducer(state, action) {
@@ -27,6 +36,30 @@ function reducer(state, action) {
       return { ...state, loadingPay: false };
     case 'PAY_RESET':
       return { ...state, loadingPay: false, successPay: false };
+    case 'DELIVER_REQUEST':
+      return { ...state, loadingDeliver: true };
+    case 'DELIVER_SUCCESS':
+      return { ...state, loadingDeliver: false, successDeliver: true };
+    case 'DELIVER_FAIL':
+      return { ...state, loadingDeliver: false };
+    case 'DELIVER_RESET':
+      return {
+        ...state,
+        loadingDeliver: false,
+        successDeliver: false,
+      };
+    case 'IS_PAID_REQUEST':
+      return { ...state, loadingIsPaid: true };
+    case 'IS_PAID_SUCCESS':
+      return { ...state, loadingIsPaid: false, successIsPaid: true };
+    case 'IS_PAID_FAIL':
+      return { ...state, loadingIsPaid: false };
+    case 'IS_PAID_RESET':
+      return {
+        ...state,
+        loadingIsPaid: false,
+        successIsPaid: false,
+      };
     default:
       return state;
   }
@@ -38,9 +71,20 @@ export default function OrderPage() {
   const params = useParams();
   const { id: orderId } = params;
   const navigate = useNavigate();
+  const [showModalCheque, setShowModalCheque] = useState(false);
 
   const [
-    { loading, error, order, successPay, loadingPay },
+    {
+      loading,
+      error,
+      order,
+      successPay,
+      loadingPay,
+      loadingDeliver,
+      successDeliver,
+      loadingIsPaid,
+      successIsPaid,
+    },
     dispatch,
   ] = useReducer(reducer, {
     loading: true,
@@ -48,6 +92,10 @@ export default function OrderPage() {
     error: '',
     successPay: false,
     loadingPay: false,
+    isPaid: false,
+    loadingIsPaid: false,
+    loadingDeliver: false,
+    isDelivered: false,
   });
 
   const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
@@ -63,7 +111,7 @@ export default function OrderPage() {
   }
 
   function onApprove(data, actions) {
-    return actions.order.capture().then(async function(details) {
+    return actions.order.capture().then(async function (details) {
       try {
         dispatch({ type: 'PAY_REQUEST' });
         const { data } = await axios.put(
@@ -91,6 +139,9 @@ export default function OrderPage() {
         const { data } = await axios.get(`/api/orders/${orderId}`, {
           headers: { authorization: `Bearer ${userInfo.token}` },
         });
+        if (data.paymentMethod === 'Chèque' && !data.isPaid) {
+          setShowModalCheque(true);
+        }
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
@@ -100,10 +151,22 @@ export default function OrderPage() {
     if (!userInfo) {
       return navigate('/signin');
     }
-    if (!order._id || successPay || (order._id && order._id !== orderId)) {
+    if (
+      !order._id ||
+      successPay ||
+      successDeliver ||
+      successIsPaid ||
+      (order._id && order._id !== orderId)
+    ) {
       fetchOrder();
       if (successPay) {
         dispatch({ type: 'PAY_RESET' });
+      }
+      if (successIsPaid) {
+        dispatch({ type: 'IS_PAID_RESET' });
+      }
+      if (successDeliver) {
+        dispatch({ type: 'DELIVER_RESET' });
       }
     } else {
       const loadPaypalScript = async () => {
@@ -118,34 +181,91 @@ export default function OrderPage() {
       };
       loadPaypalScript();
     }
-  }, [order, userInfo, orderId, navigate, paypalDispatch, successPay]);
+  }, [
+    order,
+    userInfo,
+    orderId,
+    navigate,
+    paypalDispatch,
+    successPay,
+    successDeliver,
+    successIsPaid,
+  ]);
+
+  async function deliverOrderHandler() {
+    try {
+      dispatch({ type: 'DELIVER_REQUEST' });
+      const { data } = await axios.put(
+        `/api/orders/${order._id}/deliver`,
+        {},
+        {
+          headers: { authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+      dispatch({ type: 'DELIVER_SUCCESS', payload: data });
+      toast.success('La commande a été marquée comme envoyée');
+    } catch (err) {
+      toast.error(getError(err));
+      dispatch({ type: 'DELIVER_FAIL' });
+    }
+  }
+
+  async function payOrderHandler() {
+    try {
+      dispatch({ type: 'IS_PAID_REQUEST' });
+      const { data } = await axios.put(
+        `/api/orders/${order._id}/is-paid`,
+        {},
+        {
+          headers: { authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+      dispatch({ type: 'IS_PAID_SUCCESS', payload: data });
+      toast.success('La commande a été marquée comme payée');
+    } catch (err) {
+      toast.error(getError(err));
+      dispatch({ type: 'IS_PAID_FAIL' });
+    }
+  }
 
   return loading ? (
     <LoadingBox></LoadingBox>
   ) : error ? (
     <MessageBox variant="danger">{error}</MessageBox>
   ) : (
-    <div>
+    <Container>
       <Helmet>
         <title>Commande {orderId}</title>
       </Helmet>
-      <h1 className="my-5">Commande {orderId}</h1>
+      <h1 className="my-5">
+        Commande <br />
+        <small>N° {orderId.substring(0, 7)}</small>
+      </h1>
       <Row>
         <Col md={8}>
           <Card className="mb-3">
+            {order.shippingAddress ? (
+              <Card.Body>
+                <Card.Title>Livraison</Card.Title>
+                <Card.Text>
+                  <strong>Nom | Prénom :</strong> {order.shippingAddress.name}{' '}
+                  <br />
+                  <strong>Adresse : </strong> {order.shippingAddress.address},{' '}
+                  {order.shippingAddress.zip}, {order.shippingAddress.city},{' '}
+                  {order.shippingAddress.country} <br />
+                </Card.Text>
+              </Card.Body>
+            ) : (
+              <Card.Body>
+                <Card.Title>Commande à récupérer pour : </Card.Title>
+                <strong>Nom | Prénom : </strong> {order.user.name} <br />
+                <strong>Email : </strong> {order.user.email}
+              </Card.Body>
+            )}
             <Card.Body>
-              <Card.Title>Livraison</Card.Title>
-              <Card.Text>
-                <strong>Nom :</strong> {order.shippingAddress.firstName} <br />
-                <strong>Prénom :</strong> {order.shippingAddress.lastName}{' '}
-                <br />
-                <strong>Adresse : </strong> {order.shippingAddress.address},{' '}
-                {order.shippingAddress.zip}, {order.shippingAddress.city},{' '}
-                {order.shippingAddress.country} <br />
-              </Card.Text>
               {order.isDelivered ? (
                 <MessageBox variant="success">
-                  Commande livrée le {order.deliveredAt}
+                  Commande livrée le {dateFr(order.deliveredAt)}
                 </MessageBox>
               ) : (
                 <MessageBox variant="danger">Pas encore livré</MessageBox>
@@ -154,35 +274,47 @@ export default function OrderPage() {
           </Card>
           <Card className="mb-3">
             <Card.Body>
-              <Card.Title>Payment</Card.Title>
+              <Card.Title>Paiement</Card.Title>
+              <div className="text-muted mb-3">{order.paymentMethod}</div>
               {order.isPaid ? (
                 <MessageBox variant="success">
-                  Payé le {order.paidAt}
+                  Payé le {dateFr(order.paidAt)}
                 </MessageBox>
               ) : (
                 <MessageBox variant="danger">Pas encore payé</MessageBox>
               )}
             </Card.Body>
           </Card>
-          <Card className="mb-3">
+          <Card className="mb-3 bg-light">
             <Card.Body>
               <Card.Title>Produits</Card.Title>
-              <ListGroup variant="flush">
+              <ListGroup className="mb-3 text-center rounded-3">
                 {order.orderItems.map((item) => (
-                  <ListGroup.Item key={item._id}>
-                    <Row>
-                      <Col md={6}>
-                        <img
-                          src={item.image}
-                          alt={item.name}
-                          className="img-fluid img-thumbnail"
-                        />{' '}
-                        <Link to={`/product/${item.slug}`}>{item.name}</Link>
+                  <ListGroup.Item
+                    key={item._id + item.variant?._id}
+                    className="shadow p-3"
+                  >
+                    <Row className="align-items-center">
+                      <Col md={4} className="d-flex flex-column">
+                        <Link to={`/product/${item.slug}`}>
+                          <Image
+                            src={item.image}
+                            alt={item.name}
+                            fluid
+                            className="rounded-3 img-thumbnail"
+                          />
+                          <div>{item.name}</div>
+                        </Link>
                       </Col>
-                      <Col md={3}>
-                        <span>{item.quantity}</span>
+                      <Col md={4}>
+                        <span>{item.variant?.name}</span>
                       </Col>
-                      <Col md={3}>{item.price} &euro;</Col>
+
+                      <Col md={2}>
+                        <span>x {item.quantity}</span>
+                      </Col>
+
+                      <Col md={2}>{item.price} &euro;</Col>
                     </Row>
                   </ListGroup.Item>
                 ))}
@@ -195,7 +327,7 @@ export default function OrderPage() {
             <Card.Body>
               <Card.Title>Montant de la commande</Card.Title>
               <ListGroup variant="flush">
-                <ListGroup.Item>
+                <ListGroup.Item className="shadow rounded-3">
                   <Row>
                     <Col>Produits</Col>
                     <Col>{order.itemsPrice.toFixed(2)} &euro;</Col>
@@ -203,10 +335,6 @@ export default function OrderPage() {
                   <Row>
                     <Col>Livraison</Col>
                     <Col>{order.shippingPrice.toFixed(2)} &euro;</Col>
-                  </Row>
-                  <Row>
-                    <Col>Taxes</Col>
-                    <Col>{order.taxPrice.toFixed(2)} &euro;</Col>
                   </Row>
                   <Row>
                     <Col>
@@ -217,7 +345,7 @@ export default function OrderPage() {
                     </Col>
                   </Row>
                 </ListGroup.Item>
-                {!order.isPaid && (
+                {!order.isPaid && order.paymentMethod === 'PayPal' && (
                   <ListGroup.Item>
                     {isPending ? (
                       <LoadingBox />
@@ -233,11 +361,97 @@ export default function OrderPage() {
                     {loadingPay && <LoadingBox></LoadingBox>}
                   </ListGroup.Item>
                 )}
+                {!order.isPaid && order.paymentMethod === 'Chèque' && (
+                  <>
+                    <ListGroup.Item className="shadow rounded-3 text-center">
+                      <p>
+                        Merci d'envoyer le chèque, à l'ordre de{' '}
+                        <strong>"Rose Charlotte &amp; Compagnie"</strong> à
+                        l'adresse suivante :&nbsp;
+                      </p>
+                      <p className="text-center">
+                        Rose Charlotte & Compagnie <br /> 20 rue Principale{' '}
+                        <br />
+                        62190 Ecquedecques
+                      </p>
+                    </ListGroup.Item>
+                    {!userInfo.isAdmin && (
+                      <Modal
+                        show={showModalCheque}
+                        onHide={() => {
+                          setShowModalCheque(false);
+                        }}
+                        dialogClassName="custom-modal"
+                      >
+                        <Modal.Header closeButton>
+                          <Modal.Title id="contained-modal-title-lg">
+                            Paiement par Chèque
+                          </Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                          <p>
+                            Merci de l'envoyer, à l'ordre de{' '}
+                            <strong>"Rose Charlotte &amp; Compagnie"</strong> à
+                            l'adresse suivante :
+                          </p>
+                          <p className="text-center">
+                            Rose Charlotte & Compagnie <br /> 20 rue Principale
+                            <br /> 62190 Ecquedecques
+                          </p>
+                        </Modal.Body>
+                        <Modal.Footer>
+                          <Button
+                            className="bg1"
+                            variant="outline-light no-border"
+                            onClick={() => {
+                              setShowModalCheque(false);
+                            }}
+                          >
+                            Femer
+                          </Button>
+                        </Modal.Footer>
+                      </Modal>
+                    )}
+                  </>
+                )}
+                {userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                  <ListGroup.Item>
+                    {loadingDeliver && <LoadingBox></LoadingBox>}
+                    <div className="d-grid">
+                      <Button
+                        type="button"
+                        variant="outline-light"
+                        className="bg1"
+                        onClick={deliverOrderHandler}
+                      >
+                        Livrer
+                      </Button>
+                    </div>
+                  </ListGroup.Item>
+                )}
+                {userInfo.isAdmin &&
+                  !order.isPaid &&
+                  !order.isDelivered &&
+                  order.paymentMethod === 'Chèque' && (
+                    <ListGroup.Item>
+                      {loadingIsPaid && <LoadingBox></LoadingBox>}
+                      <div className="d-grid">
+                        <Button
+                          type="button"
+                          variant="outline-light"
+                          className="bg1"
+                          onClick={payOrderHandler}
+                        >
+                          Chèque reçu
+                        </Button>
+                      </div>
+                    </ListGroup.Item>
+                  )}
               </ListGroup>
             </Card.Body>
           </Card>
         </Col>
       </Row>
-    </div>
+    </Container>
   );
 }

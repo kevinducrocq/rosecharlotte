@@ -15,14 +15,18 @@ import {
   Form,
   Badge,
   Button,
+  Image,
+  Container,
+  Breadcrumb,
 } from 'react-bootstrap';
 import Rating from '../components/Rating';
 import { Helmet } from 'react-helmet-async';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
-import { getError } from '../utils';
+import { dateFr, getError } from '../utils';
 import { Store } from '../Store';
 import { toast } from 'react-toastify';
+import { LinkContainer } from 'react-router-bootstrap';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -51,19 +55,25 @@ function ProductScreen() {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
   const [selectedImage, setSelectedImage] = useState('');
+  const [customization, setCustomization] = useState('');
+  const [variantId, setVariant] = useState('');
+
+  // const getNames = (list) =>
+  //   list.map((item) => {
+  //     return item.name;
+  //   });
 
   const navigate = useNavigate();
   const params = useParams();
   const { slug } = params;
 
-  const [
-    { loading, error, product, loadingCreateReview },
-    dispatch,
-  ] = useReducer(reducer, {
-    product: [],
-    loading: true,
-    error: '',
-  });
+  const [{ loading, error, product, loadingCreateReview }, dispatch] =
+    useReducer(reducer, {
+      product: [],
+      loading: true,
+      error: '',
+    });
+
   useEffect(() => {
     const fetchData = async () => {
       dispatch({ type: 'FETCH_REQUEST' });
@@ -79,18 +89,53 @@ function ProductScreen() {
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { cart, userInfo } = state;
+
   const addToCartHandler = async () => {
-    const existItem = cart.cartItems.find((x) => x._id === product._id);
+    const existItem = cart.cartItems.find(
+      (x) =>
+        x._id === product._id &&
+        (x.variant === null || x.variant._id === variantId)
+    );
     const quantity = existItem ? existItem.quantity + 1 : 1;
     const { data } = await axios.get(`/api/products/${product._id}`);
-    if (data.countInStock < quantity) {
-      window.alert('Désolé, le produit est épuisé');
-      return;
+
+    if (variantId) {
+      const variantItem = data.variants.filter((v) => {
+        return v._id === variantId;
+      })[0];
+
+      if (variantItem.countInStock < quantity) {
+        window.alert(
+          "Désolé, il n'y a plus de quantité disponible pour ce produit"
+        );
+        return;
+      }
+      ctxDispatch({
+        type: 'CART_ADD_ITEM',
+        payload: {
+          ...product,
+          quantity,
+          variant: product.variants.filter((v) => {
+            return v._id === variantId;
+          })[0],
+          customization,
+        },
+      });
+    } else {
+      if (data.countInStock < quantity) {
+        window.alert('Désolé, le produit est épuisé');
+        return;
+      }
+      ctxDispatch({
+        type: 'CART_ADD_ITEM',
+        payload: {
+          ...product,
+          quantity,
+          variant: null,
+          customization,
+        },
+      });
     }
-    ctxDispatch({
-      type: 'CART_ADD_ITEM',
-      payload: { ...product, quantity },
-    });
     navigate('/cart');
   };
 
@@ -103,7 +148,7 @@ function ProductScreen() {
     try {
       const { data } = await axios.post(
         `/api/products/${product._id}/reviews`,
-        { rating, comment, firstName: userInfo.firstName },
+        { rating, comment, name: userInfo.name },
         {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         }
@@ -131,156 +176,268 @@ function ProductScreen() {
   ) : error ? (
     <MessageBox variant="danger">{error}</MessageBox>
   ) : (
-    <div>
-      <Row>
-        <Col md={6}>
-          <img
-            className="img-large"
-            src={selectedImage || product.image}
-            alt={product.name}
-          ></img>
+    <Container className="my-5">
+      <Breadcrumb>
+        <LinkContainer to={'/'} exact>
+          <Breadcrumb.Item>Accueil</Breadcrumb.Item>
+        </LinkContainer>
+        <LinkContainer to={'/boutique/search'}>
+          <Breadcrumb.Item>Boutique</Breadcrumb.Item>
+        </LinkContainer>
+        <LinkContainer to={`/boutique/search?category=${product.category}`}>
+          <Breadcrumb.Item>{product.category}</Breadcrumb.Item>
+        </LinkContainer>
+        <LinkContainer
+          to={`/boutique/search?subCategory=${product.subCategory}`}
+        >
+          <Breadcrumb.Item>{product.subCategory}</Breadcrumb.Item>
+        </LinkContainer>
+        <Breadcrumb.Item active>{product.name}</Breadcrumb.Item>
+      </Breadcrumb>
+
+      <Helmet>
+        <title>{product.name}</title>
+      </Helmet>
+      <Row className="product-infos">
+        <div>
+          {userInfo && userInfo.isAdmin && (
+            <Link to={`/admin/product/${product._id}`}>
+              <Button>Editer</Button>
+            </Link>
+          )}
+        </div>
+        <Col md={2} className="product-vignettes">
+          <div className="d-flex flex-column align-items-end">
+            {[product.image, ...product.images].map((x) => (
+              <Col key={x}>
+                <div className="my-1">
+                  <Button
+                    variant="outline-none"
+                    onClick={() => setSelectedImage(x)}
+                  >
+                    <Card.Img src={x} alt="product" className="img-thumbnail" />
+                  </Button>
+                </div>
+              </Col>
+            ))}
+          </div>
         </Col>
-        <Col md={3}>
-          <ListGroup variant="flush">
+        <Col md={4} className="mt-2">
+          <div>
+            <Image
+              src={selectedImage || product.image}
+              alt={product.name}
+              fluid
+              className="product-page-main-image"
+            />
+          </div>
+        </Col>
+
+        <div className="product-vignettes-bottom">
+          {[product.image, ...product.images].map((x) => (
+            <div key={x}>
+              <Button
+                variant="outline-none"
+                onClick={() => setSelectedImage(x)}
+              >
+                <Card.Img src={x} alt="product" className="img-thumbnail" />
+              </Button>
+            </div>
+          ))}
+        </div>
+
+        <Col md={6} className="mt-2">
+          <ListGroup>
             <ListGroup.Item>
-              <Helmet>
-                <title>{product.name}</title>
-              </Helmet>
-              <h1>{product.name}</h1>
+              <div className="d-flex flex-column justify-content-between p-2">
+                <div>
+                  <h1>{product.name}</h1>
+                  <h2 className="h6 text-muted">
+                    {product.category}
+                    {product.subCategory ? ' - ' + product.subCategory : ''}
+                    {/* {product.otherCategory ? ' - ' + product.otherCategory : ''} */}
+                  </h2>
+                </div>
+                <div className="mt-3">
+                  {product.variants.length >= 1 ? (
+                    ''
+                  ) : product.countInStock && product.countInStock > 0 ? (
+                    <Badge bg="success">{product.countInStock} En stock</Badge>
+                  ) : (
+                    <Badge bg="danger">Epuisé</Badge>
+                  )}
+                </div>
+              </div>
             </ListGroup.Item>
             <ListGroup.Item>
-              <Rating
-                rating={product.rating}
-                numReviews={product.numReviews}
-              ></Rating>
+              <div className="p-2">
+                <Rating
+                  rating={product.rating}
+                  numReviews={product.numReviews}
+                ></Rating>
+              </div>
             </ListGroup.Item>
-            <ListGroup.Item>Pirce : ${product.price}</ListGroup.Item>
-            <ListGroup.Item>
-              <Row xs={1} md={2} className="g-2">
-                {[product.image, ...product.images].map((x) => (
-                  <Col key={x}>
-                    <Card>
-                      <Button
-                        className="thumbnail"
-                        type="button"
-                        variant="light"
-                        onClick={() => setSelectedImage(x)}
-                      >
-                        <Card.Img variant="top" src={x} alt="product" />
-                      </Button>
-                    </Card>
-                  </Col>
-                ))}
-              </Row>
+            <ListGroup.Item className="price-tag">
+              <div className="p-2">{product.price} &euro;</div>
             </ListGroup.Item>
             <ListGroup.Item>
-              Déscription:
-              <p>{product.description}</p>
+              <div className="p-2">
+                <p>{product.description}</p>
+              </div>
             </ListGroup.Item>
+            {product.variants.length >= 1 && (
+              <>
+                <ListGroup.Item>
+                  <Form>
+                    <Form.Select
+                      className="my-3"
+                      onChange={(e) => {
+                        setVariant(e.target.value);
+                      }}
+                    >
+                      <option>Choisissez...</option>
+                      {product.variants.map((variant) => {
+                        return (
+                          <option key={variant._id} value={variant._id}>
+                            {variant.name}&nbsp;
+                            {variant.countInStock === 0
+                              ? '- Non-disponible'
+                              : ''}
+                          </option>
+                        );
+                      })}
+                    </Form.Select>
+                    {product.customizable && (
+                      <Form.Group className="mb-3">
+                        <Form.Control
+                          value={customization}
+                          placeholder="Saisissez votre texte personnalisation"
+                          onChange={(e) => {
+                            setCustomization(e.target.value);
+                          }}
+                        ></Form.Control>
+                      </Form.Group>
+                    )}
+                  </Form>
+                </ListGroup.Item>
+              </>
+            )}
+
+            {product.countInStock > 0 || product.variants.length ? (
+              <div className="p-2">
+                <Button
+                  onClick={addToCartHandler}
+                  className="bg1 w-100"
+                  variant="outline-light"
+                >
+                  Ajouter au panier
+                </Button>
+              </div>
+            ) : (
+              <ListGroup.Item>
+                <div className="p-2">
+                  <Button variant="secondary" disabled>
+                    Epuisé
+                  </Button>
+                </div>
+              </ListGroup.Item>
+            )}
           </ListGroup>
         </Col>
-        <Col md={3}>
-          <Card>
-            <Card.Body>
-              <ListGroup variant="flush">
-                <ListGroup.Item>
-                  <Row>
-                    <Col>Prix:</Col>
-                    <Col>{product.price} &euro;</Col>
-                  </Row>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                  <Row>
-                    <Col>Statut:</Col>
-                    <Col>
-                      {product.countInStock > 0 ? (
-                        <Badge bg="success">En stock</Badge>
-                      ) : (
-                        <Badge bg="danger">Epuisé</Badge>
-                      )}
-                    </Col>
-                  </Row>
-                </ListGroup.Item>
-
-                {product.countInStock > 0 && (
-                  <ListGroup.Item>
-                    <div className="d-grid">
-                      <Button onClick={addToCartHandler} variant="primary">
-                        Ajouter au panier
-                      </Button>
-                    </div>
-                  </ListGroup.Item>
-                )}
-              </ListGroup>
-            </Card.Body>
-          </Card>
-        </Col>
       </Row>
-      <div className="my-3">
-        <h2 ref={reviewsRef}>Avis</h2>
-        <div className="mb-3">
-          {product.reviews.length === 0 && (
-            <MessageBox>Il n'y a pas encore d'avis</MessageBox>
-          )}
-        </div>
-        <ListGroup>
-          {product.reviews.map((review) => (
-            <ListGroup.Item key={review._id}>
-              <strong>{review.firstName}</strong>
-              <Rating rating={review.rating} caption=" "></Rating>
-              <p>{review.createdAt.substring(0, 10)}</p>
-              <p>{review.comment}</p>
-            </ListGroup.Item>
-          ))}
-        </ListGroup>
-        <div className="my-3">
-          {userInfo ? (
-            <form onSubmit={submitHandler}>
-              <h2>Ajouter un avis</h2>
-              <Form.Group className="mb-3" controlId="rating">
-                <Form.Label>Note</Form.Label>
-                <Form.Select
-                  aria-label="Rating"
-                  value={rating}
-                  onChange={(e) => setRating(e.target.value)}
-                >
-                  <option value="">Sélectionnez...</option>
-                  <option value="1">1- Mauvais</option>
-                  <option value="2">2- Moyen</option>
-                  <option value="3">3- Bien</option>
-                  <option value="4">4- Très bien</option>
-                  <option value="5">5- Excellent</option>
-                </Form.Select>
-              </Form.Group>
-              <Form.Group className="mb-3" controlId="floatingTextarea">
-                <Form.Label>Commentaire</Form.Label>
-                <Form.Control
-                  as="textarea"
-                  placeholder="Ecrivez votre commentaire ici"
-                  rows={3}
-                  value={comment}
-                  onChange={(e) => setComment(e.target.value)}
-                />
-              </Form.Group>
+      <hr />
 
-              <div className="mb-3">
-                <Button disabled={loadingCreateReview} type="submit">
-                  Noter
-                </Button>
-                {loadingCreateReview && <LoadingBox></LoadingBox>}
+      <div className="my-3">
+        <Row>
+          <Col md={4} sm={2}>
+            <div className="mb-3 p-4">
+              <h2>Ajouter un avis</h2>
+
+              {userInfo ? (
+                <form onSubmit={submitHandler}>
+                  <Form.Group className="mb-3" controlId="rating">
+                    <Form.Label>Note</Form.Label>
+                    <Form.Select
+                      aria-label="Rating"
+                      value={rating}
+                      onChange={(e) => setRating(e.target.value)}
+                    >
+                      <option value="">Sélectionnez...</option>
+                      <option value="1">1- Mauvais</option>
+                      <option value="2">2- Moyen</option>
+                      <option value="3">3- Bien</option>
+                      <option value="4">4- Très bien</option>
+                      <option value="5">5- Excellent</option>
+                    </Form.Select>
+                  </Form.Group>
+                  <Form.Group className="mb-3" controlId="floatingTextarea">
+                    <Form.Label>Commentaire</Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      placeholder="Ecrivez votre commentaire ici"
+                      rows={3}
+                      value={comment}
+                      onChange={(e) => setComment(e.target.value)}
+                    />
+                  </Form.Group>
+
+                  <div className="mb-3">
+                    <Button
+                      disabled={loadingCreateReview}
+                      type="submit"
+                      variant="outline-light"
+                      className="bg1 w-100"
+                    >
+                      Noter
+                    </Button>
+                    {loadingCreateReview && <LoadingBox></LoadingBox>}
+                  </div>
+                </form>
+              ) : (
+                <MessageBox>
+                  <Link to={`/signin?redirect=/product/${product.slug}`}>
+                    Connectez-vous
+                  </Link>{' '}
+                  pour rédiger un avis
+                </MessageBox>
+              )}
+            </div>
+          </Col>
+          <Col md={8}>
+            <Row>
+              <div className="mb-3 p-4">
+                <h2 ref={reviewsRef}>Avis des clients</h2>
+                {product.reviews.length === 0 && (
+                  <MessageBox bg2>
+                    Il n'y a pas encore d'avis sur ce produit
+                  </MessageBox>
+                )}
               </div>
-            </form>
-          ) : (
-            <MessageBox>
-              <Link to={`/signin?redirect=/product/${product.slug}`}>
-                Connectez-vous
-              </Link>{' '}
-              pour rédiger un avis
-            </MessageBox>
-          )}
-        </div>
+              {product.reviews.map((review) =>
+                review.status === false ? (
+                  <MessageBox bg2>
+                    Il n'y a pas encore d'avis sur ce produit
+                  </MessageBox>
+                ) : (
+                  <Col md={4}>
+                    <Card key={review._id}>
+                      <Card.Header>
+                        <strong>{review.name}</strong>
+                        <Rating rating={review.rating} caption=" "></Rating>
+                      </Card.Header>
+                      <Card.Body>
+                        <p>{dateFr(review.createdAt)}</p>
+                        <p>{review.comment}</p>
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                )
+              )}
+            </Row>
+          </Col>
+        </Row>
       </div>
-    </div>
+    </Container>
   );
 }
 export default ProductScreen;

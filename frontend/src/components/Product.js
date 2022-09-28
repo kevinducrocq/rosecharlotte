@@ -1,56 +1,73 @@
-import axios from 'axios';
-import React, { useContext } from 'react';
-import { Card, Button } from 'react-bootstrap';
+import { faEye } from '@fortawesome/pro-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React from 'react';
+import { Card, Button, Badge } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { Store } from '../Store';
 import Rating from './Rating';
 
 function Product(props) {
   const { product } = props;
-  const { state, dispatch: ctxDispatch } = useContext(Store);
-  const {
-    cart: { cartItems },
-  } = state;
-
-  const addToCartHandler = async (item) => {
-    const existItem = cartItems.find((x) => x._id === product._id);
-    const quantity = existItem ? existItem.quantity + 1 : 1;
-    const { data } = await axios.get(`/api/products/${item._id}`);
-    if (data.countInStock < quantity) {
-      window.alert(
-        "Désolé, il n'y a plus de quantité disponible pour ce produit"
-      );
-      return;
-    }
-    ctxDispatch({
-      type: 'CART_ADD_ITEM',
-      payload: { ...item, quantity },
-    });
-  };
 
   return (
-    <Card key={product.slug}>
+    <Card key={product.slug} className="hover-shadow">
       <Link to={`/product/${product.slug}`}>
-        <img src={product.image} className="card-img-top" alt={product.name} />
+        <img
+          src={product.image}
+          className="card-img-top img-fluid"
+          alt={product.name}
+        />
       </Link>
       <Card.Body>
+        <div className="d-flex justify-content-between align-items-center">
+          <Link to={`/product/${product.slug}`}>
+            <Card.Title>{product.name}</Card.Title>
+          </Link>
+          {!product.promoPrice && !product.soldePrice && (
+            <Card.Text className="text-nowrap fw-bold bg3 p-2 rounded-5">
+              {product.price} &euro;
+            </Card.Text>
+          )}
+          {product.promoPrice && (
+            <Card.Text className="d-flex align-items-center">
+              <div className="text-nowrap fw-bold p-2 rounded-5">
+                <s>{product.price} &euro;</s>
+              </div>
+              <div className="text-nowrap fw-bold bg3 p-2 rounded-5">
+                {product.promoPrice} &euro;
+              </div>
+            </Card.Text>
+          )}
+          {product.soldePrice && (
+            <Card.Text className="d-flex align-items-center">
+              <div className="text-nowrap fw-bold p-2 rounded-5">
+                <s>{product.price} &euro;</s>
+              </div>
+              <div className="text-nowrap fw-bold bg3 p-2 rounded-5">
+                {product.soldePrice} &euro;
+              </div>
+            </Card.Text>
+          )}
+        </div>
+        <div>
+          <Rating rating={product.rating} numReviews={product.numReviews} />
+        </div>
+
+        <div className="mt-2 mb-3">
+          {product.variants.reduce(
+            (countInStock, variant) => countInStock + variant.countInStock,
+            product.countInStock
+          ) > 0 ? (
+            <Badge bg="success"> En stock</Badge>
+          ) : (
+            <Badge bg="danger">Epuisé</Badge>
+          )}
+        </div>
+
         <Link to={`/product/${product.slug}`}>
-          <Card.Title>{product.name}</Card.Title>
+          <Button className="bg1 w-100" variant="outline-light">
+            <FontAwesomeIcon icon={faEye} /> Voir
+          </Button>
         </Link>
-        <Rating
-          rating={product.rating}
-          numReviews={product.numReviews}
-        ></Rating>
-        <Card.Text>{product.price} &euro;</Card.Text>
-        {product.countInStock === 0 ? (
-          <Button variant="light" disabled>
-            Epuisé
-          </Button>
-        ) : (
-          <Button onClick={() => addToCartHandler(product)}>
-            Ajouter au panier
-          </Button>
-        )}
       </Card.Body>
     </Card>
   );

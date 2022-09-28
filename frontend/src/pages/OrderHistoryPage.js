@@ -6,8 +6,11 @@ import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import { Store } from '../Store';
 import axios from 'axios';
-import { getError } from '../utils';
-import { Button } from 'react-bootstrap';
+import { getError, dateFr } from '../utils';
+import { Breadcrumb, Button, Container, Table } from 'react-bootstrap';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye } from '@fortawesome/pro-solid-svg-icons';
+import { LinkContainer } from 'react-router-bootstrap';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -47,7 +50,13 @@ const OrderHistoryPage = () => {
   }, [userInfo]);
 
   return (
-    <div>
+    <Container className="my-5">
+      <Breadcrumb>
+        <LinkContainer to={'/'} exact>
+          <Breadcrumb.Item>Accueil</Breadcrumb.Item>
+        </LinkContainer>
+        <Breadcrumb.Item active>Historique de commandes</Breadcrumb.Item>
+      </Breadcrumb>
       <Helmet>
         <title>Historique de commandes</title>
       </Helmet>
@@ -57,29 +66,25 @@ const OrderHistoryPage = () => {
       ) : error ? (
         <MessageBox></MessageBox>
       ) : (
-        <table className="table table-striped">
+        <Table responsive className="table table-striped">
           <thead>
             <tr className="to-upper">
               <th>N°</th>
               <th>Date</th>
               <th>Total</th>
-              <th>Payé?</th>
-              <th>Livré?</th>
+              <th>Payé</th>
+              <th>Livré</th>
               <th>Actions</th>
             </tr>
           </thead>
           <tbody>
             {orders.map((order) => (
               <tr key={order._id}>
-                <td>{order._id.substring(0, 5)}</td>
-                <td>{order.createdAt.substring(0, 10)}</td>
+                <td>{order._id.substring(0, 7)}</td>
+                <td>{dateFr(order.createdAt)}</td>
                 <td>{order.totalPrice.toFixed(2)} &euro;</td>
-                <td>{order.isPaid ? order.paidAt.substring(0, 10) : 'Non'}</td>
-                <td>
-                  {order.isDelivered
-                    ? order.deliveredAt.substring(0, 10)
-                    : 'Non'}
-                </td>
+                <td>{order.isPaid ? dateFr(order.paidAt) : 'Non'}</td>
+                <td>{order.isDelivered ? dateFr(order.deliveredAt) : 'Non'}</td>
                 <td>
                   <Button
                     className="btn btn-sm"
@@ -89,15 +94,15 @@ const OrderHistoryPage = () => {
                       navigate(`/order/${order._id}`);
                     }}
                   >
-                    <i className="fa-solid fa-eye"></i>
+                    <FontAwesomeIcon icon={faEye} />
                   </Button>
                 </td>
               </tr>
             ))}
           </tbody>
-        </table>
+        </Table>
       )}
-    </div>
+    </Container>
   );
 };
 

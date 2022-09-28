@@ -3,16 +3,48 @@ import expressAsyncHandler from 'express-async-handler';
 import Order from '../models/orderModel.js';
 import User from '../models/userModel.js';
 import Product from '../models/productModel.js';
-import { isAuth, isAdmin, mailgun, payOrderEmailTemplate } from '../utils.js';
+import { isAuth, isAdmin } from '../utils.js';
+import mongoose from 'mongoose';
+import transporter, { sender } from '../email.js';
+import { orderEmail } from '../emails/OrderEmail.js';
+import { orderAdminEmail } from '../emails/OrderAdminEmail.js';
+import { sentOrderEmail } from '../emails/SentOrderEmail.js';
 
 const orderRouter = express.Router();
 
+const updateStock = async (order) => {
+  const { orderItems } = order;
+  for (let orderItem of orderItems) {
+    const product = await Product.findOne({ _id: orderItem._id });
+    if (orderItem.variant) {
+      const variants = product.variants.map((variant) => {
+        if (variant._id.toString() === orderItem.variant._id.toString()) {
+          variant.countInStock = variant.countInStock - orderItem.quantity;
+        }
+        return variant;
+      });
+
+      const modifiedProductVariant = await Product.findOneAndUpdate(
+        { _id: mongoose.Types.ObjectId(orderItem.product) },
+        {
+          variants: variants,
+        }
+      );
+    } else {
+      const modifiedProduct = await Product.findOneAndUpdate(
+        { _id: mongoose.Types.ObjectId(orderItem.product) },
+        { countInStock: product.countInStock - orderItem.quantity }
+      );
+    }
+  }
+};
 orderRouter.get(
   '/',
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
-    const orders = await Order.find().populate('user', 'name');
+    const orders = await Order.aggregate([{ $sort: { createdAt: -1 } }]);
+    await User.populate(orders, 'user');
     res.send(orders);
   })
 );
@@ -22,17 +54,38 @@ orderRouter.post(
   isAuth,
   expressAsyncHandler(async (req, res) => {
     const newOrder = new Order({
-      orderItems: req.body.orderItems.map((x) => ({ ...x, product: x._id })),
+      orderItems: req.body.orderItems.map((x) => ({
+        ...x,
+        product: x._id,
+        variant: x.variant,
+      })),
+      deliveryMethod: req.body.deliveryMethod,
       shippingAddress: req.body.shippingAddress,
       itemsPrice: req.body.itemsPrice,
+      paymentMethod: req.body.paymentMethod,
       shippingPrice: req.body.shippingPrice,
-      taxPrice: req.body.taxPrice,
       totalPrice: req.body.totalPrice,
       user: req.user._id,
     });
 
     const order = await newOrder.save();
-    res.status(201).send({ message: 'New Order Created', order });
+    if (order.paymentMethod === 'Chèque') {
+      updateStock(order);
+    }
+
+    const user = await User.findOne({ _id: order.user.toString() });
+    await transporter.sendMail({
+      from: sender,
+      to: user.email,
+      ...orderEmail(order, user),
+    });
+    await transporter.sendMail({
+      from: sender,
+      to: sender,
+      ...orderAdminEmail(order, user),
+    });
+
+    res.status(201).send({ message: 'Nouvelle commande crée', order });
   })
 );
 
@@ -61,7 +114,7 @@ orderRouter.get(
     const dailyOrders = await Order.aggregate([
       {
         $group: {
-          _id: { $dateToString: { format: '%Y-%m-%d', date: '$createdAt' } },
+          _id: { $dateToString: { format: '%d-%m-%Y', date: '$createdAt' } },
           orders: { $sum: 1 },
           sales: { $sum: '$totalPrice' },
         },
@@ -76,7 +129,13 @@ orderRouter.get(
         },
       },
     ]);
-    res.send({ users, orders, dailyOrders, productCategories });
+
+    res.send({
+      users,
+      orders,
+      dailyOrders,
+      productCategories,
+    });
   })
 );
 
@@ -84,7 +143,9 @@ orderRouter.get(
   '/mine',
   isAuth,
   expressAsyncHandler(async (req, res) => {
-    const orders = await Order.find({ user: req.user._id });
+    const orders = await Order.find({ user: req.user._id }).sort({
+      createdAt: -1,
+    });
     res.send(orders);
   })
 );
@@ -93,7 +154,10 @@ orderRouter.get(
   '/:id',
   isAuth,
   expressAsyncHandler(async (req, res) => {
-    const order = await Order.findById(req.params.id);
+    const order = await Order.findById(req.params.id).populate(
+      'user',
+      'email name'
+    );
     if (order) {
       res.send(order);
     } else {
@@ -105,12 +169,22 @@ orderRouter.get(
 orderRouter.put(
   '/:id/deliver',
   isAuth,
+  isAdmin,
   expressAsyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id);
     if (order) {
       order.isDelivered = true;
       order.deliveredAt = Date.now();
+
       await order.save();
+
+      const user = await User.findOne({ _id: order.user.toString() });
+      await transporter.sendMail({
+        from: sender,
+        to: user.email,
+        ...sentOrderEmail(order, user),
+      });
+
       res.send({ message: 'Order Delivered' });
     } else {
       res.status(404).send({ message: 'Order Not Found' });
@@ -119,13 +193,33 @@ orderRouter.put(
 );
 
 orderRouter.put(
+  '/:id/is-paid',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.id);
+
+    if (order) {
+      order.isPaid = true;
+      order.paidAt = Date.now();
+
+      await order.save();
+      res.send({ message: 'Commande payée' });
+    } else {
+      res.status(404).send({ message: 'Commande non trouvée' });
+    }
+  })
+);
+
+orderRouter.put(
   '/:id/pay',
   isAuth,
   expressAsyncHandler(async (req, res) => {
-    const order = await Order.findById(req.params.id).populate(
+    let order = await Order.findById(req.params.id).populate(
       'user',
       'email name'
     );
+
     if (order) {
       order.isPaid = true;
       order.paidAt = Date.now();
@@ -136,28 +230,16 @@ orderRouter.put(
         email_address: req.body.email_address,
       };
 
-      const updatedOrder = await order.save();
-      mailgun()
-        .messages()
-        .send(
-          {
-            from: 'Amazona <amazona@mg.yourdomain.com>',
-            to: `${order.user.name} <${order.user.email}>`,
-            subject: `New order ${order._id}`,
-            html: payOrderEmailTemplate(order),
-          },
-          (error, body) => {
-            if (error) {
-              console.log(error);
-            } else {
-              console.log(body);
-            }
-          }
-        );
+      updateStock(order);
 
-      res.send({ message: 'Order Paid', order: updatedOrder });
+      const updatedOrder = await order.save();
+
+      res.send({
+        message: 'Commande payée',
+        order: updatedOrder,
+      });
     } else {
-      res.status(404).send({ message: 'Order Not Found' });
+      res.status(404).send({ message: 'Commande non trouvée' });
     }
   })
 );

@@ -1,5 +1,13 @@
 import React, { useContext, useEffect, useReducer } from 'react';
-import { Button, Card, Col, ListGroup, Row } from 'react-bootstrap';
+import {
+  Button,
+  Card,
+  Col,
+  Container,
+  Image,
+  ListGroup,
+  Row,
+} from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
@@ -8,6 +16,8 @@ import CheckoutSteps from '../components/CheckoutSteps';
 import { Store } from '../Store';
 import axios from 'axios';
 import LoadingBox from '../components/LoadingBox';
+import { faPenToSquare } from '@fortawesome/pro-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -30,13 +40,46 @@ export default function PlaceOrderPage() {
   const [{ loading }, dispatch] = useReducer(reducer, {
     loading: false,
   });
+
   const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100;
   cart.itemsPrice = round2(
-    cart.cartItems.reduce((a, c) => a + c.quantity * c.price, 0)
+    cart.cartItems.reduce(
+      (price, item) => price + item.quantity * item.price,
+      0
+    )
   );
-  cart.shippingPrice = cart.itemsPrice > 100 ? round2(0) : round2(10);
-  cart.taxPrice = round2(0.15 * cart.itemsPrice);
-  cart.totalPrice = cart.itemsPrice + cart.shippingPrice + cart.taxPrice;
+
+  const totalWeight = cart.cartItems.reduce((weight, item) => {
+    if (item.variant) {
+      return weight + item.quantity * item.variant.weight;
+    }
+    return weight + item.quantity * item.weight;
+  }, 0);
+  cart.itemsWeight = totalWeight;
+
+  const deliveryPrice = () => {
+    if (cart.deliveryMethod === 'Local') {
+      return 0;
+    }
+
+    if (totalWeight <= 200 && cart.itemsPrice < 85) {
+      return 4.4;
+    } else if (
+      totalWeight >= 200 &&
+      totalWeight <= 250 &&
+      cart.itemsPrice < 85
+    ) {
+      return 5.4;
+    } else if (totalWeight >= 250 && cart.itemsPrice < 85) {
+      return 6.9;
+    } else if (cart.itemsPrice >= 85) {
+      return 0;
+    }
+  };
+
+  cart.shippingPrice = deliveryPrice();
+
+  cart.totalPrice = round2(cart.itemsPrice + cart.shippingPrice);
 
   const placeOrderHandler = async () => {
     try {
@@ -46,9 +89,10 @@ export default function PlaceOrderPage() {
         {
           orderItems: cart.cartItems,
           shippingAddress: cart.shippingAddress,
+          paymentMethod: cart.paymentMethod,
+          deliveryMethod: cart.deliveryMethod,
           itemsPrice: cart.itemsPrice,
           shippingPrice: cart.shippingPrice,
-          taxPrice: cart.taxPrice,
           totalPrice: cart.totalPrice,
         },
         { headers: { authorization: `Bearer ${userInfo.token}` } }
@@ -63,63 +107,108 @@ export default function PlaceOrderPage() {
     }
   };
 
+  useEffect(() => {
+    if (!cart.paymentMethod) {
+      navigate('/payment');
+    }
+  }, [cart, navigate]);
+
   return (
-    <div>
-      <CheckoutSteps step1 step2 step3></CheckoutSteps>
+    <Container className="my-5">
+      <CheckoutSteps step1 step2 step3 step4></CheckoutSteps>
       <Helmet>Récapitulatif de commande</Helmet>
       <h1 className="my-5">Récapitulatif de la commande</h1>
       <Row>
         <Col md={8}>
-          <Card className="mb-3">
+          <Card className="mb-3 bg-light">
+            {cart.deliveryMethod === 'Local' ? (
+              <Card.Body>
+                <Card.Title>Commande à retirer dans nos Locaux</Card.Title>
+                <Card.Text>
+                  <strong>Addresse : </strong> 20 rue Principale <br />
+                  <strong>Code postal :</strong> 62190 <br />
+                  <strong>Ville : </strong> Ecquedecques
+                </Card.Text>
+                <Link to="/shipping">
+                  <FontAwesomeIcon icon={faPenToSquare} /> Modifier
+                </Link>
+              </Card.Body>
+            ) : (
+              <Card.Body>
+                <Card.Title>Livraison</Card.Title>
+                <Card.Text>
+                  <strong>Nom | Prénom : </strong> {cart.shippingAddress.name}
+                  <br />
+                  <strong>Adresse : </strong> {cart.shippingAddress.address},{' '}
+                  {cart.shippingAddress.zip}, {cart.shippingAddress.city} <br />
+                  <strong>Pays : </strong> {cart.shippingAddress.country}
+                </Card.Text>
+                <Link to="/shipping">
+                  <FontAwesomeIcon icon={faPenToSquare} /> Modifier
+                </Link>
+              </Card.Body>
+            )}
+          </Card>
+
+          <Card className="mb-3 bg-light">
             <Card.Body>
-              <Card.Title>Livraison</Card.Title>
+              <Card.Title>Paiement</Card.Title>
               <Card.Text>
-                <strong>Nom : </strong> {cart.shippingAddress.firstName}
-                <br />
-                <strong>Prénom : </strong> {cart.shippingAddress.lastName}
-                <br />
-                <strong>Adresse : </strong> {cart.shippingAddress.address},{' '}
-                {cart.shippingAddress.zip}, {cart.shippingAddress.city},{' '}
-                {cart.shippingAddress.country} <br />
+                <strong>Méthode:</strong> {cart.paymentMethod}
               </Card.Text>
-              <Link to="/shipping">
-                <i className="fa-solid fa-pen-to-square"></i> Modifier
+              <Link to="/payment">
+                <FontAwesomeIcon icon={faPenToSquare} /> Modifier
               </Link>
             </Card.Body>
           </Card>
-          <Card className="mb-3">
+
+          <Card className="mb-3 bg-light">
             <Card.Body>
               <Card.Title>Produits</Card.Title>
-              <ListGroup variant="flush">
+              <ListGroup className="mb-3 text-center rounded-3">
                 {cart.cartItems.map((item) => (
-                  <ListGroup.Item key={item._id}>
+                  <ListGroup.Item
+                    key={item._id + item.variant?._id}
+                    className="shadow p-3"
+                  >
                     <Row className="align-items-center">
-                      <Col md={6}>
-                        <img
-                          src={item.image}
-                          alt={item.name}
-                          className="img-fluid rounded img-thumbnail"
-                        />{' '}
-                        <Link to={`/product/${item.slug}`}>{item.name}</Link>
+                      <Col md={4} className="d-flex flex-column">
+                        <Link to={`/product/${item.slug}`}>
+                          <Image
+                            src={item.image}
+                            alt={item.name}
+                            fluid
+                            className="rounded-3 img-thumbnail"
+                          />
+                          <div>{item.name}</div>
+                        </Link>
                       </Col>
-                      <Col md={3}>
-                        <span>{item.quantity}</span>
+
+                      <Col md={4}>
+                        <span>{item.variant?.name}</span>
                       </Col>
-                      <Col md={3}>{item.price} &euro;</Col>
+
+                      <Col md={2}>
+                        <span>x {item.quantity}</span>
+                      </Col>
+
+                      <Col md={2}>{item.price} &euro;</Col>
                     </Row>
                   </ListGroup.Item>
                 ))}
               </ListGroup>
               <Link to="/cart">
-                <i className="fa-solid fa-pen-to-square"></i> Modifier
+                <FontAwesomeIcon icon={faPenToSquare} /> Modifier
               </Link>
             </Card.Body>
           </Card>
         </Col>
         <Col md={4}>
-          <Card>
+          <Card className="bg-light shadow">
             <Card.Body>
-              <Card.Title>Montant de la commande</Card.Title>
+              <Card.Title className="text-center mb-2">
+                Montant de la commande
+              </Card.Title>
               <ListGroup variant="flush">
                 <ListGroup.Item>
                   <Row>
@@ -130,13 +219,12 @@ export default function PlaceOrderPage() {
                 <ListGroup.Item>
                   <Row>
                     <Col>Livraison</Col>
-                    <Col>{cart.shippingPrice.toFixed(2)} &euro;</Col>
-                  </Row>
-                </ListGroup.Item>
-                <ListGroup.Item>
-                  <Row>
-                    <Col>Taxes</Col>
-                    <Col>{cart.taxPrice.toFixed(2)} &euro;</Col>
+
+                    <Col>
+                      {cart.shippingPrice === 0
+                        ? 'Offerte'
+                        : cart.shippingPrice.toFixed(2) + ' €'}
+                    </Col>
                   </Row>
                 </ListGroup.Item>
                 <ListGroup.Item>
@@ -149,6 +237,8 @@ export default function PlaceOrderPage() {
                   <div className="d-grid">
                     <Button
                       type="button"
+                      className="bg1"
+                      variant="outline-light"
                       onClick={placeOrderHandler}
                       disabled={cart.cartItems.length === 0}
                     >
@@ -162,6 +252,6 @@ export default function PlaceOrderPage() {
           </Card>
         </Col>
       </Row>
-    </div>
+    </Container>
   );
 }
