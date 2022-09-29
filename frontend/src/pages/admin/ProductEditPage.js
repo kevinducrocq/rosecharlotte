@@ -89,7 +89,7 @@ export default function ProductEditPage() {
   const [subCategoryInputIsVisible, setSubCategoryInputIsVisible] =
     useState(false);
   const [variantIsVisible, setVariantIsVisible] = useState(false);
-  
+
   const [customizableIsVisible, setCustomizableIsVisible] = useState(false);
 
   const [variants, setVariants] = useState([]);
@@ -127,10 +127,11 @@ export default function ProductEditPage() {
         setSoldeIsVisible(data.soldePrice);
 
         setCustomizable(data.customizable);
-        setCustomizableIsVisible(data.customizableIsVisible);
-        setAvailableFils(data.availableFils);
-        setAvailableTissus(data.availableTissus);
-        setAvailablePatches(data.availablePatches);
+        setCustomizableIsVisible(
+          data.fils.length > 0 ||
+            data.tissus.length > 0 ||
+            data.patches.length > 0
+        );
         setFils(data.fils);
         setTissus(data.tissus);
         setPatches(data.patches);
@@ -378,9 +379,12 @@ export default function ProductEditPage() {
                       checked={customizableIsVisible}
                       id="custom-switch"
                       label="Ce produit est personnalisable"
-                      onChange={(e) => {
-                        e ? setCustomizable(true) : setCustomizable(false);
+                      onChange={() => {
+                        setCustomizable(!customizable);
                         setCustomizableIsVisible(!customizableIsVisible);
+                        if (!customizableIsVisible) {
+                          setFils([]) || setTissus([]) || setPatches([]);
+                        }
                       }}
                     />
                   </Col>
@@ -419,6 +423,7 @@ export default function ProductEditPage() {
                           {availableFils.map((fil) => {
                             return (
                               <Form.Check
+                                checked={fils.indexOf(fil._id) > -1}
                                 key={fil._id}
                                 selected={fils.indexOf(fil._id) > -1}
                                 type="checkBox"
@@ -435,12 +440,14 @@ export default function ProductEditPage() {
                             );
                           })}
                         </Col>
+
                         <Col className="bg-light p-3 rounded-3 mx-2">
                           <h6>Cocher les tissus disponibles</h6>
                           {availableTissus.map((tissu) => {
                             return (
                               <Form.Check
                                 key={tissu._id}
+                                checked={tissus.indexOf(tissu._id) > -1}
                                 selected={tissus.indexOf(tissu._id) > -1}
                                 type="checkBox"
                                 label={tissu.name}
@@ -462,6 +469,7 @@ export default function ProductEditPage() {
                             return (
                               <Form.Check
                                 key={patch._id}
+                                checked={patches.indexOf(patch._id) > -1}
                                 selected={patches.indexOf(patch._id) > -1}
                                 type="checkBox"
                                 label={patch.name}

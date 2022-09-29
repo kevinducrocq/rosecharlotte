@@ -57,12 +57,9 @@ function ProductScreen() {
   const [selectedImage, setSelectedImage] = useState('');
   const [customization, setCustomization] = useState('');
   const [variantId, setVariant] = useState('');
-  const [filsId, setFils] = useState('');
-
-  // const getNames = (list) =>
-  //   list.map((item) => {
-  //     return item.name;
-  //   });
+  const [fil, setFil] = useState('');
+  const [tissu, setTissu] = useState('');
+  const [patch, setPatch] = useState('');
 
   const navigate = useNavigate();
   const params = useParams();
@@ -290,13 +287,13 @@ function ProductScreen() {
               <>
                 <ListGroup.Item>
                   <Form>
+                    <Form.Label>Choisissez le modèle</Form.Label>
                     <Form.Select
-                      className="my-3"
+                      className="mb-3"
                       onChange={(e) => {
                         setVariant(e.target.value);
                       }}
                     >
-                      <option>Choisissez...</option>
                       {product.variants.map((variant) => {
                         return (
                           <option key={variant._id} value={variant._id}>
@@ -308,16 +305,70 @@ function ProductScreen() {
                         );
                       })}
                     </Form.Select>
-                    {product.customizable && (
-                      <Form.Group className="mb-3">
-                        <Form.Control
-                          value={customization}
-                          placeholder="Saisissez votre texte personnalisation"
-                          onChange={(e) => {
-                            setCustomization(e.target.value);
-                          }}
-                        ></Form.Control>
-                      </Form.Group>
+
+                    {!product.customizable && (
+                      <>
+                        <Form.Group className="my-3">
+                          <Form.Label>Choisissez un type de fil</Form.Label>
+                          <Form.Select
+                            className="mb-3"
+                            onChange={(e) => {
+                              setFil(e.target.value);
+                            }}
+                          >
+                            {product.fils.map((fil) => {
+                              return (
+                                <option key={fil._id} value={fil._id}>
+                                  {fil.name}
+                                </option>
+                              );
+                            })}
+                          </Form.Select>
+                        </Form.Group>
+                        <Form.Group className="my-3">
+                          <Form.Label>Choisissez un type de tissu</Form.Label>
+                          <Form.Select
+                            className="mb-3"
+                            onChange={(e) => {
+                              setTissu(e.target.value);
+                            }}
+                          >
+                            {product.tissus.map((tissu) => {
+                              return (
+                                <option key={tissu._id} value={tissu._id}>
+                                  {tissu.name}
+                                </option>
+                              );
+                            })}
+                          </Form.Select>
+                        </Form.Group>
+                        <Form.Group className="my-3">
+                          <Form.Label>Choisissez un patch</Form.Label>
+                          <Form.Select
+                            onChange={(e) => {
+                              setPatch(e.target.value);
+                            }}
+                          >
+                            {product.patches.map((patch) => {
+                              return (
+                                <option key={patch._id} value={patch._id}>
+                                  {patch.name}
+                                </option>
+                              );
+                            })}
+                          </Form.Select>
+                        </Form.Group>
+                        <Form.Group className="my-3">
+                          <Form.Label>Texte à broder</Form.Label>
+                          <Form.Control
+                            value={customization}
+                            placeholder="Charlotte, Rose..."
+                            onChange={(e) => {
+                              setCustomization(e.target.value);
+                            }}
+                          ></Form.Control>
+                        </Form.Group>
+                      </>
                     )}
                   </Form>
                 </ListGroup.Item>

@@ -307,7 +307,7 @@ export default function ProductAddPage() {
                         }
                       }}
                     />
-                    
+
                     <Form.Check
                       type="checkBox"
                       id="custom-switch"
