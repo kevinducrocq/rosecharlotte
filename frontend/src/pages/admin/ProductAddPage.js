@@ -79,9 +79,14 @@ export default function ProductAddPage() {
   const [customizableIsVisible, setCustomizableIsVisible] = useState(false);
   const [variants, setVariants] = useState([]);
   const [customizable, setCustomizable] = useState(false);
-  const [fils, setFils] = useState('');
-  const [tissus, setTissus] = useState('');
-  const [patches, setPatches] = useState('');
+
+  const [fils, setFils] = useState([]);
+  const [tissus, setTissus] = useState([]);
+  const [patches, setPatches] = useState([]);
+
+  const [availableFils, setAvailableFils] = useState([]);
+  const [availableTissus, setAvailableTissus] = useState([]);
+  const [availablePatches, setAvailablePatches] = useState([]);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -101,7 +106,7 @@ export default function ProductAddPage() {
         const { data } = await axios.get('/api/fils', {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         });
-        setFils(data);
+        setAvailableFils(data);
       } catch (err) {
         toast.error(getError(err));
       }
@@ -115,7 +120,7 @@ export default function ProductAddPage() {
         const { data } = await axios.get('/api/tissus', {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         });
-        setTissus(data);
+        setAvailableTissus(data);
       } catch (err) {
         toast.error(getError(err));
       }
@@ -129,7 +134,7 @@ export default function ProductAddPage() {
         const { data } = await axios.get('/api/patches', {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         });
-        setPatches(data);
+        setAvailablePatches(data);
       } catch (err) {
         toast.error(getError(err));
       }
@@ -196,6 +201,9 @@ export default function ProductAddPage() {
           description,
           variants,
           customizable,
+          fils,
+          tissus,
+          patches,
         },
         {
           headers: { Authorization: `Bearer ${userInfo.token}` },
@@ -299,6 +307,7 @@ export default function ProductAddPage() {
                         }
                       }}
                     />
+                    
                     <Form.Check
                       type="checkBox"
                       id="custom-switch"
@@ -309,78 +318,99 @@ export default function ProductAddPage() {
                       }}
                     />
                   </Col>
-                  <div>
-                    {variantIsVisible && (
-                      <>
-                        {variants.map((variant, key) => {
-                          return (
-                            <ProductVariants
-                              variant={variant}
-                              onChange={(v) => {
-                                variants[key] = v;
-                                setVariants(variants);
-                              }}
-                              key={key}
-                              removeVariant={removeVariant}
-                            />
-                          );
-                        })}
-                        <Button
-                          onClick={() => {
-                            addNewVariants();
-                          }}
-                        >
-                          <FontAwesomeIcon icon={faPlus} />
-                        </Button>
-                      </>
-                    )}
-                  </div>
+                  {variantIsVisible && (
+                    <div className="bg-white my-3 p-3 rounded-3 border">
+                      {variants.map((variant, key) => {
+                        return (
+                          <ProductVariants
+                            variant={variant}
+                            onChange={(v) => {
+                              variants[key] = v;
+                              setVariants(variants);
+                            }}
+                            key={key}
+                            removeVariant={removeVariant}
+                          />
+                        );
+                      })}
+                      <Button
+                        onClick={() => {
+                          addNewVariants();
+                        }}
+                      >
+                        <FontAwesomeIcon icon={faPlus} />
+                      </Button>
+                    </div>
+                  )}
+
                   {customizableIsVisible && (
-                    <>
-                      <Row className="my-5">
-                        <hr />
-                        <Col>
+                    <div className="my-3 p-4 bg-white rounded-3 border">
+                      <Row>
+                        <Col className="bg-light p-3 rounded-3">
                           <h6>Cocher les fils disponibles</h6>
-                          {fils.map((fil) => {
+                          {availableFils.map((fil) => {
                             return (
                               <Form.Check
                                 key={fil._id}
+                                selected={fils.indexOf(fil._id) > -1}
                                 type="checkBox"
                                 label={fil.name}
-                                onChange={() => {}}
+                                onChange={(e) => {
+                                  if (e.currentTarget.checked) {
+                                    setFils([...fils, fil._id]);
+                                  } else {
+                                    fils.splice(fils.indexOf(fil), 1);
+                                    setFils([...fils]);
+                                  }
+                                }}
                               />
                             );
                           })}
                         </Col>
-                        <Col>
+                        <Col className="bg-light p-3 rounded-3 mx-2">
                           <h6>Cocher les tissus disponibles</h6>
-                          {tissus.map((tissu) => {
+                          {availableTissus.map((tissu) => {
                             return (
                               <Form.Check
                                 key={tissu._id}
+                                selected={tissus.indexOf(tissu._id) > -1}
                                 type="checkBox"
                                 label={tissu.name}
-                                onChange={() => {}}
+                                onChange={(e) => {
+                                  if (e.currentTarget.checked) {
+                                    setTissus([...tissus, tissu._id]);
+                                  } else {
+                                    tissus.splice(tissus.indexOf(tissu), 1);
+                                    setTissus([...tissus]);
+                                  }
+                                }}
                               />
                             );
                           })}
                         </Col>
-                        <Col>
+                        <Col className="bg-light p-3 rounded-3">
                           <h6>Cocher les patchs disponibles</h6>
-                          {patches.map((patch) => {
+                          {availablePatches.map((patch) => {
                             return (
                               <Form.Check
                                 key={patch._id}
+                                selected={patches.indexOf(patch._id) > -1}
                                 type="checkBox"
                                 label={patch.name}
-                                onChange={() => {}}
+                                onChange={(e) => {
+                                  if (e.currentTarget.checked) {
+                                    setPatches([...patches, patch._id]);
+                                  } else {
+                                    patches.splice(patches.indexOf(patch), 1);
+                                    setTissus([...patches]);
+                                  }
+                                }}
                               />
                             );
                           })}
                         </Col>
-                        <hr />
                       </Row>
-                    </>
+                    </div>
                   )}
                 </Row>
                 {!variantIsVisible && (

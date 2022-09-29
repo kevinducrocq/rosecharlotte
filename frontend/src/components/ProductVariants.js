@@ -77,7 +77,6 @@ function ProductVariants(props) {
           </Col>
         </Row>
       </div>
-      <hr />
     </>
   );
 }

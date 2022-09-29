@@ -58,6 +58,9 @@ productRouter.post(
       isVisible: true,
       variants: req.body.variants,
       customizable: req.body.customizable,
+      fils: req.body.fils,
+      tissus: req.body.tissus,
+      patches: req.body.patches,
     });
 
     try {
@@ -84,6 +87,9 @@ productRouter.post(
         isVisible: true,
         variant: product.variants,
         customizable: product.customizable,
+        fils: product.fils,
+        tissus: product.tissus,
+        patches: product.patches,
       });
     } catch (err) {
       console.log(err);
@@ -118,6 +124,9 @@ productRouter.put(
       product.isVisible = req.body.isVisible || product.isVisible;
       product.variants = req.body.variants || product.variants;
       product.customizable = req.body.customizable;
+      product.fils = req.body.fils || product.fils;
+      product.tissus = req.body.tissus || product.tissus;
+      product.patches = req.body.patches || product.patches;
 
       const updatedProduct = await product.save();
       res.send({
@@ -139,6 +148,9 @@ productRouter.put(
         isVisible: updatedProduct.isVisible,
         variants: updatedProduct.variants,
         customizable: updatedProduct.customizable,
+        fils: updatedProduct.fils,
+        tissus: updatedProduct.tissus,
+        patches: updatedProduct.patches,
       });
     } else {
       res.status(404).send({ message: 'Produit non trouvé' });

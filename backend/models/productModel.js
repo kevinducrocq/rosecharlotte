@@ -41,9 +41,9 @@ const productSchema = new mongoose.Schema(
     isVisible: { type: Boolean, required: true, default: true },
     variants: [variantSchema],
     customizable: { type: Boolean, default: false },
-    fils: [
-      { type: mongoose.Schema.Types.ObjectId, ref: 'Fil', required: true },
-    ],
+    fils: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Fil' }],
+    tissus: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Tissu' }],
+    patches: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Patch' }],
   },
   {
     timestamps: true,

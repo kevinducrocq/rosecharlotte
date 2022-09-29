@@ -89,8 +89,19 @@ export default function ProductEditPage() {
   const [subCategoryInputIsVisible, setSubCategoryInputIsVisible] =
     useState(false);
   const [variantIsVisible, setVariantIsVisible] = useState(false);
+  
+  const [customizableIsVisible, setCustomizableIsVisible] = useState(false);
+
   const [variants, setVariants] = useState([]);
   const [customizable, setCustomizable] = useState(false);
+
+  const [fils, setFils] = useState([]);
+  const [tissus, setTissus] = useState([]);
+  const [patches, setPatches] = useState([]);
+
+  const [availableFils, setAvailableFils] = useState([]);
+  const [availableTissus, setAvailableTissus] = useState([]);
+  const [availablePatches, setAvailablePatches] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -111,10 +122,19 @@ export default function ProductEditPage() {
         setCountInStock(data.countInStock);
         setDescription(data.description);
         setVariants(data.variants);
-        setCustomizable(data.customizable);
         setVariantIsVisible(data.variants.length);
         setPromoIsVisible(data.promoPrice);
         setSoldeIsVisible(data.soldePrice);
+
+        setCustomizable(data.customizable);
+        setCustomizableIsVisible(data.customizableIsVisible);
+        setAvailableFils(data.availableFils);
+        setAvailableTissus(data.availableTissus);
+        setAvailablePatches(data.availablePatches);
+        setFils(data.fils);
+        setTissus(data.tissus);
+        setPatches(data.patches);
+
         dispatch({ type: 'FETCH_SUCCESS' });
       } catch (err) {
         dispatch({
@@ -135,6 +155,48 @@ export default function ProductEditPage() {
     };
     fetchCategories();
   }, [productId]);
+
+  useEffect(() => {
+    const fetchFils = async () => {
+      try {
+        const { data } = await axios.get('/api/fils', {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        });
+        setAvailableFils(data);
+      } catch (err) {
+        toast.error(getError(err));
+      }
+    };
+    fetchFils({});
+  }, [userInfo.token]);
+
+  useEffect(() => {
+    const fetchTissus = async () => {
+      try {
+        const { data } = await axios.get('/api/tissus', {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        });
+        setAvailableTissus(data);
+      } catch (err) {
+        toast.error(getError(err));
+      }
+    };
+    fetchTissus({});
+  }, [userInfo.token]);
+
+  useEffect(() => {
+    const fetchPatches = async () => {
+      try {
+        const { data } = await axios.get('/api/patches', {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        });
+        setAvailablePatches(data);
+      } catch (err) {
+        toast.error(getError(err));
+      }
+    };
+    fetchPatches({});
+  }, [userInfo.token]);
 
   useEffect(() => {
     setSubCategory(null);
@@ -198,6 +260,9 @@ export default function ProductEditPage() {
           description,
           variants,
           customizable,
+          fils,
+          tissus,
+          patches,
         },
         {
           headers: { Authorization: `Bearer ${userInfo.token}` },
@@ -295,15 +360,6 @@ export default function ProductEditPage() {
                   <Col md={4}>
                     <Form.Check
                       type="checkBox"
-                      checked={customizable}
-                      id="custom-switch"
-                      label="Ce produit est personnalisable"
-                      onChange={() => {
-                        setCustomizable(!customizable);
-                      }}
-                    />
-                    <Form.Check
-                      type="checkBox"
                       id="custom-switch2"
                       label="Ce produit a des variantes"
                       checked={variantIsVisible}
@@ -316,36 +372,114 @@ export default function ProductEditPage() {
                         }
                       }}
                     />
+
+                    <Form.Check
+                      type="checkBox"
+                      checked={customizableIsVisible}
+                      id="custom-switch"
+                      label="Ce produit est personnalisable"
+                      onChange={(e) => {
+                        e ? setCustomizable(true) : setCustomizable(false);
+                        setCustomizableIsVisible(!customizableIsVisible);
+                      }}
+                    />
                   </Col>
-                  <div>
-                    {!!variantIsVisible && (
-                      <>
-                        <hr />
-                        {variants.map((variant, key) => {
-                          return (
-                            <ProductVariants
-                              variant={variant}
-                              onChange={(v) => {
-                                variants[key] = v;
-                                setVariants(variants);
-                              }}
-                              key={key}
-                              index={key}
-                              removeVariant={removeVariant}
-                            />
-                          );
-                        })}
-                        <Button
-                          onClick={() => {
-                            addNewVariants();
-                          }}
-                        >
-                          <FontAwesomeIcon icon={faPlus} />
-                        </Button>
-                        <hr />
-                      </>
-                    )}
-                  </div>
+
+                  {!!variantIsVisible && (
+                    <div className="bg-white my-3 p-3 rounded-3 border">
+                      {variants.map((variant, key) => {
+                        return (
+                          <ProductVariants
+                            variant={variant}
+                            onChange={(v) => {
+                              variants[key] = v;
+                              setVariants(variants);
+                            }}
+                            key={key}
+                            index={key}
+                            removeVariant={removeVariant}
+                          />
+                        );
+                      })}
+                      <Button
+                        onClick={() => {
+                          addNewVariants();
+                        }}
+                      >
+                        <FontAwesomeIcon icon={faPlus} />
+                      </Button>
+                    </div>
+                  )}
+
+                  {!!customizableIsVisible && (
+                    <div className="my-3 p-4 bg-white rounded-3 border">
+                      <Row>
+                        <Col className="bg-light p-3 rounded-3">
+                          <h6>Cocher les fils disponibles</h6>
+                          {availableFils.map((fil) => {
+                            return (
+                              <Form.Check
+                                key={fil._id}
+                                selected={fils.indexOf(fil._id) > -1}
+                                type="checkBox"
+                                label={fil.name}
+                                onChange={(e) => {
+                                  if (e.currentTarget.checked) {
+                                    setFils([...fils, fil._id]);
+                                  } else {
+                                    fils.splice(fils.indexOf(fil), 1);
+                                    setFils([...fils]);
+                                  }
+                                }}
+                              />
+                            );
+                          })}
+                        </Col>
+                        <Col className="bg-light p-3 rounded-3 mx-2">
+                          <h6>Cocher les tissus disponibles</h6>
+                          {availableTissus.map((tissu) => {
+                            return (
+                              <Form.Check
+                                key={tissu._id}
+                                selected={tissus.indexOf(tissu._id) > -1}
+                                type="checkBox"
+                                label={tissu.name}
+                                onChange={(e) => {
+                                  if (e.currentTarget.checked) {
+                                    setTissus([...tissus, tissu._id]);
+                                  } else {
+                                    tissus.splice(tissus.indexOf(tissu), 1);
+                                    setTissus([...tissus]);
+                                  }
+                                }}
+                              />
+                            );
+                          })}
+                        </Col>
+                        <Col className="bg-light p-3 rounded-3">
+                          <h6>Cocher les patchs disponibles</h6>
+                          {availablePatches.map((patch) => {
+                            return (
+                              <Form.Check
+                                key={patch._id}
+                                selected={patches.indexOf(patch._id) > -1}
+                                type="checkBox"
+                                label={patch.name}
+                                onChange={(e) => {
+                                  if (e.currentTarget.checked) {
+                                    setPatches([...patches, patch._id]);
+                                  } else {
+                                    patches.splice(patches.indexOf(patch), 1);
+                                    setTissus([...patches]);
+                                  }
+                                }}
+                              />
+                            );
+                          })}
+                        </Col>
+                      </Row>
+                    </div>
+                  )}
                 </Row>
                 {!variantIsVisible && (
                   <Row>

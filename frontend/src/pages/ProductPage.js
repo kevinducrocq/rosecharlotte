@@ -57,6 +57,7 @@ function ProductScreen() {
   const [selectedImage, setSelectedImage] = useState('');
   const [customization, setCustomization] = useState('');
   const [variantId, setVariant] = useState('');
+  const [filsId, setFils] = useState('');
 
   // const getNames = (list) =>
   //   list.map((item) => {
