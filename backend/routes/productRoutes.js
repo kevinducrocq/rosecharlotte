@@ -4,6 +4,9 @@ import transporter, { sender } from '../email.js';
 import { reviewEmail } from '../emails/ReviewEmail.js';
 import Product from '../models/productModel.js';
 import { isAuth, isAdmin } from '../utils.js';
+import Fil from '../models/filModel.js';
+import Tissu from '../models/tissuModel.js';
+import Patch from '../models/patchModel.js';
 
 const productRouter = express.Router();
 
@@ -472,7 +475,13 @@ productRouter.delete(
 // AFFICHER LE PRODUIT PAR SON SLUG (CLIENT)
 productRouter.get('/slug/:slug', async (req, res) => {
   const product = await Product.findOne({ slug: req.params.slug });
+  const fils = await Fil.find().in('_id', product.fils);
+  const tissus = await Tissu.find().in('_id', product.tissus);
+  const patches = await Patch.find().in('_id', product.patches);
   if (product && product.isVisible === true) {
+    product['fils'] = fils;
+    product['tissus'] = tissus;
+    product['patches'] = patches;
     res.send(product);
   } else {
     res.status(404).send({ message: 'Produit non trouvé' });

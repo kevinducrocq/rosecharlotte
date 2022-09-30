@@ -44,7 +44,7 @@ orderRouter.get(
   isAdmin,
   expressAsyncHandler(async (req, res) => {
     const orders = await Order.aggregate([{ $sort: { createdAt: -1 } }]);
-    await User.populate(orders, 'user');
+    await User.populate(orders, 'user fil patch tissu');
     res.send(orders);
   })
 );
@@ -66,6 +66,9 @@ orderRouter.post(
       shippingPrice: req.body.shippingPrice,
       totalPrice: req.body.totalPrice,
       user: req.user._id,
+      fil: req.body.fil,
+      tissu: req.body.tissu,
+      patch: req.body.patch,
     });
 
     const order = await newOrder.save();

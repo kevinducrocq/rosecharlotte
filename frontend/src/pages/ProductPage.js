@@ -27,6 +27,7 @@ import { dateFr, getError } from '../utils';
 import { Store } from '../Store';
 import { toast } from 'react-toastify';
 import { LinkContainer } from 'react-router-bootstrap';
+import OwlCarousel from 'react-owl-carousel';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -49,7 +50,7 @@ const reducer = (state, action) => {
   }
 };
 
-function ProductScreen() {
+function ProductPage() {
   let reviewsRef = useRef();
 
   const [rating, setRating] = useState(0);
@@ -57,7 +58,7 @@ function ProductScreen() {
   const [selectedImage, setSelectedImage] = useState('');
   const [customization, setCustomization] = useState('');
   const [variantId, setVariant] = useState('');
-  
+
   const [fil, setFil] = useState('');
   const [tissu, setTissu] = useState('');
   const [patch, setPatch] = useState('');
@@ -72,6 +73,31 @@ function ProductScreen() {
       loading: true,
       error: '',
     });
+
+  const options = {
+    loop: false,
+    margin: 10,
+    autoplay: true,
+    autoplayTimeout: 3000,
+    autoplayHoverPause: true,
+    responsive: {
+      0: {
+        items: 1,
+      },
+      400: {
+        items: 1,
+      },
+      600: {
+        items: 2,
+      },
+      800: {
+        items: 3,
+      },
+      1000: {
+        items: 4,
+      },
+    },
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -118,6 +144,9 @@ function ProductScreen() {
             return v._id === variantId;
           })[0],
           customization,
+          fil,
+          tissu,
+          patch,
         },
       });
     } else {
@@ -132,6 +161,9 @@ function ProductScreen() {
           quantity,
           variant: null,
           customization,
+          fil,
+          tissu,
+          patch,
         },
       });
     }
@@ -170,6 +202,7 @@ function ProductScreen() {
       dispatch({ type: 'CREATE_FAIL' });
     }
   };
+
   return loading ? (
     <LoadingBox />
   ) : error ? (
@@ -284,6 +317,7 @@ function ProductScreen() {
                 <p>{product.description}</p>
               </div>
             </ListGroup.Item>
+
             {product.variants.length >= 1 && (
               <>
                 <ListGroup.Item>
@@ -295,6 +329,7 @@ function ProductScreen() {
                         setVariant(e.target.value);
                       }}
                     >
+                      <option disabled>Choisissez...</option>
                       {product.variants.map((variant) => {
                         return (
                           <option key={variant._id} value={variant._id}>
@@ -306,71 +341,78 @@ function ProductScreen() {
                         );
                       })}
                     </Form.Select>
+                  </Form>
+                </ListGroup.Item>
+              </>
+            )}
 
-                    {product.customizable && (
-                      <>
-                        <Form.Group className="my-3">
-                          <Form.Label>Choisissez un type de fil</Form.Label>
-                          <Form.Select
-                            className="mb-3"
-                            onChange={(e) => {
-                              setFil(e.target.value);
-                            }}
-                          >
-                            {product.fils.map((fil) => {
-                              return (
-                                <option key={fil._id} value={fil._id}>
-                                  {fil.name}
-                                </option>
-                              );
-                            })}
-                          </Form.Select>
-                        </Form.Group>
-                        <Form.Group className="my-3">
-                          <Form.Label>Choisissez un type de tissu</Form.Label>
-                          <Form.Select
-                            className="mb-3"
-                            onChange={(e) => {
-                              setTissu(e.target.value);
-                            }}
-                          >
-                            {product.tissus.map((tissu) => {
-                              return (
-                                <option key={tissu._id} value={tissu._id}>
-                                  {tissu.name}
-                                </option>
-                              );
-                            })}
-                          </Form.Select>
-                        </Form.Group>
-                        <Form.Group className="my-3">
-                          <Form.Label>Choisissez un patch</Form.Label>
-                          <Form.Select
-                            onChange={(e) => {
-                              setPatch(e.target.value);
-                            }}
-                          >
-                            {product.patches.map((patch) => {
-                              return (
-                                <option key={patch._id} value={patch._id}>
-                                  {patch.name}
-                                </option>
-                              );
-                            })}
-                          </Form.Select>
-                        </Form.Group>
-                        <Form.Group className="my-3">
-                          <Form.Label>Texte à broder</Form.Label>
-                          <Form.Control
-                            value={customization}
-                            placeholder="Charlotte, Rose..."
-                            onChange={(e) => {
-                              setCustomization(e.target.value);
-                            }}
-                          ></Form.Control>
-                        </Form.Group>
-                      </>
-                    )}
+            {product.customizable && (
+              <>
+                <ListGroup.Item>
+                  <Form>
+                    <Form.Group className="my-3">
+                      <Form.Label>Choisissez un type de fil</Form.Label>
+                      <Form.Select
+                        className="mb-3"
+                        onChange={(e) => {
+                          setFil(e.target.value);
+                        }}
+                      >
+                        <option>Choisissez...</option>
+                        {product.fils.map((fil) => {
+                          return (
+                            <option key={fil._id} value={fil._id}>
+                              {fil.name}
+                            </option>
+                          );
+                        })}
+                      </Form.Select>
+                    </Form.Group>
+                    <Form.Group className="my-3">
+                      <Form.Label>Choisissez un type de tissu</Form.Label>
+                      <Form.Select
+                        className="mb-3"
+                        onChange={(e) => {
+                          setTissu(e.target.value);
+                        }}
+                      >
+                        <option>Choisissez...</option>
+                        {product.tissus.map((tissu) => {
+                          return (
+                            <option key={tissu._id} value={tissu._id}>
+                              {tissu.name}
+                            </option>
+                          );
+                        })}
+                      </Form.Select>
+                    </Form.Group>
+                    <Form.Group className="my-3">
+                      <Form.Label>Choisissez un patch</Form.Label>
+                      <Form.Select
+                        onChange={(e) => {
+                          setPatch(e.target.value);
+                        }}
+                      >
+                        <option>Choisissez...</option>
+                        {product.patches.map((patch) => {
+                          return (
+                            <option key={patch._id} value={patch._id}>
+                              {patch.name}
+                            </option>
+                          );
+                        })}
+                      </Form.Select>
+                    </Form.Group>
+                    <Form.Group className="my-3">
+                      <Form.Label>Texte à broder</Form.Label>
+                      <Form.Control
+                        value={customization}
+                        placeholder="Charlotte, Rose..."
+                        onChange={(e) => {
+                          setCustomization(e.target.value);
+                        }}
+                      ></Form.Control>
+                    </Form.Group>
                   </Form>
                 </ListGroup.Item>
               </>
@@ -466,26 +508,32 @@ function ProductScreen() {
                   </MessageBox>
                 )}
               </div>
-              {product.reviews.map((review) =>
-                review.status === false ? (
-                  <MessageBox bg2>
-                    Il n'y a pas encore d'avis sur ce produit
-                  </MessageBox>
-                ) : (
-                  <Col md={4}>
-                    <Card key={review._id}>
-                      <Card.Header>
-                        <strong>{review.name}</strong>
-                        <Rating rating={review.rating} caption=" "></Rating>
-                      </Card.Header>
-                      <Card.Body>
-                        <p>{dateFr(review.createdAt)}</p>
-                        <p>{review.comment}</p>
-                      </Card.Body>
-                    </Card>
-                  </Col>
-                )
-              )}
+              <Row>
+                {product.reviews.map((review) =>
+                  !review.status === false ? (
+                    <OwlCarousel
+                      className="slider-items owl-carousel"
+                      {...options}
+                      id="slider_promos"
+                    >
+                      <Card>
+                        <Card.Header>
+                          <strong>{review.name}</strong>
+                          <Rating rating={review.rating} caption=" "></Rating>
+                        </Card.Header>
+                        <Card.Body>
+                          <p>{dateFr(review.createdAt)}</p>
+                          <p>{review.comment}</p>
+                        </Card.Body>
+                      </Card>
+                    </OwlCarousel>
+                  ) : (
+                    <MessageBox bg2>
+                      Il n'y a pas encore d'avis sur ce produit
+                    </MessageBox>
+                  )
+                )}
+              </Row>
             </Row>
           </Col>
         </Row>
@@ -493,4 +541,4 @@ function ProductScreen() {
     </Container>
   );
 }
-export default ProductScreen;
+export default ProductPage;

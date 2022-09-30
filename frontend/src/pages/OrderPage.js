@@ -307,7 +307,42 @@ export default function OrderPage() {
                         </Link>
                       </Col>
                       <Col md={4}>
-                        <span>{item.variant?.name}</span>
+                        {item.variant ? (
+                          <div>
+                            <strong>Variant :</strong> {item.variant.name}
+                          </div>
+                        ) : (
+                          ''
+                        )}
+                        {item.fil ? (
+                          <div>
+                            <strong>Fil :</strong> {item.fil}
+                          </div>
+                        ) : (
+                          ''
+                        )}
+                        {item.tissu ? (
+                          <div>
+                            <strong>Tissu :</strong> {item.tissu}
+                          </div>
+                        ) : (
+                          ''
+                        )}
+                        {item.patch ? (
+                          <div>
+                            <strong>Patch :</strong> {item.patch}
+                          </div>
+                        ) : (
+                          ''
+                        )}
+                        {item.customization ? (
+                          <div>
+                            <strong>Texte : </strong>
+                            {item.customization}
+                          </div>
+                        ) : (
+                          ''
+                        )}
                       </Col>
 
                       <Col md={2}>

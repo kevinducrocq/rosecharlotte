@@ -34,7 +34,7 @@ function HomePage() {
     error: '',
   });
   const options = {
-    loop: true,
+    loop: false,
     margin: 10,
     autoplay: true,
     autoplayTimeout: 3000,

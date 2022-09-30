@@ -136,7 +136,7 @@ export default function PatchListPage() {
       <Row>
         <Col md={2}>
           <div className="d-none d-lg-block d-md-block">
-            <AdminMenu link8 />
+            <AdminMenu link9 />
           </div>
           <div className="d-lg-none d-md-none text-nowrap mb-3">
             <AdminCanvasMenu />

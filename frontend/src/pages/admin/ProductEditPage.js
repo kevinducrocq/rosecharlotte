@@ -90,8 +90,6 @@ export default function ProductEditPage() {
     useState(false);
   const [variantIsVisible, setVariantIsVisible] = useState(false);
 
-  const [customizableIsVisible, setCustomizableIsVisible] = useState(false);
-
   const [variants, setVariants] = useState([]);
   const [customizable, setCustomizable] = useState(false);
 
@@ -126,12 +124,13 @@ export default function ProductEditPage() {
         setPromoIsVisible(data.promoPrice);
         setSoldeIsVisible(data.soldePrice);
 
-        setCustomizable(data.customizable);
-        setCustomizableIsVisible(
-          data.fils.length > 0 ||
+        setCustomizable(
+          data.customizable ||
+            data.fils.length > 0 ||
             data.tissus.length > 0 ||
             data.patches.length > 0
         );
+
         setFils(data.fils);
         setTissus(data.tissus);
         setPatches(data.patches);
@@ -376,15 +375,16 @@ export default function ProductEditPage() {
 
                     <Form.Check
                       type="checkBox"
-                      checked={customizableIsVisible}
+                      checked={customizable}
                       id="custom-switch"
                       label="Ce produit est personnalisable"
                       onChange={() => {
-                        if (!customizableIsVisible) {
-                          setFils([]) || setTissus([]) || setPatches([]);
+                        if (customizable) {
+                          setFils([]);
+                          setTissus([]);
+                          setPatches([]);
                         }
                         setCustomizable(!customizable);
-                        setCustomizableIsVisible(!customizableIsVisible);
                       }}
                     />
                   </Col>
@@ -415,7 +415,7 @@ export default function ProductEditPage() {
                     </div>
                   )}
 
-                  {!!customizableIsVisible && (
+                  {!!customizable && (
                     <div className="my-3 p-4 bg-white rounded-3 border">
                       <Row>
                         <Col className="bg-light p-3 rounded-3">
