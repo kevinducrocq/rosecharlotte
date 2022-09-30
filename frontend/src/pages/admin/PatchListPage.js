@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useContext, useEffect, useReducer } from 'react';
+import React, { useContext, useEffect, useReducer, useState } from 'react';
 import { toast } from 'react-toastify';
 import Button from 'react-bootstrap/Button';
 import { Helmet } from 'react-helmet-async';
@@ -10,10 +10,9 @@ import LoadingBox from '../../components/LoadingBox';
 import MessageBox from '../../components/MessageBox';
 import { faTrash } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Col, Container, Row, Table } from 'react-bootstrap';
+import { Col, Container, Form, Row, Table } from 'react-bootstrap';
 import AdminMenu from '../../components/AdminMenu';
 import AdminCanvasMenu from '../../components/AdminCanvasMenu';
-import PatchAdd from '../../components/PatchAdd';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -27,18 +26,26 @@ const reducer = (state, action) => {
       };
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
+    case 'ADD_REQUEST':
+      return { ...state, loading: true, successAdd: false };
+    case 'ADD_SUCCESS':
+      return { ...state, loading: false, successAdd: true };
+    case 'ADD_FAIL':
+      return { ...state, loading: false };
+    case 'ADD_RESET':
+      return { ...state, loading: false, successAdd: false };
     case 'DELETE_REQUEST':
-      return { ...state, loadingDelete: true, successDelete: false };
+      return { ...state, loading: true, successDelete: false };
     case 'DELETE_SUCCESS':
       return {
         ...state,
-        loadingDelete: false,
+        loading: false,
         successDelete: true,
       };
     case 'DELETE_FAIL':
-      return { ...state, loadingDelete: false };
+      return { ...state, loading: false };
     case 'DELETE_RESET':
-      return { ...state, loadingDelete: false, successDelete: false };
+      return { ...state, loading: false, successDelete: false };
     default:
       return state;
   }
@@ -46,7 +53,7 @@ const reducer = (state, action) => {
 export default function PatchListPage() {
   const navigate = useNavigate();
 
-  const [{ loading, error, patches, loadingDelete, successDelete }, dispatch] =
+  const [{ loading, error, patches, successDelete, successAdd }, dispatch] =
     useReducer(reducer, {
       loading: true,
       error: '',
@@ -54,6 +61,8 @@ export default function PatchListPage() {
 
   const { state } = useContext(Store);
   const { userInfo } = state;
+
+  const [name, setName] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -73,10 +82,36 @@ export default function PatchListPage() {
     };
     if (successDelete) {
       dispatch({ type: 'DELETE_RESET' });
+    }
+    if (successAdd) {
+      dispatch({ type: 'ADD_RESET' });
     } else {
       fetchData();
     }
-  }, [userInfo, successDelete]);
+  }, [userInfo, successDelete, successAdd]);
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    try {
+      dispatch({ type: 'ADD_REQUEST' });
+      await axios.post(
+        `/api/patches/add`,
+        {
+          name,
+        },
+        {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+      dispatch({ type: 'ADD_SUCCESS' });
+      setName('');
+      toast.success('Patch ajouté');
+      navigate('/admin/patches');
+    } catch (err) {
+      dispatch({ type: 'ADD_FAIL' });
+      toast.error(getError(err));
+    }
+  };
 
   const deleteHandler = async (patch) => {
     try {
@@ -96,12 +131,12 @@ export default function PatchListPage() {
   return (
     <Container className="my-5">
       <Helmet>
-        <title>Liste des Patchs</title>
+        <title>Liste des patchs</title>
       </Helmet>
       <Row>
         <Col md={2}>
           <div className="d-none d-lg-block d-md-block">
-            <AdminMenu link9 />
+            <AdminMenu link8 />
           </div>
           <div className="d-lg-none d-md-none text-nowrap mb-3">
             <AdminCanvasMenu />
@@ -114,12 +149,29 @@ export default function PatchListPage() {
               <h1>Patchs</h1>
             </Col>
             <Col md={8}>
-              <PatchAdd />
+              <Form onSubmit={submitHandler}>
+                <Row>
+                  <Col md={8}>
+                    <Form.Group controlId="name">
+                      <Form.Control
+                        placeholder="Nom"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        required
+                      />
+                    </Form.Group>
+                  </Col>
+                  <Col md={4}>
+                    <div className="mb-3">
+                      <Button type="submit">Ajouter</Button>
+                    </div>
+                  </Col>
+                </Row>
+              </Form>
             </Col>
           </Row>
 
           <hr />
-          {loadingDelete && <LoadingBox></LoadingBox>}
           {loading ? (
             <LoadingBox></LoadingBox>
           ) : error ? (

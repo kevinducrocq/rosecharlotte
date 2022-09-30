@@ -34,7 +34,6 @@ import MentionsLegalesPage from './pages/MentionsLegalesPage';
 import ServiceClientPage from './pages/ServiceClientPage';
 import PromoPage from './pages/PromoPage';
 import SoldePage from './pages/SoldesPage';
-import FilAddPage from './components/FilAdd';
 import FilListPage from './pages/admin/FilListPage';
 import TissuListPage from './pages/admin/TissuListPage';
 import PatchListPage from './pages/admin/PatchListPage';
