@@ -17,14 +17,12 @@ import LoadingBox from '../../components/LoadingBox';
 import MessageBox from '../../components/MessageBox';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-  faCheck,
   faEye,
   faMoon,
   faPenToSquare,
   faPlus,
   faSun,
   faTrash,
-  faXmark,
 } from '@fortawesome/pro-solid-svg-icons';
 import AdminMenu from '../../components/AdminMenu';
 
@@ -150,7 +148,7 @@ export default function ProductListScreen() {
           language: {
             url: 'https://cdn.datatables.net/plug-ins/1.12.1/i18n/fr-FR.json',
           },
-          order: [[6, 'desc']],
+          order: [[5, 'desc']],
         });
 
         dispatch({ type: 'FETCH_SUCCESS', payload: data, table });
@@ -263,7 +261,6 @@ export default function ProductListScreen() {
                     <th>Catégorie</th>
                     <th>Sous-catégorie</th>
                     <th>Stock</th>
-                    <th>Variantes</th>
                     <th>Prix</th>
                     <th>Action</th>
                   </tr>
@@ -318,13 +315,7 @@ export default function ProductListScreen() {
                         ) : (
                           <td>{product.countInStock}</td>
                         )}
-                        <td>
-                          {product.variants.length ? (
-                            <FontAwesomeIcon icon={faCheck} />
-                          ) : (
-                            <FontAwesomeIcon icon={faXmark} />
-                          )}
-                        </td>
+
                         <td>{product.price} &euro;</td>
                         <td className="text-nowrap">
                           <Button

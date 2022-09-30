@@ -168,7 +168,7 @@ export default function ProductEditPage() {
         toast.error(getError(err));
       }
     };
-    fetchFils({});
+    fetchFils();
   }, [userInfo.token]);
 
   useEffect(() => {
@@ -182,7 +182,7 @@ export default function ProductEditPage() {
         toast.error(getError(err));
       }
     };
-    fetchTissus({});
+    fetchTissus();
   }, [userInfo.token]);
 
   useEffect(() => {
@@ -196,7 +196,7 @@ export default function ProductEditPage() {
         toast.error(getError(err));
       }
     };
-    fetchPatches({});
+    fetchPatches();
   }, [userInfo.token]);
 
   useEffect(() => {
@@ -380,11 +380,11 @@ export default function ProductEditPage() {
                       id="custom-switch"
                       label="Ce produit est personnalisable"
                       onChange={() => {
-                        setCustomizable(!customizable);
-                        setCustomizableIsVisible(!customizableIsVisible);
                         if (!customizableIsVisible) {
                           setFils([]) || setTissus([]) || setPatches([]);
                         }
+                        setCustomizable(!customizable);
+                        setCustomizableIsVisible(!customizableIsVisible);
                       }}
                     />
                   </Col>

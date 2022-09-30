@@ -260,14 +260,14 @@ LOGO
 */
 
 .btrr-lg {
-  border-top-right-radius: 110px;
+  border-top-right-radius: 40px;
 }
 .btlr-lg {
-  border-top-left-radius: 110px;
+  border-top-left-radius: 40px;
 }
 .bbr-lg {
-  border-bottom-left-radius: 200px;
-  border-bottom-right-radius: 200px;
+  border-bottom-left-radius: 120px;
+  border-bottom-right-radius: 120px;
 }
 
 /*RESPONSIVE*/

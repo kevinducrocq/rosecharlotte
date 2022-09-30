@@ -96,7 +96,7 @@ function HomePage() {
               <img
                 src="../logo-site.png"
                 alt="Rose Charlotte"
-                width={150}
+                width={250}
                 className="img-fluid mb-3 mt-2"
               />
             </div>

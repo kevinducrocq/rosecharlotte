@@ -57,6 +57,7 @@ function ProductScreen() {
   const [selectedImage, setSelectedImage] = useState('');
   const [customization, setCustomization] = useState('');
   const [variantId, setVariant] = useState('');
+  
   const [fil, setFil] = useState('');
   const [tissu, setTissu] = useState('');
   const [patch, setPatch] = useState('');
@@ -306,7 +307,7 @@ function ProductScreen() {
                       })}
                     </Form.Select>
 
-                    {!product.customizable && (
+                    {product.customizable && (
                       <>
                         <Form.Group className="my-3">
                           <Form.Label>Choisissez un type de fil</Form.Label>

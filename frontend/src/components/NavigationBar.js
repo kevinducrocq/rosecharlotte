@@ -120,7 +120,7 @@ function NavigationBar() {
         <Navbar variant="light" expand="lg" collapseOnSelect={true}>
           <Container>
             <LinkContainer to="/">
-              <Image src="../logo-site.png" width={60} />
+              <Image src="../logo-site.png" width={150} />
             </LinkContainer>
 
             <Nav>

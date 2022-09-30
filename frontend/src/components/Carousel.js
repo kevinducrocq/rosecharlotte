@@ -4,7 +4,6 @@ import Carousel from 'react-bootstrap/Carousel';
 
 function CarouselFade() {
   return (
-
     <Carousel fade wrap="true" className="carousel">
       <Carousel.Item className="carousel-item">
         <img
@@ -14,9 +13,7 @@ function CarouselFade() {
         />
         <Carousel.Caption>
           <div className="title mb-3">
-            <h2 className="text-center">
-              Bienvenue sur Rose Charlotte & Compagnie
-            </h2>
+            <h2 className="text-center">Bienvenue</h2>
           </div>
         </Carousel.Caption>
       </Carousel.Item>
@@ -28,9 +25,7 @@ function CarouselFade() {
         />
         <Carousel.Caption>
           <div className="title mb-3">
-            <h2 className="text-center">
-              Bienvenue sur Rose Charlotte & Compagnie
-            </h2>
+            <h2 className="text-center">Bienvenue</h2>
           </div>
         </Carousel.Caption>
       </Carousel.Item>
@@ -42,9 +37,7 @@ function CarouselFade() {
         />
         <Carousel.Caption>
           <div className="title mb-3">
-            <h2 className="text-center">
-              Bienvenue sur Rose Charlotte & Compagnie
-            </h2>
+            <h2 className="text-center">Bienvenue</h2>
           </div>
         </Carousel.Caption>
       </Carousel.Item>
