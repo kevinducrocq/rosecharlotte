@@ -108,7 +108,44 @@ export default function CartPage() {
                       </Link>
                     </Col>
 
-                    <Col>{item.variant?.name}</Col>
+                    <Col className="">
+                      {item.variant ? (
+                        <div>
+                          <strong>Variant :</strong> {item.variant.name}
+                        </div>
+                      ) : (
+                        ''
+                      )}
+                      {item.fil ? (
+                        <div>
+                          <strong>Fil :</strong> {item.fil}
+                        </div>
+                      ) : (
+                        ''
+                      )}
+                      {item.tissu ? (
+                        <div>
+                          <strong>Tissu :</strong> {item.tissu}
+                        </div>
+                      ) : (
+                        ''
+                      )}
+                      {item.patch ? (
+                        <div>
+                          <strong>Patch :</strong> {item.patch}
+                        </div>
+                      ) : (
+                        ''
+                      )}
+                      {item.customization ? (
+                        <div>
+                          <strong>Texte : </strong>
+                          {item.customization}
+                        </div>
+                      ) : (
+                        ''
+                      )}
+                    </Col>
 
                     <Col md={3} className="text-nowrap">
                       <Button

@@ -25,6 +25,11 @@ export function orderAdminEmail(order, user) {
         <span>
         ${item.name} <br />
         ${item.variant?.name ?? ''} <br>
+       <strong>Fil : </strong> ${item.fil ? item.fil : ''} <br>
+       <strong>Tissu : </strong> ${item.tissu ? item.tissu : ''} <br>
+       <strong>Patch : </strong>${item.patch ? item.patch : ''} <br>
+
+
         </span>
         <span>Quantité: ${item.quantity}</span>
         <br>

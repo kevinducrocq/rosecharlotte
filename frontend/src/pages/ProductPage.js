@@ -361,7 +361,7 @@ function ProductPage() {
                         <option>Choisissez...</option>
                         {product.fils.map((fil) => {
                           return (
-                            <option key={fil._id} value={fil._id}>
+                            <option key={fil._id} value={fil.name}>
                               {fil.name}
                             </option>
                           );
@@ -379,7 +379,7 @@ function ProductPage() {
                         <option>Choisissez...</option>
                         {product.tissus.map((tissu) => {
                           return (
-                            <option key={tissu._id} value={tissu._id}>
+                            <option key={tissu._id} value={tissu.name}>
                               {tissu.name}
                             </option>
                           );
@@ -396,7 +396,7 @@ function ProductPage() {
                         <option>Choisissez...</option>
                         {product.patches.map((patch) => {
                           return (
-                            <option key={patch._id} value={patch._id}>
+                            <option key={patch._id} value={patch.name}>
                               {patch.name}
                             </option>
                           );
