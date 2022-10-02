@@ -8,6 +8,7 @@ import { Row, Col, Card, Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import AdminMenu from '../../components/AdminMenu';
 import AdminCanvasMenu from '../../components/AdminCanvasMenu';
+import Chart from 'react-google-charts';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -70,7 +71,7 @@ export default function DashboardScreen() {
           ) : (
             <>
               <Row>
-                <Col md={4} className="my-2">
+                <Col md={3} className="my-2">
                   <Card>
                     <Card.Body>
                       <Card.Title>
@@ -79,11 +80,13 @@ export default function DashboardScreen() {
                           : 0}
                       </Card.Title>
                       <Card.Text> Utilisateurs inscrits</Card.Text>
-                      <Link to="/admin/users">Voir</Link>
+                      <Link to="/admin/users" className="homepage-button">
+                        Voir
+                      </Link>
                     </Card.Body>
                   </Card>
                 </Col>
-                <Col md={4} className="my-2">
+                <Col md={3} className="my-2">
                   <Card>
                     <Card.Body>
                       <Card.Title>
@@ -92,11 +95,28 @@ export default function DashboardScreen() {
                           : 0}
                       </Card.Title>
                       <Card.Text> Commandes</Card.Text>
-                      <Link to="/admin/orders">Voir</Link>
+                      <Link to="/admin/orders" className="homepage-button">
+                        Voir
+                      </Link>
                     </Card.Body>
                   </Card>
                 </Col>
-                <Col md={4} className="my-2">
+                <Col md={3} className="my-2">
+                  <Card>
+                    <Card.Body>
+                      <Card.Title>
+                        {summary.products && summary.products[0]
+                          ? summary.products[0].numProducts
+                          : 0}
+                      </Card.Title>
+                      <Card.Text> Produits</Card.Text>
+                      <Link to="/admin/products" className="homepage-button">
+                        Voir
+                      </Link>
+                    </Card.Body>
+                  </Card>
+                </Col>
+                <Col md={3} className="my-2">
                   <Card>
                     <Card.Body>
                       <Card.Title>
@@ -105,9 +125,49 @@ export default function DashboardScreen() {
                           : 0}{' '}
                         &euro;
                       </Card.Title>
-                      <Card.Text> Total</Card.Text>
+                      <Card.Text> Total</Card.Text> <br />
                     </Card.Body>
                   </Card>
+                </Col>
+              </Row>
+              <hr />
+              <Row className="my-3">
+                <Col>
+                  <h2 className="text-center mb-3">Catégories</h2>
+                  {summary.productCategories.length === 0 ? (
+                    <MessageBox>Pas de catégories</MessageBox>
+                  ) : (
+                    <Chart
+                      width="100%"
+                      height="400px"
+                      chartType="PieChart"
+                      loader={<div>Chargement du graphique</div>}
+                      data={[
+                        ['Category', 'Products'],
+                        ...summary.productCategories.map((x) => [
+                          x._id,
+                          x.count,
+                        ]),
+                      ]}
+                    />
+                  )}
+                </Col>
+                <Col>
+                  <h2 className="text-center mb-3">Ventes</h2>
+                  {summary.dailyOrders.length === 0 ? (
+                    <MessageBox>Pas de vente</MessageBox>
+                  ) : (
+                    <Chart
+                      width="100%"
+                      height="400px"
+                      chartType="AreaChart"
+                      loader={<div>Chargement du graphique</div>}
+                      data={[
+                        ['Date', 'Sales'],
+                        ...summary.dailyOrders.map((x) => [x._id, x.sales]),
+                      ]}
+                    ></Chart>
+                  )}
                 </Col>
               </Row>
             </>

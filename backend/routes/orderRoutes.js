@@ -44,8 +44,17 @@ orderRouter.get(
   isAdmin,
   expressAsyncHandler(async (req, res) => {
     const orders = await Order.aggregate([{ $sort: { createdAt: -1 } }]);
-    await User.populate(orders, 'user fil patch tissu');
+    await User.populate(orders, 'user');
     res.send(orders);
+  })
+);
+
+orderRouter.get(
+  '/orders-by-user',
+  isAuth,
+  expressAsyncHandler(async (req, res) => {
+    const ordersByUsers = await Order.find({ user: req.user._id });
+    res.send(ordersByUsers);
   })
 );
 
@@ -114,6 +123,14 @@ orderRouter.get(
         },
       },
     ]);
+    const products = await Product.aggregate([
+      {
+        $group: {
+          _id: null,
+          numProducts: { $sum: 1 },
+        },
+      },
+    ]);
     const dailyOrders = await Order.aggregate([
       {
         $group: {
@@ -136,6 +153,7 @@ orderRouter.get(
     res.send({
       users,
       orders,
+      products,
       dailyOrders,
       productCategories,
     });

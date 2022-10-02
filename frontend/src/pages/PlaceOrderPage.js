@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useReducer } from 'react';
+import React, { useContext, useEffect, useReducer, useState } from 'react';
 import {
   Button,
   Card,
@@ -36,50 +36,65 @@ export default function PlaceOrderPage() {
   const navigate = useNavigate();
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
-  const { cart, userInfo } = state;
+  const { userInfo } = state;
+  const storeCart = state.cart;
   const [{ loading }, dispatch] = useReducer(reducer, {
     loading: false,
   });
 
+  const [discount, setDiscount] = useState(0);
+
+  const [cart, setCart] = useState({ ...storeCart });
+
   const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100;
-  cart.itemsPrice = round2(
-    cart.cartItems.reduce(
-      (price, item) => price + item.quantity * item.price,
-      0
-    )
-  );
+  const recalculatePrices = () => {
+    const newCart = { ...cart };
+    newCart.itemsPrice = round2(
+      newCart.cartItems.reduce(
+        (price, item) => price + item.quantity * item.price,
+        0
+      )
+    );
 
-  const totalWeight = cart.cartItems.reduce((weight, item) => {
-    if (item.variant) {
-      return weight + item.quantity * item.variant.weight;
-    }
-    return weight + item.quantity * item.weight;
-  }, 0);
-  cart.itemsWeight = totalWeight;
+    newCart.itemsPriceWithDiscount = round2(
+      (newCart.itemsPrice * (100 - discount)) / 100
+    );
 
-  const deliveryPrice = () => {
-    if (cart.deliveryMethod === 'Local') {
-      return 0;
-    }
+    const totalWeight = newCart.cartItems.reduce((weight, item) => {
+      if (item.variant) {
+        return weight + item.quantity * item.variant.weight;
+      }
+      return weight + item.quantity * item.weight;
+    }, 0);
+    newCart.itemsWeight = totalWeight;
 
-    if (totalWeight <= 200 && cart.itemsPrice < 85) {
-      return 4.4;
-    } else if (
-      totalWeight >= 200 &&
-      totalWeight <= 250 &&
-      cart.itemsPrice < 85
-    ) {
-      return 5.4;
-    } else if (totalWeight >= 250 && cart.itemsPrice < 85) {
-      return 6.9;
-    } else if (cart.itemsPrice >= 85) {
-      return 0;
-    }
+    const deliveryPrice = () => {
+      if (newCart.deliveryMethod === 'Local') {
+        return 0;
+      }
+
+      if (totalWeight <= 200 && newCart.itemsPriceWithDiscount < 85) {
+        return 4.4;
+      } else if (
+        totalWeight >= 200 &&
+        totalWeight <= 250 &&
+        newCart.itemsPriceWithDiscount < 85
+      ) {
+        return 5.4;
+      } else if (totalWeight >= 250 && newCart.itemsPriceWithDiscount < 85) {
+        return 6.9;
+      } else if (newCart.itemsPriceWithDiscount >= 85) {
+        return 0;
+      }
+    };
+
+    newCart.shippingPrice = deliveryPrice();
+
+    newCart.totalPrice = round2(
+      newCart.itemsPriceWithDiscount + newCart.shippingPrice
+    );
+    setCart(newCart);
   };
-
-  cart.shippingPrice = deliveryPrice();
-
-  cart.totalPrice = round2(cart.itemsPrice + cart.shippingPrice);
 
   const placeOrderHandler = async () => {
     try {
@@ -108,10 +123,39 @@ export default function PlaceOrderPage() {
   };
 
   useEffect(() => {
+    recalculatePrices();
+    const userOrders = async () => {
+      try {
+        dispatch({ type: 'FETCH_REQUEST' });
+        const { data } = await axios.get(`/api/orders/orders-by-user`, {
+          headers: { authorization: `Bearer ${userInfo.token}` },
+        });
+        console.log(data);
+        if (data.length === 0) {
+          setDiscount(10);
+        }
+        dispatch({ type: 'FETCH_SUCCESS', payload: data });
+      } catch (err) {
+        dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
+      }
+    };
+
+    userOrders();
+  }, [userInfo.token]);
+
+  useEffect(() => {
+    recalculatePrices();
+  }, [discount]);
+
+  useEffect(() => {
     if (!cart.paymentMethod) {
       navigate('/payment');
     }
   }, [cart, navigate]);
+
+  // if (!cart.itemsPrice) {
+  //   return <div></div>;
+  // }
 
   return (
     <Container className="my-5">
@@ -248,9 +292,26 @@ export default function PlaceOrderPage() {
                 <ListGroup.Item>
                   <Row>
                     <Col>Produits</Col>
-                    <Col>{cart.itemsPrice.toFixed(2)} &euro;</Col>
+                    <Col>{cart.itemsPrice?.toFixed(2)} &euro;</Col>
                   </Row>
                 </ListGroup.Item>
+
+                {discount > 0 && (
+                  <ListGroup.Item>
+                    <Row>
+                      <>
+                        <Col>Remise {discount}%</Col>
+                        <Col>
+                          {(
+                            (cart.itemsPrice ?? 0) -
+                            (cart.itemsPriceWithDiscount ?? 0)
+                          ).toFixed(2)}{' '}
+                          &euro;
+                        </Col>
+                      </>
+                    </Row>
+                  </ListGroup.Item>
+                )}
                 <ListGroup.Item>
                   <Row>
                     <Col>Livraison</Col>
@@ -258,14 +319,14 @@ export default function PlaceOrderPage() {
                     <Col>
                       {cart.shippingPrice === 0
                         ? 'Offerte'
-                        : cart.shippingPrice.toFixed(2) + ' €'}
+                        : cart.shippingPrice?.toFixed(2) + ' €'}
                     </Col>
                   </Row>
                 </ListGroup.Item>
                 <ListGroup.Item>
                   <Row>
                     <Col>Total de la commande</Col>
-                    <Col>{cart.totalPrice.toFixed(2)} &euro;</Col>
+                    <Col>{cart.totalPrice?.toFixed(2)} &euro;</Col>
                   </Row>
                 </ListGroup.Item>
                 <ListGroup.Item>

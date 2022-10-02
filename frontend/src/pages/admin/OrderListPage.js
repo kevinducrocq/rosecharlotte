@@ -12,11 +12,11 @@ import { faEye, faTrash } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Col, Container, Row, Table } from 'react-bootstrap';
 import AdminMenu from '../../components/AdminMenu';
+import AdminCanvasMenu from '../../components/AdminCanvasMenu';
 
 import 'datatables.net-dt/js/dataTables.dataTables';
 import 'datatables.net-dt/css/jquery.dataTables.min.css';
 import $ from 'jquery';
-import AdminCanvasMenu from '../../components/AdminCanvasMenu';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -70,7 +70,7 @@ export default function OrderListPage() {
           language: {
             url: 'https://cdn.datatables.net/plug-ins/1.12.1/i18n/fr-FR.json',
           },
-          order: [[2, 'desc']],
+          order: [[3, 'desc']],
         });
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {
