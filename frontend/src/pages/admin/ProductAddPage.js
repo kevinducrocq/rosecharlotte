@@ -66,7 +66,6 @@ export default function ProductAddPage() {
   const [images, setImages] = useState([]);
   const [category, setCategory] = useState('');
   const [subCategory, setSubCategory] = useState('');
-  const [otherCategory, setOtherCategory] = useState('');
   const [countInStock, setCountInStock] = useState('');
   const [description, setDescription] = useState('');
   const [categories, setCategories] = useState([]);
@@ -196,7 +195,6 @@ export default function ProductAddPage() {
           images,
           category,
           subCategory,
-          otherCategory,
           countInStock,
           description,
           variants,

@@ -53,7 +53,6 @@ productRouter.post(
       categorySlug: slugify(req.body.category),
       subCategory: req.body.subCategory,
       subCategorySlug: slugify(req.body.subCategory),
-      otherCategory: req.body.otherCategory,
       countInStock: req.body.countInStock,
       numReviews: 0,
       rating: 0,
@@ -82,7 +81,6 @@ productRouter.post(
         categorySlug: product.categorySlug,
         subCategory: product.subCategory,
         subCategorySlug: product.subCategorySlug,
-        otherCategory: product.otherCategory,
         countInStock: product.countInStock,
         numReviews: 0,
         rating: 0,
@@ -120,7 +118,6 @@ productRouter.put(
       product.images = req.body.images || product.images;
       product.category = req.body.category || product.category;
       product.subCategory = req.body.subCategory || product.subCategory;
-      product.otherCategory = req.body.otherCategory || product.otherCategory;
       product.brand = req.body.brand || product.brand;
       product.countInStock = req.body.countInStock || product.countInStock;
       product.description = req.body.description || product.description;
@@ -144,7 +141,6 @@ productRouter.put(
         images: updatedProduct.images,
         category: updatedProduct.category,
         subCategory: updatedProduct.subCategory,
-        otherCategory: updatedProduct.otherCategory,
         brand: updatedProduct.brand,
         countInStock: updatedProduct.countInStock,
         description: updatedProduct.description,
@@ -292,7 +288,6 @@ productRouter.get(
     const page = query.page || 1;
     const category = query.category || '';
     const subCategory = query.subCategory || '';
-    const otherCategory = query.otherCategory || '';
     const price = query.price || '';
     const order = query.order || '';
     const searchQuery = query.query || '';
@@ -311,9 +306,6 @@ productRouter.get(
 
     const subCategoryFilter =
       subCategory && subCategory !== 'all' ? { subCategory } : {};
-
-    const otherCategoryFilter =
-      otherCategory && otherCategory !== 'all' ? { otherCategory } : {};
 
     const priceFilter =
       price && price !== 'all'
@@ -339,7 +331,6 @@ productRouter.get(
       ...queryFilter,
       ...categoryFilter,
       ...subCategoryFilter,
-      ...otherCategoryFilter,
       ...priceFilter,
     })
       .find({ isVisible: true })
@@ -350,7 +341,6 @@ productRouter.get(
     const countProducts = await Product.countDocuments({
       ...queryFilter,
       ...categoryFilter,
-      ...otherCategoryFilter,
       ...priceFilter,
       ...subCategoryFilter,
     });

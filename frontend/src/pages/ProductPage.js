@@ -53,7 +53,7 @@ const reducer = (state, action) => {
 function ProductPage() {
   let reviewsRef = useRef();
 
-  const [rating, setRating] = useState(0);
+  const [rating, setRating] = useState();
   const [comment, setComment] = useState('');
   const [selectedImage, setSelectedImage] = useState('');
   const [customization, setCustomization] = useState('');
@@ -319,38 +319,34 @@ function ProductPage() {
               </div>
             </ListGroup.Item>
 
-            {product.variants.length >= 1 && (
-              <>
-                <ListGroup.Item>
-                  <Form>
-                    <Form.Label>Choisissez le modèle</Form.Label>
-                    <Form.Select
-                      className="mb-3"
-                      onChange={(e) => {
-                        setVariant(e.target.value);
-                      }}
-                    >
-                      <option disabled>Choisissez...</option>
-                      {product.variants.map((variant) => {
-                        return (
-                          <option key={variant._id} value={variant._id}>
-                            {variant.name}&nbsp;
-                            {variant.countInStock === 0
-                              ? '- Non-disponible'
-                              : ''}
-                          </option>
-                        );
-                      })}
-                    </Form.Select>
-                  </Form>
-                </ListGroup.Item>
-              </>
-            )}
+            <ListGroup.Item>
+              {product.variants.length >= 1 && (
+                <Form>
+                  <Form.Label>Choisissez le modèle</Form.Label>
+                  <Form.Select
+                    className="mb-3"
+                    onChange={(e) => {
+                      setVariant(e.target.value);
+                    }}
+                  >
+                    <option disabled selected={!variantId}>
+                      Choisissez...
+                    </option>
+                    {product.variants.map((variant) => {
+                      return (
+                        <option key={variant._id} value={variant._id}>
+                          {variant.name}&nbsp;
+                          {variant.countInStock === 0 ? '- Non-disponible' : ''}
+                        </option>
+                      );
+                    })}
+                  </Form.Select>
+                </Form>
+              )}
 
-            {product.customizable && (
-              <>
-                <ListGroup.Item>
-                  <Form>
+              {product.customizable && (
+                <Form>
+                  {(variantId || product.variants === []) && (
                     <Form.Group className="my-3">
                       <Form.Label>Choisissez un type de fil</Form.Label>
                       <Form.Select
@@ -359,7 +355,9 @@ function ProductPage() {
                           setFil(e.target.value);
                         }}
                       >
-                        <option>Choisissez...</option>
+                        <option disabled selected={!fil}>
+                          Choisissez...
+                        </option>
                         {product.fils.map((fil) => {
                           return (
                             <option key={fil._id} value={fil.name}>
@@ -369,6 +367,8 @@ function ProductPage() {
                         })}
                       </Form.Select>
                     </Form.Group>
+                  )}
+                  {fil && (
                     <Form.Group className="my-3">
                       <Form.Label>Choisissez un type de tissu</Form.Label>
                       <Form.Select
@@ -377,7 +377,9 @@ function ProductPage() {
                           setTissu(e.target.value);
                         }}
                       >
-                        <option>Choisissez...</option>
+                        <option disabled selected={!tissu}>
+                          Choisissez...
+                        </option>
                         {product.tissus.map((tissu) => {
                           return (
                             <option key={tissu._id} value={tissu.name}>
@@ -387,6 +389,9 @@ function ProductPage() {
                         })}
                       </Form.Select>
                     </Form.Group>
+                  )}
+
+                  {tissu && (
                     <Form.Group className="my-3">
                       <Form.Label>Choisissez un patch</Form.Label>
                       <Form.Select
@@ -394,7 +399,9 @@ function ProductPage() {
                           setPatch(e.target.value);
                         }}
                       >
-                        <option>Choisissez...</option>
+                        <option disabled selected={!patch}>
+                          Choisissez...
+                        </option>
                         {product.patches.map((patch) => {
                           return (
                             <option key={patch._id} value={patch.name}>
@@ -404,6 +411,9 @@ function ProductPage() {
                         })}
                       </Form.Select>
                     </Form.Group>
+                  )}
+
+                  {patch && (
                     <Form.Group className="my-3">
                       <Form.Label>Texte à broder</Form.Label>
                       <Form.Control
@@ -414,14 +424,17 @@ function ProductPage() {
                         }}
                       ></Form.Control>
                     </Form.Group>
-                  </Form>
-                </ListGroup.Item>
-              </>
-            )}
+                  )}
+                </Form>
+              )}
+            </ListGroup.Item>
 
             {product.countInStock > 0 || product.variants.length ? (
               <div className="p-2">
                 <Button
+                  disabled={
+                    !product.customizable || customization ? false : true
+                  }
                   onClick={addToCartHandler}
                   className="bg1 w-100"
                   variant="outline-light"
@@ -458,7 +471,9 @@ function ProductPage() {
                       value={rating}
                       onChange={(e) => setRating(e.target.value)}
                     >
-                      <option value="">Sélectionnez...</option>
+                      <option disabled selected={!rating}>
+                        Sélectionnez...
+                      </option>
                       <option value="1">1- Mauvais</option>
                       <option value="2">2- Moyen</option>
                       <option value="3">3- Bien</option>
