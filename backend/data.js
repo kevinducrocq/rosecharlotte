@@ -19,7 +19,6 @@ const data = {
       categorySlug: 'bebe',
       subCategory: 'Bavoirs Serviettes',
       subCategorySlug: 'bavoirs-serviettes',
-      otherCategory: '',
       image: 'https://picsum.photos/id/1/600/800',
       images: [
         'https://picsum.photos/id/2/600/800',
@@ -43,7 +42,6 @@ const data = {
       categorySlug: 'bebe',
       subCategory: 'Langes brodés',
       subCategorySlug: 'langes-brodes',
-      otherCategory: '',
       image: 'https://picsum.photos/id/4/600/800',
       images: [
         'https://picsum.photos/id/5/600/800',
@@ -67,7 +65,6 @@ const data = {
       categorySlug: 'bebe',
       subCategory: 'Barettes clips',
       subCategorySlug: 'barettes-clips',
-      otherCategory: '',
       image: 'https://picsum.photos/id/8/600/800',
       images: [
         'https://picsum.photos/id/9/600/800',
@@ -91,7 +88,6 @@ const data = {
       categorySlug: 'bebe',
       subCategory: 'Bandanas',
       subCategorySlug: 'bandanas',
-      otherCategory: '',
       image: 'https://picsum.photos/id/12/600/800',
       images: [
         'https://picsum.photos/id/13/600/800',
@@ -115,7 +111,6 @@ const data = {
       categorySlug: 'bebe',
       subCategory: 'Bandanas bleus',
       subCategorySlug: 'bandanas-bleus',
-      otherCategory: '',
       image: 'https://picsum.photos/id/16/600/800',
       images: [
         'https://picsum.photos/id/17/600/800',
@@ -139,7 +134,6 @@ const data = {
       categorySlug: 'bebe',
       subCategory: 'Couvertures',
       subCategorySlug: 'couvertures',
-      otherCategory: '',
       image: 'https://picsum.photos/id/20/600/800',
       images: [
         'https://picsum.photos/id/21/600/800',
@@ -163,7 +157,6 @@ const data = {
       categorySlug: 'enfant',
       subCategory: 'Serviettes élastiques',
       subCategorySlug: 'serviettes-elastiques',
-      otherCategory: '',
       image: 'https://picsum.photos/id/24/600/800',
       images: [
         'https://picsum.photos/id/25/600/800',
@@ -187,7 +180,6 @@ const data = {
       categorySlug: 'enfant',
       subCategory: 'Bandeaux',
       subCategorySlug: 'bandeaux',
-      otherCategory: '',
       image: 'https://picsum.photos/id/28/600/800',
       images: [
         'https://picsum.photos/id/29/600/800',
@@ -211,7 +203,6 @@ const data = {
       categorySlug: 'enfant',
       subCategory: 'Chouchous',
       subCategorySlug: 'chouchous',
-      otherCategory: 'Chouchous',
       image: 'https://picsum.photos/id/32/600/800',
       images: [
         'https://picsum.photos/id/33/600/800',
@@ -235,7 +226,6 @@ const data = {
       categorySlug: 'enfant',
       subCategory: 'Chouchous blancs',
       subCategorySlug: 'chouchous-blancs',
-      otherCategory: 'Minis chouchous',
       image: 'https://picsum.photos/id/36/600/800',
       images: [
         'https://picsum.photos/id/37/600/800',
@@ -259,7 +249,6 @@ const data = {
       categorySlug: 'femme',
       subCategory: 'Chouchous femme',
       subCategorySlug: 'chouchous-femmes',
-      otherCategory: '',
       image: 'https://picsum.photos/id/40/600/800',
       images: [
         'https://picsum.photos/id/41/600/800',
@@ -283,7 +272,6 @@ const data = {
       categorySlug: 'femme',
       subCategory: 'Chapeaux',
       subCategorySlug: 'chapeaux',
-      otherCategory: '',
       image: 'https://picsum.photos/id/44/600/800',
       images: [
         'https://picsum.photos/id/45/600/800',
@@ -307,7 +295,6 @@ const data = {
       categorySlug: 'homme',
       subCategory: 'Noeuds papillon',
       subCategorySlug: 'noeuds-papillon',
-      otherCategory: '',
       image: 'https://picsum.photos/id/48/600/800',
       images: [
         'https://picsum.photos/id/49/600/800',
@@ -331,7 +318,6 @@ const data = {
       categorySlug: 'maison',
       subCategory: 'Coussins',
       subCategorySlug: 'coussins',
-      otherCategory: '',
       image: 'https://picsum.photos/id/52/600/800',
       images: [
         'https://picsum.photos/id/53/600/800',

@@ -62,6 +62,7 @@ function ProductPage() {
   const [fil, setFil] = useState('');
   const [tissu, setTissu] = useState('');
   const [patch, setPatch] = useState('');
+  // const [buttonCartIsVisible, setButtonCartIsVisible] = useState('');
 
   const navigate = useNavigate();
   const params = useParams();

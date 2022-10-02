@@ -28,6 +28,7 @@ export function orderAdminEmail(order, user) {
        <strong>Fil : </strong> ${item.fil ? item.fil : ''} <br>
        <strong>Tissu : </strong> ${item.tissu ? item.tissu : ''} <br>
        <strong>Patch : </strong>${item.patch ? item.patch : ''} <br>
+       <strong>Texte : </strong>${item.customization ? item.customization : ''} <br>
 
 
         </span>

@@ -28,7 +28,6 @@ const productSchema = new mongoose.Schema(
     categorySlug: { type: String, required: true },
     subCategory: { type: String },
     subCategorySlug: { type: String },
-    otherCategory: { type: String },
     description: { type: String, required: true },
     price: { type: Number, required: true },
     promoPrice: { type: Number },

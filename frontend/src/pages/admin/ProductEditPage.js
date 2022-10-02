@@ -752,13 +752,6 @@ export default function ProductEditPage() {
                     </Form.Group>
                   </Col>
                 </Row>
-                <Form.Group className="mb-3" controlId="sousCategory">
-                  <Form.Label>Autre Catégorie ?</Form.Label>
-                  <Form.Control
-                    value={otherCategory}
-                    onChange={(e) => setOtherCategory(e.target.value)}
-                  />
-                </Form.Group>
                 <hr />
                 <Form.Group className="mb-3" controlId="description">
                   <Form.Label>Description</Form.Label>
