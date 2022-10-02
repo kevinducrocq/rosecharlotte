@@ -222,10 +222,10 @@ export default function SearchScreen() {
                         className="btn btn-sm bg-secondary ms-2"
                         onClick={() => navigate('/boutique/search')}
                       >
+                        <FontAwesomeIcon icon={faTimesCircle} /> Effacer :
                         <Badge bg="secondary">
-                          {query !== 'all' && ' ' + '"' + query + '"'}
+                          {query !== 'all' && ' ' + '' + query + ''}
                         </Badge>
-                        <FontAwesomeIcon icon={faTimesCircle} /> EFFACER
                       </Button>
                     ) : null}
                   </div>

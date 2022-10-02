@@ -299,6 +299,7 @@ productRouter.get(
               $regex: searchQuery,
               $options: 'i',
             },
+            isVisible: true,
           }
         : {};
 
@@ -333,7 +334,6 @@ productRouter.get(
       ...subCategoryFilter,
       ...priceFilter,
     })
-      .find({ isVisible: true })
       .sort(sortOrder)
       .skip(pageSize * (page - 1))
       .limit(pageSize);
