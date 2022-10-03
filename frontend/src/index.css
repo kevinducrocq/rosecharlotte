@@ -1,8 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=DynaPuff&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins&display=swap');
 
 body {
   margin: 0;
   background-color: #fff2f2;
+  font-family: 'Poppins', sans-serif;
 }
 
 h1,
@@ -11,7 +12,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'DynaPuff', cursive;
+  font-family: 'Pacifico', cursive;
 }
 
 .site-container {
@@ -198,14 +199,10 @@ main {
 
 /*CAROUSEL*/
 
-.carousel-item {
-  max-height: 500px;
-}
-
 .carousel-item img {
   height: 450px;
   object-fit: cover;
-  opacity: 0.7;
+  opacity: 0.75;
 }
 
 .carousel-caption {

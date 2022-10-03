@@ -52,7 +52,7 @@ export default function AdminMenu(props) {
       >
         <Link to="/admin/product/add">
           <FontAwesomeIcon icon={faPlus} />
-          <span className="ms-2">Ajouter un produit</span>
+          <span className="ms-2">Ajouter produit</span>
         </Link>
       </ListGroup.Item>
       <ListGroup.Item

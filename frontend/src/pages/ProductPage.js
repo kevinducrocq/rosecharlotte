@@ -28,6 +28,7 @@ import { Store } from '../Store';
 import { toast } from 'react-toastify';
 import { LinkContainer } from 'react-router-bootstrap';
 import OwlCarousel from 'react-owl-carousel';
+import nl2br from 'react-nl2br';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -120,7 +121,12 @@ function ProductPage() {
     const existItem = cart.cartItems.find(
       (x) =>
         x._id === product._id &&
-        (x.variant === null || x.variant._id === variantId)
+        (x.variant === null || x.variant._id === variantId) &&
+        (x.customizable === false ||
+          (x.customization === customization &&
+            x.fil === fil &&
+            x.tissu === tissu &&
+            x.patch === patch))
     );
     const quantity = existItem ? existItem.quantity + 1 : 1;
     const { data } = await axios.get(`/api/products/${product._id}`);
@@ -136,6 +142,7 @@ function ProductPage() {
         );
         return;
       }
+
       ctxDispatch({
         type: 'CART_ADD_ITEM',
         payload: {
@@ -315,7 +322,7 @@ function ProductPage() {
             </ListGroup.Item>
             <ListGroup.Item>
               <div className="p-2">
-                <p>{product.description}</p>
+                <p>{nl2br(product.description)}</p>
               </div>
             </ListGroup.Item>
 
@@ -336,7 +343,7 @@ function ProductPage() {
                       return (
                         <option key={variant._id} value={variant._id}>
                           {variant.name}&nbsp;
-                          {variant.countInStock === 0 ? '- Non-disponible' : ''}
+                          {variant.countInStock <= 0 ? '- Non-disponible' : ''}
                         </option>
                       );
                     })}
@@ -344,9 +351,12 @@ function ProductPage() {
                 </Form>
               )}
 
-              {product.customizable && (
+              {(product.customizable ||
+                (product.variants.length >= 0 &&
+                  variantId &&
+                  product.customizable)) && (
                 <Form>
-                  {(variantId || product.variants === []) && (
+                  {(variantId || product.variants.length === 0) && (
                     <Form.Group className="my-3">
                       <Form.Label>Choisissez un type de fil</Form.Label>
                       <Form.Select
@@ -433,7 +443,11 @@ function ProductPage() {
               <div className="p-2">
                 <Button
                   disabled={
-                    !product.customizable || customization ? false : true
+                    ((variantId || product.variants.length === 0) &&
+                      !product.customizable) ||
+                    customization
+                      ? false
+                      : true
                   }
                   onClick={addToCartHandler}
                   className="bg1 w-100"

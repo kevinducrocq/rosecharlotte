@@ -24,16 +24,29 @@ function reducer(state, action) {
       const existItem = state.cart.cartItems.find(
         (item) =>
           item._id === newItem._id &&
-          (item.variant === null || item.variant._id === newItem.variant._id)
+          (item.variant === null || item.variant._id === newItem.variant._id) &&
+          (item.customizable === false ||
+            (item.customization === newItem.customization &&
+              item.fil === newItem.fil &&
+              item.tissu === newItem.tissu &&
+              item.patch === newItem.patch))
       );
+
       const cartItems = existItem
         ? state.cart.cartItems.map((item) =>
             item._id === existItem._id &&
-            (item.variant === null || item.variant._id === newItem.variant._id)
+            (item.variant === null ||
+              item.variant._id === newItem.variant._id) &&
+            (item.customizable === false ||
+              (item.customization === newItem.customization &&
+                item.fil === newItem.fil &&
+                item.tissu === newItem.tissu &&
+                item.patch === newItem.patch))
               ? newItem
               : item
           )
         : [...state.cart.cartItems, newItem];
+
       localStorage.setItem('cartItems', JSON.stringify(cartItems));
       return { ...state, cart: { ...state.cart, cartItems } };
     case 'CART_REMOVE_ITEM': {
@@ -42,7 +55,12 @@ function reducer(state, action) {
           !(
             item._id === action.payload._id &&
             (item.variant === null ||
-              item.variant._id === action.payload.variant._id)
+              item.variant._id === action.payload.variant._id) &&
+            (item.customizable === false ||
+              (item.customization === action.payload.customization &&
+                item.fil === action.payload.fil &&
+                item.tissu === action.payload.tissu &&
+                item.patch === action.payload.patch))
           )
       );
       localStorage.setItem('cartItems', JSON.stringify(cartItems));

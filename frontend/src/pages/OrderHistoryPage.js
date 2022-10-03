@@ -11,6 +11,7 @@ import { Breadcrumb, Button, Container, Table } from 'react-bootstrap';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye } from '@fortawesome/pro-solid-svg-icons';
 import { LinkContainer } from 'react-router-bootstrap';
+import { Link } from 'react-router-dom';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -65,7 +66,7 @@ const OrderHistoryPage = () => {
         <LoadingBox></LoadingBox>
       ) : error ? (
         <MessageBox></MessageBox>
-      ) : (
+      ) : orders.length > 0 ? (
         <Table responsive className="table table-striped">
           <thead>
             <tr className="to-upper">
@@ -101,6 +102,11 @@ const OrderHistoryPage = () => {
             ))}
           </tbody>
         </Table>
+      ) : (
+        <MessageBox>
+          Vous n'avez pas encore commandé <br />
+          <Link to="/boutique/search">Voir la boutique</Link>
+        </MessageBox>
       )}
     </Container>
   );

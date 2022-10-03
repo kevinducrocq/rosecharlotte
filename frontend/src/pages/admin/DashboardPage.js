@@ -52,7 +52,7 @@ export default function DashboardScreen() {
   }, [userInfo]);
 
   return (
-    <Container className="my-5">
+    <Container fluid className="my-5">
       <Row>
         <Col md={2}>
           <div className="d-none d-lg-block d-md-block">
@@ -63,7 +63,7 @@ export default function DashboardScreen() {
           </div>
         </Col>
         <Col md={10} className="shadow p-5">
-          <h1>Tableau de bord</h1>
+          <h1 className="mb-3">Tableau de bord</h1>
           {loading ? (
             <LoadingBox />
           ) : error ? (
@@ -132,10 +132,10 @@ export default function DashboardScreen() {
               </Row>
               <hr />
               <Row className="my-3">
-                <Col>
+                <Col md={6} className="my-3">
                   <h2 className="text-center mb-3">Catégories</h2>
                   {summary.productCategories.length === 0 ? (
-                    <MessageBox>Pas de catégories</MessageBox>
+                    <MessageBox>Pas encore de catégories</MessageBox>
                   ) : (
                     <Chart
                       width="100%"
@@ -152,10 +152,10 @@ export default function DashboardScreen() {
                     />
                   )}
                 </Col>
-                <Col>
+                <Col md={6} className="my-3">
                   <h2 className="text-center mb-3">Ventes</h2>
                   {summary.dailyOrders.length === 0 ? (
-                    <MessageBox>Pas de vente</MessageBox>
+                    <MessageBox>Pas encore de vente</MessageBox>
                   ) : (
                     <Chart
                       width="100%"

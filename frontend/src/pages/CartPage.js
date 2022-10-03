@@ -95,7 +95,7 @@ export default function CartPage() {
             <ListGroup className="text-center">
               {cartItems.map((item) => (
                 <ListGroup.Item key={item._id}>
-                  <Row className="align-items-center">
+                  <Row className="align-items-center my-3">
                     <Col md={3} className="d-flex flex-column">
                       <Link to={`/product/${item.slug}`}>
                         <Image

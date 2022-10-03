@@ -8,7 +8,7 @@ function CarouselFade() {
       <Carousel.Item className="carousel-item">
         <img
           className="d-block w-100"
-          src="../images/car1.jpg"
+          src="../images/car-4.jpg"
           alt="First slide"
         />
         <Carousel.Caption>
@@ -20,7 +20,7 @@ function CarouselFade() {
       <Carousel.Item className="carousel-item">
         <img
           className="d-block w-100"
-          src="../images/car2.jpg"
+          src="../images/car-5.jpg"
           alt="First slide"
         />
         <Carousel.Caption>
@@ -32,7 +32,7 @@ function CarouselFade() {
       <Carousel.Item className="carousel-item">
         <img
           className="d-block w-100"
-          src="../images/car3.jpg"
+          src="../images/car-6.jpg"
           alt="Third slide"
         />
         <Carousel.Caption>
