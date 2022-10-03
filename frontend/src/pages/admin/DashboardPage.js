@@ -52,7 +52,7 @@ export default function DashboardScreen() {
   }, [userInfo]);
 
   return (
-    <Container fluid className="my-5">
+    <Container className="my-5">
       <Row>
         <Col md={2}>
           <div className="d-none d-lg-block d-md-block">
