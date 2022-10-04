@@ -19,28 +19,28 @@ export default function CgvPage() {
       <div>
         <p>
           Le site www.rosecharlotte.fr (ci-après dénommé le « Site ») est édité
-          par la microentreprise Rose Charlotte &amp; COMPAGNIE (ci-après
-          dénommée Rose Charlotte &amp; COMPAGNIE), représentée par Mme Marie
-          FARDEL. Le site internet www.rosecharlotte.fr est hébergé par ni-host.
-          Le client internaute est dénommé le Client. L’accès et l’utilisation
-          du Site sont réservés à des personnes physiques, majeures à
-          l’exclusion de toute vente à des professionnels ou aux fins de revente
-          à des tiers. Dans tous les cas, l’accès ou l’utilisation du Site, par
-          un Client, sont soumis au respect des Conditions générales
-          d’Utilisation ainsi que des présentes Conditions générales de Vente du
-          site internet Rose Charlotte &amp; COMPAGNIE (ci-après les «
-          Conditions générales de Vente »). Le Site propose à la vente des
-          vêtements et accessoires pour la famille personnalisables pour
-          certains (ci-après les « Produits ») fabriqués en France ou
-          personnalisés en France. Les présentes Conditions générales de Vente
-          peuvent être modifiées à tout moment, étant entendu que chaque
-          Commande sur le Site est régie par les Conditions générales de Vente
-          et les Conditions générales d’Utilisation en vigueur à la date de
-          passation de la Commande. La vente des Produits sur le Site est
-          soumise aux présentes Conditions générales de Vente et d’Utilisation,
-          à l’exclusion de tout autre document. Toute Commande vaut acceptation
-          des présentes Conditions générales de Vente, du prix et de la
-          description des Produits objets de la Commande.
+          par la SARL Rose Charlotte &amp; COMPAGNIE (ci-après dénommée Rose
+          Charlotte &amp; COMPAGNIE), représentée par Mme Marie FARDEL. Le site
+          internet www.rosecharlotte.fr est hébergé par ni-host. Le client
+          internaute est dénommé le Client. L’accès et l’utilisation du Site
+          sont réservés à des personnes physiques, majeures à l’exclusion de
+          toute vente à des professionnels ou aux fins de revente à des tiers.
+          Dans tous les cas, l’accès ou l’utilisation du Site, par un Client,
+          sont soumis au respect des Conditions générales d’Utilisation ainsi
+          que des présentes Conditions générales de Vente du site internet Rose
+          Charlotte &amp; COMPAGNIE (ci-après les « Conditions générales de
+          Vente »). Le Site propose à la vente des vêtements et accessoires pour
+          la famille personnalisables pour certains (ci-après les « Produits »)
+          fabriqués en France ou personnalisés en France. Les présentes
+          Conditions générales de Vente peuvent être modifiées à tout moment,
+          étant entendu que chaque Commande sur le Site est régie par les
+          Conditions générales de Vente et les Conditions générales
+          d’Utilisation en vigueur à la date de passation de la Commande. La
+          vente des Produits sur le Site est soumise aux présentes Conditions
+          générales de Vente et d’Utilisation, à l’exclusion de tout autre
+          document. Toute Commande vaut acceptation des présentes Conditions
+          générales de Vente, du prix et de la description des Produits objets
+          de la Commande.
         </p>
       </div>
 

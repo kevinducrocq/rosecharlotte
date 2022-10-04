@@ -533,36 +533,34 @@ function ProductPage() {
               <div className="mb-3 p-4">
                 <h2 ref={reviewsRef}>Avis des clients</h2>
                 {product.reviews.length === 0 && (
-                  <MessageBox bg2>
+                  <MessageBox>
                     Il n'y a pas encore d'avis sur ce produit
                   </MessageBox>
                 )}
               </div>
+
               <Row>
-                {product.reviews.map((review) =>
-                  !review.status === false ? (
-                    <OwlCarousel
-                      className="slider-items owl-carousel"
-                      {...options}
-                      id="slider_promos"
-                    >
-                      <Card>
-                        <Card.Header>
-                          <strong>{review.name}</strong>
-                          <Rating rating={review.rating} caption=" "></Rating>
-                        </Card.Header>
-                        <Card.Body>
-                          <p>{dateFr(review.createdAt)}</p>
-                          <p>{review.comment}</p>
-                        </Card.Body>
-                      </Card>
-                    </OwlCarousel>
-                  ) : (
-                    <MessageBox bg2>
-                      Il n'y a pas encore d'avis sur ce produit
-                    </MessageBox>
-                  )
-                )}
+                <OwlCarousel
+                  className="slider-items owl-carousel"
+                  {...options}
+                  id="slider_comments"
+                >
+                  {product.reviews.map(
+                    (review) =>
+                      !review.status === false && (
+                        <Card>
+                          <Card.Header>
+                            <strong>{review.name}</strong>
+                            <Rating rating={review.rating} caption=" "></Rating>
+                          </Card.Header>
+                          <Card.Body>
+                            <p>{dateFr(review.createdAt)}</p>
+                            <p>{review.comment}</p>
+                          </Card.Body>
+                        </Card>
+                      )
+                  )}
+                </OwlCarousel>
               </Row>
             </Row>
           </Col>
