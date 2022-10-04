@@ -49,9 +49,9 @@ productRouter.post(
       weight: req.body.weight,
       image: req.body.image,
       images: req.body.images,
-      category: req.body.category,
+      category: req.body.category.trim(),
       categorySlug: slugify(req.body.category),
-      subCategory: req.body.subCategory,
+      subCategory: req.body.subCategory?.trim(),
       subCategorySlug: slugify(req.body.subCategory),
       countInStock: req.body.countInStock,
       numReviews: 0,
@@ -116,8 +116,8 @@ productRouter.put(
       product.weight = req.body.weight || product.weight;
       product.image = req.body.image || product.image;
       product.images = req.body.images || product.images;
-      product.category = req.body.category || product.category;
-      product.subCategory = req.body.subCategory || product.subCategory;
+      product.category = req.body.category.trim() || product.category;
+      product.subCategory = req.body.subCategory?.trim() || product.subCategory;
       product.brand = req.body.brand || product.brand;
       product.countInStock = req.body.countInStock || product.countInStock;
       product.description = req.body.description || product.description;
@@ -305,8 +305,7 @@ productRouter.get(
 
     const categoryFilter = category && category !== 'all' ? { category } : {};
 
-    const subCategoryFilter =
-      subCategory && subCategory !== 'all' ? { subCategory } : {};
+    const subCategoryFilter = subCategory && subCategory !== 'all' ? { subCategory } : {};
 
     const priceFilter =
       price && price !== 'all'
