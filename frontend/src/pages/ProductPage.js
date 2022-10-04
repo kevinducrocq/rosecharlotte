@@ -302,9 +302,11 @@ function ProductPage() {
                   {product.variants.length >= 1 ? (
                     ''
                   ) : product.countInStock && product.countInStock > 0 ? (
-                    <Badge bg="success">{product.countInStock} En stock</Badge>
+                    <span className="badge-stock">
+                      {product.countInStock} En stock
+                    </span>
                   ) : (
-                    <Badge bg="danger">Epuisé</Badge>
+                    <span className="badge-epuise">Epuisé</span>
                   )}
                 </div>
               </div>
