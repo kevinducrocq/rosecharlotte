@@ -222,7 +222,26 @@ main {
 /*ETOILES NOTES*/
 
 .rating span {
-  color: #ffc000;
+  color: #000;
+}
+
+/*BADGE EN STOCK*/
+.badge-stock {
+  background-color: #ef9f9f;
+  font-size: 12px;
+  color: white;
+  padding: 4px 8px;
+  text-align: center;
+  border-radius: 5px;
+}
+/*BADGE EPUISE*/
+.badge-epuise {
+  background-color: red;
+  font-size: 12px;
+  color: white;
+  padding: 4px 8px;
+  text-align: center;
+  border-radius: 5px;
 }
 
 /*FORMULAIRES*/

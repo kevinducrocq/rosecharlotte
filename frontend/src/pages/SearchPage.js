@@ -45,7 +45,6 @@ export default function SearchScreen() {
   const sp = new URLSearchParams(search); // /search?category=Shirts
   const category = sp.get('category') || 'all';
   const subCategory = sp.get('subCategory') || 'all';
-  const otherCategory = sp.get('otherCategory') || 'all';
   const query = sp.get('query') || 'all';
   const price = sp.get('price') || 'all';
   const order = sp.get('order') || 'newest';
@@ -61,7 +60,7 @@ export default function SearchScreen() {
     const fetchData = async () => {
       try {
         const { data } = await axios.get(
-          `/api/products/boutique/search?page=${page}&query=${query}&category=${category}&subCategory=${subCategory}&otherCategory=${otherCategory}&price=${price}&order=${order}`
+          `/api/products/boutique/search?page=${page}&query=${query}&category=${category}&subCategory=${subCategory}&price=${price}&order=${order}`
         );
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {
@@ -72,7 +71,7 @@ export default function SearchScreen() {
       }
     };
     fetchData();
-  }, [category, subCategory, otherCategory, error, order, price, query, page]);
+  }, [category, subCategory, error, order, price, query, page]);
 
   const [categories, setCategories] = useState([]);
 
@@ -92,11 +91,10 @@ export default function SearchScreen() {
     const filterPage = filter.page || page;
     const filterCategory = filter.category || category;
     const filterSubCategory = filter.subCategory || subCategory;
-    const filterOtherCategory = filter.otherCategory || otherCategory;
     const filterQuery = filter.query || query;
     const filterPrice = filter.price || price;
     const sortOrder = filter.order || order;
-    return `/boutique/search?category=${filterCategory}&subCategory=${filterSubCategory}&otherCategory=${filterOtherCategory}&query=${filterQuery}&price=${filterPrice}&order=${sortOrder}&page=${filterPage}`;
+    return `/boutique/search?category=${filterCategory}&subCategory=${filterSubCategory}&query=${filterQuery}&price=${filterPrice}&order=${sortOrder}&page=${filterPage}`;
   };
 
   const renderedCategories = [];
@@ -140,10 +138,12 @@ export default function SearchScreen() {
           <Breadcrumb.Item>Boutique</Breadcrumb.Item>
         </LinkContainer>
         <LinkContainer to={`/boutique/search?category=${category}`}>
-          <Breadcrumb.Item>{category ? category : ''}</Breadcrumb.Item>
+          <Breadcrumb.Item>{category === 'all' ? 'tous' : ''}</Breadcrumb.Item>
         </LinkContainer>
         <LinkContainer to={`/boutique/search?subCategory=${subCategory}`}>
-          <Breadcrumb.Item active>{subCategory}</Breadcrumb.Item>
+          <Breadcrumb.Item active>
+            {subCategory === 'all' ? 'tous' : 'tous'}
+          </Breadcrumb.Item>
         </LinkContainer>
       </Breadcrumb>
 
@@ -216,7 +216,6 @@ export default function SearchScreen() {
                     {query !== 'all' ||
                     category !== 'all' ||
                     subCategory !== 'all' ||
-                    otherCategory !== 'all' ||
                     price !== 'all' ? (
                       <Button
                         className="btn btn-sm bg-secondary ms-2"
@@ -240,7 +239,12 @@ export default function SearchScreen() {
                   {products.map(
                     (product) =>
                       product.isVisible === true && (
-                        <Col key={product._id} sm={6} lg={4} className="mb-3">
+                        <Col
+                          key={product._id}
+                          sm={6}
+                          lg={4}
+                          className="mb-3 d-flex"
+                        >
                           <Product product={product}></Product>
                         </Col>
                       )

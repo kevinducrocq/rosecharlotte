@@ -1,7 +1,7 @@
 import { faEye } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React from 'react';
-import { Card, Button, Badge } from 'react-bootstrap';
+import { Card, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Rating from './Rating';
 
@@ -17,39 +17,39 @@ function Product(props) {
           alt={product.name}
         />
       </Link>
-      <Card.Body>
-        <div className="d-flex justify-content-between align-items-center">
+      <Card.Body className="d-flex flex-column">
+        <div className="d-flex flex-column">
           <Link to={`/product/${product.slug}`}>
             <Card.Title>{product.name}</Card.Title>
           </Link>
-          {!product.promoPrice && !product.soldePrice && (
-            <Card.Text className="text-nowrap fw-bold bg3 p-2 rounded-5">
-              {product.price} &euro;
-            </Card.Text>
-          )}
-          {product.promoPrice && (
-            <Card.Text className="d-flex align-items-center">
-              <div className="text-nowrap fw-bold p-2 rounded-5">
-                <s>{product.price} &euro;</s>
-              </div>
-              <div className="text-nowrap fw-bold bg3 p-2 rounded-5">
-                {product.promoPrice} &euro;
-              </div>
-            </Card.Text>
-          )}
-          {product.soldePrice && (
-            <Card.Text className="d-flex align-items-center">
-              <div className="text-nowrap fw-bold p-2 rounded-5">
-                <s>{product.price} &euro;</s>
-              </div>
-              <div className="text-nowrap fw-bold bg3 p-2 rounded-5">
-                {product.soldePrice} &euro;
-              </div>
-            </Card.Text>
-          )}
-        </div>
-        <div>
-          <Rating rating={product.rating} numReviews={product.numReviews} />
+          <div className="d-flex justify-content-between align-items-center flex-fill">
+            <Rating rating={product.rating} numReviews={product.numReviews} />
+            {!product.promoPrice && !product.soldePrice && (
+              <Card.Text className="text-nowrap fw-bold bg3 p-2 rounded-5">
+                {product.price} &euro;
+              </Card.Text>
+            )}
+            {product.promoPrice && (
+              <Card.Text className="d-flex align-items-center">
+                <div className="text-nowrap fw-bold p-2 rounded-5">
+                  <s>{product.price} &euro;</s>
+                </div>
+                <div className="text-nowrap fw-bold bg3 p-2 rounded-5">
+                  {product.promoPrice} &euro;
+                </div>
+              </Card.Text>
+            )}
+            {product.soldePrice && (
+              <Card.Text className="d-flex align-items-center">
+                <div className="text-nowrap fw-bold p-2 rounded-5">
+                  <s>{product.price} &euro;</s>
+                </div>
+                <div className="text-nowrap fw-bold bg3 p-2 rounded-5">
+                  {product.soldePrice} &euro;
+                </div>
+              </Card.Text>
+            )}
+          </div>
         </div>
 
         <div className="mt-2 mb-3">
@@ -57,9 +57,9 @@ function Product(props) {
             (countInStock, variant) => countInStock + variant.countInStock,
             product.countInStock
           ) > 0 ? (
-            <Badge bg="success"> En stock</Badge>
+            <span className="badge-stock">En stock</span>
           ) : (
-            <Badge bg="danger">Epuisé</Badge>
+            <span className="badge-epuise">Épuisé</span>
           )}
         </div>
 
