@@ -101,6 +101,8 @@ export default function ProductEditPage() {
   const [availableTissus, setAvailableTissus] = useState([]);
   const [availablePatches, setAvailablePatches] = useState([]);
 
+  const [initialized, setInitialized] = useState(false);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -134,6 +136,7 @@ export default function ProductEditPage() {
         setFils(data.fils);
         setTissus(data.tissus);
         setPatches(data.patches);
+        setTimeout(() => setInitialized(true), 0);
 
         dispatch({ type: 'FETCH_SUCCESS' });
       } catch (err) {
@@ -199,7 +202,9 @@ export default function ProductEditPage() {
   }, [userInfo.token]);
 
   useEffect(() => {
-    setSubCategory(null);
+    if(initialized) {
+      setSubCategory(null);
+    }
   }, [category]);
 
   const renderedCategories = [];
@@ -209,7 +214,6 @@ export default function ProductEditPage() {
         selected={category === mappedCategory}
         key={mappedCategory}
         value={mappedCategory}
-        onChange={(e) => setCategory(e.target.value)}
       >
         {mappedCategory}
       </option>
@@ -219,20 +223,17 @@ export default function ProductEditPage() {
   const renderedSubCategories = [];
   Object.keys(categories).forEach(function (mappedCategory) {
     if (category === mappedCategory) {
-      renderedSubCategories.push(
-        <>
-          {categories[mappedCategory].map((subCat) => {
-            return (
-              <option
-                value={subCat}
-                key={subCat}
-                selected={subCat === subCategory}
-              >
-                {subCat}
-              </option>
-            );
-          })}
-        </>
+        categories[mappedCategory].forEach((availableSubCat) => {
+          renderedSubCategories.push(
+            <option
+              value={availableSubCat}
+              key={availableSubCat}
+              selected={availableSubCat === subCategory}
+            >
+              {availableSubCat}
+            </option>
+          );
+        }
       );
     }
   });
@@ -676,6 +677,7 @@ export default function ProductEditPage() {
                         <Form.Select
                           aria-label="category select"
                           onChange={(e) => setCategory(e.target.value)}
+                          value={category}
                         >
                           <option>Choisissez...</option>
                           {renderedCategories}
@@ -717,6 +719,7 @@ export default function ProductEditPage() {
                     <Form.Select
                       aria-label="category select"
                       onChange={(e) => setSubCategory(e.target.value)}
+                      value={subCategory}
                     >
                       <option>Choisissez...</option>
                       {renderedSubCategories}
