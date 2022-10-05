@@ -291,7 +291,7 @@ function ProductPage() {
             <ListGroup.Item>
               <div className="d-flex flex-column justify-content-between p-2">
                 <div>
-                  <h1>{product.name}</h1>
+                  <h1 className="h2 mb-3">{product.name}</h1>
                   <h2 className="h6 text-muted">
                     {product.category}
                     {product.subCategory ? ' - ' + product.subCategory : ''}
@@ -326,9 +326,7 @@ function ProductPage() {
               <div className="p-2">
                 <p>{nl2br(product.description)}</p>
               </div>
-            </ListGroup.Item>
 
-            <ListGroup.Item>
               {product.variants.length >= 1 && (
                 <Form>
                   <Form.Label>Choisissez le modèle</Form.Label>
@@ -445,9 +443,11 @@ function ProductPage() {
               <div className="p-2">
                 <Button
                   disabled={
-                    (variantId || product.variants.length === 0) && patch
-                      ? false
-                      : true
+                    !(
+                      patch ||
+                      (!product.customizable &&
+                        (variantId || product.variants.length === 0))
+                    )
                   }
                   onClick={addToCartHandler}
                   className="bg1 w-100"
