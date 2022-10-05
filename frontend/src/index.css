@@ -65,7 +65,6 @@ main {
 }
 
 /*IMAGES*/
-
 .img-thumbnail {
   width: 80px;
   min-height: 80px;
@@ -101,7 +100,6 @@ main {
   text-decoration: none;
 }
 /*COULEURS GENERALES*/
-
 .bg1 {
   background-color: #f47c7c;
 }
@@ -119,7 +117,6 @@ main {
 }
 
 /*CARDS*/
-
 .hover-shadow:hover {
   box-shadow: 5px 5px 5px #fad4d4bb;
   transform: scale(1.025);
@@ -134,8 +131,30 @@ main {
   object-fit: cover;
 }
 
-/*NAVBAR*/
+.card-link {
+  text-decoration: none;
+  width: 100%;
+}
 
+.card-titre {
+  color: #f47c7c;
+}
+
+.card-price {
+  color: #000;
+}
+
+.product-card {
+  width: 100%;
+}
+
+.card-title-container {
+  min-height: 65px;
+  display: flex;
+  align-items: center;
+}
+
+/*NAVBAR*/
 .navbar {
   background-color: #f47c7c;
 }
@@ -180,6 +199,7 @@ main {
   font-weight: 400;
   color: #f47c7c;
 }
+
 .cart-link:hover {
   background-color: #ef9f9f;
   color: #fff2f2;
@@ -198,7 +218,6 @@ main {
 }
 
 /*CAROUSEL*/
-
 .carousel-item img {
   height: 450px;
   object-fit: cover;
@@ -220,7 +239,6 @@ main {
 }
 
 /*ETOILES NOTES*/
-
 .rating span {
   color: #000;
 }
@@ -234,6 +252,7 @@ main {
   text-align: center;
   border-radius: 5px;
 }
+
 /*BADGE EPUISE*/
 .badge-epuise {
   background-color: red;
@@ -269,6 +288,10 @@ main {
 .card a {
   text-decoration: none;
   color: #f47c7c;
+}
+
+.card-rating {
+  font-size: 90%;
 }
 
 /*

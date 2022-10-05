@@ -97,7 +97,7 @@ export default function AdminMenu(props) {
       >
         <Link to="/admin/patches">
           <FontAwesomeIcon icon={faBadge} />
-          <span className="ms-2">Patchs</span>
+          <span className="ms-2">Motifs broderie</span>
         </Link>
       </ListGroup.Item>
     </ListGroup>

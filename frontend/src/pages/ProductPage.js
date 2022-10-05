@@ -405,7 +405,7 @@ function ProductPage() {
 
                   {tissu && (
                     <Form.Group className="my-3">
-                      <Form.Label>Choisissez un patch</Form.Label>
+                      <Form.Label>Choisissez un motif broderie</Form.Label>
                       <Form.Select
                         onChange={(e) => {
                           setPatch(e.target.value);

@@ -114,6 +114,15 @@ export default function AdminCanvasMenu(props) {
                 <span className="ms-2">Tissu</span>
               </Link>
             </ListGroup.Item>
+            <ListGroup.Item
+              variant="flush"
+              className={props.link9 ? 'activee  py-3' : 'py-3'}
+            >
+              <Link to="/admin/patches">
+                <FontAwesomeIcon icon={faBadge} />
+                <span className="ms-2">Motifs broderie</span>
+              </Link>
+            </ListGroup.Item>
           </ListGroup>
         </Offcanvas.Body>
       </Offcanvas>

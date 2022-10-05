@@ -279,7 +279,7 @@ productRouter.get(
 );
 
 // PAGE BOUTIQUE
-const PAGE_SIZE = 6;
+const PAGE_SIZE = 24;
 productRouter.get(
   '/boutique/search',
   expressAsyncHandler(async (req, res) => {
@@ -305,7 +305,8 @@ productRouter.get(
 
     const categoryFilter = category && category !== 'all' ? { category } : {};
 
-    const subCategoryFilter = subCategory && subCategory !== 'all' ? { subCategory } : {};
+    const subCategoryFilter =
+      subCategory && subCategory !== 'all' ? { subCategory } : {};
 
     const priceFilter =
       price && price !== 'all'

@@ -27,8 +27,10 @@ export function orderAdminEmail(order, user) {
         ${item.variant?.name ?? ''} <br>
        <strong>Fil : </strong> ${item.fil ? item.fil : ''} <br>
        <strong>Tissu : </strong> ${item.tissu ? item.tissu : ''} <br>
-       <strong>Patch : </strong>${item.patch ? item.patch : ''} <br>
-       <strong>Texte : </strong>${item.customization ? item.customization : ''} <br>
+       <strong>Motif broderie : </strong>${item.patch ? item.patch : ''} <br>
+       <strong>Texte : </strong>${
+         item.customization ? item.customization : ''
+       } <br>
 
 
         </span>

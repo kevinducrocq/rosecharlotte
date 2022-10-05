@@ -252,7 +252,7 @@ export default function PlaceOrderPage() {
                         )}
                         {item.patch ? (
                           <div>
-                            <strong>Patch :</strong> {item.patch}
+                            <strong>Motif broderie :</strong> {item.patch}
                           </div>
                         ) : (
                           ''
