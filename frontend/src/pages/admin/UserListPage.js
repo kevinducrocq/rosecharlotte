@@ -70,11 +70,15 @@ export default function UserListScreen() {
         const { data } = await axios.get(`/api/users`, {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         });
-        const table = $(tableRef.current).DataTable({
-          language: {
-            url: 'https://cdn.datatables.net/plug-ins/1.12.1/i18n/fr-FR.json',
-          },
-        });
+        setTimeout(() => {
+          const table = $(tableRef.current).DataTable({
+            language: {
+              url: 'https://cdn.datatables.net/plug-ins/1.12.1/i18n/fr-FR.json',
+            },
+            order: [[5, 'desc']],
+          });
+        }, 500);
+
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {
         dispatch({
