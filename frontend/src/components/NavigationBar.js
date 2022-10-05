@@ -226,33 +226,6 @@ function NavigationBar() {
 
             <div className="d-none d-lg-flex flex-wrap">
               {renderedCategories}
-              <Link className="nav-link" to={'/'}>
-                Bla bla bla
-              </Link>
-              <Link className="nav-link" to={'/'}>
-                Bla bla bla
-              </Link>
-              <Link className="nav-link" to={'/'}>
-                Bla bla bla
-              </Link>
-              <Link className="nav-link" to={'/'}>
-                Bla bla bla
-              </Link>
-              <Link className="nav-link" to={'/'}>
-                Bla bla bla
-              </Link>
-              <Link className="nav-link" to={'/'}>
-                Bla bla bla
-              </Link>
-              <Link className="nav-link" to={'/'}>
-                Bla bla bla
-              </Link>
-              <Link className="nav-link" to={'/'}>
-                Bla bla bla
-              </Link>
-              <Link className="nav-link" to={'/'}>
-                Bla bla bla
-              </Link>
             </div>
 
             <div className="d-flex ms-auto">

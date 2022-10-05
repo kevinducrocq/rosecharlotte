@@ -18,6 +18,17 @@ function Product(props) {
           className="card-img-top img-fluid"
           alt={product.name}
         />
+
+        <div className="product-badge">
+          {product.variants.reduce(
+            (countInStock, variant) => countInStock + variant.countInStock,
+            product.countInStock
+          ) > 0 ? (
+            <span className="badge-stock">En stock</span>
+          ) : (
+            <span className="badge-epuise">Épuisé</span>
+          )}
+        </div>
         <Card.Body className="d-flex flex-column">
           <div className="d-flex flex-column flex-fill justify-content-space-between">
             <div className="card-title-container flex-fill">
@@ -51,17 +62,6 @@ function Product(props) {
                 </Card.Text>
               )}
             </div>
-          </div>
-
-          <div className="mt-2 mb-3">
-            {product.variants.reduce(
-              (countInStock, variant) => countInStock + variant.countInStock,
-              product.countInStock
-            ) > 0 ? (
-              <span className="badge-stock">En stock</span>
-            ) : (
-              <span className="badge-epuise">Épuisé</span>
-            )}
           </div>
         </Card.Body>
       </Card>

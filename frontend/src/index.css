@@ -149,6 +149,12 @@ main {
   width: 100%;
 }
 
+.product-badge {
+  top: 0.5rem;
+  right: 0.5rem;
+  position: absolute;
+}
+
 .card-title-container {
   display: flex;
   align-items: center;
