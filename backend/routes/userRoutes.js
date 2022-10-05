@@ -7,6 +7,15 @@ import transporter, { sender } from '../email.js';
 import { contactEmail } from '../emails/ContactEmail.js';
 import jwt from 'jsonwebtoken';
 
+function capitalizeFirstLetter(string) {
+  var splitStr = string.toLowerCase().split(' ');
+  for (var i = 0; i < splitStr.length; i++) {
+    splitStr[i] =
+      splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
+  }
+  return splitStr.join(' ');
+}
+
 const userRouter = express.Router();
 userRouter.put(
   '/profile',
@@ -27,12 +36,12 @@ userRouter.put(
       const updatedUser = await user.save();
       res.send({
         _id: updatedUser._id,
-        name: updatedUser.name,
+        name: capitalizeFirstLetter(updatedUser.name),
         email: updatedUser.email,
-        address: updatedUser.address,
+        address: capitalizeFirstLetter(updatedUser.address),
         zip: updatedUser.zip,
-        city: updatedUser.city,
-        country: updatedUser.country,
+        city: capitalizeFirstLetter(updatedUser.city),
+        country: capitalizeFirstLetter(updatedUser.country),
         isAdmin: updatedUser.isAdmin,
         token: generateToken(updatedUser),
       });
@@ -73,7 +82,7 @@ userRouter.put(
   expressAsyncHandler(async (req, res) => {
     const user = await User.findById(req.params.id);
     if (user) {
-      user.name = req.body.name || user.name;
+      user.name = capitalizeFirstLetter(req.body.name || user.name);
       user.email = req.body.email || user.email;
       user.isAdmin = Boolean(req.body.isAdmin);
 
@@ -139,7 +148,7 @@ userRouter.post(
     const user = await newUser.save();
     res.send({
       _id: user._id,
-      name: user.name,
+      name: capitalizeFirstLetter(user.name),
       email: user.email,
       isAdmin: user.isAdmin,
       token: generateToken(user),
