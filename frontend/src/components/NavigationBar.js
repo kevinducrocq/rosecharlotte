@@ -94,7 +94,12 @@ function NavigationBar() {
   const renderedCategories = [];
   Object.keys(categories).forEach(function (category) {
     renderedCategories.push(
-      <NavDropdown key={category} eventKey={category} title={category}>
+      <NavDropdown
+        key={category}
+        eventKey={category}
+        title={category}
+        className="dropdown-barre"
+      >
         <LinkContainer to={`/boutique/search?category=${category}`}>
           <NavDropdown.Item>Tous les produits {category}</NavDropdown.Item>
         </LinkContainer>
@@ -219,7 +224,36 @@ function NavigationBar() {
               <CategoriesCanvasMenu />
             </div>
 
-            <div className="d-none d-lg-flex">{renderedCategories}</div>
+            <div className="category-barre d-none d-lg-flex">
+              {renderedCategories}
+              <Link className="nav-link" to={'/'}>
+                Bla bla bla
+              </Link>
+              <Link className="nav-link" to={'/'}>
+                Bla bla bla
+              </Link>
+              <Link className="nav-link" to={'/'}>
+                Bla bla bla
+              </Link>
+              <Link className="nav-link" to={'/'}>
+                Bla bla bla
+              </Link>
+              <Link className="nav-link" to={'/'}>
+                Bla bla bla
+              </Link>
+              <Link className="nav-link" to={'/'}>
+                Bla bla bla
+              </Link>
+              <Link className="nav-link" to={'/'}>
+                Bla bla bla
+              </Link>
+              <Link className="nav-link" to={'/'}>
+                Bla bla bla
+              </Link>
+              <Link className="nav-link" to={'/'}>
+                Bla bla bla
+              </Link>
+            </div>
 
             <div className="d-flex ms-auto">
               {userInfo ? (

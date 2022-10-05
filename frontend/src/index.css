@@ -156,8 +156,13 @@ main {
 }
 
 /*NAVBAR*/
+
 .navbar {
   background-color: #f47c7c;
+}
+
+.category-barre {
+  overflow-x: hidden;
 }
 
 .menu-principal a {
