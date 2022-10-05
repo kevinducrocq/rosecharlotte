@@ -127,7 +127,8 @@ main {
 }
 
 .card-img-top {
-  height: 200px;
+  height: 220px;
+  object-position: center center;
   object-fit: cover;
 }
 
@@ -221,6 +222,7 @@ main {
 .carousel-item img {
   height: 450px;
   object-fit: cover;
+  /* object-position: center 0.2ch; */
   opacity: 0.75;
 }
 

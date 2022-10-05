@@ -259,8 +259,8 @@ export default function SearchScreen() {
                     to={getFilterUrl({ page: x + 1 })}
                   >
                     <Button
-                      className={Number(page) === x + 1 ? 'text-bold' : ''}
-                      variant="light"
+                      className={Number(page) === x + 1 ? '' : ''}
+                      variant={Number(page) === x + 1 ? 'secondary' : 'light'}
                     >
                       {x + 1}
                     </Button>

@@ -427,7 +427,7 @@ function ProductPage() {
 
                   {patch && (
                     <Form.Group className="my-3">
-                      <Form.Label>Texte à broder</Form.Label>
+                      <Form.Label>Texte à broder (facultatif)</Form.Label>
                       <Form.Control
                         value={customization}
                         placeholder="Charlotte, Rose..."
@@ -445,9 +445,7 @@ function ProductPage() {
               <div className="p-2">
                 <Button
                   disabled={
-                    ((variantId || product.variants.length === 0) &&
-                      !product.customizable) ||
-                    customization
+                    (variantId || product.variants.length === 0) && patch
                       ? false
                       : true
                   }
