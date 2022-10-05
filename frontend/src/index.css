@@ -157,6 +157,12 @@ main {
 .justify-content-space-between {
     justify-content: space-between;
 }
+
+.product-badge {
+    top: .5rem;
+    right: .5rem;
+    position: absolute;
+}
 /*NAVBAR*/
 
 .navbar {
