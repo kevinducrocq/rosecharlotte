@@ -243,7 +243,7 @@ export default function SearchScreen() {
                           key={product._id}
                           sm={6}
                           lg={4}
-                          className="mb-3 d-flex"
+                          className="mb-3 d-flex flex-column"
                         >
                           <Product product={product}></Product>
                         </Col>
