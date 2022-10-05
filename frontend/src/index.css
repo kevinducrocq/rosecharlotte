@@ -150,7 +150,6 @@ main {
 }
 
 .card-title-container {
-  min-height: 65px;
   display: flex;
   align-items: center;
 }
