@@ -43,20 +43,20 @@ function Product(props) {
               )}
               {product.promoPrice && (
                 <Card.Text className="d-flex align-items-center">
-                  <div className="text-nowrap fw-bold p-2 rounded-5">
+                  <div className="text-nowrap fw-bold p-2 rounded-5 card-price">
                     <s>{product.price} &euro;</s>
                   </div>
-                  <div className="text-nowrap fw-bold bg3 p-2 rounded-5">
+                  <div className="text-nowrap fw-bold bg3 p-2 rounded-5 card-price">
                     {product.promoPrice} &euro;
                   </div>
                 </Card.Text>
               )}
               {product.soldePrice && (
                 <Card.Text className="d-flex align-items-center">
-                  <div className="text-nowrap fw-bold p-2 rounded-5">
+                  <div className="text-nowrap fw-bold p-2 rounded-5 card-price">
                     <s>{product.price} &euro;</s>
                   </div>
-                  <div className="text-nowrap fw-bold bg3 p-2 rounded-5">
+                  <div className="text-nowrap fw-bold bg3 p-2 rounded-5 card-price">
                     {product.soldePrice} &euro;
                   </div>
                 </Card.Text>
