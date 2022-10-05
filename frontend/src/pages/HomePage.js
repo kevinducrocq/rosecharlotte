@@ -178,7 +178,7 @@ function HomePage() {
                       sm={6}
                       md={4}
                       lg={3}
-                      className="mb-3 d-flex"
+                      className="mb-3 d-flex flex-column"
                     >
                       <Product product={product}></Product>
                     </Col>

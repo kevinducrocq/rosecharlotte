@@ -9,21 +9,21 @@ function Product(props) {
   return (
     <Link
       key={product.slug}
-      className="card-link"
+      className="card-link flex-fill d-flex"
       to={`/product/${product.slug}`}
     >
-      <Card className="hover-shadow">
+      <Card className="hover-shadow flex-fill">
         <img
           src={product.image}
           className="card-img-top img-fluid"
           alt={product.name}
         />
         <Card.Body className="d-flex flex-column">
-          <div className="d-flex flex-column">
-            <div className="card-title-container">
+          <div className="d-flex flex-column flex-fill justify-content-space-between">
+            <div className="card-title-container flex-fill">
               <Card.Title className="card-titre h6">{product.name}</Card.Title>
             </div>
-            <div className="card-rating d-flex justify-content-between align-items-center flex-fill">
+            <div className="card-rating d-flex justify-content-between align-items-center ">
               <Rating rating={product.rating} numReviews={product.numReviews} />
               {!product.promoPrice && !product.soldePrice && (
                 <Card.Text className="card-price text-nowrap fw-bold bg3 p-2 rounded-5">
