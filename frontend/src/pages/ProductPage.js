@@ -249,7 +249,7 @@ function ProductPage() {
           <div className="d-flex flex-column align-items-end">
             {[product.image, ...product.images].map((x) => (
               <Col key={x}>
-                <div className="my-1">
+                <div className="my-1 align-items-start">
                   <Button
                     variant="outline-none"
                     onClick={() => setSelectedImage(x)}

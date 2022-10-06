@@ -332,7 +332,7 @@ LOGO
   }
   .product-vignettes-bottom {
     display: flex;
-    justify-content: space-between;
+    justify-content: start;
   }
   .carousel-item {
     max-height: 400px;
