@@ -345,67 +345,152 @@ export default function ProductAddPage() {
                     <div className="my-3 p-4 bg-white rounded-3 border">
                       <Row>
                         <Col className="bg-light p-3 rounded-3">
-                          <h6>Cocher les fils disponibles</h6>
-                          {availableFils.map((fil) => {
-                            return (
-                              <Form.Check
-                                key={fil._id}
-                                selected={fils.indexOf(fil._id) > -1}
-                                type="checkBox"
-                                label={fil.name}
-                                onChange={(e) => {
-                                  if (e.currentTarget.checked) {
-                                    setFils([...fils, fil._id]);
-                                  } else {
-                                    fils.splice(fils.indexOf(fil), 1);
-                                    setFils([...fils]);
-                                  }
-                                }}
-                              />
-                            );
-                          })}
+                          <div>
+                            <strong className="text-center">
+                              Fils disponibles
+                            </strong>
+                            <Form.Check
+                              className="mb-3"
+                              type="checkbox"
+                              name="selectAll"
+                              id="selectAll"
+                              onChange={() => {
+                                if (fils.length === availableFils.length) {
+                                  setFils([]);
+                                } else {
+                                  setFils(
+                                    availableFils.map((fil) => {
+                                      return fil._id;
+                                    })
+                                  );
+                                }
+                              }}
+                              checked={fils.length === availableFils.length}
+                              label="Sélectionner tout"
+                            />
+                          </div>
+                          <div className="colscroll">
+                            {availableFils.map((fil) => {
+                              return (
+                                <Form.Check
+                                  checked={fils.indexOf(fil._id) > -1}
+                                  key={fil._id}
+                                  selected={fils.indexOf(fil._id) > -1}
+                                  type="checkBox"
+                                  label={fil.name}
+                                  onChange={(e) => {
+                                    if (e.currentTarget.checked) {
+                                      setFils([...fils, fil._id]);
+                                    } else {
+                                      fils.splice(fils.indexOf(fil), 1);
+                                      setFils([...fils]);
+                                    }
+                                  }}
+                                />
+                              );
+                            })}
+                          </div>
                         </Col>
+
                         <Col className="bg-light p-3 rounded-3 mx-2">
-                          <h6>Cocher les tissus disponibles</h6>
-                          {availableTissus.map((tissu) => {
-                            return (
-                              <Form.Check
-                                key={tissu._id}
-                                selected={tissus.indexOf(tissu._id) > -1}
-                                type="checkBox"
-                                label={tissu.name}
-                                onChange={(e) => {
-                                  if (e.currentTarget.checked) {
-                                    setTissus([...tissus, tissu._id]);
-                                  } else {
-                                    tissus.splice(tissus.indexOf(tissu), 1);
-                                    setTissus([...tissus]);
-                                  }
-                                }}
-                              />
-                            );
-                          })}
+                          <div>
+                            <strong>Tissus disponibles</strong>
+                            <Form.Check
+                              className="mb-3"
+                              type="checkbox"
+                              name="selectAll"
+                              id="selectAll"
+                              onChange={() => {
+                                if (tissus.length === availableTissus.length) {
+                                  setTissus([]);
+                                } else {
+                                  setTissus(
+                                    availableTissus.map((tissu) => {
+                                      return tissu._id;
+                                    })
+                                  );
+                                }
+                              }}
+                              checked={tissus.length === availableTissus.length}
+                              label="Sélectionner tout"
+                            />
+                          </div>
+
+                          <div className="colscroll">
+                            {availableTissus.map((tissu) => {
+                              return (
+                                <Form.Check
+                                  key={tissu._id}
+                                  checked={tissus.indexOf(tissu._id) > -1}
+                                  selected={tissus.indexOf(tissu._id) > -1}
+                                  type="checkBox"
+                                  label={tissu.name}
+                                  onChange={(e) => {
+                                    if (e.currentTarget.checked) {
+                                      setTissus([...tissus, tissu._id]);
+                                    } else {
+                                      tissus.splice(tissus.indexOf(tissu), 1);
+                                      setTissus([...tissus]);
+                                    }
+                                  }}
+                                />
+                              );
+                            })}
+                          </div>
                         </Col>
-                        <Col className="bg-light p-3 rounded-3">
-                          <h6>Cocher les patchs disponibles</h6>
-                          {availablePatches.map((patch) => {
-                            return (
-                              <Form.Check
-                                key={patch._id}
-                                selected={patches.indexOf(patch._id) > -1}
-                                type="checkBox"
-                                label={patch.name}
-                                onChange={(e) => {
-                                  if (e.currentTarget.checked) {
-                                    setPatches([...patches, patch._id]);
-                                  } else {
-                                    patches.splice(patches.indexOf(patch), 1);
-                                    setTissus([...patches]);
-                                  }
-                                }}
-                              />
-                            );
-                          })}
+
+                        <Col className=" bg-light p-3 rounded-3">
+                          <div>
+                            <strong>Motifs disponibles</strong>
+                            <Form.Check
+                              className="mb-3"
+                              type="checkbox"
+                              name="selectAll"
+                              id="selectAll"
+                              onChange={() => {
+                                if (
+                                  patches.length === availablePatches.length
+                                ) {
+                                  setPatches([]);
+                                } else {
+                                  setPatches(
+                                    availablePatches.map((patch) => {
+                                      return patch._id;
+                                    })
+                                  );
+                                }
+                              }}
+                              checked={
+                                patches.length === availablePatches.length
+                              }
+                              label="Sélectionner tout"
+                            />
+
+                            <div className="colscroll">
+                              {availablePatches.map((patch) => {
+                                return (
+                                  <Form.Check
+                                    key={patch._id}
+                                    checked={patches.indexOf(patch._id) > -1}
+                                    selected={patches.indexOf(patch._id) > -1}
+                                    type="checkBox"
+                                    label={patch.name}
+                                    onChange={(e) => {
+                                      if (e.currentTarget.checked) {
+                                        setPatches([...patches, patch._id]);
+                                      } else {
+                                        patches.splice(
+                                          patches.indexOf(patch),
+                                          1
+                                        );
+                                        setTissus([...patches]);
+                                      }
+                                    }}
+                                  />
+                                );
+                              })}
+                            </div>
+                          </div>
                         </Col>
                       </Row>
                     </div>

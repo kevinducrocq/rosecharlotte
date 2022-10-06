@@ -19,6 +19,11 @@ h6 {
   height: 100vh;
 }
 
+.colscroll {
+  max-height: 300px;
+  overflow-y: scroll;
+}
+
 main {
   margin-top: 120px;
   flex: 1;
