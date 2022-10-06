@@ -1,5 +1,11 @@
 import axios from 'axios';
-import React, { useContext, useEffect, useReducer, useState } from 'react';
+import React, {
+  useContext,
+  useEffect,
+  useReducer,
+  useRef,
+  useState,
+} from 'react';
 import { toast } from 'react-toastify';
 import Button from 'react-bootstrap/Button';
 import { Helmet } from 'react-helmet-async';
@@ -13,6 +19,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Col, Container, Form, Row, Table } from 'react-bootstrap';
 import AdminMenu from '../../components/AdminMenu';
 import AdminCanvasMenu from '../../components/AdminCanvasMenu';
+
+import 'jquery/dist/jquery.min.js';
+//Datatable Modules
+import 'datatables.net-dt/js/dataTables.dataTables';
+import 'datatables.net-dt/css/jquery.dataTables.min.css';
+import $ from 'jquery';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -62,6 +74,9 @@ export default function PatchListPage() {
   const { state } = useContext(Store);
   const { userInfo } = state;
 
+  $.DataTable = require('datatables.net');
+  const tableRef = useRef();
+
   const [name, setName] = useState('');
 
   useEffect(() => {
@@ -71,7 +86,14 @@ export default function PatchListPage() {
         const { data } = await axios.get(`/api/patches`, {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         });
-
+        setTimeout(() => {
+          const table = $(tableRef.current).DataTable({
+            language: {
+              url: 'https://cdn.datatables.net/plug-ins/1.12.1/i18n/fr-FR.json',
+            },
+            order: [[0, 'desc']],
+          });
+        }, 500);
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {
         dispatch({
@@ -177,7 +199,7 @@ export default function PatchListPage() {
           ) : error ? (
             <MessageBox variant="danger">{error}</MessageBox>
           ) : (
-            <Table responsive className="table table-striped">
+            <Table ref={tableRef} responsive className="table table-striped">
               <thead>
                 <tr>
                   <th>Nom</th>

@@ -73,7 +73,7 @@ export default function CartPage() {
 
   return (
     <Container className="my-5">
-      <Breadcrumb>
+      <Breadcrumb className="d-none d-md-flex">
         <LinkContainer to={'/'} exact>
           <Breadcrumb.Item>Accueil</Breadcrumb.Item>
         </LinkContainer>

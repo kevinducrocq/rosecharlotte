@@ -217,7 +217,7 @@ function ProductPage() {
     <MessageBox variant="danger">{error}</MessageBox>
   ) : (
     <Container className="my-5">
-      <Breadcrumb>
+      <Breadcrumb className="d-none d-md-flex">
         <LinkContainer to={'/'} exact>
           <Breadcrumb.Item>Accueil</Breadcrumb.Item>
         </LinkContainer>

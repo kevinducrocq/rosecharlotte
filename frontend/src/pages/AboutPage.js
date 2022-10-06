@@ -6,7 +6,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 export default function AboutPage() {
   return (
     <Container className="my-5">
-      <Breadcrumb>
+      <Breadcrumb className="d-none d-md-flex">
         <LinkContainer to={'/'} exact>
           <Breadcrumb.Item>Accueil</Breadcrumb.Item>
         </LinkContainer>

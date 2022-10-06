@@ -412,31 +412,6 @@ productRouter.put(
   })
 );
 
-// CACHER UN COMMENTAIRE
-productRouter.put(
-  '/:id/review/:reviewId/hide',
-  isAuth,
-  isAdmin,
-  expressAsyncHandler(async (req, res) => {
-    const productId = req.params.id;
-    const product = await Product.findById(productId);
-
-    if (product) {
-      product.reviews.map((review) => {
-        if (review._id.toString() === req.params.reviewId) {
-          review.status = false;
-        }
-      });
-      const updatedReview = await product.save();
-      res
-        .status(201)
-        .send({ message: 'Commentaire caché', product: updatedReview });
-    } else {
-      res.status(404).send({ message: 'Commentaire non trouvé' });
-    }
-  })
-);
-
 // SUPPRIMER UN COMMENTAIRE
 productRouter.delete(
   '/:id/review/:reviewId',
@@ -452,6 +427,9 @@ productRouter.delete(
           review.remove();
         }
       });
+
+      product.numReviews = product.numReviews - 1;
+
       const updatedReview = await product.save();
       res
         .status(201)

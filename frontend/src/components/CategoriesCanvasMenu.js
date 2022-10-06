@@ -35,6 +35,7 @@ export default function CategoriesCanvasMenu() {
         <Accordion.Body>
           <div className="d-flex flex-column">
             <Link
+              onClick={handleClose}
               className="nav-link mb-2"
               to={`/boutique/search?category=${category}`}
             >
