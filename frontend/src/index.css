@@ -121,6 +121,10 @@ main {
   background-color: #fff2f2;
 }
 
+.gap {
+  line-height: 25px;
+}
+
 /*CARDS*/
 .hover-shadow:hover {
   box-shadow: 5px 5px 5px #fad4d4bb;
