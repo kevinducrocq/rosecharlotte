@@ -218,21 +218,21 @@ export default function CgvPage() {
       <div>
         <h3>9. Prix</h3>
         <p>
-          Les prix des Produits sont indiqués en Euros hors TVA (non
-          applicable). Les prix des Produits s'entendent hors frais de livraison
-          (port, emballage et confection du colis selon montants en vigueur). Le
-          montant des frais de livraison sera précisé dans le panier du Client,
-          avant validation définitive de la commande. L’intégralité du paiement
-          doit être réalisé lors de la commande. À aucun moment, les sommes
-          versées ne pourront être considérées comme des arrhes ou des acomptes.
-          Pour une livraison hors de l’Union Européenne, le client devra
-          acquitter les droits de douane, TVA ou autres taxes dues à l’occasion
-          de l’importation des produits dans le pays du lieu de livraison. Les
-          formalités qui s’y rapportent sont également à la charge exclusive du
-          client, sauf indication contraire. L’acheteur est seul responsable de
-          la vérification des possibilités d’importation des produits commandés
-          au regard du droit du territoire du pays de livraison. Toutefois un
-          prix ne pourra pas être modifié une fois la commande de l'Utilisateur
+          Les prix des Produits sont indiqués en Euros TTC. Les prix des
+          Produits s'entendent hors frais de livraison (port, emballage et
+          confection du colis selon montants en vigueur). Le montant des frais
+          de livraison sera précisé dans le panier du Client, avant validation
+          définitive de la commande. L’intégralité du paiement doit être réalisé
+          lors de la commande. À aucun moment, les sommes versées ne pourront
+          être considérées comme des arrhes ou des acomptes. Pour une livraison
+          hors de l’Union Européenne, le client devra acquitter les droits de
+          douane, TVA ou autres taxes dues à l’occasion de l’importation des
+          produits dans le pays du lieu de livraison. Les formalités qui s’y
+          rapportent sont également à la charge exclusive du client, sauf
+          indication contraire. L’acheteur est seul responsable de la
+          vérification des possibilités d’importation des produits commandés au
+          regard du droit du territoire du pays de livraison. Toutefois un prix
+          ne pourra pas être modifié une fois la commande de l'Utilisateur
           validée.
         </p>
       </div>

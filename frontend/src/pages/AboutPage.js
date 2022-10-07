@@ -22,7 +22,7 @@ export default function AboutPage() {
           <div className="row align-items-center">
             <Col md={4}>
               <Image
-                src="https://picsum.photos/id/1/600/800"
+                src="../images/about1.jpg"
                 className="img-fluid rounded-4 shadow"
               />
             </Col>
@@ -32,24 +32,25 @@ export default function AboutPage() {
                 Touche à tout, passionnée (par beaucoup trop de choses selon son
                 mari !) de couture, de tissus… c’est un accident de la vie qui a
                 poussé Marie, maman de trois petits cœurs, créative dans l’âme,
-                à entreprendre cette belle aventure. C’est en 2018 que « Rose
-                Charlotte &amp; compagnie » voit le jour. Le nom de la marque
-                est né en 2012 lorsque cette future maman arpentait les magasins
-                de tissus afin de préparer l’arrivée de ses jumelles. Comme une
-                boutade, le nom était lancé, l’idée était là mais il fallait
-                sauter le pas ! Difficile de laisser son cartable et ses copies,
-                pour se lancer dans la grande aventure de l'entrepreneuriat !
-                2018 marque l’arrivée de Léopold. Un bébé si paisible et calme
-                qu’il en oublie même de respirer durant son sommeil… Encore une
-                fois… une bonne étoile veille et l’histoire se finit bien, comme
-                dans les contes de fées. Alors la magie se poursuit et c’est
-                portée par son mari et ses enfants qu’elle franchit le cap et
-                donne réellement vie à « Rose Charlotte &amp; compagnie ». C’est
-                dans cet univers fait de douceur et de poésie qu’elle trouve son
-                équilibre et s’accomplit enfin. Apporter de la joie, des
-                sourires, de la gaieté, offrir à chacun la possibilité de créer
-                son modèle, choisir parmi sa sélection de tissus, personnaliser,
-                broder… c’est ce qui la fait vibrer !
+                à entreprendre cette belle aventure. <br />
+                C’est en 2018 que « Rose Charlotte &amp; compagnie » voit le
+                jour. Le nom de la marque est né en 2012 lorsque cette future
+                maman arpentait les magasins de tissus afin de préparer
+                l’arrivée de ses jumelles. Comme une boutade, le nom était
+                lancé, l’idée était là mais il fallait sauter le pas ! Difficile
+                de laisser son cartable et ses copies, pour se lancer dans la
+                grande aventure de l'entrepreneuriat ! 2018 marque l’arrivée de
+                Léopold. Un bébé si paisible et calme qu’il en oublie même de
+                respirer durant son sommeil… Encore une fois… une bonne étoile
+                veille et l’histoire se finit bien, comme dans les contes de
+                fées. <br /> Alors la magie se poursuit et c’est portée par son
+                mari et ses enfants qu’elle franchit le cap et donne réellement
+                vie à « Rose Charlotte &amp; compagnie ». C’est dans cet univers
+                fait de douceur et de poésie qu’elle trouve son équilibre et
+                s’accomplit enfin. Apporter de la joie, des sourires, de la
+                gaieté, offrir à chacun la possibilité de créer son modèle,
+                choisir parmi sa sélection de tissus, personnaliser, broder…
+                c’est ce qui la fait vibrer !
               </p>
             </Col>
           </div>
@@ -83,7 +84,7 @@ export default function AboutPage() {
             </Col>
             <Col md={4}>
               <Image
-                src="https://picsum.photos/id/1/600/800"
+                src="../images/about1.jpg"
                 className="img-fluid rounded-4"
               />
             </Col>
