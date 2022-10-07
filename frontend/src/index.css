@@ -239,8 +239,6 @@ main {
 .carousel-item img {
   height: 450px;
   object-fit: cover;
-  /* object-position: center 0.2ch; */
-  opacity: 0.95;
 }
 
 .carousel-caption {

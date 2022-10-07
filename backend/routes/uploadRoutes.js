@@ -23,7 +23,10 @@ uploadRouter.post(
     const streamUpload = (req) => {
       return new Promise((resolve, reject) => {
         const stream = cloudinary.uploader.upload_stream(
-          { quality: 50 },
+          {
+            quality: 50,
+            height: 1000,
+          },
           (error, result) => {
             if (result) {
               resolve(result);
