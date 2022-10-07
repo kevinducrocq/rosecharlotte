@@ -107,7 +107,7 @@ function NavigationBar() {
         {categories[category].map((key) => {
           return (
             <LinkContainer
-              to={`/boutique/search?subCategory=${key}`}
+              to={`/boutique/search?category=${category}&subCategory=${key}`}
               className="nav-link text-dark"
               key={key}
             >

@@ -114,7 +114,7 @@ export default function SearchScreen() {
               return (
                 <div key={key}>
                   <Link
-                    to={`/boutique/search?subCategory=${key}`}
+                    to={`/boutique/search?category=${category}&subCategory=${key}`}
                     className="nav-link sub-cat-link p-2 rounded-3"
                   >
                     {key}
@@ -133,12 +133,14 @@ export default function SearchScreen() {
 
   if(subCategory && categories) {
     Object.keys(categories).forEach((currentCat) => {
-      categories[currentCat].forEach((currentSubCat) => {
-        if (subCategory == currentSubCat) {
-          selectedCategory = currentCat;
-          selectedSubCategory = currentSubCat;
-        }
-      });
+      if(category == 'all' || category == currentCat) {
+        categories[currentCat].forEach((currentSubCat) => {
+          if (subCategory == currentSubCat) {
+            selectedCategory = currentCat;
+            selectedSubCategory = currentSubCat;
+          }
+        });
+      }
     });
   }
 
@@ -157,7 +159,7 @@ export default function SearchScreen() {
               <Breadcrumb.Item active={selectedSubCategory == 'all'}>{selectedCategory}</Breadcrumb.Item>
             </LinkContainer>
             {selectedSubCategory != 'all'  && (
-              <LinkContainer to={`/boutique/search?subCategory=${selectedSubCategory}`}>
+              <LinkContainer to={`/boutique/search?category=${selectedCategory}&subCategory=${selectedSubCategory}`}>
                 <Breadcrumb.Item active={true}>
                   {selectedSubCategory}
                 </Breadcrumb.Item>
