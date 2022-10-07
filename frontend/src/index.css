@@ -330,10 +330,12 @@ LOGO
   .product-vignettes {
     display: none;
   }
+
   .product-vignettes-bottom {
     display: flex;
     justify-content: start;
   }
+
   .carousel-item {
     max-height: 400px;
   }

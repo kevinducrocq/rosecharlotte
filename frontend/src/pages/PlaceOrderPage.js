@@ -73,17 +73,17 @@ export default function PlaceOrderPage() {
         return 0;
       }
 
-      if (totalWeight <= 200 && newCart.itemsPriceWithDiscount < 85) {
+      if (totalWeight <= 200 && newCart.itemsPriceWithDiscount < 99) {
         return 4.4;
       } else if (
         totalWeight >= 200 &&
         totalWeight <= 250 &&
-        newCart.itemsPriceWithDiscount < 85
+        newCart.itemsPriceWithDiscount < 99
       ) {
         return 5.4;
-      } else if (totalWeight >= 250 && newCart.itemsPriceWithDiscount < 85) {
+      } else if (totalWeight >= 250 && newCart.itemsPriceWithDiscount < 99) {
         return 6.9;
-      } else if (newCart.itemsPriceWithDiscount >= 85) {
+      } else if (newCart.itemsPriceWithDiscount >= 99) {
         return 0;
       }
     };

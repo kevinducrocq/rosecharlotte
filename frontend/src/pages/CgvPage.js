@@ -287,7 +287,7 @@ export default function CgvPage() {
         </Table>
         <p>
           Les frais d’envois sont offerts pour toute commande égale ou
-          supérieure à 85 euros livrée en France métropolitaine. Par ailleurs,
+          supérieure à 99 euros livrée en France métropolitaine. Par ailleurs,
           il est possible de venir retirer gratuitement votre commande dans
           notre atelier au 20 rue Principale à Ecquedecques sur rendez-vous.
         </p>
