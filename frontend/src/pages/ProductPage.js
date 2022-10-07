@@ -227,7 +227,7 @@ function ProductPage() {
           <Breadcrumb.Item>{product.category}</Breadcrumb.Item>
         </LinkContainer>
         <LinkContainer
-          to={`/boutique/search?subCategory=${product.subCategory}`}
+          to={`/boutique/search?category=${product.category}&subCategory=${product.subCategory}`}
         >
           <Breadcrumb.Item>{product.subCategory}</Breadcrumb.Item>
         </LinkContainer>

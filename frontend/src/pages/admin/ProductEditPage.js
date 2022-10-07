@@ -426,8 +426,8 @@ export default function ProductEditPage() {
                             <Form.Check
                               className="mb-3"
                               type="checkbox"
-                              name="selectAll"
-                              id="selectAll"
+                              name="selectAllFils"
+                              id="selectAllFils"
                               onChange={() => {
                                 if (fils.length === availableFils.length) {
                                   setFils([]);
@@ -449,9 +449,10 @@ export default function ProductEditPage() {
                                 <Form.Check
                                   checked={fils.indexOf(fil._id) > -1}
                                   key={fil._id}
-                                  selected={fils.indexOf(fil._id) > -1}
-                                  type="checkBox"
+                                  id={fil._id}
+                                  type="checkbox"
                                   label={fil.name}
+                                  name={fil.name}
                                   onChange={(e) => {
                                     if (e.currentTarget.checked) {
                                       setFils([...fils, fil._id]);
@@ -472,8 +473,8 @@ export default function ProductEditPage() {
                             <Form.Check
                               className="mb-3"
                               type="checkbox"
-                              name="selectAll"
-                              id="selectAll"
+                              name="selectAllTissus"
+                              id="selectAllTissus"
                               onChange={() => {
                                 if (tissus.length === availableTissus.length) {
                                   setTissus([]);
@@ -495,9 +496,10 @@ export default function ProductEditPage() {
                               return (
                                 <Form.Check
                                   key={tissu._id}
+                                  id={tissu._id}
                                   checked={tissus.indexOf(tissu._id) > -1}
-                                  selected={tissus.indexOf(tissu._id) > -1}
-                                  type="checkBox"
+                                  type="checkbox"
+                                  name={tissu.name}
                                   label={tissu.name}
                                   onChange={(e) => {
                                     if (e.currentTarget.checked) {
@@ -519,8 +521,8 @@ export default function ProductEditPage() {
                             <Form.Check
                               className="mb-3"
                               type="checkbox"
-                              name="selectAll"
-                              id="selectAll"
+                              name="selectAllMotifs"
+                              id="selectAllMotifs"
                               onChange={() => {
                                 if (
                                   patches.length === availablePatches.length
@@ -545,9 +547,10 @@ export default function ProductEditPage() {
                                 return (
                                   <Form.Check
                                     key={patch._id}
+                                    id={patch._id}
                                     checked={patches.indexOf(patch._id) > -1}
-                                    selected={patches.indexOf(patch._id) > -1}
-                                    type="checkBox"
+                                    type="checkbox"
+                                    name={patch.name}
                                     label={patch.name}
                                     onChange={(e) => {
                                       if (e.currentTarget.checked) {

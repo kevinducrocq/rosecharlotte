@@ -114,7 +114,7 @@ export default function SearchScreen() {
               return (
                 <div key={key}>
                   <Link
-                    to={`/boutique/search?subCategory=${key}`}
+                    to={`/boutique/search?category=${category}&subCategory=${key}`}
                     className="nav-link sub-cat-link p-2 rounded-3"
                   >
                     {key}
@@ -128,6 +128,22 @@ export default function SearchScreen() {
     );
   });
 
+  let selectedCategory = category;
+  let selectedSubCategory = subCategory;
+
+  if(subCategory && categories) {
+    Object.keys(categories).forEach((currentCat) => {
+      if(category == 'all' || category == currentCat) {
+        categories[currentCat].forEach((currentSubCat) => {
+          if (subCategory == currentSubCat) {
+            selectedCategory = currentCat;
+            selectedSubCategory = currentSubCat;
+          }
+        });
+      }
+    });
+  }
+
   return (
     <Container className="my-5">
       <Breadcrumb className="d-none d-md-flex">
@@ -137,14 +153,20 @@ export default function SearchScreen() {
         <LinkContainer to={'/boutique/search'}>
           <Breadcrumb.Item>Boutique</Breadcrumb.Item>
         </LinkContainer>
-        <LinkContainer to={`/boutique/search?category=${category}`}>
-          <Breadcrumb.Item>{category === 'all' ? 'tous' : ''}</Breadcrumb.Item>
-        </LinkContainer>
-        <LinkContainer to={`/boutique/search?subCategory=${subCategory}`}>
-          <Breadcrumb.Item active>
-            {subCategory === 'all' ? 'tous' : 'tous'}
-          </Breadcrumb.Item>
-        </LinkContainer>
+        {selectedCategory != 'all' && (
+          <>
+            <LinkContainer to={`/boutique/search?category=${selectedCategory}`}>
+              <Breadcrumb.Item active={selectedSubCategory == 'all'}>{selectedCategory}</Breadcrumb.Item>
+            </LinkContainer>
+            {selectedSubCategory != 'all'  && (
+              <LinkContainer to={`/boutique/search?category=${selectedCategory}&subCategory=${selectedSubCategory}`}>
+                <Breadcrumb.Item active={true}>
+                  {selectedSubCategory}
+                </Breadcrumb.Item>
+              </LinkContainer>
+            )}
+          </>
+        )}
       </Breadcrumb>
 
       <Helmet>

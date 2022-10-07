@@ -45,7 +45,7 @@ export default function CategoriesCanvasMenu() {
               return (
                 <Link
                   key={key}
-                  to={`/boutique/search?subCategory=${key}`}
+                  to={`/boutique/search?category=${category}&subCategory=${key}`}
                   className="nav-link my-2"
                   onClick={handleClose}
                 >
@@ -71,7 +71,7 @@ export default function CategoriesCanvasMenu() {
           return (
             <LinkContainer
               key={key}
-              to={`/boutique/search?subCategory=${key}`}
+              to={`/boutique/search?category=${category}&subCategory=${key}`}
               className="nav-link text-dark"
             >
               <NavDropdown.Item>{key}</NavDropdown.Item>
