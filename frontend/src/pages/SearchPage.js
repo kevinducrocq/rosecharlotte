@@ -131,11 +131,11 @@ export default function SearchScreen() {
   let selectedCategory = category;
   let selectedSubCategory = subCategory;
 
-  if(subCategory && categories) {
+  if (subCategory && categories) {
     Object.keys(categories).forEach((currentCat) => {
-      if(category == 'all' || category == currentCat) {
+      if (category === 'all' || category === currentCat) {
         categories[currentCat].forEach((currentSubCat) => {
-          if (subCategory == currentSubCat) {
+          if (subCategory === currentSubCat) {
             selectedCategory = currentCat;
             selectedSubCategory = currentSubCat;
           }
@@ -156,10 +156,14 @@ export default function SearchScreen() {
         {selectedCategory != 'all' && (
           <>
             <LinkContainer to={`/boutique/search?category=${selectedCategory}`}>
-              <Breadcrumb.Item active={selectedSubCategory == 'all'}>{selectedCategory}</Breadcrumb.Item>
+              <Breadcrumb.Item active={selectedSubCategory == 'all'}>
+                {selectedCategory}
+              </Breadcrumb.Item>
             </LinkContainer>
-            {selectedSubCategory != 'all'  && (
-              <LinkContainer to={`/boutique/search?category=${selectedCategory}&subCategory=${selectedSubCategory}`}>
+            {selectedSubCategory != 'all' && (
+              <LinkContainer
+                to={`/boutique/search?category=${selectedCategory}&subCategory=${selectedSubCategory}`}
+              >
                 <Breadcrumb.Item active={true}>
                   {selectedSubCategory}
                 </Breadcrumb.Item>
@@ -243,7 +247,7 @@ export default function SearchScreen() {
                         className="btn btn-sm bg-secondary ms-2"
                         onClick={() => navigate('/boutique/search')}
                       >
-                        <FontAwesomeIcon icon={faTimesCircle} /> Effacer :
+                        <FontAwesomeIcon icon={faTimesCircle} /> Effacer
                         <Badge bg="secondary">
                           {query !== 'all' && ' ' + '' + query + ''}
                         </Badge>
