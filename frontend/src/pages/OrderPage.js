@@ -53,6 +53,7 @@ function reducer(state, action) {
     case 'IS_PAID_REQUEST':
       return { ...state, loadingIsPaid: true };
     case 'IS_PAID_SUCCESS':
+      console.log('coucou');
       return { ...state, loadingIsPaid: false, successIsPaid: true };
     case 'IS_PAID_FAIL':
       return { ...state, loadingIsPaid: false };
@@ -134,6 +135,8 @@ export default function OrderPage() {
     toast.error(getError(err));
   }
 
+  console.log(successIsPaid);
+
   useEffect(() => {
     const fetchOrder = async () => {
       try {
@@ -165,6 +168,7 @@ export default function OrderPage() {
         dispatch({ type: 'PAY_RESET' });
       }
       if (successIsPaid) {
+        console.log('coucou2');
         dispatch({ type: 'IS_PAID_RESET' });
       }
       if (successDeliver) {

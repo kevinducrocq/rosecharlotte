@@ -18,34 +18,32 @@ const orderRouter = express.Router();
 orderRouter.use(cors());
 
 const setOrderPaid = async (order, res, paymentResult) => {
-  if (order) {
-    order.isPaid = true;
-    order.paidAt = Date.now();
-    order.paymentResult = paymentResult;
+  order.isPaid = true;
+  order.paidAt = Date.now();
+  order.paymentResult = paymentResult;
 
-    const user = await User.findOne({ _id: order.user.toString() });
-    await transporter.sendMail({
-      from: sender,
-      to: user.email,
-      ...orderEmail(order, user),
-    });
-    await transporter.sendMail({
-      from: sender,
-      to: sender,
-      ...orderAdminEmail(order, user),
-    });
+  const user = await User.findOne({
+    _id: order.user?._id?.toString() ?? order.user.toString(),
+  });
+  await transporter.sendMail({
+    from: sender,
+    to: user.email,
+    ...orderEmail(order, user),
+  });
+  await transporter.sendMail({
+    from: sender,
+    to: sender,
+    ...orderAdminEmail(order, user),
+  });
 
-    updateStock(order);
+  updateStock(order);
 
-    const updatedOrder = await order.save();
+  const updatedOrder = await order.save();
 
-    res.send({
-      message: 'Commande payée',
-      order: updatedOrder,
-    });
-  } else {
-    res.status(404).send({ message: 'Commande non trouvée' });
-  }
+  res.send({
+    message: 'Commande payée',
+    order: updatedOrder,
+  });
 };
 
 const updateStock = async (order) => {
@@ -110,7 +108,7 @@ orderRouter.post('/stripe/charge', cors(), async (req, res) => {
     setOrderPaid(order, res, {
       id: id,
       status: payment.status,
-      update_time: (new Date()).toISOString(),
+      update_time: new Date().toISOString(),
       email_address: order.user.email,
     });
 
@@ -296,12 +294,16 @@ orderRouter.put(
       'user',
       'email name'
     );
-    setOrderPaid(order, res, {
-      id: req.body.id,
-      status: req.body.status,
-      update_time: req.body.update_time,
-      email_address: req.body.email_address,
-    });
+    if (order) {
+      setOrderPaid(order, res, {
+        id: req.body.id,
+        status: req.body.status,
+        update_time: req.body.update_time,
+        email_address: req.body.email_address,
+      });
+    } else {
+      res.status(404).send({ message: 'Commande non trouvée' });
+    }
   })
 );
 

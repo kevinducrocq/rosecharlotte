@@ -31,7 +31,7 @@ const CheckoutForm = ({ order, reducer }) => {
         });
         if (response.data.success) {
           dispatch({ type: 'IS_PAID_SUCCESS' });
-          toast.success('La commande a été marquée comme payée');
+          toast.success('Paiement accepté, merci !');
         }
       } catch (error) {
         dispatch({ type: 'IS_PAID_FAIL' });
