@@ -407,7 +407,7 @@ export default function OrderPage() {
                           />
                         </div>
                         <hr />
-                        <div>
+                        {/* <div>
                           <StripeContainer
                             onSuccess={() => {
                               setRefresh(refresh + 1);
@@ -415,7 +415,7 @@ export default function OrderPage() {
                             order={order}
                             reducer={reducer}
                           />
-                        </div>
+                        </div> */}
                       </>
                     )}
                     {loadingPay && <LoadingBox></LoadingBox>}

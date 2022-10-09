@@ -100,6 +100,8 @@ orderRouter.post('/stripe/charge', cors(), async (req, res) => {
       confirm: true,
     });
 
+    const confirmPayment = await stripe.confirmCardPayment(data.client);
+
     setOrderPaid(order, res, {
       id: id,
       status: payment.status,
