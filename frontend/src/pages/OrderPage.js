@@ -20,6 +20,8 @@ import {
 } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
+import StripeContainer from '../components/StripeContainer';
+
 function reducer(state, action) {
   switch (action.type) {
     case 'FETCH_REQUEST':
@@ -385,13 +387,19 @@ export default function OrderPage() {
                     {isPending ? (
                       <LoadingBox />
                     ) : (
-                      <div>
-                        <PayPalButtons
-                          createOrder={createOrder}
-                          onApprove={onApprove}
-                          onError={onError}
-                        />
-                      </div>
+                      <>
+                        <div>
+                          <PayPalButtons
+                            createOrder={createOrder}
+                            onApprove={onApprove}
+                            onError={onError}
+                          />
+                        </div>
+                        <hr />
+                        <div>
+                          <StripeContainer order={order} reducer={reducer} />
+                        </div>
+                      </>
                     )}
                     {loadingPay && <LoadingBox></LoadingBox>}
                   </ListGroup.Item>

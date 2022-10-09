@@ -9,8 +9,49 @@ import transporter, { sender } from '../email.js';
 import { orderEmail } from '../emails/OrderEmail.js';
 import { orderAdminEmail } from '../emails/OrderAdminEmail.js';
 import { sentOrderEmail } from '../emails/SentOrderEmail.js';
+import Stripe from 'stripe';
+import cors from 'cors';
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 const orderRouter = express.Router();
+orderRouter.use(cors());
+
+const setOrderPaid = async (order, res, req) => {
+  if (order) {
+    order.isPaid = true;
+    order.paidAt = Date.now();
+    order.paymentResult = {
+      id: req.body.id,
+      status: req.body.status,
+      update_time: req.body.update_time,
+      email_address: req.body.email_address,
+    };
+
+    const user = await User.findOne({ _id: order.user.toString() });
+    await transporter.sendMail({
+      from: sender,
+      to: user.email,
+      ...orderEmail(order, user),
+    });
+    await transporter.sendMail({
+      from: sender,
+      to: sender,
+      ...orderAdminEmail(order, user),
+    });
+
+    updateStock(order);
+
+    const updatedOrder = await order.save();
+
+    res.send({
+      message: 'Commande payée',
+      order: updatedOrder,
+    });
+  } else {
+    res.status(404).send({ message: 'Commande non trouvée' });
+  }
+};
 
 const updateStock = async (order) => {
   const { orderItems } = order;
@@ -58,6 +99,34 @@ orderRouter.get(
   })
 );
 
+orderRouter.post('/stripe/charge', cors(), async (req, res) => {
+  let { amount, id, orderId } = req.body;
+  let order = await Order.findById(orderId).populate('user', 'email name');
+  console.log('amount & id', amount, id);
+  try {
+    const payment = await stripe.paymentIntents.create({
+      amount: amount,
+      currency: 'EUR',
+      description: 'Rose Charlotte et Compagnie',
+      payment_method: id,
+      confirm: true,
+    });
+
+    setOrderPaid(order, res);
+
+    res.json({
+      message: 'Paiement réussi',
+      success: true,
+    });
+  } catch (error) {
+    console.log('Erreur', error);
+    res.json({
+      message: 'Paiement echoué',
+      success: false,
+    });
+  }
+});
+
 orderRouter.post(
   '/',
   isAuth,
@@ -84,19 +153,6 @@ orderRouter.post(
     if (order.paymentMethod === 'Chèque') {
       updateStock(order);
     }
-
-    const user = await User.findOne({ _id: order.user.toString() });
-    await transporter.sendMail({
-      from: sender,
-      to: user.email,
-      ...orderEmail(order, user),
-    });
-    await transporter.sendMail({
-      from: sender,
-      to: sender,
-      ...orderAdminEmail(order, user),
-    });
-
     res.status(201).send({ message: 'Nouvelle commande crée', order });
   })
 );
@@ -240,28 +296,7 @@ orderRouter.put(
       'user',
       'email name'
     );
-
-    if (order) {
-      order.isPaid = true;
-      order.paidAt = Date.now();
-      order.paymentResult = {
-        id: req.body.id,
-        status: req.body.status,
-        update_time: req.body.update_time,
-        email_address: req.body.email_address,
-      };
-
-      updateStock(order);
-
-      const updatedOrder = await order.save();
-
-      res.send({
-        message: 'Commande payée',
-        order: updatedOrder,
-      });
-    } else {
-      res.status(404).send({ message: 'Commande non trouvée' });
-    }
+    setOrderPaid(order, res);
   })
 );
 
