@@ -17,16 +17,11 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const orderRouter = express.Router();
 orderRouter.use(cors());
 
-const setOrderPaid = async (order, res, req) => {
+const setOrderPaid = async (order, res, paymentResult) => {
   if (order) {
     order.isPaid = true;
     order.paidAt = Date.now();
-    order.paymentResult = {
-      id: req.body.id,
-      status: req.body.status,
-      update_time: req.body.update_time,
-      email_address: req.body.email_address,
-    };
+    order.paymentResult = paymentResult;
 
     const user = await User.findOne({ _id: order.user.toString() });
     await transporter.sendMail({
@@ -112,7 +107,12 @@ orderRouter.post('/stripe/charge', cors(), async (req, res) => {
       confirm: true,
     });
 
-    setOrderPaid(order, res);
+    setOrderPaid(order, res, {
+      id: id,
+      status: payment.status,
+      update_time: (new Date()).toISOString(),
+      email_address: order.user.email,
+    });
 
     res.json({
       message: 'Paiement réussi',
@@ -296,7 +296,12 @@ orderRouter.put(
       'user',
       'email name'
     );
-    setOrderPaid(order, res);
+    setOrderPaid(order, res, {
+      id: req.body.id,
+      status: req.body.status,
+      update_time: req.body.update_time,
+      email_address: req.body.email_address,
+    });
   })
 );
 
