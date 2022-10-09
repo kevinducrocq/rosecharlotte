@@ -23,11 +23,21 @@ export function orderEmail(order, user) {
             <span>
               ${item.name} <br />
               ${item.variant?.name ?? ''} <br>
-              <strong>Fil : </strong> ${item.fil ? item.fil : ''} <br>
-              <strong>Tissu : </strong> ${item.tissu ? item.tissu : ''} <br>
-              <strong>Motif broderie : </strong>${
-                item.patch ? item.patch : ''
-              } <br>
+              ${
+                item.fil ? '<strong> Fil ' + item.fil + ' </strong> <br />' : ''
+              }
+              ${
+                item.tissu
+                  ? '<strong> Tissu ' + item.tissu + ' </strong> <br />'
+                  : ''
+              }
+              ${
+                item.patch
+                  ? '<strong> Motif broderie : ' +
+                    item.patch +
+                    ' </strong> <br />'
+                  : ''
+              }
               <strong>Texte : </strong>${
                 item.customization ? item.customization : ''
               } <br>

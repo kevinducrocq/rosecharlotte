@@ -131,6 +131,10 @@ main {
   transform: scale(1.025);
 }
 
+.paypal-button.paypal-button-number-1.paypal-button-layout-vertical.paypal-button-shape-rect.paypal-button-number-multiple.paypal-button-env-production.paypal-button-color-black.paypal-button-text-color-white.paypal-logo-color-white {
+  display: none !important;
+}
+
 .card {
   border: solid 2px #f1f1f1;
 }

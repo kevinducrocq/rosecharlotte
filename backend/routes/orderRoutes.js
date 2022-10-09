@@ -39,11 +39,6 @@ const setOrderPaid = async (order, res, paymentResult) => {
   updateStock(order);
 
   const updatedOrder = await order.save();
-
-  res.send({
-    message: 'Commande payée',
-    order: updatedOrder,
-  });
 };
 
 const updateStock = async (order) => {
@@ -300,6 +295,10 @@ orderRouter.put(
         status: req.body.status,
         update_time: req.body.update_time,
         email_address: req.body.email_address,
+      });
+      res.send({
+        message: 'Commande payée',
+        order: updatedOrder,
       });
     } else {
       res.status(404).send({ message: 'Commande non trouvée' });

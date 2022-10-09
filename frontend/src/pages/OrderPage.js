@@ -75,6 +75,7 @@ export default function OrderPage() {
   const { id: orderId } = params;
   const navigate = useNavigate();
   const [showModalCheque, setShowModalCheque] = useState(false);
+  const [refresh, setRefresh] = useState(1);
 
   const [
     {
@@ -99,6 +100,7 @@ export default function OrderPage() {
     loadingIsPaid: false,
     loadingDeliver: false,
     isDelivered: false,
+    successIsPaid: false,
   });
 
   const [{ isPending }, paypalDispatch] = usePayPalScriptReducer();
@@ -161,7 +163,8 @@ export default function OrderPage() {
       successPay ||
       successDeliver ||
       successIsPaid ||
-      (order._id && order._id !== orderId)
+      (order._id && order._id !== orderId) ||
+      refresh > 1
     ) {
       fetchOrder();
       if (successPay) {
@@ -173,6 +176,9 @@ export default function OrderPage() {
       }
       if (successDeliver) {
         dispatch({ type: 'DELIVER_RESET' });
+      }
+      if (refresh > 1) {
+        setRefresh(1);
       }
     } else {
       const loadPaypalScript = async () => {
@@ -196,6 +202,7 @@ export default function OrderPage() {
     successPay,
     successDeliver,
     successIsPaid,
+    refresh,
   ]);
 
   async function deliverOrderHandler() {
@@ -401,7 +408,13 @@ export default function OrderPage() {
                         </div>
                         <hr />
                         <div>
-                          <StripeContainer order={order} reducer={reducer} />
+                          <StripeContainer
+                            onSuccess={() => {
+                              setRefresh(refresh + 1);
+                            }}
+                            order={order}
+                            reducer={reducer}
+                          />
                         </div>
                       </>
                     )}

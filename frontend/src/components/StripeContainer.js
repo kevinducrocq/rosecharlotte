@@ -8,10 +8,10 @@ const PUBLIC_KEY =
 
 const stripeTestPromise = loadStripe(PUBLIC_KEY);
 
-const Stripe = ({ order, reducer }) => {
+const Stripe = ({ order, reducer, onSuccess }) => {
   return (
     <Elements stripe={stripeTestPromise}>
-      <CheckoutForm order={order} reducer={reducer} />
+      <CheckoutForm order={order} reducer={reducer} onSuccess={onSuccess} />
     </Elements>
   );
 };
