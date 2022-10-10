@@ -252,7 +252,6 @@ export default function ProductAddPage() {
     const newVariants = [...variants];
     newVariants.splice(index, 1);
     setVariants(newVariants);
-    console.log(index);
   };
 
   return (

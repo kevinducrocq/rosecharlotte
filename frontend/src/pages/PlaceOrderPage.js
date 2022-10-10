@@ -130,7 +130,6 @@ export default function PlaceOrderPage() {
         const { data } = await axios.get(`/api/orders/orders-by-user`, {
           headers: { authorization: `Bearer ${userInfo.token}` },
         });
-        console.log(data);
         if (data.length === 0) {
           setDiscount(10);
         }

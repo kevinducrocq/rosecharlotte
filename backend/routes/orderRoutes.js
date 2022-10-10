@@ -13,6 +13,7 @@ import Stripe from 'stripe';
 import cors from 'cors';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+const publicStripe = new Stripe(process.env.STRIPE_PUBLIC_KEY);
 
 const orderRouter = express.Router();
 orderRouter.use(cors());
@@ -83,15 +84,32 @@ orderRouter.post('/stripe/pay', cors(), async (req, res) => {
     });
     const clientSecret = paymentIntent.client_secret;
     res.status(201).send({ clientSecret, message: 'Payment Initiated' });
-    setOrderPaid(order, res, {
-      id: id,
-      status: paymentIntent.status,
-      update_time: new Date().toISOString(),
-      email_address: order.user.email,
-    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+orderRouter.post('/stripe/check', async (req, res) => {
+  const order = await Order.findById(req.body.orderId).populate(
+    'user',
+    'email name'
+  );
+  const payment = await publicStripe.paymentIntents.retrieve(
+    req.body.paymentId,
+    { client_secret: req.body.clientSecret },
+    process.env.STRIPE_PUBLIC_KEY
+  );
+  if (payment.status === 'succeeded') {
+    setOrderPaid(order, res, {
+      id: req.body.paymentId,
+      status: payment.status,
+      update_time: new Date().toISOString(),
+      email_address: order.user.email,
+    });
+    res.status(201).send({ message: 'Paiement accepté' });
+  } else {
+    res.status(400).json({ message: 'Erreur lors du paiement' });
   }
 });
 
