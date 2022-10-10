@@ -8,6 +8,6 @@ export function contactEmail(senderName, senderEmail, message) {
         ${message}
       </div>,
     </div>
-  </div>`
+  </div>`,
   };
 }

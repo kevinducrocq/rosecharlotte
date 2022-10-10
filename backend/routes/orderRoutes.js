@@ -22,19 +22,19 @@ const setOrderPaid = async (order, res, paymentResult) => {
   order.paidAt = Date.now();
   order.paymentResult = paymentResult;
 
-  const user = await User.findOne({
-    _id: order.user?._id?.toString() ?? order.user.toString(),
-  });
-  await transporter.sendMail({
-    from: sender,
-    to: user.email,
-    ...orderEmail(order, user),
-  });
-  await transporter.sendMail({
-    from: sender,
-    to: sender,
-    ...orderAdminEmail(order, user),
-  });
+  // const user = await User.findOne({
+  //   _id: order.user?._id?.toString() ?? order.user.toString(),
+  // });
+  // await transporter.sendMail({
+  //   from: sender,
+  //   to: user.email,
+  //   ...orderEmail(order, user),
+  // });
+  // await transporter.sendMail({
+  //   from: sender,
+  //   to: sender,
+  //   ...orderAdminEmail(order, user),
+  // });
 
   updateStock(order);
 
@@ -67,6 +67,34 @@ const updateStock = async (order) => {
     }
   }
 };
+
+orderRouter.post('/stripe/pay', cors(), async (req, res) => {
+  try {
+    const { amount, id, orderId } = req.body;
+    const order = await Order.findById(orderId).populate('user', 'email name');
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: amount,
+      currency: 'eur',
+      payment_method_types: ['card'],
+      metadata: {
+        name: order.user.name,
+        email: order.user.email,
+      },
+    });
+    const clientSecret = paymentIntent.client_secret;
+    res.status(201).send({ clientSecret, message: 'Payment Initiated' });
+    setOrderPaid(order, res, {
+      id: id,
+      status: paymentIntent.status,
+      update_time: new Date().toISOString(),
+      email_address: order.user.email,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
 orderRouter.get(
   '/',
   isAuth,
@@ -87,40 +115,38 @@ orderRouter.get(
   })
 );
 
-orderRouter.post('/stripe/charge', cors(), async (req, res) => {
-  let { amount, id, orderId } = req.body;
-  let order = await Order.findById(orderId).populate('user', 'email name');
-  console.log('amount & id', amount, id);
-  try {
-    const payment = await stripe.paymentIntents.create({
-      amount: amount,
-      currency: 'EUR',
-      description: 'Rose Charlotte et Compagnie',
-      payment_method: id,
-      confirm: true,
-    });
+// orderRouter.post('/stripe/charge', cors(), async (req, res) => {
+//   let { amount, id, orderId } = req.body;
+//   let order = await Order.findById(orderId).populate('user', 'email name');
+//   console.log('amount & id', amount, id);
+//   try {
+//     const payment = await stripe.paymentIntents.create({
+//       amount: amount,
+//       currency: 'EUR',
+//       description: 'Rose Charlotte et Compagnie',
+//       payment_method: id,
+//       confirm: true,
+//     });
 
-    const confirmPayment = await stripe.confirmCardPayment(data.client);
+//     setOrderPaid(order, res, {
+//       id: id,
+//       status: payment.status,
+//       update_time: new Date().toISOString(),
+//       email_address: order.user.email,
+//     });
 
-    setOrderPaid(order, res, {
-      id: id,
-      status: payment.status,
-      update_time: new Date().toISOString(),
-      email_address: order.user.email,
-    });
-
-    res.json({
-      message: 'Paiement réussi',
-      success: true,
-    });
-  } catch (error) {
-    console.log('Erreur', error);
-    res.json({
-      message: 'Paiement echoué',
-      success: false,
-    });
-  }
-});
+//     res.json({
+//       message: 'Paiement réussi',
+//       success: true,
+//     });
+//   } catch (error) {
+//     console.log('Erreur', error);
+//     res.json({
+//       message: 'Paiement echoué',
+//       success: false,
+//     });
+//   }
+// });
 
 orderRouter.post(
   '/',
