@@ -71,7 +71,7 @@ export default function OrderListPage() {
             language: {
               url: 'https://cdn.datatables.net/plug-ins/1.12.1/i18n/fr-FR.json',
             },
-            order: [[5, 'desc']],
+            order: [[3, 'desc']],
           });
         }, 500);
 
