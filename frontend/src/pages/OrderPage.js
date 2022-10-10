@@ -393,7 +393,7 @@ export default function OrderPage() {
                     </Col>
                   </Row>
                 </ListGroup.Item>
-                {!order.isPaid && order.paymentMethod === 'PayPal' && (
+                {!order.isPaid && order.paymentMethod === 'CB ou PayPal' && (
                   <ListGroup.Item>
                     {isPending ? (
                       <LoadingBox />

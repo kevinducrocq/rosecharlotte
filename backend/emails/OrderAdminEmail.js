@@ -32,9 +32,11 @@ export function orderAdminEmail(order, user) {
           ? '<strong> Motif broderie : ' + item.patch + ' </strong> <br />'
           : ''
       }
-      <strong>Texte : </strong>${
-        item.customization ? item.customization : ''
-      } <br>
+      ${
+        item.customization
+          ? '<strong> Texte : ' + item.customization + ' </strong> <br />'
+          : ''
+      }
     </span>
         <span>Quantité: ${item.quantity}</span>
         <br>

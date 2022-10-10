@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Button, Form } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { getError } from '../utils';
+import LoadingBox from '../components/LoadingBox';
 
 function CheckoutForm({ order, reducer, onSuccess }) {
   const stripe = useStripe();
@@ -19,7 +20,7 @@ function CheckoutForm({ order, reducer, onSuccess }) {
         amount: order.totalPrice * 100,
         orderId: order._id,
       });
-      setLoader(true);
+
       const data = await response.data;
       const cardElement = elements.getElement(CardElement);
       const confirmPayment = await stripe.confirmCardPayment(
@@ -34,7 +35,10 @@ function CheckoutForm({ order, reducer, onSuccess }) {
         toast.success('Paiement accepté, merci !');
         setTimeout(() => {
           onSuccess();
+          //faire un appel au back sur une nouvelle route /payment/stripe/check
+          //dans cette route, utiliser await stripe.paymentintent.retrieve(id)
         }, 1000);
+        setLoader(false);
       } else {
         toast.error('Il y a eu une erreur lors du paiement');
       }
@@ -63,6 +67,7 @@ function CheckoutForm({ order, reducer, onSuccess }) {
         <Button disabled={loader} onClick={handleSubmit} className="w-100 mt-2">
           Payer
         </Button>
+        {loader ? <LoadingBox /> : ''}
       </div>
     </Form>
   );

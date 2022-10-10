@@ -24,7 +24,7 @@ export default function PaymentMethodPage() {
     if (paymentMethodName) {
       ctxDispatch({ type: 'PAYMENT_METHOD_CLEAR' });
     } else {
-      paymentMethodName = 'PayPal';
+      paymentMethodName = 'CB ou PayPal';
       setPaymentMethod(paymentMethodName);
       ctxDispatch({ type: 'SAVE_PAYMENT_METHOD', payload: paymentMethodName });
       localStorage.setItem('paymentMethod', paymentMethodName);
@@ -58,7 +58,7 @@ export default function PaymentMethodPage() {
             <Form onSubmit={submitPaypalHandler}>
               <Button
                 type="submit"
-                value="PayPal"
+                value="CB ou PayPal"
                 className="bg2 text-light w-100 p-4 mb-2"
                 variant="outline-secondary"
               >

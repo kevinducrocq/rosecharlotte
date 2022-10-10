@@ -20,28 +20,26 @@ export function orderEmail(order, user) {
           </div>
   
           <div style="max-width: 300px;float: left;text-align: left;margin-right: 5px;">
-            <span>
-              ${item.name} <br />
-              ${item.variant?.name ?? ''} <br>
-              ${
-                item.fil ? '<strong> Fil ' + item.fil + ' </strong> <br />' : ''
-              }
-              ${
-                item.tissu
-                  ? '<strong> Tissu ' + item.tissu + ' </strong> <br />'
-                  : ''
-              }
-              ${
-                item.patch
-                  ? '<strong> Motif broderie : ' +
-                    item.patch +
-                    ' </strong> <br />'
-                  : ''
-              }
-              <strong>Texte : </strong>${
-                item.customization ? item.customization : ''
-              } <br>
-            </span>
+          <span>
+          ${item.name} <br />
+          ${item.variant?.name ?? ''} <br>
+          ${item.fil ? '<strong> Fil ' + item.fil + ' </strong> <br />' : ''}
+          ${
+            item.tissu
+              ? '<strong> Tissu ' + item.tissu + ' </strong> <br />'
+              : ''
+          }
+          ${
+            item.patch
+              ? '<strong> Motif broderie : ' + item.patch + ' </strong> <br />'
+              : ''
+          }
+          ${
+            item.customization
+              ? '<strong> Texte : ' + item.customization + ' </strong> <br />'
+              : ''
+          }
+        </span>
             <span>Quantité: ${item.quantity}</span>
             <br>
             <br>
