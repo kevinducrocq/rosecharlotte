@@ -115,38 +115,38 @@ orderRouter.get(
   })
 );
 
-// orderRouter.post('/stripe/charge', cors(), async (req, res) => {
-//   let { amount, id, orderId } = req.body;
-//   let order = await Order.findById(orderId).populate('user', 'email name');
-//   console.log('amount & id', amount, id);
-//   try {
-//     const payment = await stripe.paymentIntents.create({
-//       amount: amount,
-//       currency: 'EUR',
-//       description: 'Rose Charlotte et Compagnie',
-//       payment_method: id,
-//       confirm: true,
-//     });
+orderRouter.post('/stripe/charge', cors(), async (req, res) => {
+  let { amount, id, orderId } = req.body;
+  let order = await Order.findById(orderId).populate('user', 'email name');
+  console.log('amount & id', amount, id);
+  try {
+    const payment = await stripe.paymentIntents.create({
+      amount: amount,
+      currency: 'EUR',
+      description: 'Rose Charlotte et Compagnie',
+      payment_method: id,
+      confirm: true,
+    });
 
-//     setOrderPaid(order, res, {
-//       id: id,
-//       status: payment.status,
-//       update_time: new Date().toISOString(),
-//       email_address: order.user.email,
-//     });
+    setOrderPaid(order, res, {
+      id: id,
+      status: payment.status,
+      update_time: new Date().toISOString(),
+      email_address: order.user.email,
+    });
 
-//     res.json({
-//       message: 'Paiement réussi',
-//       success: true,
-//     });
-//   } catch (error) {
-//     console.log('Erreur', error);
-//     res.json({
-//       message: 'Paiement echoué',
-//       success: false,
-//     });
-//   }
-// });
+    res.json({
+      message: 'Paiement réussi',
+      success: true,
+    });
+  } catch (error) {
+    console.log('Erreur', error);
+    res.json({
+      message: 'Paiement echoué',
+      success: false,
+    });
+  }
+});
 
 orderRouter.post(
   '/',
