@@ -22,19 +22,19 @@ const setOrderPaid = async (order, res, paymentResult) => {
   order.paidAt = Date.now();
   order.paymentResult = paymentResult;
 
-  // const user = await User.findOne({
-  //   _id: order.user?._id?.toString() ?? order.user.toString(),
-  // });
-  // await transporter.sendMail({
-  //   from: sender,
-  //   to: user.email,
-  //   ...orderEmail(order, user),
-  // });
-  // await transporter.sendMail({
-  //   from: sender,
-  //   to: sender,
-  //   ...orderAdminEmail(order, user),
-  // });
+  const user = await User.findOne({
+    _id: order.user?._id?.toString() ?? order.user.toString(),
+  });
+  await transporter.sendMail({
+    from: sender,
+    to: user.email,
+    ...orderEmail(order, user),
+  });
+  await transporter.sendMail({
+    from: sender,
+    to: sender,
+    ...orderAdminEmail(order, user),
+  });
 
   updateStock(order);
 
