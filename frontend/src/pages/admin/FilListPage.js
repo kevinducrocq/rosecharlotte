@@ -92,6 +92,7 @@ export default function TissuListPage() {
               url: 'https://cdn.datatables.net/plug-ins/1.12.1/i18n/fr-FR.json',
             },
             order: [[0, 'desc']],
+            destroy: true,
           });
         }, 500);
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
