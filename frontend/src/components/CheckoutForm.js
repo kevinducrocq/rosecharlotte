@@ -59,12 +59,11 @@ function CheckoutForm({ order, reducer, onSuccess }) {
 
   return (
     <Form onSubmit={handleSubmit} style={{ maxWidth: 400 }}>
-      <div className="mb-2 text-center">Payer par carte bancaire</div>
       <CardElement
         className="form-control"
         style={{
           base: {
-            lineHeight: '1.6',
+            lineHeight: '3',
           },
         }}
         options={{

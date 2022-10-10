@@ -9,6 +9,7 @@ import axios from 'axios';
 import { dateFr, getError } from '../utils';
 import { Helmet } from 'react-helmet-async';
 import {
+  Accordion,
   Button,
   Card,
   Col,
@@ -395,23 +396,48 @@ export default function OrderPage() {
                       <LoadingBox />
                     ) : (
                       <>
-                        <div>
-                          <PayPalButtons
-                            createOrder={createOrder}
-                            onApprove={onApprove}
-                            onError={onError}
-                          />
-                        </div>
+                        <Accordion>
+                          <Accordion.Item eventKey="0">
+                            <Accordion.Header>
+                              <div className="text-center">
+                                <span className="paywithpaypal">
+                                  Payer par Carte Bancaire
+                                </span>
+                              </div>
+                            </Accordion.Header>
+
+                            <Accordion.Body>
+                              <StripeContainer
+                                onSuccess={() => {
+                                  setRefresh(refresh + 1);
+                                }}
+                                order={order}
+                                reducer={reducer}
+                              />
+                            </Accordion.Body>
+                          </Accordion.Item>
+                        </Accordion>
+                        <div className="mb-3"></div>
                         <hr />
-                        <div>
-                          <StripeContainer
-                            onSuccess={() => {
-                              setRefresh(refresh + 1);
-                            }}
-                            order={order}
-                            reducer={reducer}
-                          />
-                        </div>
+                        <Accordion>
+                          <Accordion.Item eventKey="0">
+                            <Accordion.Header>
+                              <div className="text-center">
+                                <span className="paywithpaypal">
+                                  Payer avec PayPal
+                                </span>
+                              </div>
+                            </Accordion.Header>
+
+                            <Accordion.Body>
+                              <PayPalButtons
+                                createOrder={createOrder}
+                                onApprove={onApprove}
+                                onError={onError}
+                              />
+                            </Accordion.Body>
+                          </Accordion.Item>
+                        </Accordion>
                       </>
                     )}
                     {loadingPay && <LoadingBox></LoadingBox>}
