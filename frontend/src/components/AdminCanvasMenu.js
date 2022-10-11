@@ -7,8 +7,8 @@ import {
   faShirt,
   faUsers,
   faManhole,
-  faRug,
   faBadge,
+  faRug,
 } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useState } from 'react';
@@ -110,7 +110,7 @@ export default function AdminCanvasMenu(props) {
               className={props.link8 ? 'activee  py-3' : 'py-3'}
             >
               <Link to="/admin/tissus">
-                <FontAwesomeIcon icon={faBadge} />
+                <FontAwesomeIcon icon={faRug} />
                 <span className="ms-2">Tissu</span>
               </Link>
             </ListGroup.Item>

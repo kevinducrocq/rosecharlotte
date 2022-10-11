@@ -37,6 +37,7 @@ import SoldePage from './pages/SoldesPage';
 import FilListPage from './pages/admin/FilListPage';
 import TissuListPage from './pages/admin/TissuListPage';
 import PatchListPage from './pages/admin/PatchListPage';
+import ModalTissuEdit from './components/ModalEditTissu';
 
 function App() {
   return (
@@ -148,6 +149,14 @@ function App() {
                 element={
                   <AdminRoute>
                     <TissuListPage />
+                  </AdminRoute>
+                }
+              ></Route>
+              <Route
+                path="/admin/tissu/:id"
+                element={
+                  <AdminRoute>
+                    <ModalTissuEdit />
                   </AdminRoute>
                 }
               ></Route>

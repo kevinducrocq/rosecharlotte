@@ -2,12 +2,15 @@ import React from 'react';
 
 import {
   faArrowRightToBracket,
+  faBadge,
   faBagShopping,
   faClothesHanger,
   faComments,
   faGauge,
   faPen,
   faPlus,
+  faReel,
+  faRug,
   faShoppingCart,
   faUsers,
 } from '@fortawesome/pro-solid-svg-icons';
@@ -305,6 +308,24 @@ function NavigationBar() {
                     <NavDropdown.Item>
                       <FontAwesomeIcon icon={faComments} />
                       &nbsp; Commentaires
+                    </NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to="/admin/fils">
+                    <NavDropdown.Item>
+                      <FontAwesomeIcon icon={faReel} />
+                      &nbsp; Fils
+                    </NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to="/admin/tissus">
+                    <NavDropdown.Item>
+                      <FontAwesomeIcon icon={faRug} />
+                      &nbsp; Tissus
+                    </NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to="/admin/patches">
+                    <NavDropdown.Item>
+                      <FontAwesomeIcon icon={faBadge} />
+                      &nbsp; Motifs broderie
                     </NavDropdown.Item>
                   </LinkContainer>
                 </NavDropdown>

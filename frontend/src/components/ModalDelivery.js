@@ -1,10 +1,6 @@
 import React from 'react';
 
-import {
-  faHouse,
-  faPersonCarryBox,
-  faStore,
-} from '@fortawesome/pro-solid-svg-icons';
+import { faHouse, faPersonCarryBox } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useContext, useEffect, useState } from 'react';
 import { Col, Form, Row } from 'react-bootstrap';

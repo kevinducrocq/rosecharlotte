@@ -169,7 +169,7 @@ export default function PatchListPage() {
         <Col md={10} className="shadow p-5">
           <Row className="align-items-between">
             <Col md={4}>
-              <h1>Patchs</h1>
+              <h1>Motifs Broderie</h1>
             </Col>
             <Col md={8}>
               <Form onSubmit={submitHandler}>
