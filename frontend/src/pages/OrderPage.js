@@ -396,7 +396,7 @@ export default function OrderPage() {
                       <LoadingBox />
                     ) : (
                       <>
-                        <Accordion>
+                        <Accordion defaultActiveKey="0">
                           <Accordion.Item eventKey="0">
                             <Accordion.Header>
                               <div className="text-center">
@@ -420,7 +420,7 @@ export default function OrderPage() {
                         <div className="mb-3"></div>
                         <hr />
                         <Accordion>
-                          <Accordion.Item eventKey="0">
+                          <Accordion.Item eventKey="1">
                             <Accordion.Header>
                               <div className="text-center">
                                 <span className="paywithpaypal">
@@ -430,6 +430,11 @@ export default function OrderPage() {
                             </Accordion.Header>
 
                             <Accordion.Body>
+                              <MessageBox variant="danger">
+                                Suite à un problème technique, merci de ne pas
+                                utiliser le paiement par CB avec PayPal, mais
+                                plutôt l'option "payer par carte bancaire"
+                              </MessageBox>
                               <PayPalButtons
                                 createOrder={createOrder}
                                 onApprove={onApprove}

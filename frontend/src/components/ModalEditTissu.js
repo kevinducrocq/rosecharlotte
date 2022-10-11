@@ -85,7 +85,7 @@ function ModalTissuEdit(id) {
     try {
       dispatch({ type: 'UPDATE_REQUEST' });
       await axios.put(
-        `/api/tissus/${tissuId}`,
+        `/api/tissu/${tissuId}`,
         {
           _id: id,
           name,
