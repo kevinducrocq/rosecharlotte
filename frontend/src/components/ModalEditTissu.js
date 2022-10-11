@@ -1,4 +1,4 @@
-import React, { useReducer, useRef } from 'react';
+import React, { useReducer } from 'react';
 
 import { faPen } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -6,7 +6,6 @@ import { useContext, useEffect, useState } from 'react';
 import { Form, Image } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import { useNavigate } from 'react-router-dom';
 import { getError } from '../utils';
 import axios from 'axios';
 import { Store } from '../Store';
@@ -45,7 +44,6 @@ const reducer = (state, action) => {
 
 function ModalTissuEdit(id) {
   const tissuId = id.id;
-  console.log(tissuId);
   const { state } = useContext(Store);
   const { userInfo } = state;
 
@@ -53,15 +51,13 @@ function ModalTissuEdit(id) {
     useReducer(reducer, {
       loading: true,
       error: '',
-      loadingUpload: true,
-      loadingUpdate: true,
+      loadingUpload: false,
+      loadingUpdate: false,
     });
 
   const [name, setName] = useState('');
   const [image, setImage] = useState('');
   const [modalShow, setModalShow] = useState(false);
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (modalShow) {
@@ -69,6 +65,7 @@ function ModalTissuEdit(id) {
         try {
           dispatch({ type: 'FETCH_REQUEST' });
           const { data } = await axios.get(`/api/tissus/${tissuId}`);
+          console.log(data);
           setName(data.name);
           setImage(data.image);
           dispatch({ type: 'FETCH_SUCCESS' });
@@ -102,7 +99,7 @@ function ModalTissuEdit(id) {
         type: 'UPDATE_SUCCESS',
       });
       toast.success('Tissu mis à jour avec succès');
-      navigate('/admin/tissus');
+      setModalShow(false);
     } catch (err) {
       toast.error(getError(err));
       dispatch({ type: 'UPDATE_FAIL' });
@@ -123,7 +120,6 @@ function ModalTissuEdit(id) {
       });
       setImage(data.secure_url);
       dispatch({ type: 'UPLOAD_SUCCESS' });
-      toast.success('Image OK');
     } catch (err) {
       toast.error(getError(err));
       dispatch({ type: 'UPLOAD_FAIL', payload: getError(err) });
@@ -167,25 +163,28 @@ function ModalTissuEdit(id) {
                   type="file"
                   onChange={uploadFileHandler}
                 />
-                {loading ? (
+                {loadingUpload ? (
                   <LoadingBox />
                 ) : (
-                  <div className="d-flex flex-column align-items-center">
+                  <>
                     {image ? (
-                      <Image
-                        thumbnail
-                        src={image}
-                        onChange={(e) => setImage(e.target.value)}
-                      />
+                      <div className="my-3">
+                        <Image
+                          thumbnail
+                          src={image}
+                          onChange={(e) => setImage(e.target.value)}
+                        />
+                      </div>
                     ) : (
                       ''
                     )}
-                  </div>
+                  </>
                 )}
               </Form.Group>
             </Modal.Body>
             <Modal.Footer>
               <Button
+                disabled={loadingUpload}
                 type="submit"
                 className="bg1 w-100"
                 variant="outline-light"

@@ -152,14 +152,7 @@ function App() {
                   </AdminRoute>
                 }
               ></Route>
-              <Route
-                path="/admin/tissu/:id"
-                element={
-                  <AdminRoute>
-                    <ModalTissuEdit />
-                  </AdminRoute>
-                }
-              ></Route>
+
               <Route
                 path="/admin/patches"
                 element={
@@ -205,6 +198,14 @@ function App() {
                 element={
                   <AdminRoute>
                     <UserEditPage />
+                  </AdminRoute>
+                }
+              ></Route>
+              <Route
+                path="/admin/tissus/:id"
+                element={
+                  <AdminRoute>
+                    <ModalTissuEdit />
                   </AdminRoute>
                 }
               ></Route>
