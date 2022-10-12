@@ -14,9 +14,9 @@ import { Store } from '../../Store';
 import { getError } from '../../utils';
 import LoadingBox from '../../components/LoadingBox';
 import MessageBox from '../../components/MessageBox';
-import { faTrash } from '@fortawesome/pro-solid-svg-icons';
+import { faPlus, faTrash } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Col, Container, Form, Row, Table } from 'react-bootstrap';
+import { Col, Container, Form, Image, Row, Table } from 'react-bootstrap';
 import AdminMenu from '../../components/AdminMenu';
 import AdminCanvasMenu from '../../components/AdminCanvasMenu';
 
@@ -25,6 +25,7 @@ import 'jquery/dist/jquery.min.js';
 import 'datatables.net-dt/js/dataTables.dataTables';
 import 'datatables.net-dt/css/jquery.dataTables.min.css';
 import $ from 'jquery';
+import ModalEditPatch from '../../components/ModalEditPatch';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -46,6 +47,7 @@ const reducer = (state, action) => {
       return { ...state, loading: false };
     case 'ADD_RESET':
       return { ...state, loading: false, successAdd: false };
+
     case 'DELETE_REQUEST':
       return { ...state, loading: true, successDelete: false };
     case 'DELETE_SUCCESS':
@@ -58,6 +60,17 @@ const reducer = (state, action) => {
       return { ...state, loading: false };
     case 'DELETE_RESET':
       return { ...state, loading: false, successDelete: false };
+    case 'UPLOAD_REQUEST':
+      return { ...state, loadingUpload: true, errorUpload: '' };
+    case 'UPLOAD_SUCCESS':
+      return {
+        ...state,
+        loadingUpload: false,
+        errorUpload: '',
+      };
+    case 'UPLOAD_FAIL':
+      return { ...state, loadingUpload: false, errorUpload: action.payload };
+
     default:
       return state;
   }
@@ -65,19 +78,24 @@ const reducer = (state, action) => {
 export default function PatchListPage() {
   const navigate = useNavigate();
 
-  const [{ loading, error, patches, successDelete, successAdd }, dispatch] =
-    useReducer(reducer, {
-      loading: true,
-      error: '',
-    });
+  const [
+    { loading, loadingUpload, error, patches, successDelete, successAdd },
+    dispatch,
+  ] = useReducer(reducer, {
+    loading: true,
+    error: '',
+  });
 
   const { state } = useContext(Store);
   const { userInfo } = state;
 
   $.DataTable = require('datatables.net');
   const tableRef = useRef();
-
   const [name, setName] = useState('');
+
+  const imageInputRef = useRef();
+  const [image, setImage] = useState('');
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -105,13 +123,15 @@ export default function PatchListPage() {
     };
     if (successDelete) {
       dispatch({ type: 'DELETE_RESET' });
-    }
-    if (successAdd) {
+    } else if (successAdd) {
       dispatch({ type: 'ADD_RESET' });
     } else {
       fetchData();
+      if (refresh) {
+        setRefresh(false);
+      }
     }
-  }, [userInfo, successDelete, successAdd]);
+  }, [userInfo, successDelete, successAdd, refresh]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -121,6 +141,7 @@ export default function PatchListPage() {
         `/api/patches/add`,
         {
           name,
+          image,
         },
         {
           headers: { Authorization: `Bearer ${userInfo.token}` },
@@ -128,33 +149,57 @@ export default function PatchListPage() {
       );
       dispatch({ type: 'ADD_SUCCESS' });
       setName('');
-      toast.success('Patch ajouté');
-      navigate('/admin/patches');
+      if (imageInputRef) imageInputRef.current.value = null;
+      toast.success('Motif Broderie ajouté');
+      // navigate('/admin/patches');
     } catch (err) {
       dispatch({ type: 'ADD_FAIL' });
       toast.error(getError(err));
     }
   };
 
-  const deleteHandler = async (patch) => {
+  const uploadFileHandler = async (e, forImages) => {
+    const file = e.target.files[0];
+    const bodyFormData = new FormData();
+    bodyFormData.append('file', file);
     try {
-      dispatch({ type: 'DELETE_REQUEST' });
-      await axios.delete(`/api/patches/${patch._id}`, {
-        headers: { Authorization: `Bearer ${userInfo.token}` },
+      dispatch({ type: 'UPLOAD_REQUEST' });
+      const { data } = await axios.post('/api/upload/patch', bodyFormData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          authorization: `Bearer ${userInfo.token}`,
+        },
       });
-      dispatch({ type: 'DELETE_SUCCESS' });
+      dispatch({ type: 'UPLOAD_SUCCESS' });
+      setImage(data.secure_url);
     } catch (err) {
-      toast.error(getError(error));
-      dispatch({
-        type: 'DELETE_FAIL',
-      });
+      toast.error(getError(err));
+      dispatch({ type: 'UPLOAD_FAIL', payload: getError(err) });
+    }
+  };
+
+  const deleteHandler = async (patch) => {
+    if (window.confirm('Confirmer ?')) {
+      try {
+        dispatch({ type: 'DELETE_REQUEST' });
+        await axios.delete(`/api/patches/${patch._id}`, {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        });
+
+        dispatch({ type: 'DELETE_SUCCESS' });
+      } catch (err) {
+        toast.error(getError(error));
+        dispatch({
+          type: 'DELETE_FAIL',
+        });
+      }
     }
   };
 
   return (
     <Container className="my-5">
       <Helmet>
-        <title>Liste des patchs</title>
+        <title>Liste des Motifs broderie</title>
       </Helmet>
       <Row>
         <Col md={2}>
@@ -167,32 +212,39 @@ export default function PatchListPage() {
         </Col>
 
         <Col md={10} className="shadow p-5">
-          <Row className="align-items-between">
-            <Col md={4}>
-              <h1>Motifs Broderie</h1>
-            </Col>
-            <Col md={8}>
-              <Form onSubmit={submitHandler}>
-                <Row>
-                  <Col md={8}>
-                    <Form.Group controlId="name">
-                      <Form.Control
-                        placeholder="Nom"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        required
-                      />
-                    </Form.Group>
-                  </Col>
-                  <Col md={4}>
-                    <div className="mb-3">
-                      <Button type="submit">Ajouter</Button>
-                    </div>
-                  </Col>
-                </Row>
-              </Form>
-            </Col>
-          </Row>
+          <h1>Motifs Broderie</h1>
+          <Form onSubmit={submitHandler}>
+            <Row className="align-items-center">
+              <Col md={5} className="mt-2">
+                <Form.Group controlId="name">
+                  <Form.Control
+                    placeholder="Nom"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={5} className="mt-2">
+                <Form.Group controlId="imageFile">
+                  <Form.Control
+                    type="file"
+                    ref={imageInputRef}
+                    onChange={uploadFileHandler}
+                  />
+                </Form.Group>
+              </Col>
+              <Col md={2} className="mt-2">
+                {loadingUpload ? (
+                  <LoadingBox />
+                ) : (
+                  <Button disabled={!name} type="submit" className="w-100">
+                    <FontAwesomeIcon icon={faPlus} />
+                  </Button>
+                )}
+              </Col>
+            </Row>
+          </Form>
 
           <hr />
           {loading ? (
@@ -204,6 +256,7 @@ export default function PatchListPage() {
               <thead>
                 <tr>
                   <th>Nom</th>
+                  <th>Image</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -211,8 +264,17 @@ export default function PatchListPage() {
                 {patches.map((patch) => (
                   <tr key={patch._id}>
                     <td>{patch.name}</td>
+                    <td>
+                      {patch.image && (
+                        <Image thumbnail src={patch.image}></Image>
+                      )}
+                    </td>
 
                     <td>
+                      <ModalEditPatch
+                        id={patch._id}
+                        onEditSuccess={() => setRefresh(true)}
+                      />
                       <Button
                         className="btn btn-sm"
                         type="button"

@@ -35,6 +35,36 @@ patchRouter.post(
   })
 );
 
+patchRouter.get('/:id', async (req, res) => {
+  const patch = await Patch.findById(req.params.id);
+  if (patch) {
+    res.send(patch);
+  } else {
+    res.status(404).send({ message: 'Motif broderie non trouvé' });
+  }
+});
+
+patchRouter.put(
+  '/:id',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const patch = await Patch.findById(req.params.id);
+    if (patch) {
+      patch.name = req.body.name || patch.name;
+      patch.image = req.body.image || patch.image;
+      const updatedPatch = await patch.save();
+      res.send({
+        _id: updatedPatch._id,
+        name: updatedPatch.name,
+        image: updatedPatch.image,
+      });
+    } else {
+      res.status(404).send({ message: 'Modtif broderie non trouvé' });
+    }
+  })
+);
+
 patchRouter.delete(
   '/:id',
   isAuth,

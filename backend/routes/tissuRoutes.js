@@ -42,7 +42,7 @@ tissuRouter.get('/:id', async (req, res) => {
   if (tissu) {
     res.send(tissu);
   } else {
-    res.status(404).send({ message: 'Produit non trouvé' });
+    res.status(404).send({ message: 'Tissu non trouvé' });
   }
 });
 
@@ -52,7 +52,6 @@ tissuRouter.put(
   isAdmin,
   expressAsyncHandler(async (req, res) => {
     const tissu = await Tissu.findById(req.params.id);
-    console.log(tissu);
     if (tissu) {
       tissu.name = req.body.name || tissu.name;
       tissu.image = req.body.image || tissu.image;
