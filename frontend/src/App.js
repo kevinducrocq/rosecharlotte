@@ -201,14 +201,6 @@ function App() {
                   </AdminRoute>
                 }
               ></Route>
-              <Route
-                path="/admin/tissus/:id"
-                element={
-                  <AdminRoute>
-                    <ModalTissuEdit />
-                  </AdminRoute>
-                }
-              ></Route>
             </Routes>
           </div>
         </main>

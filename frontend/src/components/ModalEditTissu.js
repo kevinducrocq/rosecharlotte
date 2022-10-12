@@ -148,7 +148,7 @@ function ModalTissuEdit(id) {
           <LoadingBox />
         ) : (
           <Form onSubmit={submitHandler}>
-            <Modal.Body closeButton className="my-4 p-4">
+            <Modal.Body className="my-4 p-4">
               <Form.Group className="mb-3" controlId="name">
                 <Form.Control
                   placeholder="Nom"

@@ -42,8 +42,7 @@ tissuRouter.put(
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
-    const tissuId = req.params.id;
-    const tissu = await Tissu.findById(tissuId);
+    const tissu = await Tissu.findById(req.params.id);
     if (tissu) {
       tissu.name = req.body.name || tissu.name;
       tissu.image = req.body.image || tissu.image;
