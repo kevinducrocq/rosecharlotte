@@ -47,12 +47,7 @@ const reducer = (state, action) => {
       return { ...state, loading: false };
     case 'ADD_RESET':
       return { ...state, loading: false, successAdd: false };
-    case 'UPDATE_REQUEST':
-      return { ...state, loadingUpdate: true };
-    case 'UPDATE_SUCCESS':
-      return { ...state, loadingUpdate: false };
-    case 'UPDATE_FAIL':
-      return { ...state, loadingUpdate: false };
+
     case 'DELETE_REQUEST':
       return { ...state, loading: true, successDelete: false };
     case 'DELETE_SUCCESS':

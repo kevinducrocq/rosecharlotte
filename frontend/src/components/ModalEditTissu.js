@@ -21,11 +21,11 @@ const reducer = (state, action) => {
     case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
     case 'UPDATE_REQUEST':
-      return { ...state, loadingUpdate: true };
+      return { ...state, loadingUpdate: true, successUpdate: false };
     case 'UPDATE_SUCCESS':
-      return { ...state, loadingUpdate: false };
+      return { ...state, loadingUpdate: false, successUpdate: true };
     case 'UPDATE_FAIL':
-      return { ...state, loadingUpdate: false };
+      return { ...state, loadingUpdate: false, successUpdate: false };
     case 'UPLOAD_REQUEST':
       return { ...state, loadingUpload: true, errorUpload: '' };
     case 'UPLOAD_SUCCESS':
@@ -47,17 +47,15 @@ function ModalTissuEdit(id) {
   const { state } = useContext(Store);
   const { userInfo } = state;
 
-  const [{ loading, loadingUpload, loadingUpdate, error }, dispatch] =
+  const [{ loading, loadingUpload, loadingUpdate, successUpdate }, dispatch] =
     useReducer(reducer, {
       loading: true,
-      error: '',
-      loadingUpload: false,
-      loadingUpdate: false,
     });
 
   const [name, setName] = useState('');
   const [image, setImage] = useState('');
   const [modalShow, setModalShow] = useState(false);
+  const [refresh, setRefresh] = useState(1);
 
   useEffect(() => {
     if (modalShow) {
@@ -77,9 +75,12 @@ function ModalTissuEdit(id) {
           });
         }
       };
+      if (refresh > 1) {
+        setRefresh(1);
+      }
       fetchData();
     }
-  }, [modalShow, tissuId, userInfo.token]);
+  }, [modalShow, refresh, successUpdate, tissuId, userInfo.token]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -101,6 +102,9 @@ function ModalTissuEdit(id) {
       });
       toast.success('Tissu mis à jour avec succès');
       setModalShow(false);
+      if (successUpdate) {
+        dispatch({ type: 'UPDATE_RESET' });
+      }
     } catch (err) {
       toast.error(getError(err));
       dispatch({ type: 'UPDATE_FAIL' });
@@ -184,14 +188,18 @@ function ModalTissuEdit(id) {
               </Form.Group>
             </Modal.Body>
             <Modal.Footer>
-              <Button
-                disabled={loadingUpload}
-                type="submit"
-                className="bg1 w-100"
-                variant="outline-light"
-              >
-                Mettre à jour
-              </Button>
+              {loadingUpdate ? (
+                <LoadingBox />
+              ) : (
+                <Button
+                  disabled={loadingUpload}
+                  type="submit"
+                  className="bg1 w-100"
+                  variant="outline-light"
+                >
+                  Mettre à jour
+                </Button>
+              )}
             </Modal.Footer>
           </Form>
         )}
