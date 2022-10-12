@@ -10,7 +10,7 @@ tissuRouter.get(
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
-    const tissus = await Tissu.find({});
+    const tissus = await Tissu.find();
     res.send(tissus);
   })
 );
@@ -37,12 +37,22 @@ tissuRouter.post(
   })
 );
 
+tissuRouter.get('/:id', async (req, res) => {
+  const tissu = await Tissu.findById(req.params.id);
+  if (tissu) {
+    res.send(tissu);
+  } else {
+    res.status(404).send({ message: 'Produit non trouvé' });
+  }
+});
+
 tissuRouter.put(
   '/:id',
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
     const tissu = await Tissu.findById(req.params.id);
+    console.log(tissu);
     if (tissu) {
       tissu.name = req.body.name || tissu.name;
       tissu.image = req.body.image || tissu.image;

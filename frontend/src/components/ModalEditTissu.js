@@ -64,8 +64,9 @@ function ModalTissuEdit(id) {
       const fetchData = async () => {
         try {
           dispatch({ type: 'FETCH_REQUEST' });
-          const { data } = await axios.get(`/api/tissus/${tissuId}`);
-          console.log(data);
+          const { data } = await axios.get(`/api/tissus/${tissuId}`, {
+            headers: { Authorization: `Bearer ${userInfo.token}` },
+          });
           setName(data.name);
           setImage(data.image);
           dispatch({ type: 'FETCH_SUCCESS' });
@@ -78,14 +79,14 @@ function ModalTissuEdit(id) {
       };
       fetchData();
     }
-  }, [modalShow, tissuId]);
+  }, [modalShow, tissuId, userInfo.token]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
       dispatch({ type: 'UPDATE_REQUEST' });
       await axios.put(
-        `/api/tissu/${tissuId}`,
+        `/api/tissus/${tissuId}`,
         {
           _id: id,
           name,
