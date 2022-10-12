@@ -67,7 +67,6 @@ function ModalTissuEdit({id, onEditSuccess}) {
           setName(data.name);
           setImage(data.image);
           dispatch({ type: 'FETCH_SUCCESS' });
-          onEditSuccess();
         } catch (err) {
           dispatch({
             type: 'FETCH_FAIL',
@@ -94,6 +93,7 @@ function ModalTissuEdit({id, onEditSuccess}) {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         }
       );
+      onEditSuccess();
       dispatch({
         type: 'UPDATE_SUCCESS',
       });
