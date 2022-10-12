@@ -42,8 +42,8 @@ const reducer = (state, action) => {
   }
 };
 
-function ModalTissuEdit(id) {
-  const tissuId = id.id;
+function ModalTissuEdit({id, onEditSuccess}) {
+  const tissuId = id;
   const { state } = useContext(Store);
   const { userInfo } = state;
 
@@ -55,7 +55,6 @@ function ModalTissuEdit(id) {
   const [name, setName] = useState('');
   const [image, setImage] = useState('');
   const [modalShow, setModalShow] = useState(false);
-  const [refresh, setRefresh] = useState(1);
 
   useEffect(() => {
     if (modalShow) {
@@ -68,6 +67,7 @@ function ModalTissuEdit(id) {
           setName(data.name);
           setImage(data.image);
           dispatch({ type: 'FETCH_SUCCESS' });
+          onEditSuccess();
         } catch (err) {
           dispatch({
             type: 'FETCH_FAIL',
@@ -75,12 +75,9 @@ function ModalTissuEdit(id) {
           });
         }
       };
-      if (refresh > 1) {
-        setRefresh(1);
-      }
       fetchData();
     }
-  }, [modalShow, refresh, successUpdate, tissuId, userInfo.token]);
+  }, [modalShow, successUpdate, tissuId, userInfo.token]);
 
   const submitHandler = async (e) => {
     e.preventDefault();

@@ -95,6 +95,7 @@ export default function TissuListPage() {
 
   const imageInputRef = useRef();
   const [image, setImage] = useState('');
+  const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -123,12 +124,15 @@ export default function TissuListPage() {
     if (successDelete) {
       dispatch({ type: 'DELETE_RESET' });
     }
-    if (successAdd) {
+    else if (successAdd) {
       dispatch({ type: 'ADD_RESET' });
     } else {
       fetchData();
+      if(refresh) {
+        setRefresh(false);
+      }
     }
-  }, [userInfo, successDelete, successAdd]);
+  }, [userInfo, successDelete, successAdd, refresh]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -268,7 +272,7 @@ export default function TissuListPage() {
                     </td>
 
                     <td>
-                      <ModalTissuEdit id={tissu._id} />
+                      <ModalTissuEdit id={tissu._id} onEditSuccess={() => setRefresh(true)}/>
                       <Button
                         className="btn btn-sm"
                         type="button"
