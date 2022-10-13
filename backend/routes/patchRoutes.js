@@ -7,10 +7,8 @@ const patchRouter = express.Router();
 
 patchRouter.get(
   '/',
-  isAuth,
-  isAdmin,
   expressAsyncHandler(async (req, res) => {
-    const patches = await Patch.find({});
+    const patches = await Patch.find();
     res.send(patches);
   })
 );

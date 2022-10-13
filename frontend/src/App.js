@@ -38,6 +38,8 @@ import FilListPage from './pages/admin/FilListPage';
 import TissuListPage from './pages/admin/TissuListPage';
 import PatchListPage from './pages/admin/PatchListPage';
 import ModalTissuEdit from './components/ModalEditTissu';
+import TissuPage from './pages/TissuPage';
+import PatchPage from './pages/PatchPage';
 
 function App() {
   return (
@@ -72,6 +74,8 @@ function App() {
               <Route path="/boutique/search" element={<SearchPage />} />
               <Route path="/promotions" element={<PromoPage />} />
               <Route path="/soldes" element={<SoldePage />} />
+              <Route path="/tissus" element={<TissuPage />} />
+              <Route path="/motifs" element={<PatchPage />} />
               <Route path="/product/:slug" element={<ProductPage />} />
               <Route path="/cart" element={<CartPage />} />
               <Route path="/signin" element={<SigninPage />} />

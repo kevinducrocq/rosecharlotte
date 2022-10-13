@@ -123,12 +123,11 @@ export default function TissuListPage() {
     };
     if (successDelete) {
       dispatch({ type: 'DELETE_RESET' });
-    }
-    else if (successAdd) {
+    } else if (successAdd) {
       dispatch({ type: 'ADD_RESET' });
     } else {
       fetchData();
-      if(refresh) {
+      if (refresh) {
         setRefresh(false);
       }
     }
@@ -272,7 +271,10 @@ export default function TissuListPage() {
                     </td>
 
                     <td>
-                      <ModalTissuEdit id={tissu._id} onEditSuccess={() => setRefresh(true)}/>
+                      <ModalTissuEdit
+                        id={tissu._id}
+                        onEditSuccess={() => setRefresh(true)}
+                      />
                       <Button
                         className="btn btn-sm"
                         type="button"

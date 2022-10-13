@@ -7,8 +7,6 @@ const tissuRouter = express.Router();
 
 tissuRouter.get(
   '/',
-  isAuth,
-  isAdmin,
   expressAsyncHandler(async (req, res) => {
     const tissus = await Tissu.find();
     res.send(tissus);
