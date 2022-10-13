@@ -20,12 +20,14 @@ patchRouter.post(
   expressAsyncHandler(async (req, res) => {
     const newPatch = new Patch({
       name: req.body.name,
+      image: req.body.image,
     });
     try {
       const patch = await newPatch.save();
       res.send({
         _id: patch._id,
         name: patch.name,
+        image: patch.image,
       });
     } catch (err) {
       console.log(err);

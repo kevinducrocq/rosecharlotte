@@ -9,7 +9,6 @@ import React, {
 import { toast } from 'react-toastify';
 import Button from 'react-bootstrap/Button';
 import { Helmet } from 'react-helmet-async';
-import { useNavigate } from 'react-router-dom';
 import { Store } from '../../Store';
 import { getError } from '../../utils';
 import LoadingBox from '../../components/LoadingBox';
@@ -76,8 +75,6 @@ const reducer = (state, action) => {
   }
 };
 export default function TissuListPage() {
-  const navigate = useNavigate();
-
   const [
     { loading, loadingUpload, error, tissus, successDelete, successAdd },
     dispatch,
@@ -151,7 +148,7 @@ export default function TissuListPage() {
       setName('');
       if (imageInputRef) imageInputRef.current.value = null;
       toast.success('Tissu ajouté');
-      navigate('/admin/tissus');
+      // navigate('/admin/tissus');
     } catch (err) {
       dispatch({ type: 'ADD_FAIL' });
       toast.error(getError(err));
