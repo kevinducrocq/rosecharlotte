@@ -132,7 +132,7 @@ export default function CartPage() {
                       )}
                       {item.patch ? (
                         <div>
-                          <strong>Patch :</strong> {item.patch}
+                          <strong>Motif :</strong> {item.patch}
                         </div>
                       ) : (
                         ''

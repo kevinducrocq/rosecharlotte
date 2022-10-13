@@ -59,11 +59,23 @@ function TissuPage() {
               <h2>TissuThèque</h2>
               <Row className="mt-5">
                 {tissus.map((tissu) => (
-                  <Col key={tissu._id} md={4} sm={6} lg={3}>
+                  <Col key={tissu._id} md={4} sm={6} lg={2}>
                     <Card className="mb-3">
-                      <Card.Header>{tissu.name}</Card.Header>
+                      <Card.Header className="text-center">
+                        {tissu.name}
+                      </Card.Header>
                       <Card className="body">
-                        <Image src={tissu.image} />
+                        {tissu.image ? (
+                          <Image
+                            src={tissu.image}
+                            className="images-tissu-motifs"
+                          />
+                        ) : (
+                          <Image
+                            className="images-tissu-motifs"
+                            src="../images/no-image.png"
+                          />
+                        )}
                       </Card>
                     </Card>
                   </Col>
