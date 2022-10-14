@@ -28,11 +28,6 @@ import { toast } from 'react-toastify';
 import { LinkContainer } from 'react-router-bootstrap';
 import OwlCarousel from 'react-owl-carousel';
 import nl2br from 'react-nl2br';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faChevronLeft,
-  faChevronRight,
-} from '@fortawesome/pro-solid-svg-icons';
 
 const reducer = (state, action) => {
   switch (action.type) {

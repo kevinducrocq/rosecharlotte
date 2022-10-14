@@ -184,7 +184,11 @@ export default function OrderPage() {
         });
         paypalDispatch({
           type: 'resetOptions',
-          value: { 'client-id': clientId, currency: 'EUR' },
+          value: {
+            'client-id': clientId,
+            currency: 'EUR',
+            'disable-funding': 'credit,card',
+          },
         });
         paypalDispatch({ type: 'setLoadingStatus', value: 'pending' });
       };
@@ -429,30 +433,11 @@ export default function OrderPage() {
                         </Accordion>
                         <div className="mb-3"></div>
                         <hr />
-                        <Accordion>
-                          <Accordion.Item eventKey="1">
-                            <Accordion.Header>
-                              <div className="text-center">
-                                <span className="paywithpaypal">
-                                  Payer avec PayPal
-                                </span>
-                              </div>
-                            </Accordion.Header>
-
-                            <Accordion.Body>
-                              <MessageBox variant="danger">
-                                Suite à un problème technique, Ne pas utiliser
-                                le paiement par Carte Bancaire avec PayPal ci
-                                dessous (bouton noir).
-                              </MessageBox>
-                              <PayPalButtons
-                                createOrder={createOrder}
-                                onApprove={onApprove}
-                                onError={onError}
-                              />
-                            </Accordion.Body>
-                          </Accordion.Item>
-                        </Accordion>
+                        <PayPalButtons
+                          createOrder={createOrder}
+                          onApprove={onApprove}
+                          onError={onError}
+                        />
                       </>
                     )}
                     {loadingPay && <LoadingBox></LoadingBox>}
