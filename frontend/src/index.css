@@ -132,6 +132,15 @@ main {
   border: 2px solid #f47c7c;
 }
 
+.danger {
+  border: solid 2px #c0392b;
+  background-color: #e74c3c;
+  padding: 15px;
+  border-radius: 10px;
+  font-size: 25px;
+  color: #f1f1f1;
+}
+
 #slider_tissus {
   max-height: 150px;
 }

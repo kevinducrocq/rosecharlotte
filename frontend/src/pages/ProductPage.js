@@ -78,7 +78,8 @@ function ProductPage() {
   const options = {
     loop: false,
     margin: 0,
-    autoplay: false,
+    autoplay: true,
+    nav: true,
     autoplayHoverPause: true,
     responsive: {
       0: {
@@ -102,7 +103,8 @@ function ProductPage() {
   const opts = {
     loop: false,
     margin: 0,
-    autoplay: false,
+    autoplay: true,
+    nav: true,
     autoplayHoverPause: true,
     responsive: {
       0: {

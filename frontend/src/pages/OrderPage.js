@@ -265,9 +265,9 @@ export default function OrderPage() {
                 Paiement effectué le {dateFr(order.paidAt)}
               </MessageBox>
             ) : (
-              <MessageBox variant="danger">
-                <b>En attente de paiement du client</b>
-              </MessageBox>
+              <div className="danger text-center">
+                <b>En attente de paiement</b>
+              </div>
             )}
           </div>
         </Col>
@@ -295,11 +295,11 @@ export default function OrderPage() {
             )}
             <Card.Body>
               {order.isDelivered ? (
-                <MessageBox variant="success">
-                  Commande livrée le {dateFr(order.deliveredAt)}
-                </MessageBox>
+                <div className="badge bg-success">
+                  Commande expédiée le {dateFr(order.deliveredAt)}
+                </div>
               ) : (
-                <MessageBox variant="danger">Pas encore livré</MessageBox>
+                <div className="bg1 badge">Commande en préparation</div>
               )}
             </Card.Body>
           </Card>
