@@ -130,9 +130,9 @@ main {
 
 .arrow {
   position: absolute;
-  border-radius: 3px;
-  font-size: 75px;
-  top: 0;
+  border-radius: 1px;
+  font-size: 50px;
+  top: 5px;
 }
 
 .arrow:hover {
@@ -180,6 +180,10 @@ main {
   max-width: 80px;
   max-height: 80px;
   object-fit: cover;
+}
+
+.product-carousel-image:hover {
+  transform: scale(1.10);
 }
 
 .images-tissu-motifs {
@@ -240,6 +244,7 @@ main {
 .justify-content-space-between {
   justify-content: space-between;
 }
+
 /*NAVBAR*/
 .navbar {
   background-color: #f47c7c;
