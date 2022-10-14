@@ -28,6 +28,11 @@ import { toast } from 'react-toastify';
 import { LinkContainer } from 'react-router-bootstrap';
 import OwlCarousel from 'react-owl-carousel';
 import nl2br from 'react-nl2br';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faChevronLeft,
+  faChevronRight,
+} from '@fortawesome/pro-solid-svg-icons';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -76,6 +81,30 @@ function ProductPage() {
     });
 
   const options = {
+    loop: false,
+    margin: 0,
+    autoplay: false,
+    autoplayHoverPause: true,
+    responsive: {
+      0: {
+        items: 1,
+      },
+      400: {
+        items: 1,
+      },
+      600: {
+        items: 2,
+      },
+      800: {
+        items: 3,
+      },
+      1000: {
+        items: 3,
+      },
+    },
+  };
+
+  const opts = {
     loop: false,
     margin: 0,
     autoplay: false,
@@ -392,7 +421,7 @@ function ProductPage() {
                         </div>
                         <OwlCarousel
                           className="slider-items owl-carousel owl-theme"
-                          {...options}
+                          {...opts}
                           id="slider_tissus"
                         >
                           {product.tissus.map((currentTissu) => {
@@ -401,7 +430,7 @@ function ProductPage() {
                                 <div
                                   role="button"
                                   className={
-                                    tissu === currentTissu._id
+                                    tissu === currentTissu.name
                                       ? 'selected-item p-1'
                                       : 'p-1'
                                   }
@@ -423,7 +452,9 @@ function ProductPage() {
                                         src="../images/no-image.png"
                                       />
                                     )}
-                                    <small>{currentTissu.name}</small>
+                                    <p className="caption-carousel">
+                                      {currentTissu.name}
+                                    </p>
                                   </div>
                                 </div>
                               </div>
@@ -431,7 +462,7 @@ function ProductPage() {
                           })}
                         </OwlCarousel>
                         {tissu && (
-                          <div className="mt-2 text-muted">
+                          <div className="text-muted">
                             Vous avez choisi : &nbsp;
                             <strong className="bg1 badge badge-pill">
                               {tissu}
@@ -449,7 +480,7 @@ function ProductPage() {
                         </div>
                         <OwlCarousel
                           className="slider-items owl-carousel owl-theme"
-                          {...options}
+                          {...opts}
                           id="slider_patches"
                         >
                           {product.patches.map((currentPatch) => {
@@ -458,7 +489,7 @@ function ProductPage() {
                                 <div
                                   role="button"
                                   className={
-                                    patch === currentPatch._id
+                                    patch === currentPatch.name
                                       ? 'selected-item p-1'
                                       : 'p-1'
                                   }
@@ -480,7 +511,9 @@ function ProductPage() {
                                         src="../images/no-image.png"
                                       />
                                     )}
-                                    <small>{currentPatch.name}</small>
+                                    <p className="caption-carousel">
+                                      {currentPatch.name}
+                                    </p>
                                   </div>
                                 </div>
                               </div>
@@ -488,7 +521,7 @@ function ProductPage() {
                           })}
                         </OwlCarousel>
                         {patch && (
-                          <div className="mt-2 text-muted">
+                          <div className="text-muted">
                             Vous avez choisi : &nbsp;
                             <strong className="bg1 badge badge-pill">
                               {patch}
@@ -553,9 +586,9 @@ function ProductPage() {
 
       <div className="my-3">
         <Row>
-          <Col md={4} sm={2}>
+          <Col md={4}>
             <div className="mb-3 p-4">
-              <h2>Ajouter un avis</h2>
+              <h2 className="mb-4">Ajouter un avis</h2>
 
               {userInfo ? (
                 <form onSubmit={submitHandler}>
@@ -609,18 +642,17 @@ function ProductPage() {
               )}
             </div>
           </Col>
-          <Col md={8}>
-            <Row>
-              <div className="mb-3 p-4">
-                <h2 ref={reviewsRef}>Avis des clients</h2>
-                {product.reviews.length === 0 && (
-                  <MessageBox>
-                    Il n'y a pas encore d'avis sur ce produit
-                  </MessageBox>
-                )}
-              </div>
 
-              <Row>
+          <Col md={8}>
+            <div className="p-4 align-items-center">
+              <h2 ref={reviewsRef} className="mb-4">
+                Avis des clients
+              </h2>
+              {product.reviews.length === 0 ? (
+                <MessageBox>
+                  Il n'y a pas encore d'avis sur ce produit
+                </MessageBox>
+              ) : (
                 <OwlCarousel
                   className="slider-items owl-carousel"
                   {...options}
@@ -629,7 +661,7 @@ function ProductPage() {
                   {product.reviews.map(
                     (review) =>
                       !review.status === false && (
-                        <Card>
+                        <Card key={review._id}>
                           <Card.Header>
                             <strong>{review.name}</strong>
                             <Rating rating={review.rating} caption=" "></Rating>
@@ -642,8 +674,8 @@ function ProductPage() {
                       )
                   )}
                 </OwlCarousel>
-              </Row>
-            </Row>
+              )}
+            </div>
           </Col>
         </Row>
       </div>

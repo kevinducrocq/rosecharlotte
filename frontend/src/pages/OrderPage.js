@@ -247,10 +247,27 @@ export default function OrderPage() {
       <Helmet>
         <title>Commande {orderId}</title>
       </Helmet>
-      <h1 className="my-5">
-        Commande <br />
-        <small>N° {orderId.substring(0, 7)}</small>
-      </h1>
+      <Row className="align-items-center">
+        <Col md={4}>
+          <h1 className="my-5">
+            Commande <br />
+            <small>N° {orderId.substring(0, 7)}</small>
+          </h1>
+        </Col>
+        <Col md={8}>
+          <div>
+            {order.isPaid ? (
+              <MessageBox variant="success">
+                Paiement effectué le {dateFr(order.paidAt)}
+              </MessageBox>
+            ) : (
+              <MessageBox variant="danger">
+                <b>En attente de paiement du client</b>
+              </MessageBox>
+            )}
+          </div>
+        </Col>
+      </Row>
       <Row>
         <Col md={8}>
           <Card className="mb-3">
@@ -286,13 +303,6 @@ export default function OrderPage() {
             <Card.Body>
               <Card.Title>Paiement</Card.Title>
               <div className="text-muted mb-3">{order.paymentMethod}</div>
-              {order.isPaid ? (
-                <MessageBox variant="success">
-                  Payé le {dateFr(order.paidAt)}
-                </MessageBox>
-              ) : (
-                <MessageBox variant="danger">Pas encore payé</MessageBox>
-              )}
             </Card.Body>
           </Card>
           <Card className="mb-3 bg-light">
@@ -431,9 +441,9 @@ export default function OrderPage() {
 
                             <Accordion.Body>
                               <MessageBox variant="danger">
-                                Suite à un problème technique, merci de ne pas
-                                utiliser le paiement par CB avec PayPal, mais
-                                plutôt l'option "payer par carte bancaire"
+                                Suite à un problème technique, Ne pas utiliser
+                                le paiement par Carte Bancaire avec PayPal ci
+                                dessous (bouton noir).
                               </MessageBox>
                               <PayPalButtons
                                 createOrder={createOrder}

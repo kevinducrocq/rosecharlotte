@@ -128,6 +128,19 @@ main {
 
 /*PRODUCT TISSU CAROUSEL*/
 
+.selected-item {
+  border: 2px solid #f47c7c;
+}
+
+.caption-carousel {
+  font-size: 9.5px;
+  text-align: center;
+}
+
+.owl-stage {
+  padding-bottom: -40px important!;
+}
+
 .product-carousel-image {
   max-width: 80px;
   max-height: 80px;
