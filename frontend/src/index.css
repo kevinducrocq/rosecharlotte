@@ -132,6 +132,13 @@ main {
   border: 2px solid #f47c7c;
 }
 
+#slider_tissus {
+  height: 150px;
+}
+#slider_patches {
+  height: 150px;
+}
+
 .caption-carousel {
   font-size: 9.5px;
   text-align: center;

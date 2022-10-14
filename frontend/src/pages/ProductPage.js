@@ -523,9 +523,7 @@ function ProductPage() {
                         {patch && (
                           <div className="text-muted">
                             Vous avez choisi : &nbsp;
-                            <strong className="bg1 badge badge-pill">
-                              {patch}
-                            </strong>
+                            <b className="bg1 badge badge-pill">{patch}</b>
                           </div>
                         )}
                       </>
