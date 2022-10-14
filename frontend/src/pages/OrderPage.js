@@ -385,8 +385,8 @@ export default function OrderPage() {
           <Card className="mb-3">
             <Card.Body>
               <Card.Title>Montant de la commande</Card.Title>
-              <ListGroup variant="flush">
-                <ListGroup.Item className="shadow rounded-3">
+              <ListGroup>
+                <ListGroup.Item className="rounded-3">
                   <Row>
                     <Col>Produits</Col>
                     <Col>{order.itemsPrice.toFixed(2)} &euro;</Col>
@@ -405,39 +405,52 @@ export default function OrderPage() {
                   </Row>
                 </ListGroup.Item>
                 {!order.isPaid && order.paymentMethod === 'CB ou PayPal' && (
-                  <ListGroup.Item>
+                  <ListGroup.Item className="rounded-3">
                     {isPending ? (
                       <LoadingBox />
                     ) : (
                       <>
-                        <Accordion defaultActiveKey="0">
-                          <Accordion.Item eventKey="0">
-                            <Accordion.Header>
-                              <div className="text-center">
+                        <ListGroup>
+                          <ListGroup.Item className="rounded-3">
+                            <div className="p-2 mb-3">
+                              <div className="mb-2">
                                 <span className="paywithpaypal">
                                   Payer par Carte Bancaire
                                 </span>
                               </div>
-                            </Accordion.Header>
-
-                            <Accordion.Body>
-                              <StripeContainer
-                                onSuccess={() => {
-                                  setRefresh(refresh + 1);
-                                }}
-                                order={order}
-                                reducer={reducer}
+                              <div>
+                                <StripeContainer
+                                  onSuccess={() => {
+                                    setRefresh(refresh + 1);
+                                  }}
+                                  order={order}
+                                  reducer={reducer}
+                                />
+                              </div>
+                            </div>
+                          </ListGroup.Item>
+                        </ListGroup>
+                        <div className="my-2 text-center">
+                          <span>Ou</span>
+                        </div>
+                        <ListGroup>
+                          <ListGroup.Item className="rounded-3">
+                            <div className="p-2">
+                              <div className="mb-2">
+                                <span className="paywithpaypal">
+                                  Payer avec PayPal
+                                </span>
+                              </div>
+                            </div>
+                            <div>
+                              <PayPalButtons
+                                createOrder={createOrder}
+                                onApprove={onApprove}
+                                onError={onError}
                               />
-                            </Accordion.Body>
-                          </Accordion.Item>
-                        </Accordion>
-                        <div className="mb-3"></div>
-                        <hr />
-                        <PayPalButtons
-                          createOrder={createOrder}
-                          onApprove={onApprove}
-                          onError={onError}
-                        />
+                            </div>
+                          </ListGroup.Item>
+                        </ListGroup>
                       </>
                     )}
                     {loadingPay && <LoadingBox></LoadingBox>}
