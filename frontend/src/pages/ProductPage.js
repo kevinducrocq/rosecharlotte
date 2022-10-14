@@ -534,7 +534,7 @@ function ProductPage() {
                         <hr />
                         <Form.Group className="my-3">
                           <div className="h5">
-                            <span>Choisissez le motif à broder</span>
+                            <span>Texte personnalisé (facultatif)</span>
                           </div>
                           <Form.Control
                             value={customization}

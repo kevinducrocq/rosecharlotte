@@ -133,10 +133,10 @@ main {
 }
 
 #slider_tissus {
-  height: 150px;
+  max-height: 150px;
 }
 #slider_patches {
-  height: 150px;
+  max-height: 150px;
 }
 
 .caption-carousel {
