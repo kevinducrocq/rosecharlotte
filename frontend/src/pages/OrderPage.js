@@ -385,7 +385,8 @@ export default function OrderPage() {
           <Card className="mb-3">
             <Card.Body>
               <Card.Title>Montant de la commande</Card.Title>
-              <ListGroup>
+
+              <ListGroup className="mb-3">
                 <ListGroup.Item className="rounded-3">
                   <Row>
                     <Col>Produits</Col>
@@ -397,152 +398,152 @@ export default function OrderPage() {
                   </Row>
                   <Row>
                     <Col>
-                      <strong>Total de la commande</strong>
+                      <strong>Total</strong>
                     </Col>
                     <Col>
                       <strong>{order.totalPrice.toFixed(2)} &euro;</strong>
                     </Col>
                   </Row>
                 </ListGroup.Item>
-                {!order.isPaid && order.paymentMethod === 'CB ou PayPal' && (
-                  <ListGroup.Item className="rounded-3">
-                    {isPending ? (
-                      <LoadingBox />
-                    ) : (
-                      <>
-                        <ListGroup>
-                          <ListGroup.Item className="rounded-3">
-                            <div className="p-2 mb-3">
-                              <div className="mb-2">
-                                <span className="paywithpaypal">
-                                  Payer par Carte Bancaire
-                                </span>
-                              </div>
-                              <div>
-                                <StripeContainer
-                                  onSuccess={() => {
-                                    setRefresh(refresh + 1);
-                                  }}
-                                  order={order}
-                                  reducer={reducer}
-                                />
-                              </div>
-                            </div>
-                          </ListGroup.Item>
-                        </ListGroup>
-                        <div className="my-2 text-center">
-                          <span>Ou</span>
-                        </div>
-                        <ListGroup>
-                          <ListGroup.Item className="rounded-3">
-                            <div className="p-2">
-                              <div className="mb-2">
-                                <span className="paywithpaypal">
-                                  Payer avec PayPal
-                                </span>
-                              </div>
+              </ListGroup>
+
+              {!order.isPaid && order.paymentMethod === 'CB ou PayPal' && (
+                <ListGroup.Item className="rounded-3">
+                  {isPending ? (
+                    <LoadingBox />
+                  ) : (
+                    <>
+                      <ListGroup>
+                        <ListGroup.Item className="rounded-3">
+                          <div className="p-2 mb-3">
+                            <div className="mb-2">
+                              <span className="paywithpaypal">
+                                Payer par Carte Bancaire
+                              </span>
                             </div>
                             <div>
-                              <PayPalButtons
-                                createOrder={createOrder}
-                                onApprove={onApprove}
-                                onError={onError}
+                              <StripeContainer
+                                onSuccess={() => {
+                                  setRefresh(refresh + 1);
+                                }}
+                                order={order}
+                                reducer={reducer}
                               />
                             </div>
-                          </ListGroup.Item>
-                        </ListGroup>
-                      </>
-                    )}
-                    {loadingPay && <LoadingBox></LoadingBox>}
+                          </div>
+                        </ListGroup.Item>
+                      </ListGroup>
+                      <div className="my-2 text-center">
+                        <span>Ou</span>
+                      </div>
+                      <ListGroup>
+                        <ListGroup.Item className="rounded-3">
+                          <div className="p-2">
+                            <div className="mb-2">
+                              <span className="paywithpaypal">
+                                Payer avec PayPal
+                              </span>
+                            </div>
+                          </div>
+                          <div>
+                            <PayPalButtons
+                              createOrder={createOrder}
+                              onApprove={onApprove}
+                              onError={onError}
+                            />
+                          </div>
+                        </ListGroup.Item>
+                      </ListGroup>
+                    </>
+                  )}
+                  {loadingPay && <LoadingBox></LoadingBox>}
+                </ListGroup.Item>
+              )}
+              {!order.isPaid && order.paymentMethod === 'Chèque' && (
+                <>
+                  <ListGroup.Item className="shadow rounded-3 text-center">
+                    <p>
+                      Merci d'envoyer le chèque, à l'ordre de{' '}
+                      <strong>"Rose Charlotte &amp; Compagnie"</strong> à
+                      l'adresse suivante :&nbsp;
+                    </p>
+                    <p className="text-center">
+                      Rose Charlotte & Compagnie <br /> 20 rue Principale <br />
+                      62190 Ecquedecques
+                    </p>
                   </ListGroup.Item>
-                )}
-                {!order.isPaid && order.paymentMethod === 'Chèque' && (
-                  <>
-                    <ListGroup.Item className="shadow rounded-3 text-center">
-                      <p>
-                        Merci d'envoyer le chèque, à l'ordre de{' '}
-                        <strong>"Rose Charlotte &amp; Compagnie"</strong> à
-                        l'adresse suivante :&nbsp;
-                      </p>
-                      <p className="text-center">
-                        Rose Charlotte & Compagnie <br /> 20 rue Principale{' '}
-                        <br />
-                        62190 Ecquedecques
-                      </p>
-                    </ListGroup.Item>
-                    {!userInfo.isAdmin && (
-                      <Modal
-                        show={showModalCheque}
-                        onHide={() => {
-                          setShowModalCheque(false);
-                        }}
-                        dialogClassName="custom-modal"
-                      >
-                        <Modal.Header closeButton>
-                          <Modal.Title id="contained-modal-title-lg">
-                            Paiement par Chèque
-                          </Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                          <p>
-                            Merci de l'envoyer, à l'ordre de{' '}
-                            <strong>"Rose Charlotte &amp; Compagnie"</strong> à
-                            l'adresse suivante :
-                          </p>
-                          <p className="text-center">
-                            Rose Charlotte & Compagnie <br /> 20 rue Principale
-                            <br /> 62190 Ecquedecques
-                          </p>
-                        </Modal.Body>
-                        <Modal.Footer>
-                          <Button
-                            className="bg1"
-                            variant="outline-light no-border"
-                            onClick={() => {
-                              setShowModalCheque(false);
-                            }}
-                          >
-                            Femer
-                          </Button>
-                        </Modal.Footer>
-                      </Modal>
-                    )}
-                  </>
-                )}
-                {userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                  {!userInfo.isAdmin && (
+                    <Modal
+                      show={showModalCheque}
+                      onHide={() => {
+                        setShowModalCheque(false);
+                      }}
+                      dialogClassName="custom-modal"
+                    >
+                      <Modal.Header closeButton>
+                        <Modal.Title id="contained-modal-title-lg">
+                          Paiement par Chèque
+                        </Modal.Title>
+                      </Modal.Header>
+                      <Modal.Body>
+                        <p>
+                          Merci de l'envoyer, à l'ordre de{' '}
+                          <strong>"Rose Charlotte &amp; Compagnie"</strong> à
+                          l'adresse suivante :
+                        </p>
+                        <p className="text-center">
+                          Rose Charlotte & Compagnie <br /> 20 rue Principale
+                          <br /> 62190 Ecquedecques
+                        </p>
+                      </Modal.Body>
+                      <Modal.Footer>
+                        <Button
+                          className="bg1"
+                          variant="outline-light no-border"
+                          onClick={() => {
+                            setShowModalCheque(false);
+                          }}
+                        >
+                          Femer
+                        </Button>
+                      </Modal.Footer>
+                    </Modal>
+                  )}
+                </>
+              )}
+              {userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+                <ListGroup.Item>
+                  {loadingDeliver && <LoadingBox></LoadingBox>}
+                  <div className="d-grid">
+                    <Button
+                      type="button"
+                      variant="outline-light"
+                      className="bg1"
+                      onClick={deliverOrderHandler}
+                    >
+                      Livrer
+                    </Button>
+                  </div>
+                </ListGroup.Item>
+              )}
+              {userInfo.isAdmin &&
+                !order.isPaid &&
+                !order.isDelivered &&
+                order.paymentMethod === 'Chèque' && (
                   <ListGroup.Item>
-                    {loadingDeliver && <LoadingBox></LoadingBox>}
+                    {loadingIsPaid && <LoadingBox></LoadingBox>}
                     <div className="d-grid">
                       <Button
                         type="button"
                         variant="outline-light"
                         className="bg1"
-                        onClick={deliverOrderHandler}
+                        onClick={payOrderHandler}
                       >
-                        Livrer
+                        Chèque reçu
                       </Button>
                     </div>
                   </ListGroup.Item>
                 )}
-                {userInfo.isAdmin &&
-                  !order.isPaid &&
-                  !order.isDelivered &&
-                  order.paymentMethod === 'Chèque' && (
-                    <ListGroup.Item>
-                      {loadingIsPaid && <LoadingBox></LoadingBox>}
-                      <div className="d-grid">
-                        <Button
-                          type="button"
-                          variant="outline-light"
-                          className="bg1"
-                          onClick={payOrderHandler}
-                        >
-                          Chèque reçu
-                        </Button>
-                      </div>
-                    </ListGroup.Item>
-                  )}
-              </ListGroup>
             </Card.Body>
           </Card>
         </Col>
