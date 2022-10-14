@@ -298,8 +298,10 @@ export default function OrderPage() {
                 <div className="badge bg-success">
                   Commande expédiée le {dateFr(order.deliveredAt)}
                 </div>
-              ) : (
+              ) : order.isPaid ? (
                 <div className="bg1 badge">Commande en préparation</div>
+              ) : (
+                ''
               )}
             </Card.Body>
           </Card>
