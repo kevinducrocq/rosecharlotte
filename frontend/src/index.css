@@ -126,7 +126,26 @@ main {
   background-color: #fff2f2;
 }
 
-/*PRODUCT TISSU CAROUSEL*/
+/*PRODUCT CAROUSEL*/
+
+.arrow {
+  position: absolute;
+  border-radius: 3px;
+  font-size: 75px;
+  top: 0;
+}
+
+.arrow:hover {
+  color: #f47c7c;
+}
+
+.next {
+  right: -20px;
+}
+
+.prev {
+  left: -20px;
+}
 
 .selected-item {
   border: 2px solid #f47c7c;

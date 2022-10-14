@@ -117,10 +117,10 @@ function ProductPage() {
         items: 4,
       },
       800: {
-        items: 6,
+        items: 5,
       },
       1000: {
-        items: 6,
+        items: 5,
       },
     },
   };
@@ -419,6 +419,10 @@ function ProductPage() {
                         <OwlCarousel
                           className="slider-items owl-carousel owl-theme"
                           {...opts}
+                          navText={[
+                            '<span class="arrow prev">‹</span>',
+                            '<span class="arrow next">›</span>',
+                          ]}
                           id="slider_tissus"
                         >
                           {product.tissus.map((currentTissu) => {
@@ -478,6 +482,10 @@ function ProductPage() {
                         <OwlCarousel
                           className="slider-items owl-carousel owl-theme"
                           {...opts}
+                          navText={[
+                            '<span class="arrow prev">‹</span>',
+                            '<span class="arrow next">›</span>',
+                          ]}
                           id="slider_patches"
                         >
                           {product.patches.map((currentPatch) => {

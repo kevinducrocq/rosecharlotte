@@ -9,7 +9,6 @@ import axios from 'axios';
 import { dateFr, getError } from '../utils';
 import { Helmet } from 'react-helmet-async';
 import {
-  Accordion,
   Button,
   Card,
   Col,
