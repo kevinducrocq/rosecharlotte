@@ -79,9 +79,7 @@ function ProductPage() {
   const options = {
     loop: false,
     margin: 0,
-    autoplay: true,
     nav: true,
-    autoplayHoverPause: true,
     responsive: {
       0: {
         items: 1,
@@ -104,9 +102,7 @@ function ProductPage() {
   const opts = {
     loop: false,
     margin: 0,
-    autoplay: true,
     nav: true,
-    autoplayHoverPause: true,
     responsive: {
       0: {
         items: 4,
@@ -141,7 +137,7 @@ function ProductPage() {
 
   useEffect(() => {
     setRefresh(refresh + 1);
-  }, [tissu, patch, refresh]);
+  }, [tissu, patch]);
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { cart, userInfo } = state;
