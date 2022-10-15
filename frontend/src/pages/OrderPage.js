@@ -241,6 +241,10 @@ export default function OrderPage() {
     }
   }
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return loading ? (
     <LoadingBox></LoadingBox>
   ) : error ? (

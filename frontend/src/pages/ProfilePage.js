@@ -1,4 +1,4 @@
-import React, { useContext, useReducer, useState } from 'react';
+import React, { useContext, useEffect, useReducer, useState } from 'react';
 import {
   Accordion,
   Breadcrumb,
@@ -95,6 +95,10 @@ const ProfilePage = () => {
       }
     }
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <>

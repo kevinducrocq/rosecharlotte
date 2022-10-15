@@ -73,8 +73,9 @@ export default function OrderListPage() {
             },
             order: [[3, 'desc']],
             destroy: true,
+            pageLength: 50,
           });
-        }, 500);
+        }, 50);
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {
         dispatch({

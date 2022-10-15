@@ -50,6 +50,10 @@ const OrderHistoryPage = () => {
     fetchData();
   }, [userInfo]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <Container className="my-5">
       <Breadcrumb className="d-none d-md-flex">

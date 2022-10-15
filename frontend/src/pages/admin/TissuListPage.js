@@ -108,8 +108,9 @@ export default function TissuListPage() {
             },
             order: [[0, 'desc']],
             destroy: true,
+            pageLength: 25,
           });
-        }, 500);
+        }, 50);
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {
         dispatch({

@@ -108,8 +108,9 @@ export default function ReviewListPage() {
             },
             order: [[5, 'desc']],
             destroy: true,
+            pageLength: 25,
           });
-        }, 500);
+        }, 50);
 
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {

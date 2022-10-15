@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { Store } from '../Store';
 import { Helmet } from 'react-helmet-async';
 import {
@@ -70,6 +70,10 @@ export default function CartPage() {
   const checkoutHandler = () => {
     navigate(`/signin?redirect=/shipping`);
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <Container className="my-5">

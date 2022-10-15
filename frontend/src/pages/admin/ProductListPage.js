@@ -151,6 +151,7 @@ export default function ProductListScreen() {
             },
             order: [[5, 'desc']],
             destroy: true,
+            pageLength: 25,
           });
         }, 500);
 

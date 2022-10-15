@@ -48,6 +48,10 @@ function PromoPage() {
     return !!product.promoPrice;
   });
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <>
       <Helmet>

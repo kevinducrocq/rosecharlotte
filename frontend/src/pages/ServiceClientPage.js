@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Breadcrumb, Container } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
 const ServiceClientPage = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <Container className="my-5">
       <Breadcrumb className="d-none d-md-flex">

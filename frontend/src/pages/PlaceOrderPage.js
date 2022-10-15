@@ -152,6 +152,10 @@ export default function PlaceOrderPage() {
     }
   }, [cart, navigate]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   // if (!cart.itemsPrice) {
   //   return <div></div>;
   // }

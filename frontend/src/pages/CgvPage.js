@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Breadcrumb, Container, Table } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { LinkContainer } from 'react-router-bootstrap';
 
 export default function CgvPage() {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <Container className="my-5">
       <Breadcrumb className="d-none d-md-flex">

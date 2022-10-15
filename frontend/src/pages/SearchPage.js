@@ -97,6 +97,10 @@ export default function SearchScreen() {
     return `/boutique/search?category=${filterCategory}&subCategory=${filterSubCategory}&query=${filterQuery}&price=${filterPrice}&order=${sortOrder}&page=${filterPage}`;
   };
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const renderedCategories = [];
   Object.keys(categories).forEach(function (category) {
     renderedCategories.push(

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Breadcrumb, Button, Col, Container, Form, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { toast } from 'react-toastify';
@@ -22,6 +22,11 @@ function reducer(state, action) {
 }
 
 export default function ContactPage() {
+  
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const [{ loading, error }, dispatch] = useReducer(reducer, {
     loading: false,
     error: '',

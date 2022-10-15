@@ -53,6 +53,10 @@ export default function SignupPage() {
     }
   }, [navigate, redirect, userInfo]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <Container className="my-5 small-container">
       <Helmet>
