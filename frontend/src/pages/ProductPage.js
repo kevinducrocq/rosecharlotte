@@ -62,6 +62,7 @@ function ProductPage() {
   const [fil, setFil] = useState('');
   const [tissu, setTissu] = useState('');
   const [patch, setPatch] = useState('');
+  const [refresh, setRefresh] = useState(0);
   // const [buttonCartIsVisible, setButtonCartIsVisible] = useState('');
 
   const navigate = useNavigate();
@@ -137,6 +138,10 @@ function ProductPage() {
     };
     fetchData();
   }, [slug]);
+
+  useEffect(() => {
+    setRefresh(refresh + 1);
+  }, [tissu, patch]);
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { cart, userInfo } = state;
