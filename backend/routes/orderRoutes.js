@@ -31,11 +31,11 @@ const setOrderPaid = async (order, res, paymentResult) => {
     to: user.email,
     ...orderEmail(order, user),
   });
-  await transporter.sendMail({
-    from: sender,
-    to: sender,
-    ...orderAdminEmail(order, user),
-  });
+  // await transporter.sendMail({
+  //   from: sender,
+  //   to: sender,
+  //   ...orderAdminEmail(order, user),
+  // });
 
   updateStock(order);
 
@@ -281,12 +281,19 @@ orderRouter.put(
   isAdmin,
   expressAsyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id);
-
+    const user = await User.findOne({
+      _id: order.user?._id?.toString() ?? order.user.toString(),
+    });
     if (order) {
       order.isPaid = true;
       order.paidAt = Date.now();
 
       await order.save();
+      await transporter.sendMail({
+        from: sender,
+        to: user.email,
+        ...orderEmail(order, user),
+      });
       res.send({ message: 'Commande payée' });
     } else {
       res.status(404).send({ message: 'Commande non trouvée' });
