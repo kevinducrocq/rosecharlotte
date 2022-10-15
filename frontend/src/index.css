@@ -182,10 +182,6 @@ main {
   object-fit: cover;
 }
 
-.product-carousel-image:hover {
-  transform: scale(1.10);
-}
-
 .images-tissu-motifs {
   max-width: 150px;
   max-height: 150px;
