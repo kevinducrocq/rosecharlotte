@@ -31,11 +31,11 @@ const setOrderPaid = async (order, res, paymentResult) => {
     to: user.email,
     ...orderEmail(order, user),
   });
-  // await transporter.sendMail({
-  //   from: sender,
-  //   to: sender,
-  //   ...orderAdminEmail(order, user),
-  // });
+  await transporter.sendMail({
+    from: sender,
+    to: sender,
+    ...orderAdminEmail(order, user),
+  });
 
   updateStock(order);
 
