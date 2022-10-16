@@ -45,8 +45,8 @@ function CheckoutForm({ order, reducer, onSuccess }) {
           onSuccess();
           //faire un appel au back sur une nouvelle route /payment/stripe/check
           //dans cette route, utiliser await stripe.paymentintent.retrieve(id)
+          setLoader(false);
         }, 4000);
-        setLoader(false);
       } else {
         toast.error('Il y a eu une erreur lors du paiement');
       }
