@@ -145,7 +145,7 @@ export function orderAdminEmail(order, user) {
 
     <div style="text-align:center; margin-left:10px; margin-right:10px; margin-top: 15px; margin-bottom: 25px;line-height:30px;">
         <span style='font-size:20px'><a href="https://rosecharlotte.fr/order/${
-          order / _id
+          order._id
         }">Voir la commande</a></span><br>
     </div>
 

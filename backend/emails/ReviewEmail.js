@@ -24,7 +24,7 @@ export function reviewEmail(review, product) {
 
 
     <div style="text-align:center; margin-left:10px; margin-right:10px; margin-top: 15px; margin-bottom: 25px;line-height:30px;">
-        <span style='font-size:20px'><a href="https://rosecharlote.fr/admin/product/${product._id}/review/${review_id}">Valider le commentaire</a></span><br>
+        <span style='font-size:20px'><a href="https://rosecharlote.fr/admin/product/${product._id}/review/${review._id}">Valider le commentaire</a></span><br>
     </div>
 
 </div>

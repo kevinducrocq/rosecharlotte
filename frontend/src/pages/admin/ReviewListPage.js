@@ -17,6 +17,7 @@ import 'datatables.net-dt/js/dataTables.dataTables';
 import 'datatables.net-dt/css/jquery.dataTables.min.css';
 import $ from 'jquery';
 import AdminCanvasMenu from '../../components/AdminCanvasMenu';
+import { Link } from 'react-router-dom';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -233,7 +234,14 @@ export default function ReviewListPage() {
                   <tr key={review._id}>
                     <td>{review.name}</td>
                     <td>{review.comment}</td>
-                    <td>{review.product.name}</td>
+                    <td>
+                      <Link
+                        to={`/product/${review.product.slug}`}
+                        className="admin-product-link"
+                      >
+                        {review.product.name}
+                      </Link>
+                    </td>
                     <td>{review.rating}</td>
                     <td>{dateFr(review.createdAt)}</td>
                     <td>
