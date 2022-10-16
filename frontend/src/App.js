@@ -37,7 +37,6 @@ import SoldePage from './pages/SoldesPage';
 import FilListPage from './pages/admin/FilListPage';
 import TissuListPage from './pages/admin/TissuListPage';
 import PatchListPage from './pages/admin/PatchListPage';
-import ModalTissuEdit from './components/ModalEditTissu';
 import TissuPage from './pages/TissuPage';
 import PatchPage from './pages/PatchPage';
 
