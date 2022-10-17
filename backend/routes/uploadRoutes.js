@@ -50,7 +50,7 @@ uploadRouter.post('/file-upload', (req, res) => {
     }
     try {
       console.log('coucou 4 ');
-      const { file } = req.file;
+      const { file } = req;
       if (!file) {
         console.log('coucou 5 ');
         return res
