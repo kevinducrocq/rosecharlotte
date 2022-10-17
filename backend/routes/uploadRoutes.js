@@ -7,10 +7,9 @@ import { v4 as uuid } from 'uuid';
 import sharp from 'sharp';
 import path from 'path';
 import mkdirp from 'mkdirp';
+import fs from 'fs';
 
 const uploadRouter = express.Router();
-
-const upload = multer();
 
 const __dirname = path.resolve();
 
@@ -67,6 +66,8 @@ uploadRouter.post('/file-upload', (req, res) => {
     }
   });
 });
+
+const upload = multer();
 
 uploadRouter.post(
   '/',
