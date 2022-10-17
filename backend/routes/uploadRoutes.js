@@ -41,13 +41,18 @@ const fileFilter = (req, file, done) => {
 const imgUpload = multer({ storage, fileFilter }).single('image');
 
 uploadRouter.post('/file-upload', (req, res) => {
+  console.log('coucou 1 ');
   imgUpload(req, res, async (err) => {
+    console.log('coucou 2 ');
     if (err) {
+      console.log('coucou 3 ');
       return res.status(400).json({ success: false, message: err.message });
     }
     try {
-      const { file } = req;
+      console.log('coucou 4 ');
+      const { file } = req.file;
       if (!file) {
+        console.log('coucou 5 ');
         return res
           .status(400)
           .json({ success: false, message: 'file not supplied' });
@@ -56,12 +61,16 @@ uploadRouter.post('/file-upload', (req, res) => {
         UPLOAD_PATH,
         uuid() + '_' + file.originalname
       );
+      console.log('coucou 6 ');
       // save newFilePath in your db as image path
       await sharp(file.path).resize().jpeg({ quality: 50 }).toFile(newFilePath);
+      console.log('coucou 7 ');
       fs.unlinkSync(file.path);
+      console.log('coucou 8 ');
 
       return res.status(200).json({ success: true, message: 'image uploaded' });
     } catch (error) {
+      console.log('coucou 9 ');
       return res.status(500).json({ success: false, message: error.message });
     }
   });
