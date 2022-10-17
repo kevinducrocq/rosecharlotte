@@ -31,10 +31,6 @@ const storage = multer.diskStorage({
   },
 });
 
-const limits = {
-  fileSize: 5 * 1024 * 1024,
-};
-
 const fileFilter = (req, file, done) => {
   if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
     done(null, true);
@@ -43,7 +39,7 @@ const fileFilter = (req, file, done) => {
   }
 };
 
-const imgUpload = multer({ storage, limits, fileFilter }).single('image');
+const imgUpload = multer({ storage, fileFilter }).single('image');
 
 uploadRouter.post('/file-upload', (req, res) => {
   imgUpload(req, res, async (err) => {
