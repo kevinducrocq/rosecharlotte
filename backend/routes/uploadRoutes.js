@@ -17,9 +17,9 @@ uploadRouter.use(
   express.static(path.join(__dirname, '../frontend/public/uploads'))
 );
 
-const UPLOAD_PATH = path.join(__dirname, '../frontend/public/uploads');
+mkdirp.sync(path.join(__dirname, '../frontend/public/uploads'));
 
-mkdirp.sync(path.join(__dirname, '/uploads'));
+const UPLOAD_PATH = path.join(__dirname, '../frontend/public/uploads');
 
 const storage = multer.diskStorage({
   destination: (req, file, done) => {
