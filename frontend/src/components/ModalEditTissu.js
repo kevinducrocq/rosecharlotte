@@ -42,7 +42,7 @@ const reducer = (state, action) => {
   }
 };
 
-function ModalTissuEdit({id, onEditSuccess}) {
+function ModalTissuEdit({ id, onEditSuccess }) {
   const tissuId = id;
   const { state } = useContext(Store);
   const { userInfo } = state;
@@ -128,6 +128,10 @@ function ModalTissuEdit({id, onEditSuccess}) {
     }
   };
 
+  function handleChange(e) {
+    setImage(URL.createObjectURL(e.target.files[0]));
+  }
+
   return (
     <>
       <Button
@@ -163,7 +167,7 @@ function ModalTissuEdit({id, onEditSuccess}) {
                 <Form.Control
                   className="mb-2"
                   type="file"
-                  onChange={uploadFileHandler}
+                  onChange={(uploadFileHandler, handleChange)}
                 />
                 {loadingUpload ? (
                   <LoadingBox />

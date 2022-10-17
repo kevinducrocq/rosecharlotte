@@ -221,7 +221,7 @@ export default function ProductAddPage() {
     try {
       dispatch({ type: 'UPLOAD_REQUEST' });
       const { data } = await axios.post(
-        '/api/upload/file-upload',
+        '/api/upload/product-image',
         bodyFormData,
         {
           headers: {
@@ -243,6 +243,10 @@ export default function ProductAddPage() {
       dispatch({ type: 'UPLOAD_FAIL', payload: getError(err) });
     }
   };
+
+  function handleChange(e) {
+    setImage(URL.createObjectURL(e.target.files[0]));
+  }
 
   const deleteFileHandler = async (fileName, f) => {
     setImages(images.filter((x) => x !== fileName));
@@ -628,7 +632,7 @@ export default function ProductAddPage() {
                       <Form.Control
                         className="mb-2"
                         type="file"
-                        onChange={uploadFileHandler}
+                        onChange={(uploadFileHandler, handleChange)}
                       />
                       <div className="d-flex flex-column align-items-center">
                         {image ? (
@@ -663,7 +667,13 @@ export default function ProductAddPage() {
                             key={x}
                             className="d-flex flex-column align-items-center mx-1"
                           >
-                            <Image fluid thumbnail src={x} alt={x} />
+                            <Image
+                              fluid
+                              thumbnail
+                              src={x}
+                              alt={x}
+                              onChange={handleChange}
+                            />
                             <Button
                               variant="warning"
                               onClick={() => deleteFileHandler(x)}

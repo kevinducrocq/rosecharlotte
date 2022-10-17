@@ -91,7 +91,7 @@ export default function TissuListPage() {
   const [name, setName] = useState('');
 
   const imageInputRef = useRef();
-  const [image, setImage] = useState('');
+  const [image, setImage] = useState();
   const [refresh, setRefresh] = useState(false);
 
   useEffect(() => {
@@ -194,6 +194,10 @@ export default function TissuListPage() {
     }
   };
 
+  function handleChange(e) {
+    setImage(URL.createObjectURL(e.target.files[0]));
+  }
+
   return (
     <Container className="my-5">
       <Helmet>
@@ -228,7 +232,7 @@ export default function TissuListPage() {
                   <Form.Control
                     type="file"
                     ref={imageInputRef}
-                    onChange={uploadFileHandler}
+                    onChange={(uploadFileHandler, handleChange)}
                   />
                 </Form.Group>
               </Col>

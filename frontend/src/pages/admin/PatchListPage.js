@@ -76,8 +76,6 @@ const reducer = (state, action) => {
   }
 };
 export default function PatchListPage() {
-  const navigate = useNavigate();
-
   const [
     { loading, loadingUpload, error, patches, successDelete, successAdd },
     dispatch,
@@ -178,6 +176,10 @@ export default function PatchListPage() {
     }
   };
 
+  function handleChange(e) {
+    setImage(URL.createObjectURL(e.target.files[0]));
+  }
+
   const deleteHandler = async (patch) => {
     if (window.confirm('Confirmer ?')) {
       try {
@@ -230,7 +232,7 @@ export default function PatchListPage() {
                   <Form.Control
                     type="file"
                     ref={imageInputRef}
-                    onChange={uploadFileHandler}
+                    onChange={(uploadFileHandler, handleChange)}
                   />
                 </Form.Group>
               </Col>

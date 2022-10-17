@@ -128,6 +128,10 @@ function ModalEditPatch({ id, onEditSuccess }) {
     }
   };
 
+  function handleChange(e) {
+    setImage(URL.createObjectURL(e.target.files[0]));
+  }
+
   return (
     <>
       <Button
@@ -163,7 +167,7 @@ function ModalEditPatch({ id, onEditSuccess }) {
                 <Form.Control
                   className="mb-2"
                   type="file"
-                  onChange={uploadFileHandler}
+                  onChange={(uploadFileHandler, handleChange)}
                 />
                 {loadingUpload ? (
                   <LoadingBox />
