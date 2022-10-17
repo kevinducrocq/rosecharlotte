@@ -14,12 +14,12 @@ const uploadRouter = express.Router();
 const __dirname = path.resolve();
 
 uploadRouter.use(
-  express.static(path.join(__dirname, '../frontend/public/uploads'))
+  express.static(path.join(__dirname, '../frontend/public/uploads/'))
 );
 
-mkdirp.sync(path.join(__dirname, '../frontend/public/uploads'));
+mkdirp.sync(path.join(__dirname, '../frontend/public/uploads/'));
 
-const UPLOAD_PATH = path.join(__dirname, '../frontend/public/uploads');
+const UPLOAD_PATH = path.join(__dirname, '../frontend/public/uploads/');
 
 const storage = multer.diskStorage({
   destination: (req, file, done) => {
@@ -38,7 +38,7 @@ const fileFilter = (req, file, done) => {
   }
 };
 
-const imgUpload = multer({ storage, fileFilter }).single('image');
+const imgUpload = multer({ storage, fileFilter }).single('file');
 
 uploadRouter.post('/file-upload', (req, res) => {
   console.log('coucou 1 ');
@@ -63,7 +63,10 @@ uploadRouter.post('/file-upload', (req, res) => {
       );
       console.log('coucou 6 ');
       // save newFilePath in your db as image path
-      await sharp(file.path).resize().jpeg({ quality: 50 }).toFile(newFilePath);
+      await sharp(file.path)
+        .resize({ height: 1000 })
+        .jpeg({ quality: 40 })
+        .toFile(newFilePath);
       console.log('coucou 7 ');
       fs.unlinkSync(file.path);
       console.log('coucou 8 ');

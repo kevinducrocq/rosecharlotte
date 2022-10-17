@@ -215,7 +215,7 @@ export default function ProductAddPage() {
   };
 
   const uploadFileHandler = async (e, forImages) => {
-    const file = e.target.file;
+    const file = e.target.files[0];
     const bodyFormData = new FormData();
     bodyFormData.append('file', file);
     try {
