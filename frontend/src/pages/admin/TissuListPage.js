@@ -162,7 +162,7 @@ export default function TissuListPage() {
     bodyFormData.append('file', file);
     try {
       dispatch({ type: 'UPLOAD_REQUEST' });
-      const { data } = await axios.post('/api/upload/tissu', bodyFormData, {
+      const { data } = await axios.post('/api/upload', bodyFormData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           authorization: `Bearer ${userInfo.token}`,
@@ -193,10 +193,6 @@ export default function TissuListPage() {
       }
     }
   };
-
-  function handleChange(e) {
-    setImage(URL.createObjectURL(e.target.files[0]));
-  }
 
   return (
     <Container className="my-5">
@@ -232,7 +228,7 @@ export default function TissuListPage() {
                   <Form.Control
                     type="file"
                     ref={imageInputRef}
-                    onChange={(uploadFileHandler, handleChange)}
+                    onChange={uploadFileHandler}
                   />
                 </Form.Group>
               </Col>

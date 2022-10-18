@@ -9,7 +9,6 @@ import React, {
 import { toast } from 'react-toastify';
 import Button from 'react-bootstrap/Button';
 import { Helmet } from 'react-helmet-async';
-import { useNavigate } from 'react-router-dom';
 import { Store } from '../../Store';
 import { getError } from '../../utils';
 import LoadingBox from '../../components/LoadingBox';
@@ -149,20 +148,19 @@ export default function PatchListPage() {
       setName('');
       if (imageInputRef) imageInputRef.current.value = null;
       toast.success('Motif Broderie ajouté');
-      // navigate('/admin/patches');
     } catch (err) {
       dispatch({ type: 'ADD_FAIL' });
       toast.error(getError(err));
     }
   };
 
-  const uploadFileHandler = async (e, forImages) => {
+  const uploadFileHandler = async (e) => {
     const file = e.target.files[0];
     const bodyFormData = new FormData();
     bodyFormData.append('file', file);
     try {
       dispatch({ type: 'UPLOAD_REQUEST' });
-      const { data } = await axios.post('/api/upload/patch', bodyFormData, {
+      const { data } = await axios.post('/api/upload/image', bodyFormData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           authorization: `Bearer ${userInfo.token}`,
@@ -175,10 +173,6 @@ export default function PatchListPage() {
       dispatch({ type: 'UPLOAD_FAIL', payload: getError(err) });
     }
   };
-
-  function handleChange(e) {
-    setImage(URL.createObjectURL(e.target.files[0]));
-  }
 
   const deleteHandler = async (patch) => {
     if (window.confirm('Confirmer ?')) {
@@ -232,7 +226,7 @@ export default function PatchListPage() {
                   <Form.Control
                     type="file"
                     ref={imageInputRef}
-                    onChange={(uploadFileHandler, handleChange)}
+                    onChange={uploadFileHandler}
                   />
                 </Form.Group>
               </Col>

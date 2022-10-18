@@ -18,12 +18,14 @@ patchRouter.post(
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
+    const url = req.protocol + '://' + req.get('host');
     const newPatch = new Patch({
       name: req.body.name,
-      image: req.body.image,
+      image: url + '/uploads/' + req.body.file,
     });
     try {
       const patch = await newPatch.save();
+      console.log(patch);
       res.send({
         _id: patch._id,
         name: patch.name,

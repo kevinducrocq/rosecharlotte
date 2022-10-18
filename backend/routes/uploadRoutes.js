@@ -13,22 +13,21 @@ const uploadRouter = express.Router();
 
 const __dirname = path.resolve();
 
+mkdirp.sync(path.join(__dirname, '/uploads'));
+
 uploadRouter.use('/uploads', express.static('/uploads'));
 
-mkdirp.sync(path.join(__dirname, '/uploads/images/produits'));
-mkdirp.sync(path.join(__dirname, '/uploads/images/tissus'));
-mkdirp.sync(path.join(__dirname, '/uploads/images/motifs'));
-
-const PRODUCT_PATH = path.join(__dirname, '/uploads/images/produits');
-const TISSU_PATH = path.join(__dirname, '/uploads/images/tissus');
-const MOTIF_PATH = path.join(__dirname, '/uploads/images/motifs');
+const FILE_DIR = path.join(__dirname, '/uploads');
 
 const storage = multer.diskStorage({
   destination: (req, file, done) => {
-    done(null, PRODUCT_PATH);
+    done(null, FILE_DIR);
   },
   filename: (req, file, done) => {
-    done(null, uuid() + '___' + file.originalname);
+    done(
+      null,
+      uuid() + '_' + file.originalname.toLocaleLowerCase().split(' ').join('-')
+    );
   },
 });
 
@@ -42,7 +41,7 @@ const fileFilter = (req, file, done) => {
 
 const imgUpload = multer({ storage, fileFilter }).single('file');
 
-uploadRouter.post('/product-image', (req, res) => {
+uploadRouter.post('/image', (req, res) => {
   imgUpload(req, res, async (err) => {
     if (err) {
       return res.status(400).json({ success: false, message: err.message });
@@ -55,68 +54,10 @@ uploadRouter.post('/product-image', (req, res) => {
           .json({ success: false, message: 'file not supplied' });
       }
       const newFilePath = path.join(
-        PRODUCT_PATH,
-        uuid() + '_' + file.originalname
-      );
-      // save newFilePath in your db as image path
-      await sharp(file.path)
-        .resize({ height: 1000 })
-        .jpeg({ quality: 40 })
-        .toFile(newFilePath);
-      fs.unlinkSync(file.path);
-
-      return res.status(200).json({ success: true, message: 'image uploaded' });
-    } catch (error) {
-      return res.status(500).json({ success: false, message: error.message });
-    }
-  });
-});
-
-uploadRouter.post('/tissu', (req, res) => {
-  imgUpload(req, res, async (err) => {
-    if (err) {
-      return res.status(400).json({ success: false, message: err.message });
-    }
-    try {
-      const { file } = req;
-      if (!file) {
-        return res
-          .status(400)
-          .json({ success: false, message: 'file not supplied' });
-      }
-      const newFilePath = path.join(
-        TISSU_PATH,
-        uuid() + '_' + file.originalname
-      );
-      // save newFilePath in your db as image path
-      await sharp(file.path)
-        .resize({ height: 1000 })
-        .jpeg({ quality: 40 })
-        .toFile(newFilePath);
-      fs.unlinkSync(file.path);
-
-      return res.status(200).json({ success: true, message: 'image uploaded' });
-    } catch (error) {
-      return res.status(500).json({ success: false, message: error.message });
-    }
-  });
-});
-
-uploadRouter.post('/patch', (req, res) => {
-  imgUpload(req, res, async (err) => {
-    if (err) {
-      return res.status(400).json({ success: false, message: err.message });
-    }
-    try {
-      const { file } = req;
-      if (!file) {
-        return res
-          .status(400)
-          .json({ success: false, message: 'file not supplied' });
-      }
-      const newFilePath = path.join(
-        MOTIF_PATH,
-        uuid() + '_' + file.originalname
+        FILE_DIR,
+        uuid() +
+          '_' +
+          file.originalname.toLocaleLowerCase().split(' ').join('-')
       );
       // save newFilePath in your db as image path
       await sharp(file.path)

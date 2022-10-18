@@ -114,12 +114,13 @@ function ModalEditPatch({ id, onEditSuccess }) {
     bodyFormData.append('file', file);
     try {
       dispatch({ type: 'UPLOAD_REQUEST' });
-      const { data } = await axios.post('/api/upload/patch', bodyFormData, {
+      const { data } = await axios.post('/api/upload/image', bodyFormData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           authorization: `Bearer ${userInfo.token}`,
         },
       });
+
       setImage(data.secure_url);
       dispatch({ type: 'UPLOAD_SUCCESS' });
     } catch (err) {
@@ -127,10 +128,6 @@ function ModalEditPatch({ id, onEditSuccess }) {
       dispatch({ type: 'UPLOAD_FAIL', payload: getError(err) });
     }
   };
-
-  function handleChange(e) {
-    setImage(URL.createObjectURL(e.target.files[0]));
-  }
 
   return (
     <>
@@ -167,7 +164,7 @@ function ModalEditPatch({ id, onEditSuccess }) {
                 <Form.Control
                   className="mb-2"
                   type="file"
-                  onChange={(uploadFileHandler, handleChange)}
+                  onChange={uploadFileHandler}
                 />
                 {loadingUpload ? (
                   <LoadingBox />
