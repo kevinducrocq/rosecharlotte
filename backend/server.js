@@ -40,7 +40,10 @@ app.use('/api/products', productRouter);
 
 const __dirname = path.resolve();
 
+console.log(path.join(__dirname, '/uploads'));
+
 app.use(express.static(path.join(__dirname, '../frontend/build')));
+app.use(express.static(path.join(__dirname, '/uploads')));
 
 
 

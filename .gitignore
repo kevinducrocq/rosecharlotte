@@ -29,3 +29,4 @@ yarn-error.log*
 .idea/
 
 frontend/build/
+/backend/uploads/

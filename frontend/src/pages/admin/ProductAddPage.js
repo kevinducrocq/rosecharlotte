@@ -229,9 +229,9 @@ export default function ProductAddPage() {
       dispatch({ type: 'UPLOAD_SUCCESS' });
 
       if (forImages) {
-        setImages([...images, data.secure_url]);
+        setImages([...images, data.path]);
       } else {
-        setImage(data.secure_url);
+        setImage(data.path);
       }
       toast.success('Image téléversée');
     } catch (err) {

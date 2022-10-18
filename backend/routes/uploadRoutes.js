@@ -53,11 +53,10 @@ uploadRouter.post('/image', (req, res) => {
           .status(400)
           .json({ success: false, message: 'file not supplied' });
       }
+      const newFileName = uuid() + '_' + file.originalname.toLocaleLowerCase().split(' ').join('-');
       const newFilePath = path.join(
         FILE_DIR,
-        uuid() +
-          '_' +
-          file.originalname.toLocaleLowerCase().split(' ').join('-')
+        newFileName
       );
       // save newFilePath in your db as image path
       await sharp(file.path)
@@ -66,7 +65,7 @@ uploadRouter.post('/image', (req, res) => {
         .toFile(newFilePath);
       fs.unlinkSync(file.path);
 
-      return res.status(200).json({ success: true, message: 'image uploaded' });
+      return res.status(200).json({ success: true, message: 'image uploaded', path: '/'+newFileName });
     } catch (error) {
       return res.status(500).json({ success: false, message: error.message });
     }
