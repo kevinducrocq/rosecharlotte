@@ -114,13 +114,13 @@ function ModalTissuEdit({ id, onEditSuccess }) {
     bodyFormData.append('file', file);
     try {
       dispatch({ type: 'UPLOAD_REQUEST' });
-      const { data } = await axios.post('/api/upload', bodyFormData, {
+      const {data} = await axios.post('/api/upload/image', bodyFormData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           authorization: `Bearer ${userInfo.token}`,
         },
       });
-      setImage(data.secure_url);
+      setImage(data.path);
       dispatch({ type: 'UPLOAD_SUCCESS' });
     } catch (err) {
       toast.error(getError(err));

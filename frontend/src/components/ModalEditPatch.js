@@ -120,8 +120,7 @@ function ModalEditPatch({ id, onEditSuccess }) {
           authorization: `Bearer ${userInfo.token}`,
         },
       });
-
-      setImage(data.secure_url);
+      setImage(data.path);
       dispatch({ type: 'UPLOAD_SUCCESS' });
     } catch (err) {
       toast.error(getError(err));

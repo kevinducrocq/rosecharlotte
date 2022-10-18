@@ -167,7 +167,7 @@ export default function PatchListPage() {
         },
       });
       dispatch({ type: 'UPLOAD_SUCCESS' });
-      setImage(data.secure_url);
+      setImage(data.path);
     } catch (err) {
       toast.error(getError(err));
       dispatch({ type: 'UPLOAD_FAIL', payload: getError(err) });
