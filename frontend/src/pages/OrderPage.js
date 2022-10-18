@@ -120,7 +120,7 @@ export default function OrderPage() {
         dispatch({ type: 'PAY_REQUEST' });
         const { data } = await axios.put(
           `/api/orders/${order._id}/pay`,
-          details,
+          { details },
           { headers: { authorization: `Bearer ${userInfo.token}` } }
         );
         dispatch({ type: 'PAY_SUCCESS', payload: data });

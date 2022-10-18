@@ -39,7 +39,7 @@ const setOrderPaid = async (order, res, paymentResult) => {
 
   updateStock(order);
 
-  const updatedOrder = await order.save();
+  return await order.save();
 };
 
 const updateStock = async (order) => {
@@ -101,13 +101,13 @@ orderRouter.post('/stripe/check', async (req, res) => {
     process.env.STRIPE_PUBLIC_KEY
   );
   if (payment.status === 'succeeded') {
-    setOrderPaid(order, res, {
+    const updatedOrder = await setOrderPaid(order, res, {
       id: req.body.paymentId,
       status: payment.status,
       update_time: new Date().toISOString(),
       email_address: order.user.email,
     });
-    res.status(201).send({ message: 'Paiement accepté' });
+    res.status(201).send({ message: 'Paiement accepté', order: updatedOrder });
   } else {
     res.status(400).json({ message: 'Erreur lors du paiement' });
   }
@@ -310,12 +310,18 @@ orderRouter.put(
       'email name'
     );
     if (order) {
-      setOrderPaid(order, res, {
+      //Verifier avec le req.details que le paiment est valide, et est pour le bon montant
+      console.log(req.body.details);
+
+      // const updatedOrder = order;
+
+      const updatedOrder = await setOrderPaid(order, res, {
         id: req.body.id,
         status: req.body.status,
         update_time: req.body.update_time,
         email_address: req.body.email_address,
       });
+
       res.send({
         message: 'Commande payée',
         order: updatedOrder,
