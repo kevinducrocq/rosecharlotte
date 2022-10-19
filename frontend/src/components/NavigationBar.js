@@ -128,7 +128,7 @@ function NavigationBar() {
       <div className="fixed-top shadow">
         <Navbar variant="light" expand="lg" collapseOnSelect={true}>
           <Container fluid>
-            <LinkContainer to="/" className="ms-4">
+            <LinkContainer to="/">
               <Image src="../logo-site.png" width={150} />
             </LinkContainer>
 
@@ -151,30 +151,30 @@ function NavigationBar() {
             <Navbar.Collapse id="basic-navbar-nav">
               <Nav className="m-auto menu-principal align-items-center">
                 <Nav.Link eventKey="i">
-                  <Link className="nav-link" to="/">
+                  <Link className="nav-link text-nowrap" to="/">
                     Accueil
                   </Link>
                 </Nav.Link>
                 <Nav.Link eventKey="i">
-                  <Link className="nav-link" to="/boutique/search">
+                  <Link className="nav-link text-nowrap" to="/boutique/search">
                     Boutique
                   </Link>
                 </Nav.Link>
 
                 <Nav.Link eventKey="i">
-                  <Link className="nav-link" to="/tissus">
+                  <Link className="nav-link text-nowrap" to="/tissus">
                     Tissuthèque
                   </Link>
                 </Nav.Link>
                 <Nav.Link eventKey="i">
-                  <Link className="nav-link" to="/motifs">
+                  <Link className="nav-link text-nowrap" to="/motifs">
                     Motifs broderie
                   </Link>
                 </Nav.Link>
 
                 {promoProducts.length > 0 && (
                   <Nav.Link eventKey="i">
-                    <Link className="nav-link" to="/promotions">
+                    <Link className="nav-link text-nowrap" to="/promotions">
                       Promotions
                     </Link>
                   </Nav.Link>
@@ -182,19 +182,19 @@ function NavigationBar() {
 
                 {soldeProducts.length > 0 && (
                   <Nav.Link eventKey="i">
-                    <Link className="nav-link" to="/soldes">
+                    <Link className="nav-link text-nowrap" to="/soldes">
                       Soldes
                     </Link>
                   </Nav.Link>
                 )}
 
                 <Nav.Link eventKey="i">
-                  <Link className="nav-link" to="/about">
+                  <Link className="nav-link text-nowrap" to="/about">
                     A propos
                   </Link>
                 </Nav.Link>
                 <Nav.Link eventKey="i">
-                  <Link className="nav-link" to="/contact">
+                  <Link className="nav-link text-nowrap" to="/contact">
                     Contact
                   </Link>
                 </Nav.Link>
@@ -202,14 +202,14 @@ function NavigationBar() {
                 <a
                   href="https://www.facebook.com/Rose-Charlotte-compagnie-261590004642619"
                   target="_blank"
-                  className="nav-link"
+                  className="nav-link text-nowrap"
                 >
                   <FontAwesomeIcon icon={faFacebook} size="2x" />
                 </a>
                 <a
                   href="https://www.instagram.com/rosecharlotteetcie/"
                   target="_blank"
-                  className="nav-link"
+                  className="nav-link text-nowrap"
                 >
                   <FontAwesomeIcon icon={faInstagram} size="2x" />
                 </a>

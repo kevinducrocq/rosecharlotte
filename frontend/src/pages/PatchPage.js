@@ -1,9 +1,10 @@
 import axios from 'axios';
-import React, { useEffect, useReducer } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import { Card, Col, Container, Image, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
+import ModalTissuPatch from '../components/ModalTissuPatch';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -22,12 +23,16 @@ const reducer = (state, action) => {
   }
 };
 
-function PatchPage() {
+function TissuPage() {
   const [{ loading, error, patches }, dispatch] = useReducer(reducer, {
     products: [],
     loading: true,
     error: '',
   });
+
+  const [modalShow, setModalShow] = useState(false);
+
+  const [patchImage, setPatchImage] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,7 +54,7 @@ function PatchPage() {
   return (
     <>
       <Helmet>
-        <title>Motifs broderie</title>
+        <title>Motifs Broderie</title>
       </Helmet>
 
       <Container className="my-5">
@@ -65,25 +70,35 @@ function PatchPage() {
                 {patches.map((patch) => (
                   <Col key={patch._id} md={4} sm={6} lg={3}>
                     <Card className="mb-3">
-                      <Card.Header>{patch.name}</Card.Header>
-                      <Card className="body">
+                      <Card.Header className="text-center">
+                        <h4>{patch.name}</h4>
+                      </Card.Header>
+                      <div className="text-center">
                         {patch.image ? (
                           <Image
+                            value={patch.name}
                             src={patch.image}
-                            className="images-tissu-motifs"
+                            role="button"
+                            onClick={() => setModalShow(true)}
+                            onClickCapture={(e) => setPatchImage(e.target.src)}
+                            className="card-img-top img-fluid"
                           />
                         ) : (
                           <Image
-                            role="button"
                             className="images-tissu-motifs"
                             src="../images/no-image.png"
                           />
                         )}
-                      </Card>
+                      </div>
                     </Card>
                   </Col>
                 ))}
               </Row>
+              <ModalTissuPatch
+                show={modalShow}
+                image={patchImage}
+                onHide={() => setModalShow(false)}
+              />
             </section>
           </>
         )}
@@ -92,4 +107,4 @@ function PatchPage() {
   );
 }
 
-export default PatchPage;
+export default TissuPage;

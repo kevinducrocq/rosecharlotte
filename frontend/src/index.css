@@ -60,6 +60,10 @@ main {
 
 /*BREADCRUMB*/
 
+.modal-header {
+  border-bottom: none;
+}
+
 .breadcrumb-item a {
   text-decoration: none;
   color: #000;
@@ -183,10 +187,9 @@ main {
 }
 
 .images-tissu-motifs {
-  width: 150px;
-  height: 150px;
-  margin: auto;
-  object-fit: cover;
+  height: 220px;
+  object-position: center center;
+  object-fit: contain;
 }
 
 .gap {

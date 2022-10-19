@@ -1,9 +1,10 @@
 import axios from 'axios';
-import React, { useEffect, useReducer } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import { Card, Col, Container, Image, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
+import ModalTissuPatch from '../components/ModalTissuPatch';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -28,6 +29,10 @@ function TissuPage() {
     loading: true,
     error: '',
   });
+
+  const [modalShow, setModalShow] = useState(false);
+
+  const [tissuImage, setTissuImage] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -66,26 +71,34 @@ function TissuPage() {
                   <Col key={tissu._id} md={4} sm={6} lg={3}>
                     <Card className="mb-3">
                       <Card.Header className="text-center">
-                        {tissu.name}
+                        <h4>{tissu.name}</h4>
                       </Card.Header>
-                      <Card className="body">
+                      <div className="text-center">
                         {tissu.image ? (
                           <Image
+                            value={tissu.name}
                             src={tissu.image}
-                            className="images-tissu-motifs"
+                            role="button"
+                            onClick={() => setModalShow(true)}
+                            onClickCapture={(e) => setTissuImage(e.target.src)}
+                            className="card-img-top img-fluid"
                           />
                         ) : (
                           <Image
-                            role="button"
                             className="images-tissu-motifs"
                             src="../images/no-image.png"
                           />
                         )}
-                      </Card>
+                      </div>
                     </Card>
                   </Col>
                 ))}
               </Row>
+              <ModalTissuPatch
+                show={modalShow}
+                image={tissuImage}
+                onHide={() => setModalShow(false)}
+              />
             </section>
           </>
         )}

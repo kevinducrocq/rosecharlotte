@@ -109,10 +109,11 @@ function DeliveryAddressModal(props) {
       <Modal
         show={modalShow}
         onHide={() => setModalShow(false)}
-        size="lg"
+        size="md"
         aria-labelledby="contained-modal-title-vcenter"
         centered
       >
+        <Modal.Header closeButton></Modal.Header>
         <Form onSubmit={submitHandler}>
           <Modal.Body closeButton className="my-4 p-4">
             <Form.Group className="mb-3" controlId="name">
@@ -156,8 +157,6 @@ function DeliveryAddressModal(props) {
                 required
               />
             </Form.Group>
-          </Modal.Body>
-          <Modal.Footer>
             <Button
               type="submit"
               className="bg1 w-100"
@@ -167,7 +166,7 @@ function DeliveryAddressModal(props) {
             >
               Continuer
             </Button>
-          </Modal.Footer>
+          </Modal.Body>
         </Form>
       </Modal>
     </>
