@@ -24,28 +24,25 @@ function reducer(state, action) {
       const existItem = state.cart.cartItems.find(
         (item) =>
           item._id === newItem._id &&
+          (item.side === null || item.side === newItem.side) &&
           (item.variant === null || item.variant._id === newItem.variant._id) &&
           (item.customizable === false ||
-            !item.side === null ||
             (item.customization === newItem.customization &&
               item.fil === newItem.fil &&
               item.tissu === newItem.tissu &&
-              item.patch === newItem.patch &&
-              item.side === newItem.side))
+              item.patch === newItem.patch))
       );
 
       const cartItems = existItem
         ? state.cart.cartItems.map((item) =>
             item._id === existItem._id &&
-            (item.variant === null ||
-              item.variant._id === newItem.variant._id) &&
+            (item.side === null || item.side === newItem.side) &&
+            (item.variant === null || item.variant._id === newItem.variant._id) &&
             (item.customizable === false ||
-              !item.side === null ||
               (item.customization === newItem.customization &&
                 item.fil === newItem.fil &&
                 item.tissu === newItem.tissu &&
-                item.patch === newItem.patch &&
-                item.side === newItem.side))
+                item.patch === newItem.patch))
               ? newItem
               : item
           )
@@ -58,15 +55,13 @@ function reducer(state, action) {
         (item) =>
           !(
             item._id === action.payload._id &&
-            (item.variant === null ||
-              item.variant._id === action.payload.variant._id) &&
+            (item.side === null || item.side === newItem.side) &&
+            (item.variant === null || item.variant._id === action.payload.variant._id) &&
             (item.customizable === false ||
-              !item.side === null ||
               (item.customization === action.payload.customization &&
                 item.fil === action.payload.fil &&
                 item.tissu === action.payload.tissu &&
-                item.patch === action.payload.patch &&
-                item.side === action.payload.side))
+                item.patch === action.payload.patch))
           )
       );
       localStorage.setItem('cartItems', JSON.stringify(cartItems));
