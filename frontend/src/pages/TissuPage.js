@@ -98,7 +98,7 @@ function TissuPage() {
                       <Col key={tissu._id} md={4} sm={6} lg={3}>
                         <Card className="mb-3">
                           <Card.Header className="text-center">
-                            <h4>{tissu.name}</h4>
+                            <h2 className="h5">{tissu.name}</h2>
                           </Card.Header>
                           <div className="text-center">
                             {tissu.image ? (

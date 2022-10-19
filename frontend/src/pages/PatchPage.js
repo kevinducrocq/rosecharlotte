@@ -96,7 +96,8 @@ function TissuPage() {
                     <Col key={patch._id} md={4} sm={6} lg={3}>
                       <Card className="mb-3">
                         <Card.Header className="text-center">
-                          <h4>{patch.name}</h4>
+                          <h2 className="h5">{patch.name}</h2>
+                          
                         </Card.Header>
                         <div className="text-center">
                           {patch.image ? (
