@@ -49,7 +49,7 @@ function PatchPage() {
   return (
     <>
       <Helmet>
-        <title>MotifThèque</title>
+        <title>Motifs broderie</title>
       </Helmet>
 
       <Container className="my-5">
@@ -60,7 +60,7 @@ function PatchPage() {
         ) : (
           <>
             <section className="mt-5">
-              <h2>MotifsThèque</h2>
+              <h2>Motifs Broderie</h2>
               <Row className="mt-5">
                 {patches.map((patch) => (
                   <Col key={patch._id} md={4} sm={6} lg={3}>
