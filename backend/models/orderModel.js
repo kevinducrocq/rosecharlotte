@@ -24,6 +24,7 @@ const orderSchema = new mongoose.Schema(
         tissu: { type: String },
         patch: { type: String },
         variant: variantSchema,
+        side: { type: String },
       },
     ],
     deliveryMethod: { type: String, required: true },

@@ -75,6 +75,12 @@ export function sentOrderEmail(order, user) {
                                         <td style="font-size:15px;"><b>${item.customization}</b></td>
                                     </tr>`
                                     }
+                                    ${
+                                      item.side &&
+                                      `<tr>
+                                          <td style="font-size:15px;">Côté : <b>${item.side}</b></td>
+                                      </tr>`
+                                    }
                                 </tbody>
                             </table>
                         </div>
@@ -88,7 +94,6 @@ export function sentOrderEmail(order, user) {
                 </div>
             `;
             })}
-        </div>
 
         <hr>
 

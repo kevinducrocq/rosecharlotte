@@ -268,6 +268,14 @@ export default function PlaceOrderPage() {
                         ) : (
                           ''
                         )}
+                        {item.side ? (
+                          <div>
+                            <strong>Côté : </strong>
+                            {item.side}
+                          </div>
+                        ) : (
+                          ''
+                        )}
                       </Col>
 
                       <Col md={2}>

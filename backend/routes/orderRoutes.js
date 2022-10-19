@@ -153,6 +153,7 @@ orderRouter.post(
       fil: req.body.fil,
       tissu: req.body.tissu,
       patch: req.body.patch,
+      side: req.body.side,
     });
 
     const order = await newOrder.save();

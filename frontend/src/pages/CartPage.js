@@ -149,6 +149,14 @@ export default function CartPage() {
                       ) : (
                         ''
                       )}
+                      {item.side ? (
+                        <div>
+                          <strong>Côté : </strong>
+                          {item.side}
+                        </div>
+                      ) : (
+                        ''
+                      )}
                     </Col>
 
                     <Col md={3} className="text-nowrap">
@@ -231,7 +239,7 @@ export default function CartPage() {
                       disabled={cartItems.length === 0}
                       onClick={checkoutHandler}
                     >
-                      Paiement
+                      Commander
                     </Button>
                   </div>
                 </ListGroup.Item>

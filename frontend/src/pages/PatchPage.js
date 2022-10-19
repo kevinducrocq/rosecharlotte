@@ -67,7 +67,18 @@ function PatchPage() {
                     <Card className="mb-3">
                       <Card.Header>{patch.name}</Card.Header>
                       <Card className="body">
-                        <Image src={patch.image} />
+                        {patch.image ? (
+                          <Image
+                            src={patch.image}
+                            className="images-tissu-motifs"
+                          />
+                        ) : (
+                          <Image
+                            role="button"
+                            className="images-tissu-motifs"
+                            src="../images/no-image.png"
+                          />
+                        )}
                       </Card>
                     </Card>
                   </Col>

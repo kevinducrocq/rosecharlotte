@@ -9,6 +9,7 @@ import MessageBox from '../components/MessageBox';
 import Product from '../components/Product';
 import CarouselFade from '../components/Carousel';
 import { Link } from 'react-router-dom';
+import SearchBox from '../components/SearchBox';
 
 const reducer = (state, action) => {
   switch (action.type) {

@@ -63,7 +63,7 @@ function TissuPage() {
               <h2>TissuThèque</h2>
               <Row className="mt-5">
                 {tissus.map((tissu) => (
-                  <Col key={tissu._id} md={4} sm={6} lg={2}>
+                  <Col key={tissu._id} md={4} sm={6} lg={3}>
                     <Card className="mb-3">
                       <Card.Header className="text-center">
                         {tissu.name}
@@ -76,6 +76,7 @@ function TissuPage() {
                           />
                         ) : (
                           <Image
+                            role="button"
                             className="images-tissu-motifs"
                             src="../images/no-image.png"
                           />

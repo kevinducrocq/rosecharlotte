@@ -26,6 +26,7 @@ import { Store } from '../Store';
 import { getError } from '../utils';
 import CategoriesCanvasMenu from './CategoriesCanvasMenu';
 import { useReducer } from 'react';
+import SearchBox from './SearchBox';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -126,8 +127,8 @@ function NavigationBar() {
     <>
       <div className="fixed-top shadow">
         <Navbar variant="light" expand="lg" collapseOnSelect={true}>
-          <Container>
-            <LinkContainer to="/">
+          <Container fluid>
+            <LinkContainer to="/" className="ms-4">
               <Image src="../logo-site.png" width={150} />
             </LinkContainer>
 
@@ -157,6 +158,17 @@ function NavigationBar() {
                 <Nav.Link eventKey="i">
                   <Link className="nav-link" to="/boutique/search">
                     Boutique
+                  </Link>
+                </Nav.Link>
+
+                <Nav.Link eventKey="i">
+                  <Link className="nav-link" to="/tissus">
+                    Tissuthèque
+                  </Link>
+                </Nav.Link>
+                <Nav.Link eventKey="i">
+                  <Link className="nav-link" to="/motifs">
+                    Motifs broderie
                   </Link>
                 </Nav.Link>
 
@@ -201,6 +213,12 @@ function NavigationBar() {
                 >
                   <FontAwesomeIcon icon={faInstagram} size="2x" />
                 </a>
+              </Nav>
+
+              <Nav>
+                <div>
+                  <SearchBox />
+                </div>
               </Nav>
 
               <Nav>

@@ -58,6 +58,7 @@ function ProductPage() {
   const [selectedImage, setSelectedImage] = useState('');
   const [customization, setCustomization] = useState('');
   const [variantId, setVariant] = useState('');
+  const [side, setSide] = useState('');
 
   const [fil, setFil] = useState('');
   const [tissu, setTissu] = useState('');
@@ -180,6 +181,7 @@ function ProductPage() {
           fil,
           tissu,
           patch,
+          side,
         },
       });
     } else {
@@ -197,6 +199,7 @@ function ProductPage() {
           fil,
           tissu,
           patch,
+          side,
         },
       });
     }
@@ -323,16 +326,9 @@ function ProductPage() {
                     {/* {product.otherCategory ? ' - ' + product.otherCategory : ''} */}
                   </h2>
                 </div>
-
-                <div>
-                  <Rating
-                    rating={product.rating}
-                    numReviews={product.numReviews}
-                  ></Rating>
-                </div>
               </div>
 
-              <div className="p-2">
+              <div className="p-2 d-flex justify-content-between">
                 {product.variants.length >= 1 ? (
                   ''
                 ) : product.countInStock && product.countInStock > 0 ? (
@@ -342,15 +338,57 @@ function ProductPage() {
                 ) : (
                   <span className="badge-epuise">Epuisé</span>
                 )}
+                <div>
+                  <Rating
+                    rating={product.rating}
+                    numReviews={product.numReviews}
+                  ></Rating>
+                </div>
               </div>
             </ListGroup.Item>
             <ListGroup.Item className="price-tag">
               <div className="p-2">{product.price} &euro;</div>
             </ListGroup.Item>
+
             <ListGroup.Item>
               <div className="p-2">
                 <p>{nl2br(product.description)}</p>
               </div>
+
+              {product.name.includes('Barrette') && (
+                <>
+                  <hr />
+                  <Form>
+                    <div className="h5">
+                      <span>Choisissez un côté</span>
+                    </div>
+
+                    <Form.Check
+                      inline
+                      name="side"
+                      type="radio"
+                      id="narrette-gauche"
+                      label="Gauche"
+                      value="Gauche"
+                      onChange={(e) => {
+                        setSide(e.target.value);
+                      }}
+                    />
+                    <Form.Check
+                      inline
+                      name="side"
+                      type="radio"
+                      id="barrette-droite"
+                      label="Droite"
+                      value="Droite"
+                      onChange={(e) => {
+                        setSide(e.target.value);
+                      }}
+                    />
+                  </Form>
+                </>
+              )}
+
               {product.variants.length >= 1 && (
                 <div className="p-2">
                   <Form>
@@ -540,7 +578,9 @@ function ProductPage() {
                         <hr />
                         <Form.Group className="my-3">
                           <div className="h5">
-                            <span>Texte personnalisé (facultatif)</span>
+                            <span>
+                              Commentaire, Texte personnalisé (facultatif)
+                            </span>
                           </div>
                           <Form.Control
                             value={customization}
