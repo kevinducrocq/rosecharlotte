@@ -259,7 +259,7 @@ export default function CgvPage() {
             <tr>
               <td>POINT RELAIS</td>
               <td>FRANCE METROPOLITAINE</td>
-              <td>5.5 &amp;euro;</td>
+              <td>5.5 &euro;</td>
               <td>5 – 7 jours</td>
             </tr>
             <tr>
@@ -269,8 +269,8 @@ export default function CgvPage() {
               </td>
               <td>DOMICILE</td>
               <td>
-                Jusque 100 gr 4.4 &amp;euro; <br /> Jusque 250 gr 5.4 &amp;euro;{' '}
-                <br /> Au-delà de 250 gr 6.9 &amp;euro;
+                Jusque 100 gr 4.4 &euro; <br /> Jusque 250 gr 5.4 &euro; <br />{' '}
+                Au-delà de 250 gr 6.9 &euro;;
               </td>
               <td>4 – 6 jours</td>
             </tr>
