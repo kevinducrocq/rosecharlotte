@@ -239,6 +239,17 @@ function ProductPage() {
     }
   };
 
+  const isBarrette = () => {
+    return product.name.includes(
+      'Barrette',
+      'Barrettes',
+      'barrette',
+      'barrettes',
+      'barette',
+      'Barette'
+    )
+  }
+
   return loading ? (
     <LoadingBox />
   ) : error ? (
@@ -355,15 +366,8 @@ function ProductPage() {
                 <p>{nl2br(product.description)}</p>
               </div>
 
-              {product.name.includes(
-                'Barrette',
-                'Barrettes',
-                'barrette',
-                'barrettes',
-                'barette',
-                'Barette'
-              ) && (
-                <>
+              {isBarrette() && (
+                <Form>
                   <hr />
                   <div className="h5">
                     <span>Choisissez un côté</span>
@@ -391,7 +395,7 @@ function ProductPage() {
                       setSide(e.target.value);
                     }}
                   />
-                </>
+                </Form>
               )}
 
               {product.variants.length >= 1 && (
@@ -607,9 +611,8 @@ function ProductPage() {
                 <Button
                   disabled={
                     !(
-                      side ||
-                      (!product.customizable &&
-                        (variantId || product.variants.length === 0))
+                      isBarrette() && side && (patch || (!product.customizable && (variantId || product.variants.length === 0))) ||
+                      !isBarrette() && (patch || (!product.customizable && (variantId || product.variants.length === 0)))
                     )
                   }
                   onClick={addToCartHandler}
