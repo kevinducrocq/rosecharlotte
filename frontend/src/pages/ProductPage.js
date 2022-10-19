@@ -365,34 +365,32 @@ function ProductPage() {
               ) && (
                 <>
                   <hr />
-                  <Form>
-                    <div className="h5">
-                      <span>Choisissez un côté</span>
-                    </div>
+                  <div className="h5">
+                    <span>Choisissez un côté</span>
+                  </div>
 
-                    <Form.Check
-                      inline
-                      name="side"
-                      type="radio"
-                      id="narrette-gauche"
-                      label="Gauche"
-                      value="Gauche"
-                      onChange={(e) => {
-                        setSide(e.target.value);
-                      }}
-                    />
-                    <Form.Check
-                      inline
-                      name="side"
-                      type="radio"
-                      id="barrette-droite"
-                      label="Droite"
-                      value="Droite"
-                      onChange={(e) => {
-                        setSide(e.target.value);
-                      }}
-                    />
-                  </Form>
+                  <Form.Check
+                    inline
+                    name="side"
+                    type="radio"
+                    id="narrette-gauche"
+                    label="Gauche"
+                    value="Gauche"
+                    onChange={(e) => {
+                      setSide(e.target.value);
+                    }}
+                  />
+                  <Form.Check
+                    inline
+                    name="side"
+                    type="radio"
+                    id="barrette-droite"
+                    label="Droite"
+                    value="Droite"
+                    onChange={(e) => {
+                      setSide(e.target.value);
+                    }}
+                  />
                 </>
               )}
 
@@ -609,7 +607,7 @@ function ProductPage() {
                 <Button
                   disabled={
                     !(
-                      patch ||
+                      side ||
                       (!product.customizable &&
                         (variantId || product.variants.length === 0))
                     )
