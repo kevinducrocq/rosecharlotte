@@ -55,7 +55,7 @@ function reducer(state, action) {
         (item) =>
           !(
             item._id === action.payload._id &&
-            (item.side === null || item.side === newItem.side) &&
+            (item.side === null || item.side === action.payload.side) &&
             (item.variant === null || item.variant._id === action.payload.variant._id) &&
             (item.customizable === false ||
               (item.customization === action.payload.customization &&

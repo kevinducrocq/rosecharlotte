@@ -148,6 +148,7 @@ function ProductPage() {
       (x) =>
         x._id === product._id &&
         (x.variant === null || x.variant._id === variantId) &&
+        (x.side === null || x.side === side) &&
         (x.customizable === false ||
           (x.customization === customization &&
             x.fil === fil &&
