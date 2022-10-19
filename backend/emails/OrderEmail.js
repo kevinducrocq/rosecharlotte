@@ -15,13 +15,10 @@ export function orderEmail(order, user) {
         </div>
 
 
-        <div style="display:flex; flex-direction:column;">
 
             ${order.orderItems.map((item) => {
               return `
-                <div
-                    style="margin-bottom:10px ;border-radius: 10px; padding:5px; min-width:350px;max-width: 600px; background-color:#fff2f2;">
-
+              <div style="margin-bottom:10px ;border-radius: 10px; padding:5px; max-width: 600px; background-color:#fff2f2;">
                     <div key=${
                       item._id
                     }class=" order-unit" style="overflow:hidden;margin:5px 0;">
@@ -133,6 +130,15 @@ export function orderEmail(order, user) {
                     </tr>`
                         : ''
                     }
+                    ${
+                      order.paymentMethod === 'Cheque'
+                        ? ` <tr>
+                        <td style="font-size:15px;">Chèque à envoyer à : </td>
+                        <td><b>Rose Charlotte et Compagnie,&nbsp;20 rue principale,&nbsp;62190,&nbsp;Ecquedecques</b>
+                        </td>
+                    </tr>`
+                        : ''
+                    }
                 </tbody>
             </table>
         </div>
@@ -148,6 +154,6 @@ export function orderEmail(order, user) {
         <span>A bientôt sur <a href="rosecharotte.fr">rosecharotte.fr</a></span>
     </div>
 
-</div>`,
+</div>`
   };
 }

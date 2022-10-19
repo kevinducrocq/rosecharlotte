@@ -169,49 +169,71 @@ export default function PlaceOrderPage() {
         <Col md={8}>
           <Card className="mb-3 bg-light">
             {cart.deliveryMethod === 'Local' ? (
-              <Card.Body>
-                <Card.Title>Commande à retirer dans nos Locaux</Card.Title>
-                <Card.Text>
-                  <strong>Addresse : </strong> 20 rue Principale <br />
-                  <strong>Code postal :</strong> 62190 <br />
-                  <strong>Ville : </strong> Ecquedecques
-                </Card.Text>
-                <Link to="/shipping">
-                  <FontAwesomeIcon icon={faPenToSquare} /> Modifier
-                </Link>
+              <Card.Body className="d-flex justify-content-between align-items-center">
+                <div>
+                  <Card.Title>Commande à retirer dans nos Locaux</Card.Title>
+                  <Card.Text>
+                    <strong>Addresse : </strong> 20 rue Principale <br />
+                    <strong>Code postal :</strong> 62190 <br />
+                    <strong>Ville : </strong> Ecquedecques
+                  </Card.Text>
+                </div>
+                <div className="text-nowrap">
+                  <Link to="/shipping">
+                    <FontAwesomeIcon icon={faPenToSquare} /> Modifier
+                  </Link>
+                </div>
               </Card.Body>
             ) : (
-              <Card.Body>
-                <Card.Title>Livraison</Card.Title>
-                <Card.Text>
-                  <strong>Nom | Prénom : </strong> {cart.shippingAddress.name}
-                  <br />
-                  <strong>Adresse : </strong> {cart.shippingAddress.address},{' '}
-                  {cart.shippingAddress.zip}, {cart.shippingAddress.city} <br />
-                  <strong>Pays : </strong> {cart.shippingAddress.country}
-                </Card.Text>
-                <Link to="/shipping">
-                  <FontAwesomeIcon icon={faPenToSquare} /> Modifier
-                </Link>
+              <Card.Body className="d-flex justify-content-between align-items-center">
+                <div>
+                  <Card.Title>Livraison</Card.Title>
+                  <Card.Text>
+                    <strong>Nom | Prénom : </strong> {cart.shippingAddress.name}
+                    <br />
+                    <strong>Adresse : </strong> {cart.shippingAddress.address},{' '}
+                    {cart.shippingAddress.zip}, {cart.shippingAddress.city}{' '}
+                    <br />
+                    <strong>Pays : </strong> {cart.shippingAddress.country}
+                  </Card.Text>
+                </div>
+                <div className="text-nowrap">
+                  <Link to="/shipping">
+                    <FontAwesomeIcon icon={faPenToSquare} /> Modifier
+                  </Link>
+                </div>
               </Card.Body>
             )}
           </Card>
 
           <Card className="mb-3 bg-light">
-            <Card.Body>
-              <Card.Title>Paiement</Card.Title>
-              <Card.Text>
-                <strong>Méthode:</strong> {cart.paymentMethod}
-              </Card.Text>
-              <Link to="/payment">
-                <FontAwesomeIcon icon={faPenToSquare} /> Modifier
-              </Link>
+            <Card.Body className="d-flex justify-content-between align-items-center">
+              <div>
+                <Card.Title>Paiement</Card.Title>
+                <Card.Text>
+                  <strong>Méthode:</strong> {cart.paymentMethod}
+                </Card.Text>
+              </div>
+              <div className="text-nowrap">
+                <Link to="/payment">
+                  <FontAwesomeIcon icon={faPenToSquare} /> Modifier
+                </Link>
+              </div>
             </Card.Body>
           </Card>
 
           <Card className="mb-3 bg-light">
             <Card.Body>
-              <Card.Title>Produits</Card.Title>
+              <div className="d-flex justify-content-between">
+                <div>
+                  <Card.Title>Produits</Card.Title>
+                </div>
+                <div className="text-nowrap">
+                  <Link to="/cart">
+                    <FontAwesomeIcon icon={faPenToSquare} /> Modifier
+                  </Link>
+                </div>
+              </div>
               <ListGroup className="mb-3 text-center rounded-3">
                 {cart.cartItems.map((item) => (
                   <ListGroup.Item
@@ -287,9 +309,6 @@ export default function PlaceOrderPage() {
                   </ListGroup.Item>
                 ))}
               </ListGroup>
-              <Link to="/cart">
-                <FontAwesomeIcon icon={faPenToSquare} /> Modifier
-              </Link>
             </Card.Body>
           </Card>
         </Col>

@@ -29,6 +29,6 @@ export function reviewEmail(review, product) {
 
 </div>
        
-  </div>`,
+  </div>`
   };
 }

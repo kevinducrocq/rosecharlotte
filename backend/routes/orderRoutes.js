@@ -9,6 +9,7 @@ import transporter, { sender } from '../email.js';
 import { orderEmail } from '../emails/OrderEmail.js';
 import { orderAdminEmail } from '../emails/OrderAdminEmail.js';
 import { sentOrderEmail } from '../emails/SentOrderEmail.js';
+import { chequeEmail } from '../emails/ChequeEmail.js';
 import Stripe from 'stripe';
 import cors from 'cors';
 
@@ -158,6 +159,16 @@ orderRouter.post(
 
     const order = await newOrder.save();
     if (order.paymentMethod === 'Chèque') {
+      await transporter.sendMail({
+        from: sender,
+        to: req.user.email,
+        ...orderEmail(order, req.user),
+      });
+      await transporter.sendMail({
+        from: sender,
+        to: sender,
+        ...orderAdminEmail(order, req.user),
+      });
       updateStock(order);
     }
     res.status(201).send({ message: 'Nouvelle commande crée', order });
@@ -245,7 +256,7 @@ orderRouter.get(
     if (order) {
       res.send(order);
     } else {
-      res.status(404).send({ message: 'Order Not Found' });
+      res.status(404).send({ message: 'Commande non trouvée' });
     }
   })
 );
@@ -271,7 +282,7 @@ orderRouter.put(
 
       res.send({ message: 'Order Delivered' });
     } else {
-      res.status(404).send({ message: 'Order Not Found' });
+      res.status(404).send({ message: 'Commande non trouvée' });
     }
   })
 );
@@ -293,7 +304,7 @@ orderRouter.put(
       await transporter.sendMail({
         from: sender,
         to: user.email,
-        ...orderEmail(order, user),
+        ...chequeEmail(order, user),
       });
       res.send({ message: 'Commande payée' });
     } else {
@@ -343,7 +354,7 @@ orderRouter.delete(
       await order.remove();
       res.send({ message: 'Order Deleted' });
     } else {
-      res.status(404).send({ message: 'Order Not Found' });
+      res.status(404).send({ message: 'Commande non trouvée' });
     }
   })
 );

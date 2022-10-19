@@ -355,7 +355,14 @@ function ProductPage() {
                 <p>{nl2br(product.description)}</p>
               </div>
 
-              {product.name.includes('Barrette') && (
+              {product.name.includes(
+                'Barrette',
+                'Barrettes',
+                'barrette',
+                'barrettes',
+                'barette',
+                'Barette'
+              ) && (
                 <>
                   <hr />
                   <Form>

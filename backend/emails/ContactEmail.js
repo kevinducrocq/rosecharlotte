@@ -19,6 +19,6 @@ export function contactEmail(senderName, senderEmail, message) {
         </div>
     </div>
 
-  </div>`,
+  </div>`
   };
 }

@@ -70,7 +70,7 @@ userRouter.get(
     if (user) {
       res.send(user);
     } else {
-      res.status(404).send({ message: 'User Not Found' });
+      res.status(404).send({ message: 'Utilisateur non trouvé' });
     }
   })
 );

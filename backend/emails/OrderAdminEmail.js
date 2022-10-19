@@ -21,13 +21,10 @@ export function orderAdminEmail(order, user) {
         </div>
 
 
-        <div style="display:flex; flex-direction:column;">
 
             ${order.orderItems.map((item) => {
               return `
-                <div
-                    style="margin-bottom:10px ;border-radius: 10px; padding:5px; min-width:350px;max-width: 600px; background-color:#fff2f2;">
-
+              <div style="margin-bottom:10px ;border-radius: 10px; padding:5px; max-width: 600px; background-color:#fff2f2;">
                     <div key=${
                       item._id
                     }class=" order-unit" style="overflow:hidden;margin:5px 0;">

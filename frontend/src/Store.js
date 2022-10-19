@@ -26,10 +26,12 @@ function reducer(state, action) {
           item._id === newItem._id &&
           (item.variant === null || item.variant._id === newItem.variant._id) &&
           (item.customizable === false ||
+            !item.side === null ||
             (item.customization === newItem.customization &&
               item.fil === newItem.fil &&
               item.tissu === newItem.tissu &&
-              item.patch === newItem.patch))
+              item.patch === newItem.patch &&
+              item.side === newItem.side))
       );
 
       const cartItems = existItem
@@ -38,10 +40,12 @@ function reducer(state, action) {
             (item.variant === null ||
               item.variant._id === newItem.variant._id) &&
             (item.customizable === false ||
+              !item.side === null ||
               (item.customization === newItem.customization &&
                 item.fil === newItem.fil &&
                 item.tissu === newItem.tissu &&
-                item.patch === newItem.patch))
+                item.patch === newItem.patch &&
+                item.side === newItem.side))
               ? newItem
               : item
           )
@@ -57,10 +61,12 @@ function reducer(state, action) {
             (item.variant === null ||
               item.variant._id === action.payload.variant._id) &&
             (item.customizable === false ||
+              !item.side === null ||
               (item.customization === action.payload.customization &&
                 item.fil === action.payload.fil &&
                 item.tissu === action.payload.tissu &&
-                item.patch === action.payload.patch))
+                item.patch === action.payload.patch &&
+                item.side === action.payload.side))
           )
       );
       localStorage.setItem('cartItems', JSON.stringify(cartItems));
