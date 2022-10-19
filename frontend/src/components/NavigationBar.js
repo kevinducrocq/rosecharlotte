@@ -215,10 +215,10 @@ function NavigationBar() {
                 </a>
               </Nav>
 
-              <Nav>
-                <div>
+              <Nav className="me-auto">
+                <Nav.Link>
                   <SearchBox />
-                </div>
+                </Nav.Link>
               </Nav>
 
               <Nav>
