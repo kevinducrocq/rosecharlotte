@@ -216,9 +216,7 @@ function NavigationBar() {
               </Nav>
 
               <Nav className="me-auto">
-                <Nav.Link>
-                  <SearchBox />
-                </Nav.Link>
+                <SearchBox />
               </Nav>
 
               <Nav>
