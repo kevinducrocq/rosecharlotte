@@ -4,6 +4,7 @@ import {
   faClothesHanger,
   faComments,
   faGauge,
+  faGear,
   faPlus,
   faReel,
   faRug,
@@ -98,6 +99,16 @@ export default function AdminMenu(props) {
         <Link to="/admin/patches">
           <FontAwesomeIcon icon={faBadge} />
           <span className="ms-2">Motifs broderie</span>
+        </Link>
+      </ListGroup.Item>
+
+      <ListGroup.Item
+        variant="flush"
+        className={props.link10 ? 'activee  py-3' : 'py-3'}
+      >
+        <Link to="/admin/settings">
+          <FontAwesomeIcon icon={faGear} />
+          <span className="ms-2">Paramètres</span>
         </Link>
       </ListGroup.Item>
     </ListGroup>

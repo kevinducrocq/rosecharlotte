@@ -21,17 +21,17 @@ export default function CgvPage() {
       <h1 className="my-5">Conditions générales de vente</h1>
       <div>
         <p>
-          Le site www.rosecharlotte.fr (ci-après dénommé le « Site ») est édité
-          par la SARL Rose Charlotte &amp; COMPAGNIE (ci-après dénommée Rose
-          Charlotte &amp; COMPAGNIE), représentée par Mme Marie FARDEL. Le site
-          internet www.rosecharlotte.fr est hébergé par ni-host. Le client
-          internaute est dénommé le Client. L’accès et l’utilisation du Site
-          sont réservés à des personnes physiques, majeures à l’exclusion de
-          toute vente à des professionnels ou aux fins de revente à des tiers.
-          Dans tous les cas, l’accès ou l’utilisation du Site, par un Client,
-          sont soumis au respect des Conditions générales d’Utilisation ainsi
-          que des présentes Conditions générales de Vente du site internet Rose
-          Charlotte &amp; COMPAGNIE (ci-après les « Conditions générales de
+          Le site https://rosecharlotte.fr (ci-après dénommé le « Site ») est
+          édité par la SARL Rose Charlotte &amp; COMPAGNIE (ci-après dénommée
+          Rose Charlotte &amp; COMPAGNIE), représentée par Mme Marie FARDEL. Le
+          site internet https://rosecharlotte.fr est hébergé par Ni-Host. Le
+          client internaute est dénommé le Client. L’accès et l’utilisation du
+          Site sont réservés à des personnes physiques, majeures à l’exclusion
+          de toute vente à des professionnels ou aux fins de revente à des
+          tiers. Dans tous les cas, l’accès ou l’utilisation du Site, par un
+          Client, sont soumis au respect des Conditions générales d’Utilisation
+          ainsi que des présentes Conditions générales de Vente du site internet
+          Rose Charlotte &amp; COMPAGNIE (ci-après les « Conditions générales de
           Vente »). Le Site propose à la vente des vêtements et accessoires pour
           la famille personnalisables pour certains (ci-après les « Produits »)
           fabriqués en France ou personnalisés en France. Les présentes

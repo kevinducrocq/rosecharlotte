@@ -39,6 +39,7 @@ import TissuListPage from './pages/admin/TissuListPage';
 import PatchListPage from './pages/admin/PatchListPage';
 import TissuPage from './pages/TissuPage';
 import PatchPage from './pages/PatchPage';
+import SettingsPage from './pages/admin/SettingsPage';
 
 function App() {
   return (
@@ -169,6 +170,14 @@ function App() {
                 element={
                   <AdminRoute>
                     <ReviewListPage />
+                  </AdminRoute>
+                }
+              ></Route>
+              <Route
+                path="/admin/settings"
+                element={
+                  <AdminRoute>
+                    <SettingsPage />
                   </AdminRoute>
                 }
               ></Route>

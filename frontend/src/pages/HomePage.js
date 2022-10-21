@@ -7,9 +7,8 @@ import { Helmet } from 'react-helmet-async';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import Product from '../components/Product';
-import CarouselFade from '../components/Carousel';
 import { Link } from 'react-router-dom';
-import SearchBox from '../components/SearchBox';
+import CarouselHome from '../components/Carousel';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -93,7 +92,7 @@ function HomePage() {
       <h1 className="d-none">Rose Charlotte & Compagnie</h1>
 
       <section>
-        <CarouselFade />
+        <CarouselHome />
         <div className="d-flex bg3">
           <div className="flex-fill bg4 btrr-lg mt-4"></div>
           <div className="bg4">

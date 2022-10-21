@@ -7,6 +7,7 @@ import {
   faClothesHanger,
   faComments,
   faGauge,
+  faGear,
   faPen,
   faPlus,
   faReel,
@@ -326,24 +327,35 @@ function NavigationBar() {
                       &nbsp; Commentaires
                     </NavDropdown.Item>
                   </LinkContainer>
+
                   <LinkContainer to="/admin/fils">
                     <NavDropdown.Item>
                       <FontAwesomeIcon icon={faReel} />
                       &nbsp; Fils
                     </NavDropdown.Item>
                   </LinkContainer>
+
                   <LinkContainer to="/admin/tissus">
                     <NavDropdown.Item>
                       <FontAwesomeIcon icon={faRug} />
                       &nbsp; Tissus
                     </NavDropdown.Item>
                   </LinkContainer>
+
                   <LinkContainer to="/admin/patches">
                     <NavDropdown.Item>
                       <FontAwesomeIcon icon={faBadge} />
                       &nbsp; Motifs broderie
                     </NavDropdown.Item>
                   </LinkContainer>
+
+                  <LinkContainer to="/admin/settings">
+                    <NavDropdown.Item>
+                      <FontAwesomeIcon icon={faGear} />
+                      &nbsp; Paramètres
+                    </NavDropdown.Item>
+                  </LinkContainer>
+                  
                 </NavDropdown>
               )}
             </div>
