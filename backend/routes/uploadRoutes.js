@@ -65,7 +65,7 @@ uploadRouter.post('/image', (req, res) => {
       // save newFilePath in your db as image path
       await sharp(file.path)
         .resize({ height: 1000 })
-        .withMeData()
+        .withMetadata()
         .jpeg({ quality: 70 })
         .toFile(newFilePath);
       fs.unlinkSync(file.path);
