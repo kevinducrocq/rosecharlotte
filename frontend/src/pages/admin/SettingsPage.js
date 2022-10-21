@@ -1,12 +1,22 @@
 import axios from 'axios';
 import React, { useContext, useEffect, useReducer, useState } from 'react';
-import { Button, Col, Container, Image, Row } from 'react-bootstrap';
+import {
+  Button,
+  Col,
+  Container,
+  Form,
+  Image,
+  NavDropdown,
+  Row,
+} from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
+import { LinkContainer } from 'react-router-bootstrap';
 import { toast } from 'react-toastify';
 import AdminCanvasMenu from '../../components/AdminCanvasMenu';
 import AdminMenu from '../../components/AdminMenu';
 import LoadingBox from '../../components/LoadingBox';
 import MessageBox from '../../components/MessageBox';
+import ModalCategoryHome from '../../components/ModalCategoryHome';
 import ModalEditCarouselHome from '../../components/ModalEditCarouselHome';
 import { Store } from '../../Store';
 import { getError } from '../../utils';
@@ -80,7 +90,6 @@ export default function SettingsPage() {
         const { data } = await axios.get(`/api/settings/`, {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         });
-        console.log(data);
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {
         dispatch({
@@ -165,8 +174,10 @@ export default function SettingsPage() {
                 </div>
 
                 <div className="my-3">
-                  <div>Catégorie mise en avant</div>
-                  <div>liste radio</div>
+                  <h3>Catégorie mise en avant (page d'accueil)</h3>
+                  <div>
+                    <ModalCategoryHome />
+                  </div>
                 </div>
 
                 <div>
