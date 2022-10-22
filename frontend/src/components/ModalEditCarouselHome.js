@@ -1,6 +1,6 @@
 import React, { useReducer } from 'react';
 
-import { faPen } from '@fortawesome/pro-solid-svg-icons';
+import { faPen, faUpload } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useContext, useEffect, useState } from 'react';
 import { Col, Form, Image, Row } from 'react-bootstrap';
@@ -188,13 +188,8 @@ function ModalEditCarouselHome({ id, onEditSuccess }) {
 
   return (
     <>
-      <Button
-        className="btn btn-sm me-1"
-        type="button"
-        variant="light"
-        onClick={() => setModalShow(true)}
-      >
-        <FontAwesomeIcon icon={faPen} />
+      <Button type="button" onClick={() => setModalShow(true)}>
+        <FontAwesomeIcon icon={faPen} /> Modifier
       </Button>
 
       <Modal
@@ -208,15 +203,17 @@ function ModalEditCarouselHome({ id, onEditSuccess }) {
           <LoadingBox />
         ) : (
           <Form onSubmit={submitHandler}>
-            <Modal.Body className="my-4 p-4">
+            <Modal.Header closeButton>
+              <Modal.Title>
+                Edition du carousel de la page d'accueil
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body className="p-4">
               <Row className="align-items-center">
+                <span>Slide n°1</span>
                 <Col>
                   <Form.Group controlId="firstImage">
-                    <Form.Control
-                      className="mb-2"
-                      type="file"
-                      onChange={uploadFileHandlerOne}
-                    />
+                    <Form.Control type="file" onChange={uploadFileHandlerOne} />
                   </Form.Group>
                 </Col>
                 <Col>
@@ -234,21 +231,19 @@ function ModalEditCarouselHome({ id, onEditSuccess }) {
                       thumbnail
                       src={firstImage}
                       onChange={(e) => setFirstImage(e.target.value)}
+                      className="float-end"
                     />
                   ) : (
                     ''
                   )}
                 </Col>
               </Row>
-
+              <hr />
               <Row className="align-items-center">
+                <span>Slide n°2</span>
                 <Col>
                   <Form.Group controlId="secondImage">
-                    <Form.Control
-                      className="mb-2"
-                      type="file"
-                      onChange={uploadFileHandlerTwo}
-                    />
+                    <Form.Control type="file" onChange={uploadFileHandlerTwo} />
                   </Form.Group>
                 </Col>
                 <Col>
@@ -266,17 +261,20 @@ function ModalEditCarouselHome({ id, onEditSuccess }) {
                       thumbnail
                       src={secondImage}
                       onChange={(e) => setSecondImage(e.target.value)}
+                      className="float-end"
                     />
                   ) : (
                     ''
                   )}
                 </Col>
               </Row>
-              <Row className="align-items-center">
+              <hr />
+
+              <Row className="align-items-center mb-3">
+                <span>Slide n°3</span>
                 <Col>
                   <Form.Group controlId="thirdImage">
                     <Form.Control
-                      className="mb-2"
                       type="file"
                       onChange={uploadFileHandlerThree}
                     />
@@ -297,14 +295,13 @@ function ModalEditCarouselHome({ id, onEditSuccess }) {
                       thumbnail
                       src={thirdImage}
                       onChange={(e) => setThirdImage(e.target.value)}
+                      className="float-end"
                     />
                   ) : (
                     ''
                   )}
                 </Col>
               </Row>
-            </Modal.Body>
-            <Modal.Footer>
               {loadingUpdate ? (
                 <LoadingBox />
               ) : (
@@ -317,7 +314,7 @@ function ModalEditCarouselHome({ id, onEditSuccess }) {
                   Mettre à jour
                 </Button>
               )}
-            </Modal.Footer>
+            </Modal.Body>
           </Form>
         )}
       </Modal>

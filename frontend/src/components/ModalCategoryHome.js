@@ -27,7 +27,7 @@ const reducer = (state, action) => {
 export default function ModalCategoryHome() {
   const [categories, setCategories] = useState([]);
   const [modalShow, setModalShow] = useState(false);
-  const [category, setCategory] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -45,10 +45,10 @@ export default function ModalCategoryHome() {
   Object.keys(categories).forEach(function (mappedCategory) {
     renderedCategories.push(
       <option
-        selected={category === mappedCategory}
+        selected={selectedCategory === mappedCategory}
         key={mappedCategory}
         value={mappedCategory}
-        onChange={(e) => setCategory(e.target.value)}
+        onChange={(e) => setSelectedCategory(e.target.value)}
       >
         {mappedCategory}
       </option>
@@ -58,14 +58,8 @@ export default function ModalCategoryHome() {
   return (
     <>
       <div>
-        <div>Nom de la catégorie mise en avant</div>
-        <Button
-          className="btn btn-sm me-1"
-          type="button"
-          variant="light"
-          onClick={() => setModalShow(true)}
-        >
-          <FontAwesomeIcon icon={faPen} />
+        <Button type="button" onClick={() => setModalShow(true)}>
+          <FontAwesomeIcon icon={faPen} /> Modifier
         </Button>
 
         <Modal
@@ -75,18 +69,31 @@ export default function ModalCategoryHome() {
           aria-labelledby="contained-modal-title-vcenter"
           centered
         >
+          <Modal.Header closeButton>
+            <Modal.Title>
+              Catégorie mise en avant sur la page d'accueil
+            </Modal.Title>
+          </Modal.Header>
           <Modal.Body>
             <Form>
               <Form.Group className="mb-3" controlId="category">
                 <Form.Label>Séléctionner une catégorie</Form.Label>
                 <Form.Select
                   aria-label="category select"
-                  onChange={(e) => setCategory(e.target.value)}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
                 >
                   <option>Choisissez...</option>
                   {renderedCategories}
                 </Form.Select>
               </Form.Group>
+              <Button
+                type="submit"
+                className="bg1 w-100"
+                variant="outline-light"
+                onClick={setSelectedCategory}
+              >
+                Mettre à jour
+              </Button>
             </Form>
           </Modal.Body>
         </Modal>

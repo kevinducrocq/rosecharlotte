@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { useContext, useEffect, useReducer, useState } from 'react';
 import {
   Button,
+  Card,
   Col,
   Container,
   Form,
@@ -82,6 +83,7 @@ export default function SettingsPage() {
   });
 
   const [refresh, setRefresh] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -135,54 +137,80 @@ export default function SettingsPage() {
           ) : (
             <>
               <section>
-                <h2 className="h4">Page d'acceuil</h2>
+                <Card className="p-4 mb-3">
+                  <div className="my-3">
+                    {carouselHome?.map((carousel) => {
+                      return (
+                        <Row key={carousel._id}>
+                          <Card.Title className="mb-4 d-flex justify-content-between align-items-center">
+                            <div>
+                              <span>Carousel de la page d'accueil</span>
+                            </div>
+                            <div>
+                              <ModalEditCarouselHome
+                                id={carousel._id}
+                                onEditSuccess={() => setRefresh(true)}
+                              />
+                            </div>
+                          </Card.Title>
 
-                <div className="my-3">
-                  <h3>Carousel</h3>
-                  {carouselHome?.map((carousel) => {
-                    return (
-                      <div key={carousel._id}>
-                        <div className="d-flex">
-                          <div className="d-flex align-items-center">
-                            <div>
-                              <Image src={carousel.firstImage} thumbnail />
+                          <Col
+                            className="d-flex flex-column align-items-center"
+                            md={4}
+                          >
+                            <span className="text-muted mb-2">Slide n°1</span>
+                            <Image src={carousel.firstImage} width="150px" />
+                            <div className="mt-2">
+                              <span>{carousel.firstText}</span>
                             </div>
-                            <div> {carousel.firstText}</div>
-                          </div>
-                          <div className="d-flex align-items-center">
-                            <div>
-                              <Image src={carousel.secondImage} thumbnail />
-                            </div>
-                            <div> {carousel.secondText}</div>
-                          </div>
-                          <div className="d-flex align-items-center">
-                            <div>
-                              <Image src={carousel.thirdImage} thumbnail />
-                            </div>
-                            <div> {carousel.thirdText}</div>
-                          </div>
-                        </div>
-                        <div>
-                          <ModalEditCarouselHome
-                            id={carousel._id}
-                            onEditSuccess={() => setRefresh(true)}
-                          />
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
+                          </Col>
 
-                <div className="my-3">
-                  <h3>Catégorie mise en avant (page d'accueil)</h3>
-                  <div>
-                    <ModalCategoryHome />
+                          <Col
+                            className="d-flex flex-column align-items-center"
+                            md={4}
+                          >
+                            <span className="text-muted mb-2">Slide n°2</span>
+                            <Image src={carousel.secondImage} width="150px" />
+                            <div className="mt-2">
+                              <span>{carousel.secondText}</span>
+                            </div>
+                          </Col>
+
+                          <Col
+                            className="d-flex flex-column align-items-center"
+                            md={4}
+                          >
+                            <span className="text-muted mb-2">Slide n°3</span>
+                            <Image src={carousel.thirdImage} width="150px" />
+                            <div className="mt-2">
+                              <span>{carousel.thirdText}</span>
+                            </div>
+                          </Col>
+                        </Row>
+                      );
+                    })}
                   </div>
-                </div>
+                </Card>
+              </section>
 
-                <div>
-                  <div>Message</div>
-                </div>
+              <section>
+                <Card className="p-4">
+                  <Card.Title className="mb-4 d-flex justify-content-between align-items-center">
+                    <div>
+                      <span>Catégorie mise en avant sur la page d'accueil</span>
+                    </div>
+                    <div>
+                      <ModalCategoryHome />
+                    </div>
+                  </Card.Title>
+
+                  <div>
+                    <div>
+                      Catégorie séléctionnée :&nbsp;
+                      <span className="badge bg1">{selectedCategory}</span>
+                    </div>
+                  </div>
+                </Card>
               </section>
             </>
           )}
