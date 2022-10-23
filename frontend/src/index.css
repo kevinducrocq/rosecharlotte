@@ -36,8 +36,9 @@ main {
 .category-button {
   border: none;
   border-radius: 10px;
-  background-color: #fff;
+  background-color: #fff2f2;
   padding: 3px 7px;
+  margin-left: 10px;
 }
 
 .category-button:hover {
@@ -113,6 +114,7 @@ main {
   color: #000;
   text-decoration: none;
 }
+
 /*COULEURS GENERALES*/
 .bg1 {
   background-color: #f47c7c;
@@ -275,6 +277,24 @@ main {
   background-color: #ef9f9f;
 }
 
+.user-bar {
+  background-color: #fff2f2;
+  border-top-left-radius: 15px;
+  border-bottom-left-radius: 15px;
+}
+
+#admin-nav-dropdown {
+  color: #f47c7c;
+}
+
+#basic-nav-dropdown {
+  color: #f47c7c;
+}
+
+.user-link {
+  color: #f47c7c;
+}
+
 .navbar2 .nav-link {
   text-decoration: none;
   color: #fff2f2;
@@ -282,12 +302,19 @@ main {
 
 .cart-link {
   background-color: #fff2f2;
-  max-width: 150px;
-  padding: 10px 10px;
-  border-radius: 50px;
-  text-align: center;
-  font-weight: 400;
+  padding: 15px 15px;
+  border-radius: 100%;
   color: #f47c7c;
+  position: relative;
+}
+
+.badge-items {
+  position: absolute;
+  z-index: 5;
+  margin-left: 35px;
+  background-color: #ef9f9f;
+  color: #fff2f2;
+  border-radius: 100%;
 }
 
 .cart-link:hover {
@@ -311,6 +338,10 @@ main {
 .carousel-item img {
   height: 450px;
   object-fit: cover;
+}
+
+.carousel-home {
+  margin-top: -35px;
 }
 
 .carousel-caption {
@@ -421,6 +452,16 @@ LOGO
   .logo-footer {
     display: none;
   }
+  .logo-mobile {
+    width: 100px;
+  }
+  #admin-nav-dropdown {
+    font-size: 14px;
+  }
+
+  #basic-nav-dropdown {
+    font-size: 14px;
+  }
 }
 
 .cat-link:hover,
@@ -452,7 +493,7 @@ LOGO
     display: none;
   }
   .categories-menu {
-    display: flex;
+    display: block;
   }
 }
 

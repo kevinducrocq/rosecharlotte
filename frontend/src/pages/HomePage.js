@@ -9,6 +9,7 @@ import MessageBox from '../components/MessageBox';
 import Product from '../components/Product';
 import { Link } from 'react-router-dom';
 import CarouselHome from '../components/Carousel';
+import SearchBox from '../components/SearchBox';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -28,11 +29,14 @@ const reducer = (state, action) => {
 };
 
 function HomePage() {
-  const [{ loading, error, products }, dispatch] = useReducer(reducer, {
-    products: [],
-    loading: true,
-    error: '',
-  });
+  const [{ loading, error, products, chosenCategory }, dispatch] = useReducer(
+    reducer,
+    {
+      products: [],
+      loading: true,
+      error: '',
+    }
+  );
   const options = {
     loop: false,
     margin: 10,
@@ -91,8 +95,10 @@ function HomePage() {
 
       <h1 className="d-none">Rose Charlotte & Compagnie</h1>
 
-      <section>
-        <CarouselHome />
+      <section className="carousel-home">
+        <div className="d-none d-lg-block d-md-block d-md-none">
+          <CarouselHome />
+        </div>
         <div className="d-flex bg3">
           <div className="flex-fill bg4 btrr-lg mt-4"></div>
           <div className="bg4">
@@ -106,6 +112,9 @@ function HomePage() {
             </div>
           </div>
           <div className="flex-fill bg4 btlr-lg mt-4"></div>
+        </div>
+        <div className="mt-3 p-3 d-lg-none d-md-block">
+          <SearchBox />
         </div>
       </section>
 

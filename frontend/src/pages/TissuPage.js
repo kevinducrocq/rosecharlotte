@@ -1,7 +1,16 @@
 import axios from 'axios';
 import React, { useEffect, useReducer, useState } from 'react';
-import { Card, Col, Container, Form, Image, Row } from 'react-bootstrap';
+import {
+  Breadcrumb,
+  Card,
+  Col,
+  Container,
+  Form,
+  Image,
+  Row,
+} from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
+import { LinkContainer } from 'react-router-bootstrap';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
 import ModalTissuPatch from '../components/ModalTissuPatch';
@@ -60,6 +69,12 @@ function TissuPage() {
       </Helmet>
 
       <Container className="my-5">
+        <Breadcrumb className="d-none d-md-flex">
+          <LinkContainer to={'/'} exact>
+            <Breadcrumb.Item>Accueil</Breadcrumb.Item>
+          </LinkContainer>
+          <Breadcrumb.Item active>Tissuthèque</Breadcrumb.Item>
+        </Breadcrumb>
         {loading ? (
           <LoadingBox />
         ) : error ? (

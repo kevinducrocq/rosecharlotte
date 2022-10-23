@@ -58,7 +58,7 @@ function App() {
           pauseOnHover={false}
         />
 
-        <header>
+        <header className="mb-5">
           <NavigationBar />
         </header>
 

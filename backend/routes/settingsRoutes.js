@@ -1,6 +1,7 @@
 import express from 'express';
 import expressAsyncHandler from 'express-async-handler';
 import CarouselHome from '../models/carouselHomeModel.js';
+import Setting from '../models/settingsModel.js';
 import { isAuth, isAdmin } from '../utils.js';
 
 const settingsRouter = express.Router();
@@ -12,36 +13,6 @@ settingsRouter.get(
     res.send(carouselHome);
   })
 );
-
-// settingsRouter.post(
-//   '/add-carousel',
-//   isAuth,
-//   isAdmin,
-//   expressAsyncHandler(async (req, res) => {
-//     const newCarouselHome = new CarouselHome({
-//       firstImage: req.body.firstImage,
-//       firstText: req.body.firstText,
-//       secondImage: req.body.secondImage,
-//       secondText: req.body.secondText,
-//       thirdImage: req.body.thirdImage,
-//       thirdText: req.body.thirdText,
-//     });
-//     try {
-//       const carouselHome = await newCarouselHome.save();
-//       res.send({
-//         _id: carouselHome._id,
-//         firstImage: carouselHome.firstImage,
-//         firstText: carouselHome.firstText,
-//         secondImage: carouselHome.secondImage,
-//         secondText: carouselHome.secondText,
-//         thirdImage: carouselHome.thirdImage,
-//         thirdText: carouselHome.thirdText,
-//       });
-//     } catch (err) {
-//       console.log(err);
-//     }
-//   })
-// );
 
 settingsRouter.get('/:id', async (req, res) => {
   const carouselHome = await CarouselHome.findById(req.params.id);

@@ -130,19 +130,23 @@ function NavigationBar() {
         <Navbar variant="light" expand="lg" collapseOnSelect={true}>
           <Container fluid>
             <LinkContainer to="/">
-              <Image src="../logo-site.png" width={150} />
+              <Image
+                src="../logo-site.png"
+                width={150}
+                className="logo-mobile"
+              />
             </LinkContainer>
 
             <Nav>
               <Nav.Link eventKey="i">
                 <Link to="/cart" className="nav-link mobile-cart">
-                  <div className="cart-link">
-                    <FontAwesomeIcon icon={faShoppingCart} /> Panier{' '}
-                    {cart.cartItems.length > 0 && (
-                      <div className="bg1 text-white rounded-5 badge">
-                        {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
-                      </div>
-                    )}
+                  {cart.cartItems.length > 0 && (
+                    <div className="text-dark badge badge-items">
+                      {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
+                    </div>
+                  )}
+                  <div className="cart-link d-flex align-items-center">
+                    <FontAwesomeIcon icon={faShoppingCart} />{' '}
                   </div>
                 </Link>
               </Nav.Link>
@@ -216,20 +220,22 @@ function NavigationBar() {
                 </a>
               </Nav>
 
-              <Nav className="me-auto">
-                <SearchBox />
+              <Nav className="me-auto" collapseOnSelect={true}>
+                <div className="d-none d-lg-block d-md-block d-md-none">
+                  <SearchBox />
+                </div>
               </Nav>
 
               <Nav>
                 <Nav.Link eventKey="i">
                   <Link to="/cart" className="nav-link site-cart">
-                    <div className="cart-link">
-                      <FontAwesomeIcon icon={faShoppingCart} /> Panier{' '}
-                      {cart.cartItems.length > 0 && (
-                        <div className="bg3 text-dark rounded-5 badge">
-                          {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
-                        </div>
-                      )}
+                    {cart.cartItems.length > 0 && (
+                      <div className="text-dark badge badge-items">
+                        {cart.cartItems.reduce((a, c) => a + c.quantity, 0)}
+                      </div>
+                    )}
+                    <div className="cart-link d-flex align-items-center">
+                      <FontAwesomeIcon icon={faShoppingCart} />{' '}
                     </div>
                   </Link>
                 </Nav.Link>
@@ -239,127 +245,122 @@ function NavigationBar() {
         </Navbar>
 
         <Nav className="navbar2">
-          <Container fluid className="d-flex align-items-center">
-            <div className="d-lg-none text-nowrap">
-              <CategoriesCanvasMenu />
-            </div>
+          <div className="d-lg-none text-nowrap d-flex align-items-center">
+            <CategoriesCanvasMenu />
+          </div>
 
-            <div className="d-none d-lg-flex flex-wrap">
-              {renderedCategories}
-            </div>
+          <div className="d-none d-lg-flex flex-wrap">{renderedCategories}</div>
 
-            <div className="d-flex ms-auto">
-              {userInfo ? (
-                <NavDropdown title={userInfo.name} id="basic-nav-dropdown">
-                  <LinkContainer to="/profile">
-                    <NavDropdown.Item>Profil</NavDropdown.Item>
-                  </LinkContainer>
-                  <LinkContainer to="/orderhistory">
-                    <NavDropdown.Item>Mes commandes</NavDropdown.Item>
-                  </LinkContainer>
-                  <NavDropdown.Divider />
-                  <Link
-                    className="dropdown-item"
-                    to="#signout"
-                    onClick={signoutHandler}
-                  >
-                    Déconnexion
-                  </Link>
-                </NavDropdown>
-              ) : (
+          <div className="d-flex ms-auto user-bar user-link">
+            {userInfo ? (
+              <NavDropdown title={userInfo.name} id="basic-nav-dropdown">
+                <LinkContainer to="/profile">
+                  <NavDropdown.Item>Profil</NavDropdown.Item>
+                </LinkContainer>
+                <LinkContainer to="/orderhistory">
+                  <NavDropdown.Item>Mes commandes</NavDropdown.Item>
+                </LinkContainer>
+                <NavDropdown.Divider />
                 <Link
-                  className="nav-link d-flex align-items-center"
-                  to="/signin"
+                  className="dropdown-item"
+                  to="#signout"
+                  onClick={signoutHandler}
                 >
-                  <FontAwesomeIcon icon={faArrowRightToBracket} />
-                  <span className="ms-1">Connexion</span>
+                  Déconnexion
                 </Link>
-              )}
-              {!userInfo && (
-                <Link
-                  className="nav-link d-flex align-items-center d-none d-md-flex"
-                  to="/signup"
-                >
-                  <FontAwesomeIcon icon={faPen} />{' '}
-                  <span className="ms-1">Inscription</span>
-                </Link>
-              )}
-              {userInfo && userInfo.isAdmin && (
-                <NavDropdown title="Admin" id="admin-nav-dropdown">
-                  <LinkContainer to="/admin/dashboard">
-                    <NavDropdown.Item>
-                      <FontAwesomeIcon icon={faGauge} />
-                      &nbsp; Tableau de bord
-                    </NavDropdown.Item>
-                  </LinkContainer>
+              </NavDropdown>
+            ) : (
+              <Link className="nav-link d-flex align-items-center" to="/signin">
+                <FontAwesomeIcon
+                  icon={faArrowRightToBracket}
+                  color={'#f47c7c'}
+                />
+                <span className="ms-1 user-link">Connexion</span>
+              </Link>
+            )}
+            {!userInfo && (
+              <Link
+                className="nav-link d-flex align-items-center d-none d-md-flex"
+                to="/signup"
+              >
+                <FontAwesomeIcon icon={faPen} color={'#f47c7c'} />{' '}
+                <span className="ms-1 user-link">Inscription</span>
+              </Link>
+            )}
+            {userInfo && userInfo.isAdmin && (
+              <NavDropdown title="Admin" id="admin-nav-dropdown">
+                <LinkContainer to="/admin/dashboard">
+                  <NavDropdown.Item>
+                    <FontAwesomeIcon icon={faGauge} />
+                    &nbsp; Tableau de bord
+                  </NavDropdown.Item>
+                </LinkContainer>
 
-                  <LinkContainer to="/admin/product/add">
-                    <NavDropdown.Item>
-                      <FontAwesomeIcon icon={faPlus} />
-                      &nbsp; Ajouter un produit
-                    </NavDropdown.Item>
-                  </LinkContainer>
+                <LinkContainer to="/admin/product/add">
+                  <NavDropdown.Item>
+                    <FontAwesomeIcon icon={faPlus} />
+                    &nbsp; Ajouter un produit
+                  </NavDropdown.Item>
+                </LinkContainer>
 
-                  <LinkContainer to="/admin/products">
-                    <NavDropdown.Item>
-                      <FontAwesomeIcon icon={faClothesHanger} />
-                      &nbsp; Produits
-                    </NavDropdown.Item>
-                  </LinkContainer>
+                <LinkContainer to="/admin/products">
+                  <NavDropdown.Item>
+                    <FontAwesomeIcon icon={faClothesHanger} />
+                    &nbsp; Produits
+                  </NavDropdown.Item>
+                </LinkContainer>
 
-                  <LinkContainer to="/admin/orders">
-                    <NavDropdown.Item>
-                      <FontAwesomeIcon icon={faBagShopping} />
-                      &nbsp; Commandes
-                    </NavDropdown.Item>
-                  </LinkContainer>
+                <LinkContainer to="/admin/orders">
+                  <NavDropdown.Item>
+                    <FontAwesomeIcon icon={faBagShopping} />
+                    &nbsp; Commandes
+                  </NavDropdown.Item>
+                </LinkContainer>
 
-                  <LinkContainer to="/admin/users">
-                    <NavDropdown.Item>
-                      <FontAwesomeIcon icon={faUsers} />
-                      &nbsp; Utilisateurs
-                    </NavDropdown.Item>
-                  </LinkContainer>
+                <LinkContainer to="/admin/users">
+                  <NavDropdown.Item>
+                    <FontAwesomeIcon icon={faUsers} />
+                    &nbsp; Utilisateurs
+                  </NavDropdown.Item>
+                </LinkContainer>
 
-                  <LinkContainer to="/admin/reviews">
-                    <NavDropdown.Item>
-                      <FontAwesomeIcon icon={faComments} />
-                      &nbsp; Commentaires
-                    </NavDropdown.Item>
-                  </LinkContainer>
+                <LinkContainer to="/admin/reviews">
+                  <NavDropdown.Item>
+                    <FontAwesomeIcon icon={faComments} />
+                    &nbsp; Commentaires
+                  </NavDropdown.Item>
+                </LinkContainer>
 
-                  <LinkContainer to="/admin/fils">
-                    <NavDropdown.Item>
-                      <FontAwesomeIcon icon={faReel} />
-                      &nbsp; Fils
-                    </NavDropdown.Item>
-                  </LinkContainer>
+                <LinkContainer to="/admin/fils">
+                  <NavDropdown.Item>
+                    <FontAwesomeIcon icon={faReel} />
+                    &nbsp; Fils
+                  </NavDropdown.Item>
+                </LinkContainer>
 
-                  <LinkContainer to="/admin/tissus">
-                    <NavDropdown.Item>
-                      <FontAwesomeIcon icon={faRug} />
-                      &nbsp; Tissus
-                    </NavDropdown.Item>
-                  </LinkContainer>
+                <LinkContainer to="/admin/tissus">
+                  <NavDropdown.Item>
+                    <FontAwesomeIcon icon={faRug} />
+                    &nbsp; Tissus
+                  </NavDropdown.Item>
+                </LinkContainer>
 
-                  <LinkContainer to="/admin/patches">
-                    <NavDropdown.Item>
-                      <FontAwesomeIcon icon={faBadge} />
-                      &nbsp; Motifs broderie
-                    </NavDropdown.Item>
-                  </LinkContainer>
+                <LinkContainer to="/admin/patches">
+                  <NavDropdown.Item>
+                    <FontAwesomeIcon icon={faBadge} />
+                    &nbsp; Motifs broderie
+                  </NavDropdown.Item>
+                </LinkContainer>
 
-                  <LinkContainer to="/admin/settings">
-                    <NavDropdown.Item>
-                      <FontAwesomeIcon icon={faGear} />
-                      &nbsp; Paramètres
-                    </NavDropdown.Item>
-                  </LinkContainer>
-                  
-                </NavDropdown>
-              )}
-            </div>
-          </Container>
+                <LinkContainer to="/admin/settings">
+                  <NavDropdown.Item>
+                    <FontAwesomeIcon icon={faGear} />
+                    &nbsp; Paramètres
+                  </NavDropdown.Item>
+                </LinkContainer>
+              </NavDropdown>
+            )}
+          </div>
         </Nav>
       </div>
     </>

@@ -84,8 +84,7 @@ export default function CategoriesCanvasMenu() {
   return (
     <div>
       <button className="category-button" onClick={handleShow}>
-        <FontAwesomeIcon icon={faReel} />
-        &nbsp; Catégories
+        <FontAwesomeIcon icon={faReel} size="2x" color={'#f47c7c'} />
       </button>
 
       <Offcanvas show={show} onHide={handleClose}>

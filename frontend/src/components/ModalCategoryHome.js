@@ -1,10 +1,11 @@
 import { faPen } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Button, Form, Modal, NavDropdown } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { toast } from 'react-toastify';
+import { Store } from '../Store';
 import { getError } from '../utils';
 
 const reducer = (state, action) => {
@@ -27,7 +28,10 @@ const reducer = (state, action) => {
 export default function ModalCategoryHome() {
   const [categories, setCategories] = useState([]);
   const [modalShow, setModalShow] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [chosenCategory, setChosenCategory] = useState('');
+
+  const { state } = useContext(Store);
+  const { userInfo } = state;
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -45,15 +49,35 @@ export default function ModalCategoryHome() {
   Object.keys(categories).forEach(function (mappedCategory) {
     renderedCategories.push(
       <option
-        selected={selectedCategory === mappedCategory}
+        selected={chosenCategory === mappedCategory}
         key={mappedCategory}
         value={mappedCategory}
-        onChange={(e) => setSelectedCategory(e.target.value)}
+        onChange={(e) => setChosenCategory(e.target.value)}
       >
         {mappedCategory}
       </option>
     );
   });
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post(
+        `/api/settings/chosen-category`,
+        {
+          chosenCategory,
+        },
+        {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+      toast.success(
+        `Catégorie ${chosenCategory} a été ajoutée à l'ecran d'accueil`
+      );
+    } catch (err) {
+      toast.error(getError(err));
+    }
+  };
 
   return (
     <>
@@ -75,12 +99,12 @@ export default function ModalCategoryHome() {
             </Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            <Form>
+            <Form onSubmit={submitHandler}>
               <Form.Group className="mb-3" controlId="category">
                 <Form.Label>Séléctionner une catégorie</Form.Label>
                 <Form.Select
                   aria-label="category select"
-                  onChange={(e) => setSelectedCategory(e.target.value)}
+                  onChange={(e) => setChosenCategory(e.target.value)}
                 >
                   <option>Choisissez...</option>
                   {renderedCategories}
@@ -90,7 +114,6 @@ export default function ModalCategoryHome() {
                 type="submit"
                 className="bg1 w-100"
                 variant="outline-light"
-                onClick={setSelectedCategory}
               >
                 Mettre à jour
               </Button>
