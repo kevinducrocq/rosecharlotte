@@ -2,10 +2,7 @@ import mongoose from 'mongoose';
 
 const settingSchema = new mongoose.Schema(
   {
-    chosenCategory: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Product',
-    },
+    chosenCategory: { type: String },
   },
   {
     timestamps: true,

@@ -24,8 +24,10 @@ mongoose
 
 const app = express();
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '100mb', extended: true }));
+app.use(
+  express.urlencoded({ limit: '100mb', extended: true, parameterLimit: 50000 })
+);
 
 app.get('/api/keys/paypal', (req, res) => {
   res.send(process.env.PAYPAL_CLIENT_ID || 'sb');
