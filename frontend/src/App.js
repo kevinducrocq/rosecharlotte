@@ -40,6 +40,8 @@ import PatchListPage from './pages/admin/PatchListPage';
 import TissuPage from './pages/TissuPage';
 import PatchPage from './pages/PatchPage';
 import SettingsPage from './pages/admin/SettingsPage';
+import LostPasswordPage from './pages/LostPasswordPage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
 
 function App() {
   return (
@@ -80,6 +82,11 @@ function App() {
               <Route path="/cart" element={<CartPage />} />
               <Route path="/signin" element={<SigninPage />} />
               <Route path="/signup" element={<SignupPage />} />
+              <Route path="/forgot-password" element={<LostPasswordPage />} />
+              <Route
+                path="/reset-password/:id/:token"
+                element={<ResetPasswordPage />}
+              />
               <Route
                 path="/profile"
                 element={

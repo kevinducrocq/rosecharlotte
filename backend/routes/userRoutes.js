@@ -6,6 +6,11 @@ import { isAuth, isAdmin, generateToken } from '../utils.js';
 import transporter, { sender } from '../email.js';
 import { contactEmail } from '../emails/ContactEmail.js';
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+import nodemailer from 'nodemailer';
+import { passwordEmail } from '../emails/PasswordEmail.js';
+
+dotenv.config();
 
 function capitalizeFirstLetter(string) {
   var splitStr = string.toLowerCase().split(' ');
@@ -153,6 +158,102 @@ userRouter.post(
       isAdmin: user.isAdmin,
       token: generateToken(user),
     });
+  })
+);
+
+userRouter.post(
+  '/forgot-password',
+  expressAsyncHandler(async (req, res) => {
+    const { email } = req.body;
+    try {
+      const oldUser = await User.findOne({ email });
+      if (!oldUser) {
+        return res.status(401).send({
+          message: "Cet utilisateur n'existe pas dans la base de données",
+        });
+      }
+      const userEmail = oldUser.email;
+      console.log(userEmail);
+      const secret = process.env.JWT_SECRET + oldUser.password;
+      console.log(secret);
+      const token = jwt.sign({ email: userEmail, id: oldUser._id }, secret, {
+        expiresIn: '5m',
+      });
+      console.log(token);
+      const link =
+        process.env.ROOT + 'reset-password/' + oldUser._id + '/' + token;
+      await transporter.sendMail({
+        from: sender,
+        to: userEmail,
+        ...passwordEmail(sender, userEmail, link),
+      });
+      res.status(201).send({ message: 'Email envoyé' });
+      console.log('email envoyé');
+    } catch (err) {
+      res.status(401).send({
+        message:
+          'Erreur lors de la procédure de réinitialisation de mot de passe',
+      });
+    }
+  })
+);
+
+userRouter.get(
+  '/reset-password/:id/:token',
+  expressAsyncHandler(async (req, res) => {
+    const { id, token } = req.params;
+    const oldUser = await User.findOne({ _id: id });
+    if (!oldUser) {
+      return res.status(401).send({
+        message: "Cet utilisateur n'existe pas dans la base de données",
+      });
+    }
+    const secret = process.env.JWT_SECRET + oldUser.password;
+    try {
+      const verify = jwt.verify(token, secret);
+      res.status(201).send({ message: 'OK' });
+    } catch (err) {
+      res.status(401).send({
+        message: 'Une erreur est surevenue, veuillez rééssayer',
+      });
+    }
+  })
+);
+
+userRouter.post(
+  '/reset-password/:id/:token',
+  expressAsyncHandler(async (req, res) => {
+    const { id, token } = req.params;
+    const password = req.body.password;
+    const confirmPassword = req.body.confirmPassword;
+    const oldUser = await User.findOne({ _id: id });
+
+    if (!oldUser) {
+      return res.status(401).send({
+        message: "Cet utilisateur n'existe pas dans la base de données",
+      });
+    }
+
+    if (password != confirmPassword) {
+      return res.status(401).send({
+        message: 'Les mots de passe saisis ne correspondent pas',
+      });
+    }
+
+    const secret = process.env.JWT_SECRET + oldUser.password;
+    try {
+      const verify = jwt.verify(token, secret);
+      const encryptedPassword = await bcrypt.hash(password, 8);
+      await User.updateOne(
+        { _id: id },
+        { $set: { password: encryptedPassword } }
+      );
+      res.status(201).send({ message: 'Mot de passe mis à jour' });
+    } catch (err) {
+      res.status(401).send({
+        message: 'Erreur lors de la mise à jour du mot de passe',
+      });
+    }
   })
 );
 

@@ -280,7 +280,7 @@ orderRouter.put(
         ...sentOrderEmail(order, user),
       });
 
-      res.send({ message: 'Order Delivered' });
+      res.send({ message: 'Commande expédiée' });
     } else {
       res.status(404).send({ message: 'Commande non trouvée' });
     }
@@ -352,7 +352,7 @@ orderRouter.delete(
     const order = await Order.findById(req.params.id);
     if (order) {
       await order.remove();
-      res.send({ message: 'Order Deleted' });
+      res.send({ message: 'Commande supprimée' });
     } else {
       res.status(404).send({ message: 'Commande non trouvée' });
     }
