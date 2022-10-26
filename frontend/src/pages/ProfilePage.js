@@ -70,7 +70,7 @@ const ProfilePage = () => {
     }
   };
 
-  const updtadePasswordHandler = async (e) => {
+  const updatdePasswordHandler = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       dispatch({ type: 'UPDATE_FAIL' });
@@ -200,7 +200,7 @@ const ProfilePage = () => {
             <Accordion.Item eventKey="0" className="bg3">
               <Accordion.Header>Changer le mot de passe</Accordion.Header>
               <Accordion.Body>
-                <Form onSubmit={updtadePasswordHandler}>
+                <Form onSubmit={updatdePasswordHandler}>
                   <Row className="mb-3">
                     <Col>
                       <Form.Group className="" controlId="password">
