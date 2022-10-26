@@ -173,13 +173,10 @@ userRouter.post(
         });
       }
       const userEmail = oldUser.email;
-      console.log(userEmail);
       const secret = process.env.JWT_SECRET + oldUser.password;
-      console.log(secret);
       const token = jwt.sign({ email: userEmail, id: oldUser._id }, secret, {
         expiresIn: '5m',
       });
-      console.log(token);
       const link =
         process.env.ROOT + 'reset-password/' + oldUser._id + '/' + token;
       await transporter.sendMail({
@@ -188,7 +185,6 @@ userRouter.post(
         ...passwordEmail(sender, userEmail, link),
       });
       res.status(201).send({ message: 'Email envoyé' });
-      console.log('email envoyé');
     } catch (err) {
       res.status(401).send({
         message:
