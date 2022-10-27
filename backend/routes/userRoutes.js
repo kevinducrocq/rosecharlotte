@@ -132,6 +132,7 @@ userRouter.post(
           address: user.address,
           zip: user.zip,
           city: user.city,
+          country: user.country,
           isAdmin: user.isAdmin,
           token: generateToken(user),
         });

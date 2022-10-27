@@ -297,7 +297,9 @@ export default function ProductEditPage() {
       } else {
         setImage(data.path);
       }
-      toast.success('Image uploaded successfully. click Update to apply it');
+      toast.success(
+        'Image téléversée, cliquer sur mettre à jour pour que les changements soient pris en compte'
+      );
     } catch (err) {
       toast.error(getError(err));
       dispatch({ type: 'UPLOAD_FAIL', payload: getError(err) });
