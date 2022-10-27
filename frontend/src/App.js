@@ -42,6 +42,7 @@ import PatchPage from './pages/PatchPage';
 import SettingsPage from './pages/admin/SettingsPage';
 import LostPasswordPage from './pages/LostPasswordPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
+import TestPage from "./pages/TestPage";
 
 function App() {
   return (
@@ -69,6 +70,7 @@ function App() {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/about" element={<AboutPage />} />
+              <Route path="/test" element={<TestPage />} />
               <Route path="/contact" element={<ContactPage />} />
               <Route path="/cgv" element={<CgvPage />} />
               <Route path="/mentions" element={<MentionsLegalesPage />} />
