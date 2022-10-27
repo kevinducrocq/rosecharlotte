@@ -1,5 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { Form, Button } from 'react-bootstrap';
+import React, {
+  useEffect,
+  useState,
+} from 'react';
+import {
+  Form,
+  Button,
+} from 'react-bootstrap';
 
 function TestPage() {
   const [street, setStreet] = useState('');
@@ -9,10 +15,8 @@ function TestPage() {
   const [billingPostCode, setBillingPostCode] = useState('');
   const [billingCity, setBillingCity] = useState('');
 
-  const [displayBillingAddressForm, setDisplayBillingAddressForm] =
-    useState(false);
-  const [displayShippingAddressForm, setDisplayShippingAddressForm] =
-    useState(false);
+  const [displayBillingAddressForm, setDisplayBillingAddressForm] = useState(false);
+  const [displayShippingAddressForm, setDisplayShippingAddressForm] = useState(false);
 
   useEffect(() => {
     setStreet('55 Rue du Mas');
@@ -53,15 +57,14 @@ function TestPage() {
         </Button>
       </Form>
     );
-  };
+  }
 
   const renderShippingAddress = () => {
     return (
       <>
         <h1>Mon adresse de livraison :</h1>
         <div>
-          {street}
-          <br />
+          {street}<br/>
           {postCode} {city}
         </div>
         <Button onClick={() => setDisplayShippingAddressForm(true)}>
@@ -81,25 +84,24 @@ function TestPage() {
 
   const renderBillingAddress = () => {
     if (
-      (billingStreet && billingStreet !== street) ||
-      (!billingPostCode && billingPostCode !== postCode) ||
-      (!city && billingCity !== city)
+      (billingStreet && billingStreet !== street)
+      || (!billingPostCode && billingPostCode !== postCode)
+      || (!city && billingCity !== city)
     ) {
       return (
         <>
           <h1>Mon adresse de facturation :</h1>
           <div>
-            {street}
-            <br />
+            {street}<br/>
             {postCode} {city}
           </div>
-          {renderBillingAddressButton()}
+          { renderBillingAddressButton() }
         </>
       );
     }
 
     return renderBillingAddressButton();
-  };
+  }
 
   const renderBillingAddressForm = () => {
     return (
@@ -134,11 +136,11 @@ function TestPage() {
         </Button>
       </Form>
     );
-  };
+  }
 
   return (
     <>
-      <div className={'mb-5'}>
+      <div className={"mb-5"}>
         {!displayShippingAddressForm && renderShippingAddress()}
         {displayShippingAddressForm && renderShippingAddressForm()}
       </div>
@@ -148,6 +150,6 @@ function TestPage() {
         {displayBillingAddressForm && renderBillingAddressForm()}
       </div>
     </>
-  );
+  )
 }
 export default TestPage;
