@@ -22,6 +22,7 @@ function capitalizeFirstLetter(string) {
 }
 
 const userRouter = express.Router();
+
 userRouter.put(
   '/profile',
   isAuth,

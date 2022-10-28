@@ -13,11 +13,10 @@ import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from 'react-router-dom';
 import { Store } from '../Store';
-import axios from 'axios';
 import { useReducer } from 'react';
 import { toast } from 'react-toastify';
 import { getError } from '../utils';
-import { useRouteMatch } from 'react-router-dom';
+import axios from 'axios';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -38,10 +37,11 @@ const reducer = (state, action) => {
   }
 };
 
-function DeliveryAddressModal(props) {
-  const [dispatch] = useReducer(reducer, {
+function DeliveryAddressModal() {
+  const [{ loading, loadingUpdate }, dispatch] = useReducer(reducer, {
     loading: true,
     error: '',
+    loadingUpdate: false,
   });
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
@@ -63,7 +63,11 @@ function DeliveryAddressModal(props) {
 
   const [deliveryMethodName, setDeliveryMethod] = useState('');
   const [modalShow, setModalShow] = useState(false);
-  const [formIsVisible, setFormIsVisible] = useState();
+  const [modalSaveAddressShow, setModalSaveAddressShow] = useState(false);
+  const handleClose = () => setModalSaveAddressShow(false);
+  const handleShow = () => setModalSaveAddressShow(true);
+
+  const [formIsVisible, setFormIsVisible] = useState(false);
 
   const navigate = useNavigate();
 
@@ -73,17 +77,29 @@ function DeliveryAddressModal(props) {
     }
   }, [userInfo, navigate]);
 
-  function showForm() {
-    setFormIsVisible(true);
-    setName('');
-    setAddress('');
-    setZip('');
-    setCity('');
-    setCountry('');
-  }
+  const updateUserAddress = async () => {
+    try {
+      const { data } = await axios.put(
+        '/api/users/profile',
+        {
+          name,
+          address,
+          zip,
+          city,
+          country,
+        },
+        { headers: { Authorization: `Bearer ${userInfo.token}` } }
+      );
+      dispatch({ type: 'UPDATE_SUCCESS' });
+      localStorage.setItem('userInfo', JSON.stringify(data));
+      toast.success('Votre adresse a été mise à jour dans votre profil');
+    } catch (err) {
+      dispatch({ type: 'UPDATE_FAIL' });
+      toast.error(getError(err));
+    }
+  };
 
-  const submitHandler = async (e) => {
-    e.preventDefault();
+  const submitHandler = async () => {
     try {
       ctxDispatch({
         type: 'SAVE_SHIPPING_ADDRESS',
@@ -110,23 +126,6 @@ function DeliveryAddressModal(props) {
         payload: deliveryMethodName,
       });
       localStorage.setItem('deliveryMethod', deliveryMethodName);
-
-      if (!userInfo.address) {
-        const { data } = await axios.put(
-          '/api/users/profile',
-          {
-            name,
-            address,
-            zip,
-            city,
-            country,
-          },
-          { headers: { Authorization: `Bearer ${userInfo.token}` } }
-        );
-        dispatch({ type: 'UPDATE_SUCCESS' });
-        localStorage.setItem('userInfo', JSON.stringify(data));
-        toast.success('Adresse sauvegardée dans votre profil');
-      }
       navigate('/payment');
     } catch (err) {
       dispatch({ type: 'UPDATE_FAIL' });
@@ -142,34 +141,36 @@ function DeliveryAddressModal(props) {
     navigate('/payment');
   };
 
-  const renderedForm = () => {
-    if (!userInfo.address) {
-      <Form onSubmit={submitHandler}>
-        <Form.Control
-          hidden
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        <Form.Control
-          hidden
-          value={address}
-          onChange={(e) => setAddress(e.target.value)}
-        />
-        <Form.Control
-          hidden
-          value={zip}
-          onChange={(e) => setZip(e.target.value)}
-        />
-        <Form.Control
-          hidden
-          value={city}
-          onChange={(e) => setCity(e.target.value)}
-        />
-        <Form.Control
-          hidden
-          value={country}
-          onChange={(e) => setCountry(e.target.value)}
-        />
+  const buttonChangeAddress = () => {
+    return (
+      <Button
+        className="bg-secondary w-100"
+        variant="outline-light"
+        onClick={() => {
+          setFormIsVisible(true);
+          resetForm();
+        }}
+      >
+        Livrer ailleurs
+      </Button>
+    );
+  };
+
+  const resetForm = () => {
+    setName('');
+    setAddress('');
+    setZip('');
+    setCity('');
+    setCountry('');
+  };
+
+  const renderUserAddress = () => {
+    if (formIsVisible || !userInfo.address) {
+      return renderAddressForm();
+    }
+
+    return (
+      <>
         <div className="mb-4 text-center">
           <span>Votre adresse</span>
           <hr />
@@ -183,29 +184,25 @@ function DeliveryAddressModal(props) {
         <Row>
           <Col>
             <Button
-              type="submit"
               className="bg1 w-100"
               variant="outline-light"
-              value="Domicile"
-              onClick={(e) => setDeliveryMethod(e.target.value)}
+              onClick={() => {
+                setDeliveryMethod('Domicile');
+                submitHandler();
+              }}
             >
               Livrer à cette adresse
             </Button>
           </Col>
-          <Col>
-            <Button
-              className="bg-secondary w-100"
-              variant="outline-light"
-              value="Domicile"
-              onClick={() => showForm()}
-            >
-              Livrer ailleurs
-            </Button>
-          </Col>
+          <Col>{buttonChangeAddress()}</Col>
         </Row>
-      </Form>;
-    } else {
-      <Form onSubmit={submitHandler}>
+      </>
+    );
+  };
+
+  const renderAddressForm = () => {
+    return (
+      <Form>
         <Form.Group className="mb-3" controlId="name">
           <Form.Label>Prénom et nom</Form.Label>
           <Form.Control
@@ -249,16 +246,17 @@ function DeliveryAddressModal(props) {
         </Form.Group>
 
         <Button
-          type="submit"
           className="bg1 w-100"
           variant="outline-light"
-          value="Domicile"
-          onClick={(e) => setDeliveryMethod(e.target.value)}
+          onClick={() => {
+            handleShow(true);
+            setModalShow(false);
+          }}
         >
           Continuer
         </Button>
-      </Form>;
-    }
+      </Form>
+    );
   };
 
   return (
@@ -268,23 +266,15 @@ function DeliveryAddressModal(props) {
           <Button
             className="bg2 text-light w-100 p-4 mb-2"
             variant="outline-secondary"
-            onClick={() => setModalShow(true)}
+            onClick={() => {
+              setModalShow(true);
+              setDeliveryMethod('Domicile');
+            }}
           >
             <h6>À domicile</h6>
             <FontAwesomeIcon icon={faHouse} size="5x" />
           </Button>
         </Col>
-        {/* <Col md={4}>
-          <Button
-            value="pointRelais"
-            className="bg2 text-light w-100 p-4 mb-2"
-            variant="outline-secondary"
-            // onClick={(e) => setDeliveryMethod(e.target.value)}
-          >
-            <h6>Point relais</h6>
-            <FontAwesomeIcon icon={faStore} size="5x" />
-          </Button>
-        </Col> */}
         <Col md={6}>
           <Form onSubmit={homeHandler}>
             <Button
@@ -309,7 +299,48 @@ function DeliveryAddressModal(props) {
       >
         <Modal.Header closeButton></Modal.Header>
 
-        <Modal.Body className="p-4">{renderedForm()}</Modal.Body>
+        <Modal.Body className="p-4">{renderUserAddress()}</Modal.Body>
+      </Modal>
+
+      <Modal
+        show={modalSaveAddressShow}
+        onHide={() => setModalSaveAddressShow(false)}
+        size="md"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+      >
+        <Modal.Body>
+          <div className="text-center">
+            Voulez-vous sauvegarder cette adresse dans votre profil ?
+          </div>
+          <Row>
+            <Col md={6}>
+              <Button
+                onClick={() => {
+                  updateUserAddress();
+                  submitHandler();
+                  handleClose();
+                }}
+                className="bg1 w-100"
+                variant="outline-light"
+              >
+                Oui
+              </Button>
+            </Col>
+            <Col md={6}>
+              <Button
+                onClick={() => {
+                  handleClose();
+                  submitHandler();
+                }}
+                className="bg-secondary w-100"
+                variant="outline-light"
+              >
+                Non
+              </Button>
+            </Col>
+          </Row>
+        </Modal.Body>
       </Modal>
     </>
   );
