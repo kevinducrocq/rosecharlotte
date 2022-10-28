@@ -251,6 +251,10 @@ main {
   background-color: #f47c7c;
 }
 
+.see-all-link {
+  margin-top: -9px;
+}
+
 .menu-principal a {
   color: #f1f1f1;
   font-weight: 400;
@@ -338,6 +342,10 @@ main {
 .carousel-item img {
   height: 400px;
   object-fit: cover;
+}
+
+.carousel-home {
+  margin-top: -34px;
 }
 
 .carousel-caption {

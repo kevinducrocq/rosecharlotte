@@ -255,7 +255,7 @@ function NavigationBar() {
             {renderedCategories}
             <Nav.Link>
               <Link
-                className="nav-link text-nowrap"
+                className="nav-link text-nowrap see-all-link"
                 to="/boutique/search?category=all"
               >
                 Voir tout
