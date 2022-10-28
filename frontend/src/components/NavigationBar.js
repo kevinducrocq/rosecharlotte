@@ -97,32 +97,34 @@ function NavigationBar() {
   });
 
   const renderedCategories = [];
-  Object.keys(categories).forEach(function (category) {
-    renderedCategories.push(
-      <NavDropdown
-        key={category}
-        eventKey={category}
-        title={category}
-        className="dropdown-barre"
-      >
-        <LinkContainer to={`/boutique/search?category=${category}`}>
-          <NavDropdown.Item>Tous les produits {category}</NavDropdown.Item>
-        </LinkContainer>
+  Object.keys(categories)
+    .slice(0, 7)
+    .forEach(function (category) {
+      renderedCategories.push(
+        <NavDropdown
+          key={category}
+          eventKey={category}
+          title={category}
+          className="dropdown-barre"
+        >
+          <LinkContainer to={`/boutique/search?category=${category}`}>
+            <NavDropdown.Item>Tous les produits {category}</NavDropdown.Item>
+          </LinkContainer>
 
-        {categories[category].map((key) => {
-          return (
-            <LinkContainer
-              to={`/boutique/search?category=${category}&subCategory=${key}`}
-              className="nav-link text-dark"
-              key={key}
-            >
-              <NavDropdown.Item>{key}</NavDropdown.Item>
-            </LinkContainer>
-          );
-        })}
-      </NavDropdown>
-    );
-  });
+          {categories[category].map((key) => {
+            return (
+              <LinkContainer
+                to={`/boutique/search?category=${category}&subCategory=${key}`}
+                className="nav-link text-dark"
+                key={key}
+              >
+                <NavDropdown.Item>{key}</NavDropdown.Item>
+              </LinkContainer>
+            );
+          })}
+        </NavDropdown>
+      );
+    });
 
   return (
     <>
@@ -249,7 +251,17 @@ function NavigationBar() {
             <CategoriesCanvasMenu />
           </div>
 
-          <div className="d-none d-lg-flex flex-wrap">{renderedCategories}</div>
+          <div className="d-none d-lg-flex flex-wrap category-bar">
+            {renderedCategories}
+            <Nav.Link>
+              <Link
+                className="nav-link text-nowrap"
+                to="/boutique/search?category=all"
+              >
+                Voir tout
+              </Link>
+            </Nav.Link>
+          </div>
 
           <div className="d-flex ms-auto user-bar user-link">
             {userInfo ? (

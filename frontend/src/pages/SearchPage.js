@@ -205,9 +205,6 @@ export default function SearchScreen() {
         <Col md={3}>
           <div className="text-center mb-2 d-none d-lg-block d-md-block">
             <h4>Catégories</h4>
-            <Button className="homepage-button" variant="outline-light">
-              <Link to={'/boutique/search?category=all'}>Voir tout</Link>
-            </Button>
           </div>
 
           <div className="boutique-categories-menu">

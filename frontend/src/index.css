@@ -336,12 +336,8 @@ main {
 
 /*CAROUSEL*/
 .carousel-item img {
-  height: 450px;
+  height: 400px;
   object-fit: cover;
-}
-
-.carousel-home {
-  margin-top: -35px;
 }
 
 .carousel-caption {
