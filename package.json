@@ -1,7 +1,7 @@
 {
-  "name": "fulleshop",
+  "name": "RoseCharlotte",
   "version": "1.0.0",
-  "description": "full e-commerce with react and node",
+  "description": "Rose Charlotte et compagnie",
   "main": "index.js",
   "engines": {
     "node": "16.15.0"
@@ -13,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kevinducrocq/FullEshop.git"
+    "url": "git+https://github.com/kevinducrocq/rosecharlotte.git"
   },
   "author": "Kévin Ducrocq",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/kevinducrocq/FullEshop/issues"
+    "url": "https://github.com/kevinducrocq/rosecharlotte/issues"
   },
-  "homepage": "https://github.com/kevinducrocq/FullEshop#readme",
+  "homepage": "https://github.com/kevinducrocq/rosecharlotte#readme",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.1.2",
     "@fortawesome/free-regular-svg-icons": "^6.1.2"

@@ -102,11 +102,11 @@ function HomePage() {
         <div className="d-flex bg3">
           <div className="flex-fill bg4 btrr-lg mt-4"></div>
           <div className="bg4">
-            <div className="text-center bg3 bbr-lg p-4">
+            <div className="text-center bg3 bbr-lg p-3">
               <img
-                src="../logo-site.png"
+                src="../logo-lapin.png"
                 alt="Rose Charlotte"
-                width={250}
+                width={280}
                 className="img-fluid mb-3 mt-2"
               />
             </div>

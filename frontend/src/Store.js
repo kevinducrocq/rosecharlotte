@@ -37,7 +37,8 @@ function reducer(state, action) {
         ? state.cart.cartItems.map((item) =>
             item._id === existItem._id &&
             (item.side === null || item.side === newItem.side) &&
-            (item.variant === null || item.variant._id === newItem.variant._id) &&
+            (item.variant === null ||
+              item.variant._id === newItem.variant._id) &&
             (item.customizable === false ||
               (item.customization === newItem.customization &&
                 item.fil === newItem.fil &&
@@ -56,7 +57,8 @@ function reducer(state, action) {
           !(
             item._id === action.payload._id &&
             (item.side === null || item.side === action.payload.side) &&
-            (item.variant === null || item.variant._id === action.payload.variant._id) &&
+            (item.variant === null ||
+              item.variant._id === action.payload.variant._id) &&
             (item.customizable === false ||
               (item.customization === action.payload.customization &&
                 item.fil === action.payload.fil &&
@@ -103,6 +105,12 @@ function reducer(state, action) {
       };
     case 'DELIVERY_METHOD_CLEAR':
       return { ...state, cart: { ...state.cart, deliveryMethod: '' } };
+    case 'UPDATE_REQUEST':
+      return { ...state, loadingUpdate: true };
+    case 'UPDATE_SUCCESS':
+      return { ...state, loadingUpdate: false };
+    case 'UPDATE_FAIL':
+      return { ...state, loadingUpdate: false };
     default:
       return state;
   }

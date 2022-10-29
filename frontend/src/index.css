@@ -423,14 +423,14 @@ LOGO
 */
 
 .btrr-lg {
-  border-top-right-radius: 40px;
+  border-top-right-radius: 140px;
 }
 .btlr-lg {
-  border-top-left-radius: 40px;
+  border-top-left-radius: 140px;
 }
 .bbr-lg {
-  border-bottom-left-radius: 120px;
-  border-bottom-right-radius: 120px;
+  border-bottom-left-radius: 135px;
+  border-bottom-right-radius: 135px;
 }
 
 /*RESPONSIVE*/

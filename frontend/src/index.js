@@ -7,8 +7,12 @@ import reportWebVitals from './reportWebVitals';
 import { HelmetProvider } from 'react-helmet-async';
 import { PayPalScriptProvider } from '@paypal/react-paypal-js';
 import { StoreProvider } from './Store';
+import { createRoot } from 'react-dom/client';
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const rootElement = document.getElementById('root');
+
+const root = createRoot(rootElement);
+
 root.render(
   <React.StrictMode>
     <StoreProvider>
