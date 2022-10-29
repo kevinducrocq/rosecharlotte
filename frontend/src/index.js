@@ -7,13 +7,10 @@ import reportWebVitals from './reportWebVitals';
 import { HelmetProvider } from 'react-helmet-async';
 import { PayPalScriptProvider } from '@paypal/react-paypal-js';
 import { StoreProvider } from './Store';
-import { createRoot } from 'react-dom/client';
 
 const rootElement = document.getElementById('root');
 
-const root = createRoot(rootElement);
-
-root.render(
+const Root = (
   <React.StrictMode>
     <StoreProvider>
       <HelmetProvider>
@@ -24,6 +21,12 @@ root.render(
     </StoreProvider>
   </React.StrictMode>
 );
+
+if (rootElement.hasChildNodes()) {
+  ReactDOM.hydrateRoot(rootElement).render(Root);
+} else {
+  ReactDOM.createRoot(rootElement).render(Root);
+}
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))

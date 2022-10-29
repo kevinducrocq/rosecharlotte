@@ -1,5 +1,3 @@
-import nl2br from 'react-nl2br';
-
 export function contactEmail(senderName, senderEmail, message) {
   return {
     subject: `Nouveau message de ${senderName}`, // Subject line
@@ -15,10 +13,10 @@ export function contactEmail(senderName, senderEmail, message) {
         <div style="margin-bottom: 15px; margin-top: 15px; font-size:20px;">
             <b> Bonjour Marie, vous avez un nouveau message de <strong>${senderName}</b><br /><br /> 
             <hr />
-            </p> ${nl2br(message)} <br /></p>
+            </p> ${message} <br /></p>
         </div>
     </div>
 
-  </div>`
+  </div>`,
   };
 }
