@@ -73,7 +73,7 @@ function SoldePage() {
           <>
             {soldeProducts.length > 0 ? (
               <section className="mt-5">
-                <h2>Les produits soldés</h2>
+                <h2 className="mb-5">Les produits soldés</h2>
                 <Row>
                   {soldeProducts.map((product) => (
                     <Col

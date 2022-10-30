@@ -29,14 +29,11 @@ const reducer = (state, action) => {
 };
 
 function HomePage() {
-  const [{ loading, error, products, chosenCategory }, dispatch] = useReducer(
-    reducer,
-    {
-      products: [],
-      loading: true,
-      error: '',
-    }
-  );
+  const [{ loading, error, products }, dispatch] = useReducer(reducer, {
+    products: [],
+    loading: true,
+    error: '',
+  });
   const options = {
     loop: false,
     margin: 10,
@@ -75,11 +72,15 @@ function HomePage() {
     fetchData();
   }, []);
 
-  const promoProducts = products.filter((product) => {
+  const promoProducts = (
+    products && typeof products.filter === 'function' ? products : []
+  ).filter((product) => {
     return !!product.promoPrice;
   });
 
-  const soldeProducts = products.filter((product) => {
+  const soldeProducts = (
+    products && typeof products.filter === 'function' ? products : []
+  ).filter((product) => {
     return !!product.soldePrice;
   });
 
@@ -165,7 +166,7 @@ function HomePage() {
                     {...options}
                     id="slider_promos"
                   >
-                    {promoProducts.slice(0, 8).map((product) => (
+                    {(promoProducts ?? []).slice(0, 8).map((product) => (
                       <div key={product.slug} className="item">
                         <Product product={product}></Product>
                       </div>
@@ -185,17 +186,22 @@ function HomePage() {
               <hr />
               <div>
                 <Row>
-                  {products.slice(0, 8).map((product) => (
-                    <Col
-                      key={product.slug}
-                      sm={6}
-                      md={4}
-                      lg={3}
-                      className="mb-3 d-flex flex-column"
-                    >
-                      <Product product={product}></Product>
-                    </Col>
-                  ))}
+                  {(products && typeof products.map === 'function'
+                    ? products
+                    : []
+                  )
+                    .slice(0, 8)
+                    .map((product) => (
+                      <Col
+                        key={product.slug}
+                        sm={6}
+                        md={4}
+                        lg={3}
+                        className="mb-3 d-flex flex-column"
+                      >
+                        <Product product={product}></Product>
+                      </Col>
+                    ))}
                 </Row>
               </div>
             </section>

@@ -1,7 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useReducer } from 'react';
-import { Col, Container, Row } from 'react-bootstrap';
+import { Breadcrumb, Col, Container, Row } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
+import { LinkContainer } from 'react-router-bootstrap';
 import { Link } from 'react-router-dom';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
@@ -59,6 +60,12 @@ function PromoPage() {
       </Helmet>
 
       <Container className="my-5">
+        <Breadcrumb className="d-none d-md-flex">
+          <LinkContainer to={'/'} exact>
+            <Breadcrumb.Item>Accueil</Breadcrumb.Item>
+          </LinkContainer>
+          <Breadcrumb.Item active>Promotions</Breadcrumb.Item>
+        </Breadcrumb>
         {loading ? (
           <LoadingBox />
         ) : error ? (
@@ -67,7 +74,7 @@ function PromoPage() {
           <>
             {promoProducts.length > 0 ? (
               <section className="mt-5">
-                <h2>Les dernières promotions</h2>
+                <h2 className="mb-5">Les dernières promotions</h2>
                 <Row>
                   {promoProducts.map((product) => (
                     <Col

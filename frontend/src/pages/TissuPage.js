@@ -95,7 +95,7 @@ function TissuPage() {
               </div>
 
               <Row className="mt-5">
-                {tissus
+                {(tissus && typeof tissus.map === 'function' ? tissus : [])
                   .filter((val) => {
                     if (searchTerm === '') {
                       return val;

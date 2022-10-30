@@ -205,7 +205,7 @@ export default function ProductEditPage() {
     if (initialized) {
       setSubCategory(null);
     }
-  }, [category]);
+  }, [category, initialized]);
 
   const renderedCategories = [];
   Object.keys(categories).forEach(function (mappedCategory) {

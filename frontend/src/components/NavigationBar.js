@@ -28,6 +28,7 @@ import { getError } from '../utils';
 import CategoriesCanvasMenu from './CategoriesCanvasMenu';
 import { useReducer } from 'react';
 import SearchBox from './SearchBox';
+import LoadingBox from './LoadingBox';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -47,7 +48,8 @@ const reducer = (state, action) => {
 };
 
 function NavigationBar() {
-  const [{ products }, dispatch] = useReducer(reducer, {
+  const [{ products, loading }, dispatch] = useReducer(reducer, {
+    loading: false,
     products: [],
   });
 
@@ -88,48 +90,52 @@ function NavigationBar() {
     fetchProducts();
   }, []);
 
-  const promoProducts = products.filter((product) => {
+  const promoProducts = (
+    products && typeof products.filter === 'function' ? products : []
+  ).filter((product) => {
     return !!product.promoPrice;
   });
 
-  const soldeProducts = products.filter((product) => {
+  const soldeProducts = (
+    products && typeof products.filter === 'function' ? products : []
+  ).filter((product) => {
     return !!product.soldePrice;
   });
 
-  const renderedCategories = [];
-  Object.keys(categories)
-    .slice(0, 7)
-    .forEach(function (category) {
-      renderedCategories.push(
-        <NavDropdown
-          key={category}
-          eventKey={category}
-          title={category}
-          className="dropdown-barre"
-        >
-          <LinkContainer to={`/boutique/search?category=${category}`}>
-            <NavDropdown.Item>Tous les produits {category}</NavDropdown.Item>
-          </LinkContainer>
+  const renderedCategories = Object.keys(categories).map((category) => {
+    return (
+      <NavDropdown
+        key={category}
+        eventKey={category}
+        title={category}
+        className="dropdown-barre"
+      >
+        <LinkContainer to={`/boutique/search?category=${category}`}>
+          <NavDropdown.Item>Tous les produits {category}</NavDropdown.Item>
+        </LinkContainer>
 
-          {categories[category].map((key) => {
-            return (
-              <LinkContainer
-                to={`/boutique/search?category=${category}&subCategory=${key}`}
-                className="nav-link text-dark"
-                key={key}
-              >
-                <NavDropdown.Item>{key}</NavDropdown.Item>
-              </LinkContainer>
-            );
-          })}
-        </NavDropdown>
-      );
-    });
+        {(categories[category] && typeof categories[category].map === 'function'
+          ? categories[category]
+          : []
+        ).map((subCategory) => {
+          return (
+            <LinkContainer
+              to={`/boutique/search?category=${category}&subCategory=${subCategory}`}
+              className="nav-link text-dark"
+              key={subCategory}
+            >
+              <NavDropdown.Item>{subCategory}</NavDropdown.Item>
+            </LinkContainer>
+          );
+        })}
+      </NavDropdown>
+    );
+  });
 
   return (
     <>
       <div className="fixed-top shadow">
-        <Navbar variant="light" expand="lg" collapseOnSelect={true}>
+        <Navbar variant="light" expand="lg" collapseOnSelect>
           <Container fluid>
             <LinkContainer to="/">
               <Image
@@ -222,7 +228,7 @@ function NavigationBar() {
                 </a>
               </Nav>
 
-              <Nav className="me-auto" collapseOnSelect={true}>
+              <Nav className="me-auto" collapseOnSelect>
                 <div className="d-none d-lg-block d-md-block d-md-none">
                   <SearchBox />
                 </div>

@@ -42,6 +42,7 @@ import PatchPage from './pages/PatchPage';
 import SettingsPage from './pages/admin/SettingsPage';
 import LostPasswordPage from './pages/LostPasswordPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
+import PageNotFound from './pages/PageNotFound';
 
 function App() {
   return (
@@ -83,6 +84,7 @@ function App() {
               <Route path="/signin" element={<SigninPage />} />
               <Route path="/signup" element={<SignupPage />} />
               <Route path="/forgot-password" element={<LostPasswordPage />} />
+              <Route path="*" element={<PageNotFound />} />
               <Route
                 path="/reset-password/:id/:token"
                 element={<ResetPasswordPage />}

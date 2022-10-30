@@ -2,8 +2,7 @@ import { faReel } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { Accordion, Button, NavDropdown, Offcanvas } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
+import { Accordion, Button, Offcanvas } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { getError } from '../utils';
@@ -27,9 +26,8 @@ export default function CategoriesCanvasMenu() {
     fetchCategories();
   }, []);
 
-  const renderedCategories2 = [];
-  Object.keys(categories).forEach(function (category) {
-    renderedCategories2.push(
+  const renderedCategories = Object.keys(categories).map((category) => {
+    return (
       <Accordion.Item key={category} eventKey={category}>
         <Accordion.Header>{category}</Accordion.Header>
         <Accordion.Body>
@@ -41,46 +39,28 @@ export default function CategoriesCanvasMenu() {
             >
               Tous les produits {category}
             </Link>
-            {categories[category].map((key) => {
-              return (
-                <Link
-                  key={key}
-                  to={`/boutique/search?category=${category}&subCategory=${key}`}
-                  className="nav-link my-2"
-                  onClick={handleClose}
-                >
-                  {key}
-                </Link>
-              );
-            })}
           </div>
+          {(categories[category] &&
+          typeof categories[category].map === 'function'
+            ? categories[category]
+            : []
+          ).map((subCategory) => {
+            return (
+              <Link
+                key={subCategory}
+                to={`/boutique/search?category=${category}&subCategory=${subCategory}`}
+                className="nav-link my-2"
+                onClick={handleClose}
+              >
+                {subCategory}
+              </Link>
+            );
+          })}
         </Accordion.Body>
       </Accordion.Item>
     );
   });
 
-  const renderedCategories = [];
-  Object.keys(categories).forEach(function (category) {
-    renderedCategories.push(
-      <NavDropdown key={category} eventKey={category} title={category}>
-        <LinkContainer to={`/boutique/search?category=${category}`}>
-          <NavDropdown.Item>Tous les produits {category}</NavDropdown.Item>
-        </LinkContainer>
-
-        {categories[category].map((key) => {
-          return (
-            <LinkContainer
-              key={key}
-              to={`/boutique/search?category=${category}&subCategory=${key}`}
-              className="nav-link text-dark"
-            >
-              <NavDropdown.Item>{key}</NavDropdown.Item>
-            </LinkContainer>
-          );
-        })}
-      </NavDropdown>
-    );
-  });
   return (
     <div>
       <button className="category-button" onClick={handleShow}>
@@ -101,7 +81,7 @@ export default function CategoriesCanvasMenu() {
               <Link to={'/boutique/search?category=all'}>Voir tout</Link>
             </Button>
           </div>
-          <Accordion>{renderedCategories2}</Accordion>
+          <Accordion>{renderedCategories}</Accordion>
         </Offcanvas.Body>
       </Offcanvas>
     </div>

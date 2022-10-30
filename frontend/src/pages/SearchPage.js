@@ -101,32 +101,34 @@ export default function SearchScreen() {
     window.scrollTo(0, 0);
   }, []);
 
-  const renderedCategories = [];
-  Object.keys(categories).forEach(function (category) {
-    renderedCategories.push(
+  const renderedCategories = Object.keys(categories).map((category) => {
+    return (
       <Accordion.Item key={category} eventKey={category}>
         <Accordion.Header>{category}</Accordion.Header>
         <Accordion.Body>
-          <div className="d-flex flex-column categories-menu">
+          <div className="d-flex flex-column">
             <Link
-              className="nav-link cat-link p-2 rounded-3"
+              className="nav-link mb-2"
               to={`/boutique/search?category=${category}`}
             >
               Tous les produits {category}
             </Link>
-            {categories[category].map((key) => {
-              return (
-                <div key={key}>
-                  <Link
-                    to={`/boutique/search?category=${category}&subCategory=${key}`}
-                    className="nav-link sub-cat-link p-2 rounded-3"
-                  >
-                    {key}
-                  </Link>
-                </div>
-              );
-            })}
           </div>
+          {(categories[category] &&
+          typeof categories[category].map === 'function'
+            ? categories[category]
+            : []
+          ).map((subCategory) => {
+            return (
+              <Link
+                key={subCategory}
+                to={`/boutique/search?category=${category}&subCategory=${subCategory}`}
+                className="nav-link my-2"
+              >
+                {subCategory}
+              </Link>
+            );
+          })}
         </Accordion.Body>
       </Accordion.Item>
     );
@@ -136,9 +138,17 @@ export default function SearchScreen() {
   let selectedSubCategory = subCategory;
 
   if (subCategory && categories) {
-    Object.keys(categories).forEach((currentCat) => {
+    Object.keys(
+      categories[category] && typeof categories[category].map === 'function'
+        ? categories[category]
+        : []
+    ).map((currentCat) => {
       if (category === 'all' || category === currentCat) {
-        categories[currentCat].forEach((currentSubCat) => {
+        (categories[currentCat] &&
+        typeof categories[currentCat].map === 'function'
+          ? categories[currentCat]
+          : []
+        ).map((currentSubCat) => {
           if (subCategory === currentSubCat) {
             selectedCategory = currentCat;
             selectedSubCategory = currentSubCat;
@@ -257,13 +267,16 @@ export default function SearchScreen() {
                   </div>
                 </Col>
               </Row>
-              {products.length === 0 && (
+              {(products ?? []).length === 0 && (
                 <MessageBox>Pas de résultat</MessageBox>
               )}
 
               <Row>
                 <Row>
-                  {products.map(
+                  {(products && typeof products.map === 'function'
+                    ? products
+                    : []
+                  ).map(
                     (product) =>
                       product.isVisible === true && (
                         <Col
