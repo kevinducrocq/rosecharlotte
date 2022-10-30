@@ -492,9 +492,25 @@ productRouter.delete(
 // AFFICHER LE PRODUIT PAR SON SLUG (CLIENT)
 productRouter.get('/slug/:slug', async (req, res) => {
   const product = await Product.findOne({ slug: req.params.slug });
-  const fils = await Fil.find().in('_id', product.fils);
-  const tissus = await Tissu.find().in('_id', product.tissus);
-  const patches = await Patch.find().in('_id', product.patches);
+  let fils;
+  try {
+    await Fil.find().in('_id', product.fils);
+  } catch (e) {
+    fils = null;
+  }
+  let tissus;
+  try {
+    await Tissu.find().in('_id', product.tissus);
+  } catch (e) {
+    tissus = null;
+  }
+  let patches;
+  try {
+    await Patch.find().in('_id', product.patch);
+  } catch (e) {
+    patches = null;
+  }
+
   if (product && product.isVisible === true) {
     product['fils'] = fils;
     product['tissus'] = tissus;

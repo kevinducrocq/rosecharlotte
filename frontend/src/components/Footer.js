@@ -8,10 +8,6 @@ export default function Footer() {
     <footer className="bg1 text-white p-3 mt-5">
       <Container>
         <Row className="justify-content-between align-items-center">
-          <Col md={4} className="text-center d-none d-sm-block mb-3">
-            <Image src="../logo-site.png" width={150} />
-          </Col>
-
           <Col md={4} className="text-center mb-3 footer-link">
             <Link className="nav-link mb-2" to="/">
               Accueil
@@ -26,6 +22,10 @@ export default function Footer() {
               Contact
             </Link>
           </Col>
+          <Col md={4} className="text-center d-none d-sm-block mb-3">
+            <Image src="../logo-site.png" width={150} />
+          </Col>
+
           <Col md={4} className="text-center footer-link">
             <Link className="nav-link mb-2" to="/cgv">
               Condition générales de vente
