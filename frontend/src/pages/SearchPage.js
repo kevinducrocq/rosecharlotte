@@ -101,8 +101,9 @@ export default function SearchScreen() {
     window.scrollTo(0, 0);
   }, []);
 
-  const renderedCategories = Object.keys(categories).map((category) => {
-    return (
+  const renderedCategories = [];
+  Object.keys(categories).map((category) => {
+    return renderedCategories.push(
       <Accordion.Item key={category} eventKey={category}>
         <Accordion.Header>{category}</Accordion.Header>
         <Accordion.Body>

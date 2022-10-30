@@ -70,6 +70,7 @@ function NavigationBar() {
       try {
         const { data } = await axios.get(`/api/products/categories`);
         setCategories(data);
+        console.log(data);
       } catch (err) {
         toast.error(getError(err));
       }
@@ -102,8 +103,9 @@ function NavigationBar() {
     return !!product.soldePrice;
   });
 
-  const renderedCategories = Object.keys(categories).map((category) => {
-    return (
+  const renderedCategories = [];
+  Object.keys(categories).map((category) => {
+    return renderedCategories.push(
       <NavDropdown
         key={category}
         eventKey={category}
@@ -131,6 +133,7 @@ function NavigationBar() {
       </NavDropdown>
     );
   });
+  console.log(renderedCategories);
 
   return (
     <>

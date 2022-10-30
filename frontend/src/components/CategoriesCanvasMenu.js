@@ -26,8 +26,9 @@ export default function CategoriesCanvasMenu() {
     fetchCategories();
   }, []);
 
-  const renderedCategories = Object.keys(categories).map((category) => {
-    return (
+  const renderedCategories = [];
+  Object.keys(categories).map((category) => {
+    return renderedCategories.push(
       <Accordion.Item key={category} eventKey={category}>
         <Accordion.Header>{category}</Accordion.Header>
         <Accordion.Body>
