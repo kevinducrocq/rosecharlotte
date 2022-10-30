@@ -104,35 +104,38 @@ function NavigationBar() {
   });
 
   const renderedCategories = [];
-  Object.keys(categories).map((category) => {
-    return renderedCategories.push(
-      <NavDropdown
-        key={category}
-        eventKey={category}
-        title={category}
-        className="dropdown-barre"
-      >
-        <LinkContainer to={`/boutique/search?category=${category}`}>
-          <NavDropdown.Item>Tous les produits {category}</NavDropdown.Item>
-        </LinkContainer>
+  Object.keys(categories)
+    .slice(0, 8)
+    .map((category) => {
+      return renderedCategories.push(
+        <NavDropdown
+          key={category}
+          eventKey={category}
+          title={category}
+          className="dropdown-barre"
+        >
+          <LinkContainer to={`/boutique/search?category=${category}`}>
+            <NavDropdown.Item>Tous les produits {category}</NavDropdown.Item>
+          </LinkContainer>
 
-        {(categories[category] && typeof categories[category].map === 'function'
-          ? categories[category]
-          : []
-        ).map((subCategory) => {
-          return (
-            <LinkContainer
-              to={`/boutique/search?category=${category}&subCategory=${subCategory}`}
-              className="nav-link text-dark d-none"
-              key={subCategory}
-            >
-              <NavDropdown.Item>{subCategory}</NavDropdown.Item>
-            </LinkContainer>
-          );
-        })}
-      </NavDropdown>
-    );
-  });
+          {(categories[category] &&
+          typeof categories[category].map === 'function'
+            ? categories[category]
+            : []
+          ).map((subCategory) => {
+            return (
+              <LinkContainer
+                to={`/boutique/search?category=${category}&subCategory=${subCategory}`}
+                className="nav-link text-dark d-none"
+                key={subCategory}
+              >
+                <NavDropdown.Item>{subCategory}</NavDropdown.Item>
+              </LinkContainer>
+            );
+          })}
+        </NavDropdown>
+      );
+    });
   console.log(renderedCategories);
 
   return (
