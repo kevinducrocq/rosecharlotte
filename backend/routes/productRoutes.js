@@ -496,19 +496,19 @@ productRouter.get('/slug/:slug', async (req, res) => {
   try {
     await Fil.find().in('_id', product.fils);
   } catch (e) {
-    fils = null;
+    fils = [];
   }
   let tissus;
   try {
     await Tissu.find().in('_id', product.tissus);
   } catch (e) {
-    tissus = null;
+    tissus = [];
   }
   let patches;
   try {
     await Patch.find().in('_id', product.patch);
   } catch (e) {
-    patches = null;
+    patches = [];
   }
 
   if (product && product.isVisible === true) {
