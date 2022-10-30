@@ -494,19 +494,19 @@ productRouter.get('/slug/:slug', async (req, res) => {
   const product = await Product.findOne({ slug: req.params.slug });
   let fils;
   try {
-    await Fil.find().in('_id', product.fils);
+    fils = await Fil.find().in('_id', product.fils);
   } catch (e) {
     fils = [];
   }
   let tissus;
   try {
-    await Tissu.find().in('_id', product.tissus);
+    tissus = await Tissu.find().in('_id', product.tissus);
   } catch (e) {
     tissus = [];
   }
   let patches;
   try {
-    await Patch.find().in('_id', product.patch);
+    patches = await Patch.find().in('_id', product.patch);
   } catch (e) {
     patches = [];
   }

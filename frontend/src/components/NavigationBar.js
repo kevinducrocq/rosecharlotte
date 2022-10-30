@@ -123,7 +123,7 @@ function NavigationBar() {
           return (
             <LinkContainer
               to={`/boutique/search?category=${category}&subCategory=${subCategory}`}
-              className="nav-link text-dark"
+              className="nav-link text-dark d-none"
               key={subCategory}
             >
               <NavDropdown.Item>{subCategory}</NavDropdown.Item>
