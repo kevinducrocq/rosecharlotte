@@ -47,7 +47,6 @@ export default function PlaceOrderPage() {
   const [cart, setCart] = useState({ ...storeCart });
 
   const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100;
-
   const recalculatePrices = () => {
     const newCart = { ...cart };
     newCart.itemsPrice = round2(
@@ -57,10 +56,9 @@ export default function PlaceOrderPage() {
       )
     );
 
-    // newCart.itemsPriceWithDiscount = round2(
-    //   (newCart.itemsPrice * (100 - discount)) / 100
-    // );
-    newCart.itemsPriceWithDiscount = round2(newCart.itemsPrice);
+    newCart.itemsPriceWithDiscount = round2(
+      (newCart.itemsPrice * (100 - discount)) / 100
+    );
 
     const totalWeight = newCart.cartItems.reduce((weight, item) => {
       if (item.variant) {
@@ -133,7 +131,7 @@ export default function PlaceOrderPage() {
           headers: { authorization: `Bearer ${userInfo.token}` },
         });
         if (data.length === 0) {
-          setDiscount(10);
+          setDiscount(0);
         }
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {
@@ -157,6 +155,10 @@ export default function PlaceOrderPage() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+
+  // if (!cart.itemsPrice) {
+  //   return <div></div>;
+  // }
 
   return (
     <Container className="my-5">
@@ -324,7 +326,7 @@ export default function PlaceOrderPage() {
                   </Row>
                 </ListGroup.Item>
 
-                {/* {discount > 0 && (
+                {discount > 0 && (
                   <ListGroup.Item>
                     <Row>
                       <>
@@ -339,8 +341,7 @@ export default function PlaceOrderPage() {
                       </>
                     </Row>
                   </ListGroup.Item>
-                )} */}
-
+                )}
                 <ListGroup.Item>
                   <Row>
                     <Col>Livraison</Col>
