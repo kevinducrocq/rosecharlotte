@@ -51,7 +51,7 @@ function CarouselHome() {
         : []
       ).map((carousel) => {
         return (
-          <Carousel fade wrap="true" className="carousel">
+          <Carousel key={carouselHome} fade wrap="true" className="carousel">
             <Carousel.Item className="carousel-item">
               <img
                 className="d-block w-100"

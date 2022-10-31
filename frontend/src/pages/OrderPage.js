@@ -437,7 +437,7 @@ export default function OrderPage() {
                             <div>
                               <StripeContainer
                                 onSuccess={() => {
-                                  setRefresh(refresh + 1);
+                                  setRefresh((r) => r + 1);
                                 }}
                                 order={order}
                                 reducer={reducer}

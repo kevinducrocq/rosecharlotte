@@ -137,8 +137,8 @@ function ProductPage() {
   }, [slug]);
 
   useEffect(() => {
-    setRefresh(refresh + 1);
-  }, [tissu, patch, refresh]);
+    setRefresh((r) => r + 1);
+  }, [tissu, patch]);
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { cart, userInfo } = state;
