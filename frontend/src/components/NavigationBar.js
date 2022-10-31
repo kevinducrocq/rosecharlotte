@@ -126,7 +126,7 @@ function NavigationBar() {
             return (
               <LinkContainer
                 to={`/boutique/search?category=${category}&subCategory=${subCategory}`}
-                className="nav-link text-dark d-none"
+                className="nav-link text-dark"
                 key={subCategory}
               >
                 <NavDropdown.Item>{subCategory}</NavDropdown.Item>
@@ -259,15 +259,15 @@ function NavigationBar() {
         </Navbar>
 
         <Nav className="navbar2">
-          <div className="d-lg-none text-nowrap d-flex align-items-center">
+          <div className="d-lg-none d-flex align-items-center">
             <CategoriesCanvasMenu />
           </div>
 
-          <div className="d-none d-lg-flex flex-wrap category-bar">
+          <div className="d-none d-lg-flex flex-wrap align-items-center">
             {renderedCategories}
             <Nav.Link>
               <Link
-                className="nav-link text-nowrap see-all-link"
+                className="nav-link see-all-link"
                 to="/boutique/search?category=all"
               >
                 Voir tout
@@ -275,7 +275,7 @@ function NavigationBar() {
             </Nav.Link>
           </div>
 
-          <div className="d-flex ms-auto user-bar user-link">
+          <div className="d-flex ms-auto user-bar user-link align-items-center">
             {userInfo ? (
               <NavDropdown title={userInfo.name} id="basic-nav-dropdown">
                 <LinkContainer to="/profile">

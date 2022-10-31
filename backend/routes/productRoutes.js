@@ -7,6 +7,8 @@ import { isAuth, isAdmin } from '../utils.js';
 import Fil from '../models/filModel.js';
 import Tissu from '../models/tissuModel.js';
 import Patch from '../models/patchModel.js';
+import Category from '../models/categoryModel.js';
+import SubCategory from '../models/subCategoryModel.js';
 
 const productRouter = express.Router();
 
