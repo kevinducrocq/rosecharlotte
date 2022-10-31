@@ -283,9 +283,7 @@ function ProductPage() {
               return (
                 <option key={variant._id} value={variant._id}>
                   {variant.name}&nbsp;
-                  {variant.countInStock <= 0
-                    ? '- Non-disponible'
-                    : ''}
+                  {variant.countInStock <= 0 ? '- Non-disponible' : ''}
                 </option>
               );
             })}
@@ -293,7 +291,7 @@ function ProductPage() {
         </Form>
       </div>
     );
-  }
+  };
 
   const renderFilsForm = () => {
     return (
@@ -320,7 +318,7 @@ function ProductPage() {
         </Form.Select>
       </Form.Group>
     );
-  }
+  };
 
   const renderTissusForm = () => {
     return (
@@ -344,9 +342,7 @@ function ProductPage() {
                 <div
                   role="button"
                   className={
-                    tissu === currentTissu.name
-                      ? 'selected-item p-1'
-                      : 'p-1'
+                    tissu === currentTissu.name ? 'selected-item p-1' : 'p-1'
                   }
                   onClick={() => {
                     setTissu(currentTissu.name);
@@ -366,9 +362,7 @@ function ProductPage() {
                         src="../images/no-image.png"
                       />
                     )}
-                    <p className="caption-carousel">
-                      {currentTissu.name}
-                    </p>
+                    <p className="caption-carousel">{currentTissu.name}</p>
                   </div>
                 </div>
               </div>
@@ -378,14 +372,12 @@ function ProductPage() {
         {tissu && (
           <div className="text-muted">
             Vous avez choisi : &nbsp;
-            <strong className="bg1 badge badge-pill">
-              {tissu}
-            </strong>
+            <strong className="bg1 badge badge-pill">{tissu}</strong>
           </div>
         )}
       </>
-    )
-  }
+    );
+  };
 
   const renderPatchesForm = () => {
     return (
@@ -409,9 +401,7 @@ function ProductPage() {
                 <div
                   role="button"
                   className={
-                    patch === currentPatch.name
-                      ? 'selected-item p-1'
-                      : 'p-1'
+                    patch === currentPatch.name ? 'selected-item p-1' : 'p-1'
                   }
                   onClick={() => {
                     setPatch(currentPatch.name);
@@ -431,9 +421,7 @@ function ProductPage() {
                         src="../images/no-image.png"
                       />
                     )}
-                    <p className="caption-carousel">
-                      {currentPatch.name}
-                    </p>
+                    <p className="caption-carousel">{currentPatch.name}</p>
                   </div>
                 </div>
               </div>
@@ -448,7 +436,7 @@ function ProductPage() {
         )}
       </>
     );
-  }
+  };
 
   const renderCommentaireForm = () => {
     return (
@@ -456,9 +444,7 @@ function ProductPage() {
         <hr />
         <Form.Group className="my-3">
           <div className="h5">
-            <span>
-              Commentaire, Texte personnalisé (facultatif)
-            </span>
+            <span>Commentaire, Texte personnalisé (facultatif)</span>
           </div>
           <Form.Control
             value={customization}
@@ -469,44 +455,40 @@ function ProductPage() {
           ></Form.Control>
         </Form.Group>
       </>
-    )
-  }
+    );
+  };
 
   const renderPersonalisationForms = () => {
-    return <div className="p-2">
-      <Form>
-        {(variantId || product.variants.length === 0) && (
-          renderFilsForm()
-        )}
+    return (
+      <div className="p-2">
+        <Form>
+          {(variantId || product.variants.length === 0) && renderFilsForm()}
 
-        {fil && (
-          renderTissusForm()
-        )}
+          {fil && renderTissusForm()}
 
-        {tissu && (
-          renderPatchesForm()
-        )}
+          {tissu && renderPatchesForm()}
 
-        {patch && (
-          renderCommentaireForm()
-        )}
-      </Form>
-    </div>
-  }
+          {patch && renderCommentaireForm()}
+        </Form>
+      </div>
+    );
+  };
 
   const renderVariationsAndPersonalisationForm = () => {
     const renderedForms = [];
 
-    if(product.variants.length > 0) {
+    if (product.variants.length > 0) {
       renderedForms.push(renderVariationsForm());
     }
 
-    if (product.customizable || (product.variants.length >= 0 && variantId && product.customizable)) {
-      renderedForms.push(renderPersonalisationForms())
+    if (
+      product.customizable ||
+      (product.variants.length >= 0 && variantId && product.customizable)
+    ) {
+      renderedForms.push(renderPersonalisationForms());
     }
     return renderedForms;
-  }
-
+  };
 
   return loading ? (
     <LoadingBox />
@@ -657,7 +639,6 @@ function ProductPage() {
               )}
 
               {renderVariationsAndPersonalisationForm()}
-
             </ListGroup.Item>
 
             {product.countInStock > 0 || product.variants.length ? (

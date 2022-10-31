@@ -134,9 +134,7 @@ orderRouter.get(
   })
 );
 
-const updateUserAddress = () => {
-
-}
+const updateUserAddress = () => {};
 
 orderRouter.post(
   '/',
