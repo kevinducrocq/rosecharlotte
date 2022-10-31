@@ -104,7 +104,7 @@ function NavigationBar() {
 
   const renderedCategories = [];
   Object.keys(categories)
-    .slice(0, 8)
+    .slice(0, 7)
     .map((category) => {
       return renderedCategories.push(
         <NavDropdown
