@@ -263,6 +263,251 @@ function ProductPage() {
 
   console.log(isFil(), isTissu(), isPatch());
 
+  const renderVariationsForm = () => {
+    return (
+      <div className="p-2">
+        <Form>
+          <div className="h5">
+            <span>Choisissez le modèle</span>
+          </div>
+          <Form.Select
+            className="mb-3"
+            onChange={(e) => {
+              setVariant(e.target.value);
+            }}
+          >
+            <option disabled selected={!variantId}>
+              Choisissez...
+            </option>
+            {product.variants.map((variant) => {
+              return (
+                <option key={variant._id} value={variant._id}>
+                  {variant.name}&nbsp;
+                  {variant.countInStock <= 0
+                    ? '- Non-disponible'
+                    : ''}
+                </option>
+              );
+            })}
+          </Form.Select>
+        </Form>
+      </div>
+    );
+  }
+
+  const renderFilsForm = () => {
+    return (
+      <Form.Group className="my-3">
+        <div className="h5">
+          <span>Choisissez le Fil</span>
+        </div>
+        <Form.Select
+          className="mb-3"
+          onChange={(e) => {
+            setFil(e.target.value);
+          }}
+        >
+          <option disabled selected={!fil}>
+            Choisissez...
+          </option>
+          {product.fils.map((fil) => {
+            return (
+              <option key={fil._id} value={fil.name}>
+                {fil.name}
+              </option>
+            );
+          })}
+        </Form.Select>
+      </Form.Group>
+    );
+  }
+
+  const renderTissusForm = () => {
+    return (
+      <>
+        <hr />
+        <div className="h5">
+          <span>Choisissez le tissu</span>
+        </div>
+        <OwlCarousel
+          className="slider-items owl-carousel owl-theme"
+          {...opts}
+          navText={[
+            '<span class="arrow prev">‹</span>',
+            '<span class="arrow next">›</span>',
+          ]}
+          id="slider_tissus"
+        >
+          {product.tissus.map((currentTissu) => {
+            return (
+              <div className="item" key={currentTissu._id}>
+                <div
+                  role="button"
+                  className={
+                    tissu === currentTissu.name
+                      ? 'selected-item p-1'
+                      : 'p-1'
+                  }
+                  onClick={() => {
+                    setTissu(currentTissu.name);
+                  }}
+                >
+                  <div className="d-flex flex-column align-items-center">
+                    {currentTissu.image ? (
+                      <img
+                        className="product-carousel-image"
+                        alt={currentTissu.name}
+                        src={currentTissu.image}
+                      />
+                    ) : (
+                      <img
+                        className="product-carousel-image"
+                        alt={currentTissu.name}
+                        src="../images/no-image.png"
+                      />
+                    )}
+                    <p className="caption-carousel">
+                      {currentTissu.name}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </OwlCarousel>
+        {tissu && (
+          <div className="text-muted">
+            Vous avez choisi : &nbsp;
+            <strong className="bg1 badge badge-pill">
+              {tissu}
+            </strong>
+          </div>
+        )}
+      </>
+    )
+  }
+
+  const renderPatchesForm = () => {
+    return (
+      <>
+        <hr />
+        <div className="h5">
+          <span>Choisissez le motif à broder</span>
+        </div>
+        <OwlCarousel
+          className="slider-items owl-carousel owl-theme"
+          {...opts}
+          navText={[
+            '<span class="arrow prev">‹</span>',
+            '<span class="arrow next">›</span>',
+          ]}
+          id="slider_patches"
+        >
+          {product.patches.map((currentPatch) => {
+            return (
+              <div className="item" key={currentPatch._id}>
+                <div
+                  role="button"
+                  className={
+                    patch === currentPatch.name
+                      ? 'selected-item p-1'
+                      : 'p-1'
+                  }
+                  onClick={() => {
+                    setPatch(currentPatch.name);
+                  }}
+                >
+                  <div className="d-flex flex-column align-items-center">
+                    {currentPatch.image ? (
+                      <img
+                        className="product-carousel-image"
+                        alt={currentPatch.name}
+                        src={currentPatch.image}
+                      />
+                    ) : (
+                      <img
+                        className="product-carousel-image"
+                        alt={currentPatch.name}
+                        src="../images/no-image.png"
+                      />
+                    )}
+                    <p className="caption-carousel">
+                      {currentPatch.name}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </OwlCarousel>
+        {patch && (
+          <div className="text-muted">
+            Vous avez choisi : &nbsp;
+            <b className="bg1 badge badge-pill">{patch}</b>
+          </div>
+        )}
+      </>
+    );
+  }
+
+  const renderCommentaireForm = () => {
+    return (
+      <>
+        <hr />
+        <Form.Group className="my-3">
+          <div className="h5">
+            <span>
+              Commentaire, Texte personnalisé (facultatif)
+            </span>
+          </div>
+          <Form.Control
+            value={customization}
+            placeholder="Charlotte, Rose..."
+            onChange={(e) => {
+              setCustomization(e.target.value);
+            }}
+          ></Form.Control>
+        </Form.Group>
+      </>
+    )
+  }
+
+  const renderPersonalisationForms = () => {
+    return <div className="p-2">
+      <Form>
+        {(variantId || product.variants.length === 0) && (
+          renderFilsForm()
+        )}
+
+        {fil && (
+          renderTissusForm()
+        )}
+
+        {tissu && (
+          renderPatchesForm()
+        )}
+
+        {patch && (
+          renderCommentaireForm()
+        )}
+      </Form>
+    </div>
+  }
+
+  const renderVariationsAndPersonalisationForm = () => {
+    const renderedForms = [];
+
+    if(product.variants.length > 0) {
+      renderedForms.push(renderVariationsForm());
+    }
+
+    if (product.customizable || (product.variants.length >= 0 && variantId && product.customizable)) {
+      renderedForms.push(renderPersonalisationForms())
+    }
+    return renderedForms;
+  }
+
+
   return loading ? (
     <LoadingBox />
   ) : error ? (
@@ -411,212 +656,8 @@ function ProductPage() {
                 </Form>
               )}
 
-              {product.variants.length >= 1 && (
-                <div className="p-2">
-                  <Form>
-                    <div className="h5">
-                      <span>Choisissez le modèle</span>
-                    </div>
-                    <Form.Select
-                      className="mb-3"
-                      onChange={(e) => {
-                        setVariant(e.target.value);
-                      }}
-                    >
-                      <option disabled selected={!variantId}>
-                        Choisissez...
-                      </option>
-                      {product.variants.map((variant) => {
-                        return (
-                          <option key={variant._id} value={variant._id}>
-                            {variant.name}&nbsp;
-                            {variant.countInStock <= 0
-                              ? '- Non-disponible'
-                              : ''}
-                          </option>
-                        );
-                      })}
-                    </Form.Select>
-                  </Form>
-                </div>
-              )}
-              {(product.customizable ||
-                (product.variants.length >= 0 &&
-                  variantId &&
-                  product.customizable)) && (
-                <div className="p-2">
-                  <Form>
-                    {(variantId || product.variants.length === 0) && (
-                      <Form.Group className="my-3">
-                        <div className="h5">
-                          <span>Choisissez le Fil</span>
-                        </div>
-                        <Form.Select
-                          className="mb-3"
-                          onChange={(e) => {
-                            setFil(e.target.value);
-                          }}
-                        >
-                          <option disabled selected={!fil}>
-                            Choisissez...
-                          </option>
-                          {product.fils.map((fil) => {
-                            return (
-                              <option key={fil._id} value={fil.name}>
-                                {fil.name}
-                              </option>
-                            );
-                          })}
-                        </Form.Select>
-                      </Form.Group>
-                    )}
+              {renderVariationsAndPersonalisationForm()}
 
-                    {fil && (
-                      <>
-                        <hr />
-                        <div className="h5">
-                          <span>Choisissez le tissu</span>
-                        </div>
-                        <OwlCarousel
-                          className="slider-items owl-carousel owl-theme"
-                          {...opts}
-                          navText={[
-                            '<span class="arrow prev">‹</span>',
-                            '<span class="arrow next">›</span>',
-                          ]}
-                          id="slider_tissus"
-                        >
-                          {product.tissus.map((currentTissu) => {
-                            return (
-                              <div className="item" key={currentTissu._id}>
-                                <div
-                                  role="button"
-                                  className={
-                                    tissu === currentTissu.name
-                                      ? 'selected-item p-1'
-                                      : 'p-1'
-                                  }
-                                  onClick={() => {
-                                    setTissu(currentTissu.name);
-                                  }}
-                                >
-                                  <div className="d-flex flex-column align-items-center">
-                                    {currentTissu.image ? (
-                                      <img
-                                        className="product-carousel-image"
-                                        alt={currentTissu.name}
-                                        src={currentTissu.image}
-                                      />
-                                    ) : (
-                                      <img
-                                        className="product-carousel-image"
-                                        alt={currentTissu.name}
-                                        src="../images/no-image.png"
-                                      />
-                                    )}
-                                    <p className="caption-carousel">
-                                      {currentTissu.name}
-                                    </p>
-                                  </div>
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </OwlCarousel>
-                        {tissu && (
-                          <div className="text-muted">
-                            Vous avez choisi : &nbsp;
-                            <strong className="bg1 badge badge-pill">
-                              {tissu}
-                            </strong>
-                          </div>
-                        )}
-                      </>
-                    )}
-
-                    {tissu && isTissu() && (
-                      <>
-                        <hr />
-                        <div className="h5">
-                          <span>Choisissez le motif à broder</span>
-                        </div>
-                        <OwlCarousel
-                          className="slider-items owl-carousel owl-theme"
-                          {...opts}
-                          navText={[
-                            '<span class="arrow prev">‹</span>',
-                            '<span class="arrow next">›</span>',
-                          ]}
-                          id="slider_patches"
-                        >
-                          {product.patches.map((currentPatch) => {
-                            return (
-                              <div className="item" key={currentPatch._id}>
-                                <div
-                                  role="button"
-                                  className={
-                                    patch === currentPatch.name
-                                      ? 'selected-item p-1'
-                                      : 'p-1'
-                                  }
-                                  onClick={() => {
-                                    setPatch(currentPatch.name);
-                                  }}
-                                >
-                                  <div className="d-flex flex-column align-items-center">
-                                    {currentPatch.image ? (
-                                      <img
-                                        className="product-carousel-image"
-                                        alt={currentPatch.name}
-                                        src={currentPatch.image}
-                                      />
-                                    ) : (
-                                      <img
-                                        className="product-carousel-image"
-                                        alt={currentPatch.name}
-                                        src="../images/no-image.png"
-                                      />
-                                    )}
-                                    <p className="caption-carousel">
-                                      {currentPatch.name}
-                                    </p>
-                                  </div>
-                                </div>
-                              </div>
-                            );
-                          })}
-                        </OwlCarousel>
-                        {patch && (
-                          <div className="text-muted">
-                            Vous avez choisi : &nbsp;
-                            <b className="bg1 badge badge-pill">{patch}</b>
-                          </div>
-                        )}
-                      </>
-                    )}
-
-                    {patch && (
-                      <>
-                        <hr />
-                        <Form.Group className="my-3">
-                          <div className="h5">
-                            <span>
-                              Commentaire, Texte personnalisé (facultatif)
-                            </span>
-                          </div>
-                          <Form.Control
-                            value={customization}
-                            placeholder="Charlotte, Rose..."
-                            onChange={(e) => {
-                              setCustomization(e.target.value);
-                            }}
-                          ></Form.Control>
-                        </Form.Group>
-                      </>
-                    )}
-                  </Form>
-                </div>
-              )}
             </ListGroup.Item>
 
             {product.countInStock > 0 || product.variants.length ? (
