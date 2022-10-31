@@ -22,7 +22,8 @@ export default function LostPasswordPage() {
         console.log('POST ok')
       );
       toast.success(
-        'Un email contenant un lien de réinitialisation a été envoyé'
+        'Un email contenant un lien de réinitialisation a été envoyé',
+        { autoclose: 3000 }
       );
       console.log('Email ok');
       navigate('/');

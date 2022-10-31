@@ -115,7 +115,7 @@ export default function CartPage() {
                     <Col className="">
                       {item.variant ? (
                         <div>
-                          <strong>Variant :</strong> {item.variant.name}
+                          <strong>Modèle :</strong> {item.variant.name}
                         </div>
                       ) : (
                         ''

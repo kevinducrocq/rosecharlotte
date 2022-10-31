@@ -338,7 +338,7 @@ export default function OrderPage() {
                       <Col md={4}>
                         {item.variant ? (
                           <div>
-                            <strong>Variant :</strong> {item.variant.name}
+                            <strong>Modèle :</strong> {item.variant.name}
                           </div>
                         ) : (
                           ''
