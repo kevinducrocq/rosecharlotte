@@ -251,6 +251,18 @@ function ProductPage() {
     );
   };
 
+  const isFil = () => {
+    return product.fils && product.fils.length > 0;
+  };
+  const isTissu = () => {
+    return product.tissus && product.tissus.length > 0;
+  };
+  const isPatch = () => {
+    return product.patches && product.patches.length > 0;
+  };
+
+  console.log(isFil(), isTissu(), isPatch());
+
   return loading ? (
     <LoadingBox />
   ) : error ? (
@@ -522,7 +534,7 @@ function ProductPage() {
                       </>
                     )}
 
-                    {tissu && (
+                    {tissu && isTissu() && (
                       <>
                         <hr />
                         <div className="h5">
