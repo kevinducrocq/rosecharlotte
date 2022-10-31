@@ -138,7 +138,7 @@ function ProductPage() {
 
   useEffect(() => {
     setRefresh(refresh + 1);
-  }, [tissu, patch]);
+  }, [tissu, patch, refresh]);
 
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { cart, userInfo } = state;
@@ -248,8 +248,8 @@ function ProductPage() {
       'barrettes',
       'barette',
       'Barette'
-    )
-  }
+    );
+  };
 
   return loading ? (
     <LoadingBox />
@@ -612,8 +612,15 @@ function ProductPage() {
                 <Button
                   disabled={
                     !(
-                      isBarrette() && side && (patch || (!product.customizable && (variantId || product.variants.length === 0))) ||
-                      !isBarrette() && (patch || (!product.customizable && (variantId || product.variants.length === 0)))
+                      (isBarrette() &&
+                        side &&
+                        (patch ||
+                          (!product.customizable &&
+                            (variantId || product.variants.length === 0)))) ||
+                      (!isBarrette() &&
+                        (patch ||
+                          (!product.customizable &&
+                            (variantId || product.variants.length === 0))))
                     )
                   }
                   onClick={addToCartHandler}

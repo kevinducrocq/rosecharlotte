@@ -508,7 +508,7 @@ productRouter.get('/slug/:slug', async (req, res) => {
   }
   let patches;
   try {
-    patches = await Patch.find().in('_id', product.patch);
+    patches = await Patch.find().in('_id', product.patches);
   } catch (e) {
     patches = [];
   }
