@@ -12,7 +12,7 @@ export function orderAdminEmail(order, user) {
         <hr>
         <div style="margin-bottom: 5px; margin-top: 15px; font-size:20px;">
             <b>Bonjour Marie ! vous avez un nouvelle commande de ${
-              order.user.name
+              user.name
             }</b>
         </div>
         <div>
@@ -151,6 +151,6 @@ export function orderAdminEmail(order, user) {
         }">Voir la commande</a></span><br>
     </div>
 
-</div>`
+</div>`,
   };
 }
