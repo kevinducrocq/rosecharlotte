@@ -12,6 +12,7 @@ import patchRouter from './routes/patchRoutes.js';
 import settingsRouter from './routes/settingsRoutes.js';
 import categoryRouter from './routes/categoryRoutes.js';
 import subCategoryRouter from './routes/subCategoryRoutes.js';
+import sitemapRouter from './routes/sitemapRoutes.js';
 
 dotenv.config();
 
@@ -45,6 +46,7 @@ app.use('/api/products', productRouter);
 app.use('/api/settings', settingsRouter);
 app.use('/api/categories', categoryRouter);
 app.use('/api/subcategories', subCategoryRouter);
+app.use('/api/sitemap', sitemapRouter);
 
 const __dirname = path.resolve();
 
@@ -54,6 +56,10 @@ app.use(express.static(path.join(__dirname, '/uploads')));
 app.get('*', (req, res) =>
   res.sendFile(path.join(__dirname, '../frontend/build/index.html'))
 );
+
+// app.get('/sitemap', (req, res) =>
+//   res.sendFile(path.join(__dirname, '../frontend/public/sitemap.xml'))
+// );
 
 app.use((err, req, res, next) => {
   res.status(500).send({ message: err.message });

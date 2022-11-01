@@ -32,9 +32,11 @@
     "react-dom": "^18.2.0",
     "react-nl2br": "^1.0.4",
     "sharp": "^0.31.1",
+    "sitemap": "^7.1.1",
     "streamifier": "^0.1.1",
     "stripe": "^10.13.0",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "zlib": "^1.0.5"
   },
   "devDependencies": {
     "nodemon": "^2.0.19"
