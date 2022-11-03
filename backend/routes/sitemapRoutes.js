@@ -48,6 +48,42 @@ sitemapRouter.get('/sitemap.xml', async (req, res) => {
       changefreq: 'monthly',
       priority: 0.9,
     });
+    smStream.write({
+      url: '/',
+      lastmod: date,
+      changefreq: 'monthly',
+      priority: 0.9,
+    });
+    smStream.write({
+      url: '/tissus',
+      lastmod: date,
+      changefreq: 'monthly',
+      priority: 0.9,
+    });
+    smStream.write({
+      url: '/motifs',
+      lastmod: date,
+      changefreq: 'monthly',
+      priority: 0.9,
+    });
+    smStream.write({
+      url: '/cgv',
+      lastmod: date,
+      changefreq: 'monthly',
+      priority: 0.9,
+    });
+    smStream.write({
+      url: '/serviceclient',
+      lastmod: date,
+      changefreq: 'monthly',
+      priority: 0.9,
+    });
+    smStream.write({
+      url: '/mentions',
+      lastmod: date,
+      changefreq: 'monthly',
+      priority: 0.9,
+    });
 
     // Cache the response
     streamToPromise(pipeline).then((sm) => (sitemap = sm));
