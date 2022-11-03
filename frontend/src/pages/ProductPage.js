@@ -261,8 +261,6 @@ function ProductPage() {
     return product.patches && product.patches.length > 0;
   };
 
-  console.log(isFil(), isTissu(), isPatch());
-
   const renderVariationsForm = () => {
     return (
       <div className="p-2">
@@ -271,7 +269,7 @@ function ProductPage() {
             <span>Choisissez le modèle</span>
           </div>
           <Form.Select
-            className="mb-3"
+            className=""
             onChange={(e) => {
               setVariant(e.target.value);
             }}
@@ -295,35 +293,36 @@ function ProductPage() {
 
   const renderFilsForm = () => {
     return (
-      <Form.Group className="my-3">
-        <div className="h5">
-          <span>Choisissez le Fil</span>
-        </div>
-        <Form.Select
-          className="mb-3"
-          onChange={(e) => {
-            setFil(e.target.value);
-          }}
-        >
-          <option disabled selected={!fil}>
-            Choisissez...
-          </option>
-          {product.fils.map((fil) => {
-            return (
-              <option key={fil._id} value={fil.name}>
-                {fil.name}
-              </option>
-            );
-          })}
-        </Form.Select>
-      </Form.Group>
+      <>
+        <Form.Group className="mb-3">
+          <div className="h5">
+            <span>Choisissez le Fil</span>
+          </div>
+          <Form.Select
+            className="mb-3"
+            onChange={(e) => {
+              setFil(e.target.value);
+            }}
+          >
+            <option disabled selected={!fil}>
+              Choisissez...
+            </option>
+            {product.fils.map((fil) => {
+              return (
+                <option key={fil._id} value={fil.name}>
+                  {fil.name}
+                </option>
+              );
+            })}
+          </Form.Select>
+        </Form.Group>
+      </>
     );
   };
 
   const renderTissusForm = () => {
     return (
       <>
-        <hr />
         <div className="h5">
           <span>Choisissez le tissu</span>
         </div>
@@ -459,16 +458,42 @@ function ProductPage() {
   };
 
   const renderPersonalisationForms = () => {
+    const renderedFormsBis = [];
+    const isVariantOrNot = variantId || product.variants.length === 0;
+
+    if (isVariantOrNot) {
+      if (isFil()) {
+        renderedFormsBis.push(renderFilsForm());
+      }
+
+      if (isTissu()) {
+        if (fil) {
+          renderedFormsBis.push(renderTissusForm());
+        }
+      }
+
+      if (isPatch()) {
+        if (tissu) {
+          renderedFormsBis.push(renderPatchesForm());
+        }
+      }
+
+      if ((isPatch() && patch) || (isFil() && fil) || (isTissu() && tissu)) {
+        renderedFormsBis.push(renderCommentaireForm());
+      }
+    }
+
     return (
       <div className="p-2">
         <Form>
-          {(variantId || product.variants.length === 0) && renderFilsForm()}
+          {renderedFormsBis}
+          {/* {isVariantOrNot && renderFilsForm()}
 
           {fil && renderTissusForm()}
 
           {tissu && renderPatchesForm()}
 
-          {patch && renderCommentaireForm()}
+          {patch && renderCommentaireForm()} */}
         </Form>
       </div>
     );

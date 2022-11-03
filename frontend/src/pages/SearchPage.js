@@ -273,25 +273,24 @@ export default function SearchScreen() {
               )}
 
               <Row>
-                <Row>
-                  {(products && typeof products.map === 'function'
-                    ? products
-                    : []
-                  ).map(
-                    (product) =>
-                      product.isVisible === true && (
-                        <Col
-                          key={product._id}
-                          sm={6}
-                          lg={4}
-                          className="mb-3 d-flex flex-column"
-                        >
-                          <Product product={product}></Product>
-                        </Col>
-                      )
-                  )}
-                </Row>
+                {(products && typeof products.map === 'function'
+                  ? products
+                  : []
+                ).map(
+                  (product) =>
+                    product.isVisible === true && (
+                      <Col
+                        key={product._id}
+                        sm={6}
+                        lg={4}
+                        className="mb-3 d-flex flex-column"
+                      >
+                        <Product product={product}></Product>
+                      </Col>
+                    )
+                )}
               </Row>
+
               <div>
                 {[...Array(pages).keys()].map((x) => (
                   <LinkContainer

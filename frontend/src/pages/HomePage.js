@@ -179,10 +179,12 @@ function HomePage() {
             )}
 
             <section className="mt-3">
-              <h2>Les derniers produits</h2> &nbsp;
-              <Button className="homepage-button" variant="outline-light">
-                <Link to={'/boutique/search?category=all'}>Voir tout</Link>
-              </Button>
+              <div className="d-flex justify-content-between">
+                <h2>Les derniers produits</h2> &nbsp;
+                <Button className="homepage-button" variant="outline-light">
+                  <Link to={'/boutique/search?category=all'}>Voir tout</Link>
+                </Button>
+              </div>
               <hr />
               <div>
                 <Row>
