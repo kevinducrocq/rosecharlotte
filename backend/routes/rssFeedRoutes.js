@@ -1,7 +1,11 @@
 import express from 'express';
 import { Product } from '../models/productModel.js';
 import dotenv from 'dotenv';
-import { FeedBuilder, Product as FeedProduct, ProductPrice } from 'node-product-catalog-feed';
+import {
+  FeedBuilder,
+  Product as FeedProduct,
+  ProductPrice,
+} from 'node-product-catalog-feed';
 
 dotenv.config();
 
@@ -16,17 +20,22 @@ rssFeedRouter.get('/products.xml', async (req, res) => {
     feedProduct.title = product.name;
     feedProduct.link = process.env.ROOT + 'product/' + product.slug;
     feedProduct.brand = 'Rose Charlotte & Compagnie';
-    feedProduct.availability = product.countInStock > 0 ? FeedProduct.IN_STOCK : FeedProduct.OUT_OF_STOCK;
+    feedProduct.availability =
+      product.countInStock > 0
+        ? FeedProduct.IN_STOCK
+        : FeedProduct.OUT_OF_STOCK;
     feedProduct.description = product.description;
     feedProduct.imageLink = process.env.ROOT + product.image;
-    feedProduct.additionalImageLink = product.images.map((image) => process.env.ROOT + image);
+    feedProduct.additionalImageLink = product.images.map(
+      (image) => process.env.ROOT + image
+    );
     feedProduct.price = new ProductPrice(product.price, 'EUR');
-    if(product.soldePrice) {
+    if (product.soldePrice) {
       feedProduct.salePrice = new ProductPrice(product.soldePrice, 'EUR');
     }
     feedProduct.productType = [product.category, product.subCategory];
     return feedProduct;
-  })
+  });
 
   const xml = new FeedBuilder()
     .withTitle('Produits')
@@ -36,7 +45,7 @@ rssFeedRouter.get('/products.xml', async (req, res) => {
   mappedProducts.forEach((product) => {
     xml.withProduct(product);
   });
-
+  res.setHeader('content-type', 'application/rss+xml');
   res.send(xml.buildXml());
 });
 
