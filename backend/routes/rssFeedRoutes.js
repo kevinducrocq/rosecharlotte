@@ -24,10 +24,8 @@ rssFeedRouter.get('/products.xml', async (req, res) => {
     feedProduct.link = process.env.ROOT + 'product/' + product.slug;
     feedProduct.brand = 'Rose Charlotte & Compagnie';
     feedProduct.availability =
-      product.countInStock > 0
-        ? FeedProduct.IN_STOCK
-        : FeedProduct.OUT_OF_STOCK;
-    feedProduct.description = product.description.trim();
+      product.countInStock > 0 ? 'in_stock' : 'out_of_stock';
+    feedProduct.description = product.description;
     feedProduct.imageLink = process.env.ROOT + product.image;
     feedProduct.additionalImageLink = product.images.map(
       (image) => process.env.ROOT + image
