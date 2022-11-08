@@ -16,7 +16,7 @@ rssFeedRouter.get('/products.xml', async (req, res) => {
 
   const mappedProducts = products.map((product) => {
     const feedProduct = new FeedProduct();
-    feedProduct.id = product._id;
+    feedProduct.id = product._id.toString();
     feedProduct.title = product.name;
     feedProduct.link = process.env.ROOT + 'product/' + product.slug;
     feedProduct.brand = 'Rose Charlotte & Compagnie';
