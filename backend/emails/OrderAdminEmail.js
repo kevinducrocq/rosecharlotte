@@ -29,7 +29,7 @@ export function orderAdminEmail(order, user) {
                       item._id
                     }class=" order-unit" style="overflow:hidden;margin:5px 0;">
                         <div style="max-width: 300px;float: left;margin-left: 5px; margin-right: 5px;">
-                            <img src="${
+                            <img src="https://rosecharlotte.fr${
                               item.image
                             }" style="width:150px;height:150px;object-fit:cover" alt="${
                 item.name
