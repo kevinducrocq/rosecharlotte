@@ -67,15 +67,16 @@ export default function OrderListPage() {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         });
         setTimeout(() => {
-          const table = $(tableRef.current).DataTable({
+          $(tableRef.current).DataTable({
+            destroy: true,
+            columnDefs: [{ type: 'date-dd-MMM-yyyy', targets: 3 }],
             language: {
               url: 'https://cdn.datatables.net/plug-ins/1.12.1/i18n/fr-FR.json',
             },
-            order: [[3, 'desc']],
-            destroy: true,
+            order: [[3]],
             pageLength: 50,
           });
-        }, 50);
+        }, 500);
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {
         dispatch({
