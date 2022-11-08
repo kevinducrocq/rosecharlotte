@@ -31,6 +31,26 @@ categoryRouter.post(
   })
 );
 
+categoryRouter.put(
+  '/:id',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const categoryId = req.params.id;
+    const category = await Product.findById(categoryId);
+    if (category) {
+      category.name = req.body.name || category.name;
+      const updatedCategory = await category.save();
+      res.send({
+        _id: updatedCategory._id,
+        name: updatedCategory.name,
+      });
+    } else {
+      res.status(404).send({ message: 'Catégorie non trouvée' });
+    }
+  })
+);
+
 categoryRouter.delete(
   '/:id',
   expressAsyncHandler(async (req, res) => {

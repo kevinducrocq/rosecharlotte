@@ -8,7 +8,6 @@ import Fil from '../models/filModel.js';
 import Tissu from '../models/tissuModel.js';
 import Patch from '../models/patchModel.js';
 import Category from '../models/categoryModel.js';
-import SubCategory from '../models/subCategoryModel.js';
 
 const productRouter = express.Router();
 
@@ -51,7 +50,7 @@ productRouter.post(
       weight: req.body.weight,
       image: req.body.image,
       images: req.body.images,
-      category: req.body.category.trim(),
+      category: req.category._id,
       categorySlug: slugify(req.body.category),
       subCategory: req.body.subCategory?.trim(),
       subCategorySlug: slugify(req.body.subCategory),
