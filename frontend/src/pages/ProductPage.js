@@ -457,43 +457,42 @@ function ProductPage() {
     );
   };
 
-  const renderPersonalisationForms = () => {
+  const renderPersonalizationFormElements = () => {
     const renderedFormsBis = [];
-    const isVariantOrNot = variantId || product.variants.length === 0;
 
-    if (isVariantOrNot) {
-      if (isFil()) {
-        renderedFormsBis.push(renderFilsForm());
-      }
-
-      if (isTissu()) {
-        if (fil) {
-          renderedFormsBis.push(renderTissusForm());
-        }
-      }
-
-      if (isPatch()) {
-        if (tissu) {
-          renderedFormsBis.push(renderPatchesForm());
-        }
-      }
-
-      if ((isPatch() && patch) || (isFil() && fil) || (isTissu() && tissu)) {
-        renderedFormsBis.push(renderCommentaireForm());
-      }
+    if(isFil()) {
+      renderedFormsBis.push(renderFilsForm());
     }
 
+    if(isFil() && !fil) {
+      return renderedFormsBis;
+    }
+
+    if(isTissu()) {
+      renderedFormsBis.push(renderTissusForm());
+    }
+
+    if(isTissu() && !tissu) {
+      return renderedFormsBis;
+    }
+
+    if(isPatch()) {
+      renderedFormsBis.push(renderPatchesForm());
+    }
+
+    if(isPatch() && !patch) {
+      return renderedFormsBis;
+    }
+
+    renderedFormsBis.push(renderCommentaireForm());
+    return renderedFormsBis;
+  }
+
+  const renderPersonalisationForms = () => {
     return (
       <div className="p-2">
         <Form>
-          {renderedFormsBis}
-          {/* {isVariantOrNot && renderFilsForm()}
-
-          {fil && renderTissusForm()}
-
-          {tissu && renderPatchesForm()}
-
-          {patch && renderCommentaireForm()} */}
+          {renderPersonalizationFormElements()}
         </Form>
       </div>
     );
@@ -507,13 +506,49 @@ function ProductPage() {
     }
 
     if (
-      product.customizable ||
-      (product.variants.length >= 0 && variantId && product.customizable)
+      (product.variants.length === 0 || (product.variants.length > 0 && variantId))
+      && product.customizable
     ) {
       renderedForms.push(renderPersonalisationForms());
     }
     return renderedForms;
   };
+
+  const isAddToCartButtonActive = () => {
+    if (product.customizable) {
+      if(isPatch()) {
+        return !!patch;
+      }
+      if(isTissu()) {
+        return !!tissu;
+      }
+      if(isFil()) {
+        return !!fil;
+      }
+    }
+    else if (product.variants.length > 0) {
+      return !!variantId;
+    }
+    else if(isBarrette()) {
+      return !!side;
+    }
+    return true;
+  }
+
+  const renderAddToCartButton = () => {
+    let btnDisabled = !isAddToCartButtonActive();
+
+    return (
+      <Button
+        disabled={btnDisabled}
+        onClick={addToCartHandler}
+        className="bg1 w-100"
+        variant="outline-light"
+      >
+        Ajouter au panier
+      </Button>
+    )
+  }
 
   return loading ? (
     <LoadingBox />
@@ -668,26 +703,7 @@ function ProductPage() {
 
             {product.countInStock > 0 || product.variants.length ? (
               <div className="p-2">
-                <Button
-                  disabled={
-                    !(
-                      (isBarrette() &&
-                        side &&
-                        (patch ||
-                          (!product.customizable &&
-                            (variantId || product.variants.length === 0)))) ||
-                      (!isBarrette() &&
-                        (patch ||
-                          (!product.customizable &&
-                            (variantId || product.variants.length === 0))))
-                    )
-                  }
-                  onClick={addToCartHandler}
-                  className="bg1 w-100"
-                  variant="outline-light"
-                >
-                  Ajouter au panier
-                </Button>
+                {renderAddToCartButton()}
               </div>
             ) : (
               <ListGroup.Item>
