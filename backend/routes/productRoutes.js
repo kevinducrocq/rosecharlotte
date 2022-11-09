@@ -50,7 +50,7 @@ productRouter.post(
       weight: req.body.weight,
       image: req.body.image,
       images: req.body.images,
-      category: req.category._id,
+      category: req.body.category,
       categorySlug: slugify(req.body.category),
       subCategory: req.body.subCategory?.trim(),
       subCategorySlug: slugify(req.body.subCategory),
