@@ -24,17 +24,19 @@ rssFeedRouter.get('/products.xml', async (req, res) => {
     feedProduct.link = process.env.ROOT + 'product/' + product.slug;
     feedProduct.brand = 'Rose Charlotte et Compagnie';
     feedProduct.availability =
-      product.countInStock > 0 ? ['in_stock'] : ['out_of_stock'];
+      product.countInStock > 0 ? 'in_stock' : 'out_of_stock';
     feedProduct.description = product.description;
     feedProduct.imageLink = process.env.ROOT + product.image;
-    feedProduct.additionalImageLink = product.images.map(
-      (image) => process.env.ROOT + image
-    );
+    feedProduct.additionalImageLink =
+      product.images && product.images.map((image) => process.env.ROOT + image);
     feedProduct.price = new ProductPrice(product.price, 'EUR');
     if (product.soldePrice) {
       feedProduct.salePrice = new ProductPrice(product.soldePrice, 'EUR');
     }
     feedProduct.productType = [product.category, product.subCategory];
+    product.name.includes('multiple', 'multiples')
+      ? (feedProduct.multipack = '10')
+      : '';
     return feedProduct;
   });
 
