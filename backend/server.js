@@ -10,7 +10,6 @@ import filRouter from './routes/filRoutes.js';
 import tissuRouter from './routes/tissuRoutes.js';
 import patchRouter from './routes/patchRoutes.js';
 import settingsRouter from './routes/settingsRoutes.js';
-import categoryRouter from './routes/categoryRoutes.js';
 import sitemapRouter from './routes/sitemapRoutes.js';
 import rssFeedRouter from './routes/rssFeedRoutes.js';
 
@@ -44,7 +43,6 @@ app.use('/api/users', userRouter);
 app.use('/api/orders', orderRouter);
 app.use('/api/products', productRouter);
 app.use('/api/settings', settingsRouter);
-app.use('/api/categories', categoryRouter);
 app.use('/api/sitemap', sitemapRouter);
 app.use('/api/rss', rssFeedRouter);
 
