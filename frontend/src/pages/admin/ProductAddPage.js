@@ -750,7 +750,6 @@ export default function ProductAddPage() {
                         </InputGroup.Text>
                         <Form.Control
                           className={subCategoryInputIsVisible ? '' : 'd-none'}
-                          value={subCategory}
                           onChange={(e) => setSubCategory(e.target.value)}
                           placeholder="Nom"
                         />
