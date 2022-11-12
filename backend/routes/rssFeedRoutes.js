@@ -7,6 +7,7 @@ import {
   ProductPrice,
 } from 'node-product-catalog-feed';
 import { ShippingWeight } from 'node-product-catalog-feed/lib/units.js';
+import { v4 as uuidv4 } from 'uuid';
 
 dotenv.config();
 
@@ -49,10 +50,9 @@ rssFeedRouter.get('/products.xml', async (req, res) => {
       );
     }
 
-    feedProduct.itemGroupId =
-      product.variants &&
-      product.variants.map((variant) => variant._id.toString());
-
+    if (product.variants.length > 0) {
+      feedProduct.itemGroupId = uuidv4();
+    }
     return feedProduct;
   });
 
