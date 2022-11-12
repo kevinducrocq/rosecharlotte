@@ -6,6 +6,7 @@ import {
   Product as FeedProduct,
   ProductPrice,
 } from 'node-product-catalog-feed';
+import { ShippingWeight } from 'node-product-catalog-feed/lib/units.js';
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ rssFeedRouter.get('/products.xml', async (req, res) => {
     feedProduct.title = product.name;
     feedProduct.link = process.env.ROOT + 'product/' + product.slug;
     feedProduct.brand = 'Rose Charlotte et Compagnie';
+    // feedProduct.shippingWeight = product.weight + 'g';
     feedProduct.availability =
       product.countInStock > 0 ? 'in_stock' : 'out_of_stock';
     feedProduct.description = product.description;
@@ -37,13 +39,27 @@ rssFeedRouter.get('/products.xml', async (req, res) => {
     product.name.includes('multiple', 'multiples')
       ? (feedProduct.multipack = '10')
       : '';
+
+    if (product.weight) {
+      feedProduct.shippingWeight = new ShippingWeight(product.weight, 'g');
+    } else if (product.variants) {
+      product.variants.forEach(
+        (variant) =>
+          (feedProduct.shippingWeight = new ShippingWeight(variant.weight, 'g'))
+      );
+    }
+
+    feedProduct.itemGroupId =
+      product.variants &&
+      product.variants.map((variant) => variant._id.toString());
+
     return feedProduct;
   });
 
   const xml = new FeedBuilder()
     .withTitle('Produits')
     .withLink(process.env.ROOT)
-    .withDescription('Produits de Rose Charlotte & Compagnie');
+    .withDescription('Produits de Rose Charlotte et Compagnie');
 
   mappedProducts.forEach((product) => {
     xml.withProduct(product);
