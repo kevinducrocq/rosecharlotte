@@ -90,8 +90,9 @@ export default function ProductAddPage() {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const { data } = await axios.get(`/api/products/categories`);
+        const { data } = await axios.get(`/api/categories/`);
         setCategories(data);
+        console.log(data);
       } catch (err) {
         toast.error(getError(err));
       }
@@ -146,12 +147,12 @@ export default function ProductAddPage() {
   }, [category]);
 
   const renderedCategories = [];
-  Object.keys(categories).forEach(function (mappedCategory) {
-    renderedCategories.push(
+  categories.map((mappedCategory) => {
+    return (
       <option
         selected={category === mappedCategory}
-        key={mappedCategory}
-        value={mappedCategory}
+        key={mappedCategory._id}
+        value={mappedCategory._id}
         onChange={(e) => setCategory(e.target.value)}
       >
         {mappedCategory}
@@ -160,25 +161,6 @@ export default function ProductAddPage() {
   });
 
   const renderedSubCategories = [];
-  Object.keys(categories).forEach(function (mappedCategory) {
-    if (category === mappedCategory) {
-      renderedSubCategories.push(
-        <>
-          {categories[mappedCategory].map((subCat) => {
-            return (
-              <option
-                value={subCat}
-                key={subCat}
-                selected={subCat === subCategory}
-              >
-                {subCat}
-              </option>
-            );
-          })}
-        </>
-      );
-    }
-  });
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -716,7 +698,7 @@ export default function ProductAddPage() {
                     </Col>
                   </>
                 </Row>
-                <Row>
+                {/* <Row>
                   <Col md={8}>
                     <Form.Label>Séléctionner une sous-catégorie</Form.Label>
                     <Form.Select
@@ -756,7 +738,7 @@ export default function ProductAddPage() {
                       </InputGroup>
                     </Form.Group>
                   </Col>
-                </Row>
+                </Row> */}
                 <hr />
 
                 <Form.Group className="mb-3" controlId="description">

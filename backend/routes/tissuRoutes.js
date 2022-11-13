@@ -9,7 +9,7 @@ tissuRouter.get(
   '/',
   expressAsyncHandler(async (req, res) => {
     const tissus = await Tissu.find();
-    res.send(tissus);
+    res.status(201).send(tissus);
   })
 );
 

@@ -30,6 +30,7 @@ const reducer = (state, action) => {
       return {
         ...state,
         carouselHome: action.payload,
+        chosenCategories: action.payload,
         loading: false,
       };
     case 'FETCH_FAIL':
@@ -75,7 +76,15 @@ export default function SettingsPage() {
   const { state } = useContext(Store);
   const { userInfo } = state;
   const [
-    { loading, loadingUpload, error, carouselHome, successDelete, successAdd },
+    {
+      loading,
+      loadingUpload,
+      error,
+      carouselHome,
+      successDelete,
+      successAdd,
+      chosenCategories,
+    },
     dispatch,
   ] = useReducer(reducer, {
     loading: false,
@@ -83,13 +92,39 @@ export default function SettingsPage() {
   });
 
   const [refresh, setRefresh] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
         const { data } = await axios.get(`/api/settings/`, {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        });
+        dispatch({ type: 'FETCH_SUCCESS', payload: data });
+      } catch (err) {
+        dispatch({
+          type: 'FETCH_FAIL',
+          payload: getError(err),
+        });
+      }
+    };
+    if (successDelete) {
+      dispatch({ type: 'DELETE_RESET' });
+    } else if (successAdd) {
+      dispatch({ type: 'ADD_RESET' });
+    } else {
+      fetchData();
+      if (refresh) {
+        setRefresh(false);
+      }
+    }
+  }, [userInfo, successDelete, successAdd, refresh]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        dispatch({ type: 'FETCH_REQUEST' });
+        const { data } = await axios.get(`/api/settings/chosen-categories`, {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         });
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
@@ -204,12 +239,11 @@ export default function SettingsPage() {
                     </div>
                   </Card.Title>
 
-                  <div>
-                    <div>
-                      Catégorie séléctionnée :&nbsp;
-                      <span className="badge bg1">{selectedCategory}</span>
-                    </div>
-                  </div>
+                  {/* <div>
+                    {chosenCategories.map((chosenCategory) => {
+                      return <div>{chosenCategory._id}</div>;
+                    })}
+                  </div> */}
                 </Card>
               </section>
             </>

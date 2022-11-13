@@ -14,6 +14,14 @@ settingsRouter.get(
   })
 );
 
+settingsRouter.get(
+  '/chosen-categories',
+  expressAsyncHandler(async (req, res) => {
+    const chosenCategory = await Setting.find();
+    res.send(chosenCategory);
+  })
+);
+
 settingsRouter.get('/:id', async (req, res) => {
   const carouselHome = await CarouselHome.findById(req.params.id);
   if (carouselHome) {
@@ -49,6 +57,25 @@ settingsRouter.put(
       });
     } else {
       res.status(404).send({ message: 'Carousel non trouvé' });
+    }
+  })
+);
+
+settingsRouter.post(
+  '/chosen-category',
+  isAuth,
+  isAdmin,
+  expressAsyncHandler(async (req, res) => {
+    const newChosenCategory = new Setting({
+      chosenCategory: req.body.selectedCategory,
+    });
+    try {
+      const categorySetting = await newChosenCategory.save();
+      res.send({
+        chosenCategory: categorySetting.category,
+      });
+    } catch (err) {
+      console.log(err);
     }
   })
 );

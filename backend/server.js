@@ -12,6 +12,7 @@ import patchRouter from './routes/patchRoutes.js';
 import settingsRouter from './routes/settingsRoutes.js';
 import sitemapRouter from './routes/sitemapRoutes.js';
 import rssFeedRouter from './routes/rssFeedRoutes.js';
+import categoryRouter from './routes/categoryRoutes.js';
 
 dotenv.config();
 
@@ -42,6 +43,7 @@ app.use('/api/upload', uploadRouter);
 app.use('/api/users', userRouter);
 app.use('/api/orders', orderRouter);
 app.use('/api/products', productRouter);
+app.use('/api/categories', categoryRouter);
 app.use('/api/settings', settingsRouter);
 app.use('/api/sitemap', sitemapRouter);
 app.use('/api/rss', rssFeedRouter);

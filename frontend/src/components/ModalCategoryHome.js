@@ -1,4 +1,4 @@
-import { faPen } from '@fortawesome/pro-solid-svg-icons';
+import { faPen, faPlus } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
@@ -83,7 +83,7 @@ export default function ModalCategoryHome() {
     <>
       <div>
         <Button type="button" onClick={() => setModalShow(true)}>
-          <FontAwesomeIcon icon={faPen} /> Modifier
+          <FontAwesomeIcon icon={faPlus} />
         </Button>
 
         <Modal
@@ -115,7 +115,7 @@ export default function ModalCategoryHome() {
                 className="bg1 w-100"
                 variant="outline-light"
               >
-                Mettre à jour
+                Ajouter
               </Button>
             </Form>
           </Modal.Body>

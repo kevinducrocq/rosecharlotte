@@ -8,6 +8,7 @@ import Fil from '../models/filModel.js';
 import Tissu from '../models/tissuModel.js';
 import Patch from '../models/patchModel.js';
 import Category from '../models/categoryModel.js';
+import SubCategory from '../models/subCategoryModel.js';
 
 const productRouter = express.Router();
 
@@ -41,6 +42,17 @@ productRouter.post(
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
+    const newCategory = new Category({
+      name: req.body.category,
+      slug: slugify(req.body.category),
+    });
+
+    const newSubCategory = new SubCategory({
+      name: req.body.subCategory,
+      slug: slugify(req.body.subCategory),
+      category: newCategory,
+    });
+
     const newProduct = new Product({
       name: req.body.name,
       slug: slugify(req.body.name),
@@ -50,10 +62,8 @@ productRouter.post(
       weight: req.body.weight,
       image: req.body.image,
       images: req.body.images,
-      category: req.body.category,
-      categorySlug: slugify(req.body.category),
-      subCategory: req.body.subCategory?.trim(),
-      subCategorySlug: slugify(req.body.subCategory),
+      category: newCategory,
+      subCategory: newSubCategory,
       countInStock: req.body.countInStock,
       numReviews: 0,
       rating: 0,
@@ -68,6 +78,8 @@ productRouter.post(
 
     try {
       const product = await newProduct.save();
+      const category = await newCategory.save();
+      const subCategory = await newSubCategory.save();
       res.send({
         _id: product._id,
         name: product.name,
@@ -78,10 +90,8 @@ productRouter.post(
         weight: product.weight,
         image: product.image,
         images: product.images,
-        category: product.category,
-        categorySlug: product.categorySlug,
-        subCategory: product.subCategory,
-        subCategorySlug: product.subCategorySlug,
+        category: category._id,
+        subCategory: subCategory._id,
         countInStock: product.countInStock,
         numReviews: 0,
         rating: 0,
