@@ -4,4 +4,4 @@ Disallow:
 
 User-agent: *
 Allow: /
-Sitemap: https://rosecharlotte.fr/sitemap.xml
+Sitemap: https://rosecharlotte.fr/api/sitemap/sitemap.xml
