@@ -22,7 +22,7 @@ import Rating from '../components/Rating';
 import { Helmet } from 'react-helmet-async';
 import LoadingBox from '../components/LoadingBox';
 import MessageBox from '../components/MessageBox';
-import { dateFr, getError } from '../utils';
+import { dateFr, getError, logOutAndRedirect } from '../utils';
 import { Store } from '../Store';
 import { toast } from 'react-toastify';
 import { LinkContainer } from 'react-router-bootstrap';
@@ -99,6 +99,15 @@ function ProductPage() {
       },
     },
   };
+
+  // let selectedIndex = 0;
+  // product.tissus.forEach((item, index) => {
+  //   if (item.name === tissu) {
+  //     selectedIndex = index;
+  //   } else if (item.name === patch) {
+  //     selectedIndex = index;
+  //   }
+  // });
 
   const opts = {
     loop: false,
@@ -214,13 +223,19 @@ function ProductPage() {
       return;
     }
     try {
-      const { data } = await axios.post(
-        `/api/products/${product._id}/reviews`,
-        { rating, comment, name: userInfo.name },
-        {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        }
-      );
+      const { data } = await axios
+        .post(
+          `/api/products/${product._id}/reviews`,
+          { rating, comment, name: userInfo.name },
+          {
+            headers: { Authorization: `Bearer ${userInfo.token}` },
+          }
+        )
+        .catch(function (error) {
+          if (error.response && error.response.status === 401) {
+            logOutAndRedirect();
+          }
+        });
 
       dispatch({
         type: 'CREATE_SUCCESS',
@@ -274,7 +289,7 @@ function ProductPage() {
               setVariant(e.target.value);
             }}
           >
-            <option disabled selected={!variantId}>
+            <option disabled selected={!variantId} value="">
               Choisissez...
             </option>
             {product.variants.map((variant) => {
@@ -460,40 +475,38 @@ function ProductPage() {
   const renderPersonalizationFormElements = () => {
     const renderedFormsBis = [];
 
-    if(isFil()) {
+    if (isFil()) {
       renderedFormsBis.push(renderFilsForm());
     }
 
-    if(isFil() && !fil) {
+    if (isFil() && !fil) {
       return renderedFormsBis;
     }
 
-    if(isTissu()) {
+    if (isTissu()) {
       renderedFormsBis.push(renderTissusForm());
     }
 
-    if(isTissu() && !tissu) {
+    if (isTissu() && !tissu) {
       return renderedFormsBis;
     }
 
-    if(isPatch()) {
+    if (isPatch()) {
       renderedFormsBis.push(renderPatchesForm());
     }
 
-    if(isPatch() && !patch) {
+    if (isPatch() && !patch) {
       return renderedFormsBis;
     }
 
     renderedFormsBis.push(renderCommentaireForm());
     return renderedFormsBis;
-  }
+  };
 
   const renderPersonalisationForms = () => {
     return (
       <div className="p-2">
-        <Form>
-          {renderPersonalizationFormElements()}
-        </Form>
+        <Form>{renderPersonalizationFormElements()}</Form>
       </div>
     );
   };
@@ -506,8 +519,9 @@ function ProductPage() {
     }
 
     if (
-      (product.variants.length === 0 || (product.variants.length > 0 && variantId))
-      && product.customizable
+      (product.variants.length === 0 ||
+        (product.variants.length > 0 && variantId)) &&
+      product.customizable
     ) {
       renderedForms.push(renderPersonalisationForms());
     }
@@ -516,24 +530,22 @@ function ProductPage() {
 
   const isAddToCartButtonActive = () => {
     if (product.customizable) {
-      if(isPatch()) {
+      if (isPatch()) {
         return !!patch;
       }
-      if(isTissu()) {
+      if (isTissu()) {
         return !!tissu;
       }
-      if(isFil()) {
+      if (isFil()) {
         return !!fil;
       }
-    }
-    else if (product.variants.length > 0) {
+    } else if (product.variants.length > 0) {
       return !!variantId;
-    }
-    else if(isBarrette()) {
+    } else if (isBarrette()) {
       return !!side;
     }
     return true;
-  }
+  };
 
   const renderAddToCartButton = () => {
     let btnDisabled = !isAddToCartButtonActive();
@@ -547,8 +559,8 @@ function ProductPage() {
       >
         Ajouter au panier
       </Button>
-    )
-  }
+    );
+  };
 
   return loading ? (
     <LoadingBox />
@@ -702,9 +714,7 @@ function ProductPage() {
             </ListGroup.Item>
 
             {product.countInStock > 0 || product.variants.length ? (
-              <div className="p-2">
-                {renderAddToCartButton()}
-              </div>
+              <div className="p-2">{renderAddToCartButton()}</div>
             ) : (
               <ListGroup.Item>
                 <div className="p-2">

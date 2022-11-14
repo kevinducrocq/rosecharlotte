@@ -5,7 +5,7 @@ import Button from 'react-bootstrap/Button';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import { Store } from '../../Store';
-import { dateFr, getError } from '../../utils';
+import { dateFr, getError, logOutAndRedirect } from '../../utils';
 import LoadingBox from '../../components/LoadingBox';
 import MessageBox from '../../components/MessageBox';
 import { faEye, faTrash } from '@fortawesome/pro-solid-svg-icons';
@@ -63,9 +63,15 @@ export default function OrderListPage() {
     const fetchData = async () => {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
-        const { data } = await axios.get(`/api/orders`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        });
+        const { data } = await axios
+          .get(`/api/orders`, {
+            headers: { Authorization: `Bearer ${userInfo.token}` },
+          })
+          .catch(function (error) {
+            if (error.response && error.response.status === 401) {
+              logOutAndRedirect();
+            }
+          });
         setTimeout(() => {
           $(tableRef.current).DataTable({
             destroy: true,
@@ -96,9 +102,15 @@ export default function OrderListPage() {
     if (!order.isPaid) {
       try {
         dispatch({ type: 'DELETE_REQUEST' });
-        await axios.delete(`/api/orders/${order._id}`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        });
+        await axios
+          .delete(`/api/orders/${order._id}`, {
+            headers: { Authorization: `Bearer ${userInfo.token}` },
+          })
+          .catch(function (error) {
+            if (error.response && error.response.status === 401) {
+              logOutAndRedirect();
+            }
+          });
 
         dispatch({ type: 'DELETE_SUCCESS' });
       } catch (err) {

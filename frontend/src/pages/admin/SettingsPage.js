@@ -20,7 +20,7 @@ import MessageBox from '../../components/MessageBox';
 import ModalCategoryHome from '../../components/ModalCategoryHome';
 import ModalEditCarouselHome from '../../components/ModalEditCarouselHome';
 import { Store } from '../../Store';
-import { getError } from '../../utils';
+import { getError, logOutAndRedirect } from '../../utils';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -89,9 +89,15 @@ export default function SettingsPage() {
     const fetchData = async () => {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
-        const { data } = await axios.get(`/api/settings/`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        });
+        const { data } = await axios
+          .get(`/api/settings/`, {
+            headers: { Authorization: `Bearer ${userInfo.token}` },
+          })
+          .catch(function (error) {
+            if (error.response && error.response.status === 401) {
+              logOutAndRedirect();
+            }
+          });
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {
         dispatch({

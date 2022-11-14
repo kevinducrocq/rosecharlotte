@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Store } from '../../Store';
-import { getError } from '../../utils';
+import { getError, logOutAndRedirect } from '../../utils';
 import LoadingBox from '../../components/LoadingBox';
 import MessageBox from '../../components/MessageBox';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -67,11 +67,17 @@ export default function UserListScreen() {
     const fetchData = async () => {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
-        const { data } = await axios.get(`/api/users`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        });
+        const { data } = await axios
+          .get(`/api/users`, {
+            headers: { Authorization: `Bearer ${userInfo.token}` },
+          })
+          .catch(function (error) {
+            if (error.response && error.response.status === 401) {
+              logOutAndRedirect();
+            }
+          });
         setTimeout(() => {
-          const table = $(tableRef.current).DataTable({
+          $(tableRef.current).DataTable({
             language: {
               url: 'https://cdn.datatables.net/plug-ins/1.12.1/i18n/fr-FR.json',
             },
@@ -100,9 +106,15 @@ export default function UserListScreen() {
     if (window.confirm('Confirmer?')) {
       try {
         dispatch({ type: 'DELETE_REQUEST' });
-        await axios.delete(`/api/users/${user._id}`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        });
+        await axios
+          .delete(`/api/users/${user._id}`, {
+            headers: { Authorization: `Bearer ${userInfo.token}` },
+          })
+          .catch(function (error) {
+            if (error.response && error.response.status === 401) {
+              logOutAndRedirect();
+            }
+          });
         toast.success('Utilisateur supprimé');
         dispatch({ type: 'DELETE_SUCCESS' });
       } catch (error) {

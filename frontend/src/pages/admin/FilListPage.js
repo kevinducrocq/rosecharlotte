@@ -11,7 +11,7 @@ import Button from 'react-bootstrap/Button';
 import { Helmet } from 'react-helmet-async';
 import { useNavigate } from 'react-router-dom';
 import { Store } from '../../Store';
-import { getError } from '../../utils';
+import { getError, logOutAndRedirect } from '../../utils';
 import LoadingBox from '../../components/LoadingBox';
 import MessageBox from '../../components/MessageBox';
 import { faTrash } from '@fortawesome/pro-solid-svg-icons';
@@ -83,9 +83,15 @@ export default function TissuListPage() {
     const fetchData = async () => {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
-        const { data } = await axios.get(`/api/fils`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        });
+        const { data } = await axios
+          .get(`/api/fils`, {
+            headers: { Authorization: `Bearer ${userInfo.token}` },
+          })
+          .catch(function (error) {
+            if (error.response && error.response.status === 401) {
+              logOutAndRedirect();
+            }
+          });
         setTimeout(() => {
           const table = $(tableRef.current).DataTable({
             language: {
@@ -117,15 +123,21 @@ export default function TissuListPage() {
     e.preventDefault();
     try {
       dispatch({ type: 'ADD_REQUEST' });
-      await axios.post(
-        `/api/fils/add`,
-        {
-          name,
-        },
-        {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        }
-      );
+      await axios
+        .post(
+          `/api/fils/add`,
+          {
+            name,
+          },
+          {
+            headers: { Authorization: `Bearer ${userInfo.token}` },
+          }
+        )
+        .catch(function (error) {
+          if (error.response && error.response.status === 401) {
+            logOutAndRedirect();
+          }
+        });
       dispatch({ type: 'ADD_SUCCESS' });
       setName('');
       toast.success('Fil ajouté');
@@ -139,9 +151,15 @@ export default function TissuListPage() {
   const deleteHandler = async (fil) => {
     try {
       dispatch({ type: 'DELETE_REQUEST' });
-      await axios.delete(`/api/fils/${fil._id}`, {
-        headers: { Authorization: `Bearer ${userInfo.token}` },
-      });
+      await axios
+        .delete(`/api/fils/${fil._id}`, {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        })
+        .catch(function (error) {
+          if (error.response && error.response.status === 401) {
+            logOutAndRedirect();
+          }
+        });
       dispatch({ type: 'DELETE_SUCCESS' });
     } catch (err) {
       toast.error(getError(error));

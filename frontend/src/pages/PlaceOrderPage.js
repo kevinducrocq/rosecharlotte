@@ -11,7 +11,7 @@ import {
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { getError } from '../utils';
+import { getError, logOutAndRedirect } from '../utils';
 import CheckoutSteps from '../components/CheckoutSteps';
 import { Store } from '../Store';
 import axios from 'axios';
@@ -99,19 +99,27 @@ export default function PlaceOrderPage() {
   const placeOrderHandler = async () => {
     try {
       dispatch({ type: 'CREATE_REQUEST' });
-      const { data } = await axios.post(
-        '/api/orders',
-        {
-          orderItems: cart.cartItems,
-          shippingAddress: cart.shippingAddress,
-          paymentMethod: cart.paymentMethod,
-          deliveryMethod: cart.deliveryMethod,
-          itemsPrice: cart.itemsPrice,
-          shippingPrice: cart.shippingPrice,
-          totalPrice: cart.totalPrice,
-        },
-        { headers: { authorization: `Bearer ${userInfo.token}` } }
-      );
+      const { data } = await axios
+        .post(
+          '/api/orders',
+          {
+            orderItems: cart.cartItems,
+            shippingAddress: cart.shippingAddress,
+            paymentMethod: cart.paymentMethod,
+            deliveryMethod: cart.deliveryMethod,
+            itemsPrice: cart.itemsPrice,
+            shippingPrice: cart.shippingPrice,
+            totalPrice: cart.totalPrice,
+          },
+          {
+            headers: { authorization: `Bearer ${userInfo.token}` },
+          }
+        )
+        .catch(function (error) {
+          if (error.response && error.response.status === 401) {
+            logOutAndRedirect();
+          }
+        });
       ctxDispatch({ type: 'CART_CLEAR' });
       dispatch({ type: 'CREATE-SUCCESS' });
       localStorage.removeItem('cartItems');
@@ -127,9 +135,15 @@ export default function PlaceOrderPage() {
     const userOrders = async () => {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
-        const { data } = await axios.get(`/api/orders/orders-by-user`, {
-          headers: { authorization: `Bearer ${userInfo.token}` },
-        });
+        const { data } = await axios
+          .get(`/api/orders/orders-by-user`, {
+            headers: { authorization: `Bearer ${userInfo.token}` },
+          })
+          .catch(function (error) {
+            if (error.response && error.response.status === 401) {
+              logOutAndRedirect();
+            }
+          });
         if (data.length === 0) {
           setDiscount(0);
         }

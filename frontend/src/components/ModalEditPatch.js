@@ -6,7 +6,7 @@ import { useContext, useEffect, useState } from 'react';
 import { Form, Image } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import { getError } from '../utils';
+import { getError, logOutAndRedirect } from '../utils';
 import axios from 'axios';
 import { Store } from '../Store';
 import { toast } from 'react-toastify';
@@ -61,9 +61,15 @@ function ModalEditPatch({ id, onEditSuccess }) {
       const fetchData = async () => {
         try {
           dispatch({ type: 'FETCH_REQUEST' });
-          const { data } = await axios.get(`/api/patches/${patchId}`, {
-            headers: { Authorization: `Bearer ${userInfo.token}` },
-          });
+          const { data } = await axios
+            .get(`/api/patches/${patchId}`, {
+              headers: { Authorization: `Bearer ${userInfo.token}` },
+            })
+            .catch(function (error) {
+              if (error.response && error.response.status === 401) {
+                logOutAndRedirect();
+              }
+            });
           setName(data.name);
           setImage(data.image);
           dispatch({ type: 'FETCH_SUCCESS' });
@@ -82,17 +88,23 @@ function ModalEditPatch({ id, onEditSuccess }) {
     e.preventDefault();
     try {
       dispatch({ type: 'UPDATE_REQUEST' });
-      await axios.put(
-        `/api/patches/${patchId}`,
-        {
-          _id: id,
-          name,
-          image,
-        },
-        {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        }
-      );
+      await axios
+        .put(
+          `/api/patches/${patchId}`,
+          {
+            _id: id,
+            name,
+            image,
+          },
+          {
+            headers: { Authorization: `Bearer ${userInfo.token}` },
+          }
+        )
+        .catch(function (error) {
+          if (error.response && error.response.status === 401) {
+            logOutAndRedirect();
+          }
+        });
       onEditSuccess();
       dispatch({
         type: 'UPDATE_SUCCESS',
@@ -119,7 +131,13 @@ function ModalEditPatch({ id, onEditSuccess }) {
           'Content-Type': 'multipart/form-data',
           authorization: `Bearer ${userInfo.token}`,
         },
-      });
+      }).catch(
+        function (error) {
+          if (error.response && error.response.status === 401) {
+            logOutAndRedirect();
+          }
+        }
+      );
       setImage(data.path);
       dispatch({ type: 'UPLOAD_SUCCESS' });
     } catch (err) {

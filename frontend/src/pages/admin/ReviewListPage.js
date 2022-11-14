@@ -9,7 +9,7 @@ import AdminMenu from '../../components/AdminMenu';
 import LoadingBox from '../../components/LoadingBox';
 import MessageBox from '../../components/MessageBox';
 import { Store } from '../../Store';
-import { dateFr, getError } from '../../utils';
+import { dateFr, getError, logOutAndRedirect } from '../../utils';
 
 import 'jquery/dist/jquery.min.js';
 //Datatable Modules
@@ -98,9 +98,15 @@ export default function ReviewListPage() {
     const fetchData = async () => {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
-        const { data } = await axios.get(`/api/products/reviews`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        });
+        const { data } = await axios
+          .get(`/api/products/reviews`, {
+            headers: { Authorization: `Bearer ${userInfo.token}` },
+          })
+          .catch(function (error) {
+            if (error.response && error.response.status === 401) {
+              logOutAndRedirect();
+            }
+          });
 
         setTimeout(() => {
           const table = $(tableRef.current).DataTable({
@@ -136,13 +142,15 @@ export default function ReviewListPage() {
   const validateHandler = async (review) => {
     try {
       dispatch({ type: 'VALIDATE_REQUEST' });
-      await axios.put(
-        `/api/products/${review.product._id}/review/${review._id}`,
-        [],
-        {
+      await axios
+        .put(`/api/products/${review.product._id}/review/${review._id}`, [], {
           headers: { Authorization: `Bearer ${userInfo.token}` },
-        }
-      );
+        })
+        .catch(function (error) {
+          if (error.response && error.response.status === 401) {
+            logOutAndRedirect();
+          }
+        });
       dispatch({ type: 'VALIDATE_SUCCESS' });
     } catch (err) {
       toast.error(getError(error));
@@ -155,13 +163,19 @@ export default function ReviewListPage() {
   const hideHandler = async (review) => {
     try {
       dispatch({ type: 'HIDE_REQUEST' });
-      await axios.put(
-        `/api/products/${review.product._id}/review/${review._id}/hide`,
-        [],
-        {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        }
-      );
+      await axios
+        .put(
+          `/api/products/${review.product._id}/review/${review._id}/hide`,
+          [],
+          {
+            headers: { Authorization: `Bearer ${userInfo.token}` },
+          }
+        )
+        .catch(function (error) {
+          if (error.response && error.response.status === 401) {
+            logOutAndRedirect();
+          }
+        });
       dispatch({ type: 'HIDE_SUCCESS' });
     } catch (err) {
       toast.error(getError(error));
@@ -175,12 +189,15 @@ export default function ReviewListPage() {
     if (window.confirm('Supprimer le commentaire?')) {
       try {
         dispatch({ type: 'DELETE_REQUEST' });
-        await axios.delete(
-          `/api/products/${review.product._id}/review/${review._id}`,
-          {
+        await axios
+          .delete(`/api/products/${review.product._id}/review/${review._id}`, {
             headers: { Authorization: `Bearer ${userInfo.token}` },
-          }
-        );
+          })
+          .catch(function (error) {
+            if (error.response && error.response.status === 401) {
+              logOutAndRedirect();
+            }
+          });
         dispatch({ type: 'DELETE_SUCCESS' });
       } catch (err) {
         toast.error(getError(error));

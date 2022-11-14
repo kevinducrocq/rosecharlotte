@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet-async';
 import { useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Store } from '../../Store';
-import { getError } from '../../utils';
+import { getError, logOutAndRedirect } from '../../utils';
 import LoadingBox from '../../components/LoadingBox';
 import MessageBox from '../../components/MessageBox';
 import AdminMenu from '../../components/AdminMenu';
@@ -51,9 +51,15 @@ export default function UserEditScreen() {
     const fetchData = async () => {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
-        const { data } = await axios.get(`/api/users/${userId}`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        });
+        const { data } = await axios
+          .get(`/api/users/${userId}`, {
+            headers: { Authorization: `Bearer ${userInfo.token}` },
+          })
+          .catch(function (error) {
+            if (error.response && error.response.status === 401) {
+              logOutAndRedirect();
+            }
+          });
         setName(data.name);
         setEmail(data.email);
         setIsAdmin(data.isAdmin);
@@ -72,13 +78,19 @@ export default function UserEditScreen() {
     e.preventDefault();
     try {
       dispatch({ type: 'UPDATE_REQUEST' });
-      await axios.put(
-        `/api/users/${userId}`,
-        { _id: userId, name, email, isAdmin },
-        {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        }
-      );
+      await axios
+        .put(
+          `/api/users/${userId}`,
+          { _id: userId, name, email, isAdmin },
+          {
+            headers: { Authorization: `Bearer ${userInfo.token}` },
+          }
+        )
+        .catch(function (error) {
+          if (error.response && error.response.status === 401) {
+            logOutAndRedirect();
+          }
+        });
       dispatch({
         type: 'UPDATE_SUCCESS',
       });

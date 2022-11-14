@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useReducer } from 'react';
 import axios from 'axios';
 import { Store } from '../../Store';
-import { getError } from '../../utils';
+import { getError, logOutAndRedirect } from '../../utils';
 import LoadingBox from '../../components/LoadingBox';
 import MessageBox from '../../components/MessageBox';
 import { Row, Col, Card, Container } from 'react-bootstrap';
@@ -37,9 +37,15 @@ export default function DashboardScreen() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await axios.get('/api/orders/summary', {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        });
+        const { data } = await axios
+          .get('/api/orders/summary', {
+            headers: { Authorization: `Bearer ${userInfo.token}` },
+          })
+          .catch(function (error) {
+            if (error.response && error.response.status === 401) {
+              logOutAndRedirect();
+            }
+          });
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {
         dispatch({

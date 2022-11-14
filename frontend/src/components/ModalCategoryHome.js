@@ -6,7 +6,7 @@ import { Button, Form, Modal, NavDropdown } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { toast } from 'react-toastify';
 import { Store } from '../Store';
-import { getError } from '../utils';
+import { getError, logOutAndRedirect } from '../utils';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -62,15 +62,21 @@ export default function ModalCategoryHome() {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(
-        `/api/settings/chosen-category`,
-        {
-          chosenCategory,
-        },
-        {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        }
-      );
+      await axios
+        .post(
+          `/api/settings/chosen-category`,
+          {
+            chosenCategory,
+          },
+          {
+            headers: { Authorization: `Bearer ${userInfo.token}` },
+          }
+        )
+        .catch(function (error) {
+          if (error.response && error.response.status === 401) {
+            logOutAndRedirect();
+          }
+        });
       toast.success(
         `Catégorie ${chosenCategory} a été ajoutée à l'ecran d'accueil`
       );

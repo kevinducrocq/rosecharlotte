@@ -7,3 +7,8 @@ export const getError = (error) => {
 export const dateFr = (date) => {
   return new Date(date).toLocaleDateString('fr-FR');
 };
+
+export const logOutAndRedirect = () => {
+  localStorage.removeItem('userInfo');
+  window.location.href = '/signin';
+};

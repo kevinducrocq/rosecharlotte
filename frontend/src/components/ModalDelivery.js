@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import { Store } from '../Store';
 import { useReducer } from 'react';
 import { toast } from 'react-toastify';
-import { getError } from '../utils';
+import { getError, logOutAndRedirect } from '../utils';
 import axios from 'axios';
 
 const reducer = (state, action) => {
@@ -79,17 +79,25 @@ function DeliveryAddressModal() {
 
   const updateUserAddress = async () => {
     try {
-      const { data } = await axios.put(
-        '/api/users/profile',
-        {
-          name,
-          address,
-          zip,
-          city,
-          country,
-        },
-        { headers: { Authorization: `Bearer ${userInfo.token}` } }
-      );
+      const { data } = await axios
+        .put(
+          '/api/users/profile',
+          {
+            name,
+            address,
+            zip,
+            city,
+            country,
+          },
+          {
+            headers: { Authorization: `Bearer ${userInfo.token}` },
+          }
+        )
+        .catch(function (error) {
+          if (error.response && error.response.status === 401) {
+            logOutAndRedirect();
+          }
+        });
       dispatch({ type: 'UPDATE_SUCCESS' });
       localStorage.setItem('userInfo', JSON.stringify(data));
       toast.success('Votre adresse a été mise à jour dans votre profil');

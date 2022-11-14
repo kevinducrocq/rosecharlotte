@@ -13,7 +13,7 @@ import {
 } from 'react-bootstrap';
 import { Helmet } from 'react-helmet-async';
 import { Store } from '../../Store';
-import { getError } from '../../utils';
+import { getError, logOutAndRedirect } from '../../utils';
 import LoadingBox from '../../components/LoadingBox';
 import MessageBox from '../../components/MessageBox';
 import {
@@ -102,9 +102,15 @@ export default function ProductAddPage() {
   useEffect(() => {
     const fetchFils = async () => {
       try {
-        const { data } = await axios.get('/api/fils', {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        });
+        const { data } = await axios
+          .get('/api/fils', {
+            headers: { Authorization: `Bearer ${userInfo.token}` },
+          })
+          .catch(function (error) {
+            if (error.response && error.response.status === 401) {
+              logOutAndRedirect();
+            }
+          });
         setAvailableFils(data);
       } catch (err) {
         toast.error(getError(err));
@@ -116,9 +122,15 @@ export default function ProductAddPage() {
   useEffect(() => {
     const fetchTissus = async () => {
       try {
-        const { data } = await axios.get('/api/tissus', {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        });
+        const { data } = await axios
+          .get('/api/tissus', {
+            headers: { Authorization: `Bearer ${userInfo.token}` },
+          })
+          .catch(function (error) {
+            if (error.response && error.response.status === 401) {
+              logOutAndRedirect();
+            }
+          });
         setAvailableTissus(data);
       } catch (err) {
         toast.error(getError(err));
@@ -130,9 +142,15 @@ export default function ProductAddPage() {
   useEffect(() => {
     const fetchPatches = async () => {
       try {
-        const { data } = await axios.get('/api/patches', {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        });
+        const { data } = await axios
+          .get('/api/patches', {
+            headers: { Authorization: `Bearer ${userInfo.token}` },
+          })
+          .catch(function (error) {
+            if (error.response && error.response.status === 401) {
+              logOutAndRedirect();
+            }
+          });
         setAvailablePatches(data);
       } catch (err) {
         toast.error(getError(err));
@@ -183,30 +201,36 @@ export default function ProductAddPage() {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(
-        `/api/products/add`,
-        {
-          name,
-          price,
-          promoPrice,
-          soldePrice,
-          weight,
-          image,
-          images,
-          category,
-          subCategory,
-          countInStock,
-          description,
-          variants,
-          customizable,
-          fils,
-          tissus,
-          patches,
-        },
-        {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        }
-      );
+      await axios
+        .post(
+          `/api/products/add`,
+          {
+            name,
+            price,
+            promoPrice,
+            soldePrice,
+            weight,
+            image,
+            images,
+            category,
+            subCategory,
+            countInStock,
+            description,
+            variants,
+            customizable,
+            fils,
+            tissus,
+            patches,
+          },
+          {
+            headers: { Authorization: `Bearer ${userInfo.token}` },
+          }
+        )
+        .catch(function (error) {
+          if (error.response && error.response.status === 401) {
+            logOutAndRedirect();
+          }
+        });
       toast.success('Produit ajouté');
       navigate('/admin/products');
     } catch (err) {
@@ -220,12 +244,18 @@ export default function ProductAddPage() {
     bodyFormData.append('file', file);
     try {
       dispatch({ type: 'UPLOAD_REQUEST' });
-      const { data } = await axios.post('/api/upload/image', bodyFormData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-          authorization: `Bearer ${userInfo.token}`,
-        },
-      });
+      const { data } = await axios
+        .post('/api/upload/image', bodyFormData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+            authorization: `Bearer ${userInfo.token}`,
+          },
+        })
+        .catch(function (error) {
+          if (error.response && error.response.status === 401) {
+            logOutAndRedirect();
+          }
+        });
       dispatch({ type: 'UPLOAD_SUCCESS' });
 
       if (forImages) {
