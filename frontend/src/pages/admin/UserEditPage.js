@@ -10,6 +10,7 @@ import LoadingBox from '../../components/LoadingBox';
 import MessageBox from '../../components/MessageBox';
 import AdminMenu from '../../components/AdminMenu';
 import AdminCanvasMenu from '../../components/AdminCanvasMenu';
+import { logOutAndRedirect } from '../../../../backend/utils';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -51,9 +52,16 @@ export default function UserEditScreen() {
     const fetchData = async () => {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
-        const { data } = await axios.get(`/api/users/${userId}`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        });
+        const { data } = await axios.get(
+          `/api/users/${userId}`,
+          {
+            headers: { Authorization: `Bearer ${userInfo.token}` },
+          }.catch(function (error) {
+            if (error.response && error.response.status === 401) {
+              logOutAndRedirect();
+            }
+          })
+        );
         setName(data.name);
         setEmail(data.email);
         setIsAdmin(data.isAdmin);
@@ -76,7 +84,13 @@ export default function UserEditScreen() {
         `/api/users/${userId}`,
         { _id: userId, name, email, isAdmin },
         {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: { Authorization: `Bearer ${userInfo.token}` }.catch(
+            function (error) {
+              if (error.response && error.response.status === 401) {
+                logOutAndRedirect();
+              }
+            }
+          ),
         }
       );
       dispatch({

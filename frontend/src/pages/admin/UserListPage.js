@@ -19,6 +19,7 @@ import 'datatables.net-dt/js/dataTables.dataTables';
 import 'datatables.net-dt/css/jquery.dataTables.min.css';
 import $ from 'jquery';
 import AdminCanvasMenu from '../../components/AdminCanvasMenu';
+import { logOutAndRedirect } from '../../../../backend/utils';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -68,7 +69,13 @@ export default function UserListScreen() {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
         const { data } = await axios.get(`/api/users`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: { Authorization: `Bearer ${userInfo.token}` }.catch(
+            function (error) {
+              if (error.response && error.response.status === 401) {
+                logOutAndRedirect();
+              }
+            }
+          ),
         });
         setTimeout(() => {
           const table = $(tableRef.current).DataTable({
@@ -101,7 +108,13 @@ export default function UserListScreen() {
       try {
         dispatch({ type: 'DELETE_REQUEST' });
         await axios.delete(`/api/users/${user._id}`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: { Authorization: `Bearer ${userInfo.token}` }.catch(
+            function (error) {
+              if (error.response && error.response.status === 401) {
+                logOutAndRedirect();
+              }
+            }
+          ),
         });
         toast.success('Utilisateur supprimé');
         dispatch({ type: 'DELETE_SUCCESS' });

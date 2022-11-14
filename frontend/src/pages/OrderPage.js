@@ -21,6 +21,7 @@ import {
 import { Link } from 'react-router-dom';
 
 import StripeContainer from '../components/StripeContainer';
+import { logOutAndRedirect } from '../../../backend/utils';
 
 function reducer(state, action) {
   switch (action.type) {
@@ -121,7 +122,15 @@ export default function OrderPage() {
         const { data } = await axios.put(
           `/api/orders/${order._id}/pay`,
           { details },
-          { headers: { authorization: `Bearer ${userInfo.token}` } }
+          {
+            headers: { authorization: `Bearer ${userInfo.token}` }.catch(
+              function (error) {
+                if (error.response && error.response.status === 401) {
+                  logOutAndRedirect();
+                }
+              }
+            ),
+          }
         );
         dispatch({ type: 'PAY_SUCCESS', payload: data });
         toast.success('Commande payée avec succès');
@@ -141,7 +150,13 @@ export default function OrderPage() {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
         const { data } = await axios.get(`/api/orders/${orderId}`, {
-          headers: { authorization: `Bearer ${userInfo.token}` },
+          headers: { authorization: `Bearer ${userInfo.token}` }.catch(
+            function (error) {
+              if (error.response && error.response.status === 401) {
+                logOutAndRedirect();
+              }
+            }
+          ),
         });
         if (data.paymentMethod === 'Chèque' && !data.isPaid) {
           setShowModalCheque(true);
@@ -179,7 +194,13 @@ export default function OrderPage() {
     } else {
       const loadPaypalScript = async () => {
         const { data: clientId } = await axios.get('/api/keys/paypal', {
-          headers: { authorization: `Bearer ${userInfo.token}` },
+          headers: { authorization: `Bearer ${userInfo.token}` }.catch(
+            function (error) {
+              if (error.response && error.response.status === 401) {
+                logOutAndRedirect();
+              }
+            }
+          ),
         });
         paypalDispatch({
           type: 'resetOptions',
@@ -212,7 +233,13 @@ export default function OrderPage() {
         `/api/orders/${order._id}/deliver`,
         {},
         {
-          headers: { authorization: `Bearer ${userInfo.token}` },
+          headers: { authorization: `Bearer ${userInfo.token}` }.catch(
+            function (error) {
+              if (error.response && error.response.status === 401) {
+                logOutAndRedirect();
+              }
+            }
+          ),
         }
       );
       dispatch({ type: 'DELIVER_SUCCESS', payload: data });
@@ -230,7 +257,13 @@ export default function OrderPage() {
         `/api/orders/${order._id}/is-paid`,
         {},
         {
-          headers: { authorization: `Bearer ${userInfo.token}` },
+          headers: { authorization: `Bearer ${userInfo.token}` }.catch(
+            function (error) {
+              if (error.response && error.response.status === 401) {
+                logOutAndRedirect();
+              }
+            }
+          ),
         }
       );
       dispatch({ type: 'IS_PAID_SUCCESS', payload: data });

@@ -11,6 +11,7 @@ import axios from 'axios';
 import { Store } from '../Store';
 import { toast } from 'react-toastify';
 import LoadingBox from './LoadingBox';
+import { logOutAndRedirect } from '../../../backend/utils';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -66,7 +67,13 @@ function ModalEditCarouselHome({ id, onEditSuccess }) {
         try {
           dispatch({ type: 'FETCH_REQUEST' });
           const { data } = await axios.get(`/api/settings/${carouselId}`, {
-            headers: { Authorization: `Bearer ${userInfo.token}` },
+            headers: { Authorization: `Bearer ${userInfo.token}` }.catch(
+              function (error) {
+                if (error.response && error.response.status === 401) {
+                  logOutAndRedirect();
+                }
+              }
+            ),
           });
           setFirstImage(data.firstImage);
           setSecondImage(data.secondImage);
@@ -102,7 +109,13 @@ function ModalEditCarouselHome({ id, onEditSuccess }) {
           thirdText,
         },
         {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: { Authorization: `Bearer ${userInfo.token}` }.catch(
+            function (error) {
+              if (error.response && error.response.status === 401) {
+                logOutAndRedirect();
+              }
+            }
+          ),
         }
       );
       onEditSuccess();
@@ -130,7 +143,11 @@ function ModalEditCarouselHome({ id, onEditSuccess }) {
         headers: {
           'Content-Type': 'multipart/form-data',
           authorization: `Bearer ${userInfo.token}`,
-        },
+        }.catch(function (error) {
+          if (error.response && error.response.status === 401) {
+            logOutAndRedirect();
+          }
+        }),
       });
       if (firstImage) {
         setFirstImage(data.path);
@@ -152,7 +169,11 @@ function ModalEditCarouselHome({ id, onEditSuccess }) {
         headers: {
           'Content-Type': 'multipart/form-data',
           authorization: `Bearer ${userInfo.token}`,
-        },
+        }.catch(function (error) {
+          if (error.response && error.response.status === 401) {
+            logOutAndRedirect();
+          }
+        }),
       });
       if (secondImage) {
         setSecondImage(data.path);
@@ -174,7 +195,11 @@ function ModalEditCarouselHome({ id, onEditSuccess }) {
         headers: {
           'Content-Type': 'multipart/form-data',
           authorization: `Bearer ${userInfo.token}`,
-        },
+        }.catch(function (error) {
+          if (error.response && error.response.status === 401) {
+            logOutAndRedirect();
+          }
+        }),
       });
       if (thirdImage) {
         setThirdImage(data.path);

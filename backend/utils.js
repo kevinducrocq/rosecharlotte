@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import { Store } from '../frontend/src/Store';
 
 export const generateToken = (user) => {
   return jwt.sign(
@@ -38,4 +39,12 @@ export const isAdmin = (req, res, next) => {
   } else {
     res.status(401).send({ message: 'Invalid Admin Token' });
   }
+};
+
+const { dispatch: ctxDispatch } = useContext(Store);
+
+export const logOutAndRedirect = () => {
+  ctxDispatch({ type: 'USER_SIGNOUT' });
+  localStorage.removeItem('userInfo');
+  window.location.href = '/signin';
 };

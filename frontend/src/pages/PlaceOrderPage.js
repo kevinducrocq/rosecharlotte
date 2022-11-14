@@ -18,6 +18,7 @@ import axios from 'axios';
 import LoadingBox from '../components/LoadingBox';
 import { faPenToSquare } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { logOutAndRedirect } from '../../../backend/utils';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -110,7 +111,15 @@ export default function PlaceOrderPage() {
           shippingPrice: cart.shippingPrice,
           totalPrice: cart.totalPrice,
         },
-        { headers: { authorization: `Bearer ${userInfo.token}` } }
+        {
+          headers: { authorization: `Bearer ${userInfo.token}` }.catch(
+            function (error) {
+              if (error.response && error.response.status === 401) {
+                logOutAndRedirect();
+              }
+            }
+          ),
+        }
       );
       ctxDispatch({ type: 'CART_CLEAR' });
       dispatch({ type: 'CREATE-SUCCESS' });
@@ -128,7 +137,13 @@ export default function PlaceOrderPage() {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
         const { data } = await axios.get(`/api/orders/orders-by-user`, {
-          headers: { authorization: `Bearer ${userInfo.token}` },
+          headers: { authorization: `Bearer ${userInfo.token}` }.catch(
+            function (error) {
+              if (error.response && error.response.status === 401) {
+                logOutAndRedirect();
+              }
+            }
+          ),
         });
         if (data.length === 0) {
           setDiscount(0);

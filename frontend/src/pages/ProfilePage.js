@@ -15,6 +15,7 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import LoadingBox from '../components/LoadingBox';
 import { LinkContainer } from 'react-router-bootstrap';
+import { logOutAndRedirect } from '../../../backend/utils';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -59,7 +60,15 @@ const ProfilePage = () => {
           city,
           country,
         },
-        { headers: { Authorization: `Bearer ${userInfo.token}` } }
+        {
+          headers: { Authorization: `Bearer ${userInfo.token}` }.catch(
+            function (error) {
+              if (error.response && error.response.status === 401) {
+                logOutAndRedirect();
+              }
+            }
+          ),
+        }
       );
       dispatch({ type: 'UPDATE_SUCCESS' });
       ctxDispatch({ type: 'USER_SIGNIN', payload: data });
@@ -83,7 +92,15 @@ const ProfilePage = () => {
           {
             password,
           },
-          { headers: { Authorization: `Bearer ${userInfo.token}` } }
+          {
+            headers: { Authorization: `Bearer ${userInfo.token}` }.catch(
+              function (error) {
+                if (error.response && error.response.status === 401) {
+                  logOutAndRedirect();
+                }
+              }
+            ),
+          }
         );
         dispatch({ type: 'UPDATE_SUCCESS' });
         ctxDispatch({ type: 'USER_SIGNIN', payload: data });

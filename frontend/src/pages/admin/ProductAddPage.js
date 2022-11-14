@@ -26,6 +26,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import AdminMenu from '../../components/AdminMenu';
 import ProductVariants from '../../components/ProductVariants';
 import AdminCanvasMenu from '../../components/AdminCanvasMenu';
+import { logOutAndRedirect } from '../../../../backend/utils';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -104,7 +105,13 @@ export default function ProductAddPage() {
     const fetchFils = async () => {
       try {
         const { data } = await axios.get('/api/fils', {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: { Authorization: `Bearer ${userInfo.token}` }.catch(
+            function (error) {
+              if (error.response && error.response.status === 401) {
+                logOutAndRedirect();
+              }
+            }
+          ),
         });
         setAvailableFils(data);
       } catch (err) {
@@ -118,7 +125,13 @@ export default function ProductAddPage() {
     const fetchTissus = async () => {
       try {
         const { data } = await axios.get('/api/tissus', {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: { Authorization: `Bearer ${userInfo.token}` }.catch(
+            function (error) {
+              if (error.response && error.response.status === 401) {
+                logOutAndRedirect();
+              }
+            }
+          ),
         });
         setAvailableTissus(data);
       } catch (err) {
@@ -132,7 +145,13 @@ export default function ProductAddPage() {
     const fetchPatches = async () => {
       try {
         const { data } = await axios.get('/api/patches', {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: { Authorization: `Bearer ${userInfo.token}` }.catch(
+            function (error) {
+              if (error.response && error.response.status === 401) {
+                logOutAndRedirect();
+              }
+            }
+          ),
         });
         setAvailablePatches(data);
       } catch (err) {
@@ -186,7 +205,13 @@ export default function ProductAddPage() {
           patches,
         },
         {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: { Authorization: `Bearer ${userInfo.token}` }.catch(
+            function (error) {
+              if (error.response && error.response.status === 401) {
+                logOutAndRedirect();
+              }
+            }
+          ),
         }
       );
       toast.success('Produit ajouté');

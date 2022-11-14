@@ -18,6 +18,7 @@ import 'datatables.net-dt/css/jquery.dataTables.min.css';
 import $ from 'jquery';
 import AdminCanvasMenu from '../../components/AdminCanvasMenu';
 import { Link } from 'react-router-dom';
+import { logOutAndRedirect } from '../../../../backend/utils';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -99,7 +100,13 @@ export default function ReviewListPage() {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
         const { data } = await axios.get(`/api/products/reviews`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: { Authorization: `Bearer ${userInfo.token}` }.catch(
+            function (error) {
+              if (error.response && error.response.status === 401) {
+                logOutAndRedirect();
+              }
+            }
+          ),
         });
 
         setTimeout(() => {
@@ -140,7 +147,13 @@ export default function ReviewListPage() {
         `/api/products/${review.product._id}/review/${review._id}`,
         [],
         {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: { Authorization: `Bearer ${userInfo.token}` }.catch(
+            function (error) {
+              if (error.response && error.response.status === 401) {
+                logOutAndRedirect();
+              }
+            }
+          ),
         }
       );
       dispatch({ type: 'VALIDATE_SUCCESS' });
@@ -159,7 +172,13 @@ export default function ReviewListPage() {
         `/api/products/${review.product._id}/review/${review._id}/hide`,
         [],
         {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: { Authorization: `Bearer ${userInfo.token}` }.catch(
+            function (error) {
+              if (error.response && error.response.status === 401) {
+                logOutAndRedirect();
+              }
+            }
+          ),
         }
       );
       dispatch({ type: 'HIDE_SUCCESS' });
@@ -178,7 +197,13 @@ export default function ReviewListPage() {
         await axios.delete(
           `/api/products/${review.product._id}/review/${review._id}`,
           {
-            headers: { Authorization: `Bearer ${userInfo.token}` },
+            headers: { Authorization: `Bearer ${userInfo.token}` }.catch(
+              function (error) {
+                if (error.response && error.response.status === 401) {
+                  logOutAndRedirect();
+                }
+              }
+            ),
           }
         );
         dispatch({ type: 'DELETE_SUCCESS' });

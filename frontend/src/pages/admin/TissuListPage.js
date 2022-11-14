@@ -25,6 +25,7 @@ import 'datatables.net-dt/js/dataTables.dataTables';
 import 'datatables.net-dt/css/jquery.dataTables.min.css';
 import $ from 'jquery';
 import ModalTissuEdit from '../../components/ModalEditTissu';
+import { logOutAndRedirect } from '../../../../backend/utils';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -99,7 +100,13 @@ export default function TissuListPage() {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
         const { data } = await axios.get(`/api/tissus`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: { Authorization: `Bearer ${userInfo.token}` }.catch(
+            function (error) {
+              if (error.response && error.response.status === 401) {
+                logOutAndRedirect();
+              }
+            }
+          ),
         });
         setTimeout(() => {
           const table = $(tableRef.current).DataTable({
@@ -142,7 +149,13 @@ export default function TissuListPage() {
           image,
         },
         {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: { Authorization: `Bearer ${userInfo.token}` }.catch(
+            function (error) {
+              if (error.response && error.response.status === 401) {
+                logOutAndRedirect();
+              }
+            }
+          ),
         }
       );
       dispatch({ type: 'ADD_SUCCESS' });
@@ -166,7 +179,11 @@ export default function TissuListPage() {
         headers: {
           'Content-Type': 'multipart/form-data',
           authorization: `Bearer ${userInfo.token}`,
-        },
+        }.catch(function (error) {
+          if (error.response && error.response.status === 401) {
+            logOutAndRedirect();
+          }
+        }),
       });
       dispatch({ type: 'UPLOAD_SUCCESS' });
       setImage(data.path);
@@ -180,9 +197,16 @@ export default function TissuListPage() {
     if (window.confirm('Confirmer ?')) {
       try {
         dispatch({ type: 'DELETE_REQUEST' });
-        await axios.delete(`/api/tissus/${tissu._id}`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        });
+        await axios.delete(
+          `/api/tissus/${tissu._id}`,
+          {
+            headers: { Authorization: `Bearer ${userInfo.token}` },
+          }.catch(function (error) {
+            if (error.response && error.response.status === 401) {
+              logOutAndRedirect();
+            }
+          })
+        );
 
         dispatch({ type: 'DELETE_SUCCESS' });
       } catch (err) {

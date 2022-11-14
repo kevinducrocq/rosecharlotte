@@ -9,6 +9,7 @@ import { Link } from 'react-router-dom';
 import AdminMenu from '../../components/AdminMenu';
 import AdminCanvasMenu from '../../components/AdminCanvasMenu';
 import Chart from 'react-google-charts';
+import { logOutAndRedirect } from '../../../../backend/utils';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -38,7 +39,13 @@ export default function DashboardScreen() {
     const fetchData = async () => {
       try {
         const { data } = await axios.get('/api/orders/summary', {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: { Authorization: `Bearer ${userInfo.token}` }.catch(
+            function (error) {
+              if (error.response && error.response.status === 401) {
+                logOutAndRedirect();
+              }
+            }
+          ),
         });
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {

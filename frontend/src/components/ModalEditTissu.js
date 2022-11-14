@@ -11,6 +11,7 @@ import axios from 'axios';
 import { Store } from '../Store';
 import { toast } from 'react-toastify';
 import LoadingBox from './LoadingBox';
+import { logOutAndRedirect } from '../../../backend/utils';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -62,7 +63,13 @@ function ModalTissuEdit({ id, onEditSuccess }) {
         try {
           dispatch({ type: 'FETCH_REQUEST' });
           const { data } = await axios.get(`/api/tissus/${tissuId}`, {
-            headers: { Authorization: `Bearer ${userInfo.token}` },
+            headers: { Authorization: `Bearer ${userInfo.token}` }.catch(
+              function (error) {
+                if (error.response && error.response.status === 401) {
+                  logOutAndRedirect();
+                }
+              }
+            ),
           });
           setName(data.name);
           setImage(data.image);
@@ -90,7 +97,13 @@ function ModalTissuEdit({ id, onEditSuccess }) {
           image,
         },
         {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: { Authorization: `Bearer ${userInfo.token}` }.catch(
+            function (error) {
+              if (error.response && error.response.status === 401) {
+                logOutAndRedirect();
+              }
+            }
+          ),
         }
       );
       onEditSuccess();
@@ -114,7 +127,7 @@ function ModalTissuEdit({ id, onEditSuccess }) {
     bodyFormData.append('file', file);
     try {
       dispatch({ type: 'UPLOAD_REQUEST' });
-      const {data} = await axios.post('/api/upload/image', bodyFormData, {
+      const { data } = await axios.post('/api/upload/image', bodyFormData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           authorization: `Bearer ${userInfo.token}`,

@@ -5,6 +5,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Button, Form, Modal, NavDropdown } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { toast } from 'react-toastify';
+import { logOutAndRedirect } from '../../../backend/utils';
 import { Store } from '../Store';
 import { getError } from '../utils';
 
@@ -69,7 +70,11 @@ export default function ModalCategoryHome() {
         },
         {
           headers: { Authorization: `Bearer ${userInfo.token}` },
-        }
+        }.catch(function (error) {
+          if (error.response && error.response.status === 401) {
+            logOutAndRedirect();
+          }
+        })
       );
       toast.success(
         `Catégorie ${chosenCategory} a été ajoutée à l'ecran d'accueil`

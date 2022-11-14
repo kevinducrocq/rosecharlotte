@@ -13,6 +13,7 @@ import {
 import { Helmet } from 'react-helmet-async';
 import { LinkContainer } from 'react-router-bootstrap';
 import { toast } from 'react-toastify';
+import { logOutAndRedirect } from '../../../../backend/utils';
 import AdminCanvasMenu from '../../components/AdminCanvasMenu';
 import AdminMenu from '../../components/AdminMenu';
 import LoadingBox from '../../components/LoadingBox';
@@ -98,7 +99,13 @@ export default function SettingsPage() {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
         const { data } = await axios.get(`/api/settings/`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: { Authorization: `Bearer ${userInfo.token}` }.catch(
+            function (error) {
+              if (error.response && error.response.status === 401) {
+                logOutAndRedirect();
+              }
+            }
+          ),
         });
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {
@@ -125,7 +132,13 @@ export default function SettingsPage() {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
         const { data } = await axios.get(`/api/settings/chosen-categories`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: { Authorization: `Bearer ${userInfo.token}` }.catch(
+            function (error) {
+              if (error.response && error.response.status === 401) {
+                logOutAndRedirect();
+              }
+            }
+          ),
         });
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {

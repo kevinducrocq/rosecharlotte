@@ -33,6 +33,7 @@ import 'datatables.net-dt/css/jquery.dataTables.min.css';
 import $ from 'jquery';
 import { Helmet } from 'react-helmet-async';
 import AdminCanvasMenu from '../../components/AdminCanvasMenu';
+import { logOutAndRedirect } from '../../../../backend/utils';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -141,7 +142,13 @@ export default function ProductListScreen() {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
         const { data } = await axios.get(`/api/products/admin?page=${page} `, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: { Authorization: `Bearer ${userInfo.token}` }.catch(
+            function (error) {
+              if (error.response && error.response.status === 401) {
+                logOutAndRedirect();
+              }
+            }
+          ),
         });
 
         setTimeout(() => {
@@ -183,7 +190,13 @@ export default function ProductListScreen() {
     try {
       dispatch({ type: 'VALIDATE_REQUEST' });
       await axios.put(`/api/products/${product._id}/validate`, [], {
-        headers: { Authorization: `Bearer ${userInfo.token}` },
+        headers: { Authorization: `Bearer ${userInfo.token}` }.catch(function (
+          error
+        ) {
+          if (error.response && error.response.status === 401) {
+            logOutAndRedirect();
+          }
+        }),
       });
       dispatch({ type: 'VALIDATE_SUCCESS' });
     } catch (err) {
@@ -198,7 +211,13 @@ export default function ProductListScreen() {
     try {
       dispatch({ type: 'HIDE_REQUEST' });
       await axios.put(`/api/products/${product._id}/hide`, [], {
-        headers: { Authorization: `Bearer ${userInfo.token}` },
+        headers: { Authorization: `Bearer ${userInfo.token}` }.catch(function (
+          error
+        ) {
+          if (error.response && error.response.status === 401) {
+            logOutAndRedirect();
+          }
+        }),
       });
       dispatch({ type: 'HIDE_SUCCESS' });
     } catch (err) {
@@ -213,7 +232,13 @@ export default function ProductListScreen() {
     if (window.confirm('Confirmer ?')) {
       try {
         await axios.delete(`/api/products/${product._id}`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: { Authorization: `Bearer ${userInfo.token}` }.catch(
+            function (error) {
+              if (error.response && error.response.status === 401) {
+                logOutAndRedirect();
+              }
+            }
+          ),
         });
         toast.success('Produit supprimé');
         dispatch({ type: 'DELETE_SUCCESS' });

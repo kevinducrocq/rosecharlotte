@@ -17,6 +17,7 @@ import { useReducer } from 'react';
 import { toast } from 'react-toastify';
 import { getError } from '../utils';
 import axios from 'axios';
+import { logOutAndRedirect } from '../../../backend/utils';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -88,7 +89,13 @@ function DeliveryAddressModal() {
           city,
           country,
         },
-        { headers: { Authorization: `Bearer ${userInfo.token}` } }
+        { headers: { Authorization: `Bearer ${userInfo.token}` } }.catch(
+          function (error) {
+            if (error.response && error.response.status === 401) {
+              logOutAndRedirect();
+            }
+          }
+        )
       );
       dispatch({ type: 'UPDATE_SUCCESS' });
       localStorage.setItem('userInfo', JSON.stringify(data));

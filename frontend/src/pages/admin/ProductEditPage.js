@@ -26,6 +26,7 @@ import {
 import AdminMenu from '../../components/AdminMenu';
 import ProductVariants from '../../components/ProductVariants';
 import AdminCanvasMenu from '../../components/AdminCanvasMenu';
+import { logOutAndRedirect } from '../../../../backend/utils';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -163,7 +164,13 @@ export default function ProductEditPage() {
     const fetchFils = async () => {
       try {
         const { data } = await axios.get('/api/fils', {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: { Authorization: `Bearer ${userInfo.token}` }.catch(
+            function (error) {
+              if (error.response && error.response.status === 401) {
+                logOutAndRedirect();
+              }
+            }
+          ),
         });
         setAvailableFils(data);
       } catch (err) {
@@ -176,9 +183,16 @@ export default function ProductEditPage() {
   useEffect(() => {
     const fetchTissus = async () => {
       try {
-        const { data } = await axios.get('/api/tissus', {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        });
+        const { data } = await axios.get(
+          '/api/tissus',
+          {
+            headers: { Authorization: `Bearer ${userInfo.token}` },
+          }.catch(function (error) {
+            if (error.response && error.response.status === 401) {
+              logOutAndRedirect();
+            }
+          })
+        );
         setAvailableTissus(data);
       } catch (err) {
         toast.error(getError(err));
@@ -191,7 +205,13 @@ export default function ProductEditPage() {
     const fetchPatches = async () => {
       try {
         const { data } = await axios.get('/api/patches', {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: { Authorization: `Bearer ${userInfo.token}` }.catch(
+            function (error) {
+              if (error.response && error.response.status === 401) {
+                logOutAndRedirect();
+              }
+            }
+          ),
         });
         setAvailablePatches(data);
       } catch (err) {
@@ -265,7 +285,13 @@ export default function ProductEditPage() {
           patches,
         },
         {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
+          headers: { Authorization: `Bearer ${userInfo.token}` }.catch(
+            function (error) {
+              if (error.response && error.response.status === 401) {
+                logOutAndRedirect();
+              }
+            }
+          ),
         }
       );
       dispatch({

@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye } from '@fortawesome/pro-solid-svg-icons';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Link } from 'react-router-dom';
+import { logOutAndRedirect } from '../../../backend/utils';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -40,7 +41,13 @@ const OrderHistoryPage = () => {
       dispatch({ type: 'FETCH_REQUEST' });
       try {
         const { data } = await axios.get(`/api/orders/mine`, {
-          headers: { authorization: `Bearer ${userInfo.token}` },
+          headers: { authorization: `Bearer ${userInfo.token}` }.catch(
+            function (error) {
+              if (error.response && error.response.status === 401) {
+                logOutAndRedirect();
+              }
+            }
+          ),
         });
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {
