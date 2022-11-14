@@ -1,4 +1,4 @@
-import { faTrash } from '@fortawesome/pro-solid-svg-icons';
+import { faEuroSign, faTrash } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
 import { Button, Col, Form, InputGroup, Row } from 'react-bootstrap';
@@ -6,6 +6,7 @@ import { Button, Col, Form, InputGroup, Row } from 'react-bootstrap';
 function ProductVariants(props) {
   const [name, setName] = useState(props.variant.name);
   const [weight, setWeight] = useState(props.variant.weight);
+  const [price, setPrice] = useState(props.variant.price);
   const [countInStock, setCountInStock] = useState(props.variant.countInStock);
 
   const change = () => {
@@ -14,6 +15,7 @@ function ProductVariants(props) {
       name,
       countInStock,
       weight,
+      price,
     });
   };
 
@@ -21,20 +23,21 @@ function ProductVariants(props) {
     setName(props.variant.name);
     setCountInStock(props.variant.countInStock);
     setWeight(props.variant.weight);
+    setPrice(props.variant.price);
   }, [props.variant]);
 
   useEffect(() => {
     change();
-  }, [name, countInStock, weight]);
+  }, [name, countInStock, weight, price]);
 
   return (
     <>
       <div className="my-3">
         <Row>
-          <Col md={3}>
+          <Col>
             <Form.Group className="mb-3" controlId="name">
               <Form.Control
-                placeholder="Nom de la variante"
+                placeholder="Nom variante"
                 value={name}
                 onChange={(e) => {
                   setName(e.target.value);
@@ -42,7 +45,7 @@ function ProductVariants(props) {
               />
             </Form.Group>
           </Col>
-          <Col md={3}>
+          <Col>
             <Form.Group className="mb-3" controlId="weight">
               <InputGroup className="mb-3">
                 <Form.Control
@@ -52,11 +55,25 @@ function ProductVariants(props) {
                     setWeight(e.target.value);
                   }}
                 />
-                <InputGroup.Text>grammes</InputGroup.Text>
+                <InputGroup.Text>g</InputGroup.Text>
               </InputGroup>
             </Form.Group>
           </Col>
-          <Col md={3}>
+          <Col>
+            <Form.Group className="mb-3" controlId="variantPrice">
+              <InputGroup className="mb-3">
+                <Form.Control
+                  value={price}
+                  onChange={(e) => setPrice(e.target.value)}
+                  required
+                />
+                <InputGroup.Text>
+                  <FontAwesomeIcon icon={faEuroSign} />
+                </InputGroup.Text>
+              </InputGroup>
+            </Form.Group>
+          </Col>
+          <Col>
             <Form.Group className="mb-3" controlId="countInStock">
               <Form.Control
                 placeholder="Stock"
@@ -67,7 +84,8 @@ function ProductVariants(props) {
               />
             </Form.Group>
           </Col>
-          <Col md={3}>
+
+          <Col>
             <Button
               variant="warning"
               onClick={() => props.removeVariant(props.index)}

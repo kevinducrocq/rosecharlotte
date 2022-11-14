@@ -16,6 +16,7 @@ const variantSchema = new mongoose.Schema({
   name: { type: String, required: true },
   weight: { type: Number, required: true },
   countInStock: { type: Number, required: true },
+  price: { type: Number },
 });
 
 const productSchema = new mongoose.Schema(
@@ -29,7 +30,7 @@ const productSchema = new mongoose.Schema(
     subCategory: { type: String },
     subCategorySlug: { type: String },
     description: { type: String, required: true },
-    price: { type: Number, required: true },
+    price: { type: Number },
     promoPrice: { type: Number },
     soldePrice: { type: Number },
     weight: { type: Number },

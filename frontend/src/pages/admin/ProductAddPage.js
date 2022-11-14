@@ -563,7 +563,6 @@ export default function ProductAddPage() {
                         <Form.Control
                           value={price}
                           onChange={(e) => setPrice(e.target.value)}
-                          required
                         />
                         <InputGroup.Text>
                           <FontAwesomeIcon icon={faEuroSign} />

@@ -47,15 +47,18 @@ export default function PlaceOrderPage() {
   const [cart, setCart] = useState({ ...storeCart });
 
   const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100;
+
   const recalculatePrices = () => {
     const newCart = { ...cart };
+
     newCart.itemsPrice = round2(
       newCart.cartItems.reduce(
-        (price, item) => price + item.quantity * item.price,
+        (price, item) =>
+          price + item.quantity * (item.price || item.variant.price),
         0
       )
     );
-
+    console.log(newCart.itemsPrice);
     newCart.itemsPriceWithDiscount = round2(
       (newCart.itemsPrice * (100 - discount)) / 100
     );
@@ -99,27 +102,22 @@ export default function PlaceOrderPage() {
   const placeOrderHandler = async () => {
     try {
       dispatch({ type: 'CREATE_REQUEST' });
-      const { data } = await axios
-        .post(
-          '/api/orders',
-          {
-            orderItems: cart.cartItems,
-            shippingAddress: cart.shippingAddress,
-            paymentMethod: cart.paymentMethod,
-            deliveryMethod: cart.deliveryMethod,
-            itemsPrice: cart.itemsPrice,
-            shippingPrice: cart.shippingPrice,
-            totalPrice: cart.totalPrice,
-          },
-          {
-            headers: { authorization: `Bearer ${userInfo.token}` },
-          }
-        )
-        .catch(function (error) {
-          if (error.response && error.response.status === 401) {
-            logOutAndRedirect();
-          }
-        });
+      const { data } = await axios.post(
+        '/api/orders',
+        {
+          orderItems: cart.cartItems,
+          shippingAddress: cart.shippingAddress,
+          paymentMethod: cart.paymentMethod,
+          deliveryMethod: cart.deliveryMethod,
+          itemsPrice: cart.itemsPrice,
+          shippingPrice: cart.shippingPrice,
+          totalPrice: cart.totalPrice,
+        },
+        {
+          headers: { authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+
       ctxDispatch({ type: 'CART_CLEAR' });
       dispatch({ type: 'CREATE-SUCCESS' });
       localStorage.removeItem('cartItems');
@@ -318,7 +316,9 @@ export default function PlaceOrderPage() {
                         <span>x {item.quantity}</span>
                       </Col>
 
-                      <Col md={2}>{item.price} &euro;</Col>
+                      <Col md={2}>
+                        {item.price || item.variant.price} &euro;
+                      </Col>
                     </Row>
                   </ListGroup.Item>
                 ))}

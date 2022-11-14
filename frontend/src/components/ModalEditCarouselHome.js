@@ -65,15 +65,9 @@ function ModalEditCarouselHome({ id, onEditSuccess }) {
       const fetchData = async () => {
         try {
           dispatch({ type: 'FETCH_REQUEST' });
-          const { data } = await axios
-            .get(`/api/settings/${carouselId}`, {
-              headers: { Authorization: `Bearer ${userInfo.token}` },
-            })
-            .catch(function (error) {
-              if (error.response && error.response.status === 401) {
-                logOutAndRedirect();
-              }
-            });
+          const { data } = await axios.get(`/api/settings/${carouselId}`, {
+            headers: { Authorization: `Bearer ${userInfo.token}` },
+          });
           setFirstImage(data.firstImage);
           setSecondImage(data.secondImage);
           setThirdImage(data.thirdImage);
@@ -138,18 +132,13 @@ function ModalEditCarouselHome({ id, onEditSuccess }) {
     bodyFormData.append('file', file);
     try {
       dispatch({ type: 'UPLOAD_REQUEST' });
-      const { data } = await axios
-        .post('/api/upload/image', bodyFormData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            authorization: `Bearer ${userInfo.token}`,
-          },
-        })
-        .catch(function (error) {
-          if (error.response && error.response.status === 401) {
-            logOutAndRedirect();
-          }
-        });
+      const { data } = await axios.post('/api/upload/image', bodyFormData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          authorization: `Bearer ${userInfo.token}`,
+        },
+      });
+
       if (firstImage) {
         setFirstImage(data.path);
       }
@@ -166,18 +155,13 @@ function ModalEditCarouselHome({ id, onEditSuccess }) {
     bodyFormData.append('file', file);
     try {
       dispatch({ type: 'UPLOAD_REQUEST' });
-      const { data } = await axios
-        .post('/api/upload/image', bodyFormData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            authorization: `Bearer ${userInfo.token}`,
-          },
-        })
-        .catch(function (error) {
-          if (error.response && error.response.status === 401) {
-            logOutAndRedirect();
-          }
-        });
+      const { data } = await axios.post('/api/upload/image', bodyFormData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          authorization: `Bearer ${userInfo.token}`,
+        },
+      });
+
       if (secondImage) {
         setSecondImage(data.path);
       }
@@ -194,18 +178,13 @@ function ModalEditCarouselHome({ id, onEditSuccess }) {
     bodyFormData.append('file', file);
     try {
       dispatch({ type: 'UPLOAD_REQUEST' });
-      const { data } = await axios
-        .post('/api/upload/image', bodyFormData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            authorization: `Bearer ${userInfo.token}`,
-          },
-        })
-        .catch(function (error) {
-          if (error.response && error.response.status === 401) {
-            logOutAndRedirect();
-          }
-        });
+      const { data } = await axios.post('/api/upload/image', bodyFormData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          authorization: `Bearer ${userInfo.token}`,
+        },
+      });
+
       if (thirdImage) {
         setThirdImage(data.path);
       }

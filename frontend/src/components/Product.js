@@ -1,10 +1,32 @@
 import React from 'react';
-import { Card } from 'react-bootstrap';
+import { Card, ListGroup } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Rating from './Rating';
 
 function Product(props) {
   const { product } = props;
+
+  const renderedPrices = () => {
+    const variantPrices = [];
+    product.variants.filter((variant) => {
+      return variantPrices.push(variant.price);
+    });
+    if (variantPrices.length > 0) {
+      const min = () => variantPrices.reduce((x, y) => Math.min(x, y));
+      const max = () => variantPrices.reduce((x, y) => Math.max(x, y));
+      return (
+        <Card.Text className="card-price text-nowrap fw-bold bg3 p-2 rounded-5">
+          {'de ' + min() + ' à ' + max() + ' €'}
+        </Card.Text>
+      );
+    } else {
+      return (
+        <Card.Text className="card-price text-nowrap fw-bold bg3 p-2 rounded-5">
+          {product.price} &euro;
+        </Card.Text>
+      );
+    }
+  };
 
   return (
     <Link
@@ -36,11 +58,7 @@ function Product(props) {
             </div>
             <div className="card-rating d-flex justify-content-between align-items-center ">
               <Rating rating={product.rating} numReviews={product.numReviews} />
-              {!product.promoPrice && !product.soldePrice && (
-                <Card.Text className="card-price text-nowrap fw-bold bg3 p-2 rounded-5">
-                  {product.price} &euro;
-                </Card.Text>
-              )}
+              {!product.promoPrice && !product.soldePrice && renderedPrices()}
               {product.promoPrice && (
                 <Card.Text className="d-flex align-items-center">
                   <div className="text-nowrap fw-bold p-2 rounded-5 card-price">
