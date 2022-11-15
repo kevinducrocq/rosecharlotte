@@ -7,7 +7,11 @@ function ProductVariants(props) {
   const [name, setName] = useState(props.variant.name);
   const [weight, setWeight] = useState(props.variant.weight);
   const [price, setPrice] = useState(props.variant.price);
+  const [promoPrice, setPromoPrice] = useState(props.variant.promoPrice);
+  const [soldePrice, setSoldePrice] = useState(props.variant.soldePrice);
   const [countInStock, setCountInStock] = useState(props.variant.countInStock);
+  const [promoIsVisible, setPromoIsVisible] = useState(false);
+  const [soldeIsVisible, setSoldeIsVisible] = useState(false);
 
   const change = () => {
     props.onChange({
@@ -16,6 +20,8 @@ function ProductVariants(props) {
       countInStock,
       weight,
       price,
+      promoPrice,
+      soldePrice,
     });
   };
 
@@ -24,45 +30,61 @@ function ProductVariants(props) {
     setCountInStock(props.variant.countInStock);
     setWeight(props.variant.weight);
     setPrice(props.variant.price);
+    setPromoPrice(props.variant.promoPrice);
+    setSoldePrice(props.variant.soldePrice);
   }, [props.variant]);
 
   useEffect(() => {
     change();
-  }, [name, countInStock, weight, price]);
+  }, [name, countInStock, weight, price, promoPrice, soldePrice]);
 
   return (
     <>
-      <div className="my-3">
-        <Row>
-          <Col>
-            <Form.Group className="mb-3" controlId="name">
+      <Row>
+        <Col md={2}>
+          <Form.Group controlId="name" className="my-2">
+            <Form.Control
+              placeholder="Nom variante"
+              value={name}
+              onChange={(e) => {
+                setName(e.target.value);
+              }}
+            />
+          </Form.Group>
+        </Col>
+        <Col md={2}>
+          <Form.Group controlId="weight" className="my-2">
+            <InputGroup>
               <Form.Control
-                placeholder="Nom variante"
-                value={name}
+                placeholder="poids"
+                value={weight}
                 onChange={(e) => {
-                  setName(e.target.value);
+                  setWeight(e.target.value);
                 }}
               />
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group className="mb-3" controlId="weight">
-              <InputGroup className="mb-3">
+              <InputGroup.Text>g</InputGroup.Text>
+            </InputGroup>
+          </Form.Group>
+        </Col>
+        <Col md={2}>
+          <Form.Group controlId="countInStock" className="my-2">
+            <Form.Control
+              placeholder="Stock"
+              value={countInStock}
+              onChange={(e) => {
+                setCountInStock(e.target.value);
+              }}
+            />
+          </Form.Group>
+        </Col>
+
+        {/* A CACHER SI PRIX TOUS LES MEME */}
+        <>
+          <Col md={2}>
+            <Form.Group controlId="variantPrice" className="my-2">
+              <InputGroup>
                 <Form.Control
-                  placeholder="poids"
-                  value={weight}
-                  onChange={(e) => {
-                    setWeight(e.target.value);
-                  }}
-                />
-                <InputGroup.Text>g</InputGroup.Text>
-              </InputGroup>
-            </Form.Group>
-          </Col>
-          <Col>
-            <Form.Group className="mb-3" controlId="variantPrice">
-              <InputGroup className="mb-3">
-                <Form.Control
+                  placeholder="Prix"
                   value={price}
                   onChange={(e) => setPrice(e.target.value)}
                   required
@@ -73,28 +95,79 @@ function ProductVariants(props) {
               </InputGroup>
             </Form.Group>
           </Col>
-          <Col>
-            <Form.Group className="mb-3" controlId="countInStock">
-              <Form.Control
-                placeholder="Stock"
-                value={countInStock}
-                onChange={(e) => {
-                  setCountInStock(e.target.value);
+
+          <Col md={2}>
+            <div className="d-flex">
+              <Form.Check
+                className="mx-2"
+                type="switch"
+                id="promo-switch"
+                onChange={() => {
+                  setPromoIsVisible(!promoIsVisible);
+                  if (promoIsVisible) {
+                    setPromoPrice('');
+                  } else {
+                    setSoldeIsVisible(false);
+                    setSoldePrice('');
+                  }
                 }}
+                checked={promoIsVisible}
               />
+              <Form.Check
+                type="switch"
+                id="solde-switch"
+                onChange={() => {
+                  setSoldeIsVisible(!soldeIsVisible);
+                  if (soldeIsVisible) {
+                    setSoldePrice('');
+                  } else {
+                    setPromoIsVisible(false);
+                    setPromoPrice('');
+                  }
+                }}
+                checked={soldeIsVisible}
+              />
+            </div>
+            <Form.Group controlId="prices" className="my-2">
+              <InputGroup>
+                <Form.Control
+                  value={promoPrice}
+                  className={promoIsVisible ? '' : 'd-none'}
+                  onChange={(e) => {
+                    setPromoPrice(e.target.value);
+                  }}
+                  placeholder="Prix promo"
+                />
+                <InputGroup.Text className={promoIsVisible ? '' : 'd-none'}>
+                  <FontAwesomeIcon icon={faEuroSign} />
+                </InputGroup.Text>
+              </InputGroup>
+              <InputGroup>
+                <Form.Control
+                  value={soldePrice}
+                  className={soldeIsVisible ? '' : 'd-none'}
+                  onChange={(e) => {
+                    setSoldePrice(e.target.value);
+                  }}
+                  placeholder="prix soldé"
+                />
+                <InputGroup.Text className={soldeIsVisible ? '' : 'd-none'}>
+                  <FontAwesomeIcon icon={faEuroSign} />
+                </InputGroup.Text>
+              </InputGroup>
             </Form.Group>
           </Col>
-
-          <Col>
-            <Button
-              variant="warning"
-              onClick={() => props.removeVariant(props.index)}
-            >
-              <FontAwesomeIcon icon={faTrash} />
-            </Button>
-          </Col>
-        </Row>
-      </div>
+        </>
+        <Col md={2}>
+          <Button
+            className="my-2"
+            variant="warning"
+            onClick={() => props.removeVariant(props.index)}
+          >
+            <FontAwesomeIcon icon={faTrash} />
+          </Button>
+        </Col>
+      </Row>
     </>
   );
 }

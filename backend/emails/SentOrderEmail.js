@@ -86,7 +86,9 @@ export function sentOrderEmail(order, user) {
 
                     <div style="margin-left:5px;">
                         <span>Quantité : <b>${item.quantity}</b></span><br>
-                        <span>Prix : <b>${item.price} &nbsp; €</b></span>
+                        <span>Prix : <b>${
+                          item.price || item.variant?.price
+                        } &nbsp; €</b></span>
                     </div>
 
                 </div>
@@ -147,6 +149,6 @@ export function sentOrderEmail(order, user) {
         <span>A bientôt sur <a href="rosecharotte.fr">rosecharotte.fr</a></span>
     </div>
 
-</div>`
+</div>`,
   };
 }

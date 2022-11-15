@@ -307,9 +307,9 @@ export default function ProductListScreen() {
                         {product.variants.map((variant) => {
                           return (
                             <div key={variant._id}>
-                              <strong>Variante : </strong> {variant.name} -{' '}
-                              <strong>Stock : </strong>
-                              {variant.countInStock}
+                              <strong>Modèle : </strong> {variant.name} -{' '}
+                              <strong>Stock : </strong> {variant.countInStock} -{' '}
+                              <strong>Prix : </strong> {variant.price} &euro;
                             </div>
                           );
                         })}
@@ -345,7 +345,7 @@ export default function ProductListScreen() {
                           <td>{product.countInStock}</td>
                         )}
 
-                        <td>{product.price} &euro;</td>
+                        <td>{product.price ? product.price + '€' : ''}</td>
                         <td className="text-nowrap">
                           <Button
                             className="btn btn-sm"

@@ -17,6 +17,8 @@ const variantSchema = new mongoose.Schema({
   weight: { type: Number, required: true },
   countInStock: { type: Number, required: true },
   price: { type: Number },
+  promoPrice: { type: Number },
+  soldePrice: { type: Number },
 });
 
 const productSchema = new mongoose.Schema(

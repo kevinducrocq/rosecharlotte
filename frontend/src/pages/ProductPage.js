@@ -100,38 +100,6 @@ function ProductPage() {
     },
   };
 
-  // let selectedIndex = 0;
-  // product.tissus.forEach((item, index) => {
-  //   if (item.name === tissu) {
-  //     selectedIndex = index;
-  //   } else if (item.name === patch) {
-  //     selectedIndex = index;
-  //   }
-  // });
-
-  const opts = {
-    loop: false,
-    margin: 0,
-    nav: true,
-    responsive: {
-      0: {
-        items: 4,
-      },
-      400: {
-        items: 4,
-      },
-      600: {
-        items: 4,
-      },
-      800: {
-        items: 5,
-      },
-      1000: {
-        items: 5,
-      },
-    },
-  };
-
   useEffect(() => {
     const fetchData = async () => {
       dispatch({ type: 'FETCH_REQUEST' });
@@ -336,6 +304,39 @@ function ProductPage() {
   };
 
   const renderTissusForm = () => {
+    // let selectedIndex = 0;
+    // product.tissus.forEach((item, index) => {
+    //   if (item.name === tissu) {
+    //     selectedIndex = index;
+    //   } else if (item.name === patch) {
+    //     selectedIndex = index;
+    //   }
+    // });
+
+    const opts = {
+      loop: false,
+      margin: 0,
+      nav: true,
+      // startPosition: selectedIndex + 2,
+      responsive: {
+        0: {
+          items: 4,
+        },
+        400: {
+          items: 4,
+        },
+        600: {
+          items: 4,
+        },
+        800: {
+          items: 5,
+        },
+        1000: {
+          items: 5,
+        },
+      },
+    };
+
     return (
       <>
         <div className="h5">
@@ -394,6 +395,39 @@ function ProductPage() {
   };
 
   const renderPatchesForm = () => {
+    // let selectedIndex = 0;
+    // product.tissus.forEach((item, index) => {
+    //   if (item.name === tissu) {
+    //     selectedIndex = index;
+    //   } else if (item.name === patch) {
+    //     selectedIndex = index;
+    //   }
+    // });
+
+    const opts = {
+      loop: false,
+      margin: 0,
+      nav: true,
+      // startPosition: selectedIndex - 1,
+      responsive: {
+        0: {
+          items: 4,
+        },
+        400: {
+          items: 4,
+        },
+        600: {
+          items: 4,
+        },
+        800: {
+          items: 5,
+        },
+        1000: {
+          items: 5,
+        },
+      },
+    };
+
     return (
       <>
         <hr />
