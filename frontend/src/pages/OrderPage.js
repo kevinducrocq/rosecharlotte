@@ -418,9 +418,7 @@ export default function OrderPage() {
                         <span>x {item.quantity}</span>
                       </Col>
 
-                      <Col md={2}>
-                        {item.price || item.variant.price} &euro;
-                      </Col>
+                      <Col md={2}>{item.price} &euro;</Col>
                     </Row>
                   </ListGroup.Item>
                 ))}

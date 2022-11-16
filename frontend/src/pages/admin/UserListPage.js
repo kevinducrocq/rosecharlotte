@@ -169,7 +169,7 @@ export default function UserListScreen() {
                     <td>{user.address}</td>
                     <td>{user.zip}</td>
                     <td>{user.city}</td>
-                    <td>{user.isAdmin ? 'OUI' : 'NON'}</td>
+                    <td>{user.isAdmin ? 'YES' : 'NO'}</td>
                     <td>
                       <Button
                         className="btn btn-sm"

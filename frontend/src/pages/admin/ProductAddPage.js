@@ -676,6 +676,76 @@ export default function ProductAddPage() {
                     </Col>
                   </Row>
                 )}
+                <Row>
+                  <Col md={4}>
+                    <Form.Group className="mb-3" controlId="price">
+                      <Form.Label>Prix</Form.Label>
+                      <InputGroup className="mb-3">
+                        <Form.Control
+                          value={price}
+                          onChange={(e) => setPrice(e.target.value)}
+                        />
+                        <InputGroup.Text>
+                          <FontAwesomeIcon icon={faEuroSign} />
+                        </InputGroup.Text>
+                      </InputGroup>
+                    </Form.Group>
+                  </Col>
+                  <Col md={4}>
+                    <Form.Group className="mb-3" controlId="promoPrice">
+                      <Form.Label>
+                        <Form.Check
+                          type="switch"
+                          id="promo-switch"
+                          label="Prix promo ?"
+                          onChange={() => {
+                            setPromoIsVisible(!promoIsVisible);
+                            if (promoIsVisible) {
+                              setPromoPrice('');
+                            } else {
+                              setSoldeIsVisible(false);
+                              setSoldePrice('');
+                            }
+                          }}
+                          checked={promoIsVisible}
+                        />
+                      </Form.Label>
+                      <InputGroup>
+                        <Form.Control
+                          value={promoPrice}
+                          className={promoIsVisible ? '' : 'd-none'}
+                          onChange={(e) => {
+                            setPromoPrice(e.target.value);
+                          }}
+                          placeholder="€"
+                        />
+                        <InputGroup.Text
+                          className={promoIsVisible ? '' : 'd-none'}
+                        >
+                          <FontAwesomeIcon icon={faEuroSign} />
+                        </InputGroup.Text>
+                      </InputGroup>
+                    </Form.Group>
+                  </Col>
+                  <Col md={4}>
+                    <Form.Group className="mb-3" controlId="soldePrice">
+                      <Form.Label>
+                        <Form.Check
+                          type="switch"
+                          id="solde-switch"
+                          label="Prix soldé ?"
+                          onChange={() => {
+                            setSoldeIsVisible(!soldeIsVisible);
+                            if (soldeIsVisible) {
+                              setSoldePrice('');
+                            } else {
+                              setPromoIsVisible(false);
+                              setPromoPrice('');
+                            }
+                          }}
+                          checked={soldeIsVisible}
+                        />
+                      </Form.Label>
 
                 <Row>
                   <Col md={6}>

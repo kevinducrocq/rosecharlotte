@@ -184,7 +184,7 @@ export default function CartPage() {
                     <Col md={3}>
                       {item.promoPrice || item.soldePrice
                         ? item.promoPrice ?? item.soldePrice
-                        : item.price || item.variant.price}
+                        : item.price}
                       &euro;
                     </Col>
 
@@ -221,10 +221,7 @@ export default function CartPage() {
                         .reduce(
                           (a, c) =>
                             a +
-                            (c.promoPrice ??
-                              c.soldePrice ??
-                              c.price ??
-                              (c.variant && c.variant.price)) *
+                            (c.promoPrice ?? c.soldePrice ?? c.price) *
                               c.quantity,
                           0
                         )
