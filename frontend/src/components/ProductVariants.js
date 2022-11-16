@@ -38,11 +38,97 @@ function ProductVariants(props) {
     change();
   }, [name, countInStock, weight, price, promoPrice, soldePrice]);
 
+  const renderVariantPrices = () => {
+    return (
+      <>
+        <Col>
+          <Form.Group controlId="Price" className="my-1">
+            <InputGroup>
+              <Form.Control
+                placeholder="Prix"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                required
+              />
+              <InputGroup.Text>
+                <FontAwesomeIcon icon={faEuroSign} />
+              </InputGroup.Text>
+            </InputGroup>
+          </Form.Group>
+        </Col>
+
+        <Col>
+          <div className="d-flex">
+            <Form.Check
+              type="switch"
+              id="promo-switch"
+              label="Promo"
+              onChange={() => {
+                setPromoIsVisible(!promoIsVisible);
+                if (promoIsVisible) {
+                  setPromoPrice('');
+                } else {
+                  setSoldeIsVisible(false);
+                  setSoldePrice('');
+                }
+              }}
+              checked={promoIsVisible}
+            />
+
+            <Form.Check
+              type="switch"
+              id="solde-switch"
+              label="Solde"
+              onChange={() => {
+                setSoldeIsVisible(!soldeIsVisible);
+                if (soldeIsVisible) {
+                  setSoldePrice('');
+                } else {
+                  setPromoIsVisible(false);
+                  setPromoPrice('');
+                }
+              }}
+              checked={soldeIsVisible}
+            />
+          </div>
+          <Form.Group controlId="prices" className="my-1">
+            <InputGroup>
+              <Form.Control
+                value={promoPrice}
+                className={promoIsVisible ? '' : 'd-none'}
+                onChange={(e) => {
+                  setPromoPrice(e.target.value);
+                }}
+                placeholder="Prix promo"
+              />
+              <InputGroup.Text className={promoIsVisible ? '' : 'd-none'}>
+                <FontAwesomeIcon icon={faEuroSign} />
+              </InputGroup.Text>
+            </InputGroup>
+            <InputGroup>
+              <Form.Control
+                value={soldePrice}
+                className={soldeIsVisible ? '' : 'd-none'}
+                onChange={(e) => {
+                  setSoldePrice(e.target.value);
+                }}
+                placeholder="prix soldé"
+              />
+              <InputGroup.Text className={soldeIsVisible ? '' : 'd-none'}>
+                <FontAwesomeIcon icon={faEuroSign} />
+              </InputGroup.Text>
+            </InputGroup>
+          </Form.Group>
+        </Col>
+      </>
+    );
+  };
+
   return (
     <>
-      <Row>
-        <Col md={2}>
-          <Form.Group controlId="name" className="my-2">
+      <Row className="border align-items-center">
+        <Col>
+          <Form.Group controlId="name" className="my-1">
             <Form.Control
               placeholder="Nom variante"
               value={name}
@@ -52,8 +138,8 @@ function ProductVariants(props) {
             />
           </Form.Group>
         </Col>
-        <Col md={2}>
-          <Form.Group controlId="weight" className="my-2">
+        <Col>
+          <Form.Group controlId="weight" className="my-1">
             <InputGroup>
               <Form.Control
                 placeholder="poids"
@@ -66,8 +152,8 @@ function ProductVariants(props) {
             </InputGroup>
           </Form.Group>
         </Col>
-        <Col md={2}>
-          <Form.Group controlId="countInStock" className="my-2">
+        <Col>
+          <Form.Group controlId="countInStock" className="my-1">
             <Form.Control
               placeholder="Stock"
               value={countInStock}
@@ -78,94 +164,17 @@ function ProductVariants(props) {
           </Form.Group>
         </Col>
 
-        {/* A CACHER SI PRIX TOUS LES MEME */}
-        <>
-          <Col md={2}>
-            <Form.Group controlId="variantPrice" className="my-2">
-              <InputGroup>
-                <Form.Control
-                  placeholder="Prix"
-                  value={price}
-                  onChange={(e) => setPrice(e.target.value)}
-                  required
-                />
-                <InputGroup.Text>
-                  <FontAwesomeIcon icon={faEuroSign} />
-                </InputGroup.Text>
-              </InputGroup>
-            </Form.Group>
-          </Col>
+        {props.handlePrices() && renderVariantPrices()}
 
-          <Col md={2}>
-            <div className="d-flex">
-              <Form.Check
-                className="mx-2"
-                type="switch"
-                id="promo-switch"
-                onChange={() => {
-                  setPromoIsVisible(!promoIsVisible);
-                  if (promoIsVisible) {
-                    setPromoPrice('');
-                  } else {
-                    setSoldeIsVisible(false);
-                    setSoldePrice('');
-                  }
-                }}
-                checked={promoIsVisible}
-              />
-              <Form.Check
-                type="switch"
-                id="solde-switch"
-                onChange={() => {
-                  setSoldeIsVisible(!soldeIsVisible);
-                  if (soldeIsVisible) {
-                    setSoldePrice('');
-                  } else {
-                    setPromoIsVisible(false);
-                    setPromoPrice('');
-                  }
-                }}
-                checked={soldeIsVisible}
-              />
-            </div>
-            <Form.Group controlId="prices" className="my-2">
-              <InputGroup>
-                <Form.Control
-                  value={promoPrice}
-                  className={promoIsVisible ? '' : 'd-none'}
-                  onChange={(e) => {
-                    setPromoPrice(e.target.value);
-                  }}
-                  placeholder="Prix promo"
-                />
-                <InputGroup.Text className={promoIsVisible ? '' : 'd-none'}>
-                  <FontAwesomeIcon icon={faEuroSign} />
-                </InputGroup.Text>
-              </InputGroup>
-              <InputGroup>
-                <Form.Control
-                  value={soldePrice}
-                  className={soldeIsVisible ? '' : 'd-none'}
-                  onChange={(e) => {
-                    setSoldePrice(e.target.value);
-                  }}
-                  placeholder="prix soldé"
-                />
-                <InputGroup.Text className={soldeIsVisible ? '' : 'd-none'}>
-                  <FontAwesomeIcon icon={faEuroSign} />
-                </InputGroup.Text>
-              </InputGroup>
-            </Form.Group>
-          </Col>
-        </>
-        <Col md={2}>
-          <Button
-            className="my-2"
-            variant="warning"
-            onClick={() => props.removeVariant(props.index)}
-          >
-            <FontAwesomeIcon icon={faTrash} />
-          </Button>
+        <Col>
+          <Form.Group className="text-end">
+            <Button
+              variant="warning"
+              onClick={() => props.removeVariant(props.index)}
+            >
+              <FontAwesomeIcon icon={faTrash} />
+            </Button>
+          </Form.Group>
         </Col>
       </Row>
     </>

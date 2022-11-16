@@ -93,7 +93,7 @@ export default function TissuListPage() {
             }
           });
         setTimeout(() => {
-          const table = $(tableRef.current).DataTable({
+          $(tableRef.current).DataTable({
             language: {
               url: 'https://cdn.datatables.net/plug-ins/1.12.1/i18n/fr-FR.json',
             },

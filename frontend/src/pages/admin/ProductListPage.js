@@ -151,7 +151,7 @@ export default function ProductListScreen() {
           });
 
         setTimeout(() => {
-          const table = $(tableRef.current).DataTable({
+          $(tableRef.current).DataTable({
             language: {
               url: 'https://cdn.datatables.net/plug-ins/1.12.1/i18n/fr-FR.json',
             },
@@ -308,8 +308,8 @@ export default function ProductListScreen() {
                           return (
                             <div key={variant._id}>
                               <strong>Modèle : </strong> {variant.name} -{' '}
-                              <strong>Stock : </strong> {variant.countInStock} -{' '}
-                              <strong>Prix : </strong> {variant.price} &euro;
+                              <strong>Stock : </strong> {variant.countInStock}
+                              {variant.price > 0 && ' - ' + variant.price + '€'}
                             </div>
                           );
                         })}

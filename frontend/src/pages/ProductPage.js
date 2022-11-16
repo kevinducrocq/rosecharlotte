@@ -264,6 +264,7 @@ function ProductPage() {
               return (
                 <option key={variant._id} value={variant._id}>
                   {variant.name}&nbsp;
+                  {variant.price > 0 && '- ' + variant.price + '€'}
                   {variant.countInStock <= 0 ? '- Non-disponible' : ''}
                 </option>
               );
@@ -596,6 +597,33 @@ function ProductPage() {
     );
   };
 
+  const renderedPrices = () => {
+    const variantPrices = [];
+
+    product.variants.filter((variant) => {
+      if (variant.price > 0) {
+        return variantPrices.push(variant.price);
+      } else {
+        return product.price;
+      }
+    });
+    if (variantPrices.length > 0) {
+      const min = () => variantPrices.reduce((x, y) => Math.min(x, y));
+      const max = () => variantPrices.reduce((x, y) => Math.max(x, y));
+      return (
+        <ListGroup.Item className="price-tag">
+          <div className="p-2">{'de ' + min() + ' à ' + max() + ' €'}</div>
+        </ListGroup.Item>
+      );
+    } else {
+      return (
+        <ListGroup.Item className="price-tag">
+          <div className="p-2">{product.price} &euro;</div>
+        </ListGroup.Item>
+      );
+    }
+  };
+
   return loading ? (
     <LoadingBox />
   ) : error ? (
@@ -703,9 +731,8 @@ function ProductPage() {
                 </div>
               </div>
             </ListGroup.Item>
-            <ListGroup.Item className="price-tag">
-              <div className="p-2">{product.price} &euro;</div>
-            </ListGroup.Item>
+
+            {renderedPrices()}
 
             <ListGroup.Item>
               <div className="p-2">

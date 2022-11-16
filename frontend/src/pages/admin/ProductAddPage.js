@@ -103,15 +103,9 @@ export default function ProductAddPage() {
   useEffect(() => {
     const fetchFils = async () => {
       try {
-        const { data } = await axios
-          .get('/api/fils', {
-            headers: { Authorization: `Bearer ${userInfo.token}` },
-          })
-          .catch(function (error) {
-            if (error.response && error.response.status === 401) {
-              logOutAndRedirect();
-            }
-          });
+        const { data } = await axios.get('/api/fils', {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        });
         setAvailableFils(data);
       } catch (err) {
         toast.error(getError(err));
@@ -123,15 +117,10 @@ export default function ProductAddPage() {
   useEffect(() => {
     const fetchTissus = async () => {
       try {
-        const { data } = await axios
-          .get('/api/tissus', {
-            headers: { Authorization: `Bearer ${userInfo.token}` },
-          })
-          .catch(function (error) {
-            if (error.response && error.response.status === 401) {
-              logOutAndRedirect();
-            }
-          });
+        const { data } = await axios.get('/api/tissus', {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        });
+
         setAvailableTissus(data);
       } catch (err) {
         toast.error(getError(err));
@@ -143,15 +132,10 @@ export default function ProductAddPage() {
   useEffect(() => {
     const fetchPatches = async () => {
       try {
-        const { data } = await axios
-          .get('/api/patches', {
-            headers: { Authorization: `Bearer ${userInfo.token}` },
-          })
-          .catch(function (error) {
-            if (error.response && error.response.status === 401) {
-              logOutAndRedirect();
-            }
-          });
+        const { data } = await axios.get('/api/patches', {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        });
+
         setAvailablePatches(data);
       } catch (err) {
         toast.error(getError(err));
@@ -275,13 +259,27 @@ export default function ProductAddPage() {
   };
 
   const addNewVariants = () => {
-    setVariants([...variants, { name: '', countInStock: '', weight: '' }]);
+    setVariants([
+      ...variants,
+      {
+        name: '',
+        countInStock: '',
+        weight: '',
+        price: '',
+        promoPrice: '',
+        soldePrice: '',
+      },
+    ]);
   };
 
   const removeVariant = async (index) => {
     const newVariants = [...variants];
     newVariants.splice(index, 1);
     setVariants(newVariants);
+  };
+
+  const handlePrices = () => {
+    return priceIsVisible;
   };
 
   return (
@@ -370,6 +368,7 @@ export default function ProductAddPage() {
                             }}
                             key={key}
                             removeVariant={removeVariant}
+                            handlePrices={handlePrices}
                           />
                         );
                       })}
