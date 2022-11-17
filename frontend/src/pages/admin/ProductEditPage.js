@@ -89,7 +89,6 @@ export default function ProductEditPage() {
   const [subCategoryInputIsVisible, setSubCategoryInputIsVisible] =
     useState(false);
   const [variantIsVisible, setVariantIsVisible] = useState(false);
-  const [customizableIsVisible, setCustomizableIsVisible] = useState(false);
   const [priceIsVisible, setPriceIsVisible] = useState(false);
 
   const [variants, setVariants] = useState([]);
@@ -138,6 +137,7 @@ export default function ProductEditPage() {
         setFils(data.fils);
         setTissus(data.tissus);
         setPatches(data.patches);
+
         setTimeout(() => setInitialized(true), 0);
 
         dispatch({ type: 'FETCH_SUCCESS' });
@@ -208,6 +208,27 @@ export default function ProductEditPage() {
       setSubCategory(null);
     }
   }, [category, initialized]);
+
+  // useEffect(() => {
+  //   if (priceIsVisible) {
+  //     variants.forEach((variant) => {
+  //       variant.price = '';
+  //       variant.promoPrice = '';
+  //       variant.soldePrice = '';
+  //     });
+  //   }
+  // }, [priceIsVisible, variants]);
+
+  useEffect(() => {
+    const variantPrice = variants.map((variant) => {
+      return variant.price;
+    });
+    if (initialized && variants != null && variants.length > 0) {
+      let uniquePrices = [...new Set(variantPrice)];
+      setPriceIsVisible(uniquePrices.length !== 1);
+      setInitialized(true);
+    }
+  }, [initialized, variants]);
 
   const renderedCategories = [];
   Object.keys(categories).forEach(function (mappedCategory) {
@@ -419,20 +440,21 @@ export default function ProductEditPage() {
                     />
                   </Col>
 
-                  {!!variantIsVisible && (
+                  {variantIsVisible && (
                     <div className="bg-white my-3 p-3 rounded-3 border">
                       <Form.Check
-                        checked={priceIsVisible}
+                        checked={!priceIsVisible}
                         type="checkBox"
                         id="custom-switch-3"
                         label="Même prix pour tous"
-                        onChange={() => {
+                        onChange={(e) => {
                           setPriceIsVisible(!priceIsVisible);
-                          setPrice('');
+                          // setPrice('');
                           setPromoPrice('');
                           setSoldePrice('');
                         }}
                       />
+
                       {variants.map((variant, key) => {
                         return (
                           <ProductVariants
@@ -456,6 +478,100 @@ export default function ProductEditPage() {
                         <FontAwesomeIcon icon={faPlus} />
                       </Button>
                     </div>
+                  )}
+
+                  {!priceIsVisible && (
+                    <Row>
+                      <Col md={4}>
+                        <Form.Group className="mb-3" controlId="price">
+                          <Form.Label>Prix</Form.Label>
+                          <InputGroup className="mb-3">
+                            <Form.Control
+                              type="number"
+                              min="0"
+                              value={price}
+                              onChange={(e) => setPrice(e.target.value)}
+                            />
+                            <InputGroup.Text>
+                              <FontAwesomeIcon icon={faEuroSign} />
+                            </InputGroup.Text>
+                          </InputGroup>
+                        </Form.Group>
+                      </Col>
+                      <Col md={4}>
+                        <Form.Group className="mb-3" controlId="promoPrice">
+                          <Form.Label>
+                            <Form.Check
+                              type="switch"
+                              id="promo-switch"
+                              label="Prix promo ?"
+                              onChange={() => {
+                                setPromoIsVisible(!promoIsVisible);
+                                if (promoIsVisible) {
+                                  setPromoPrice('');
+                                } else {
+                                  setSoldeIsVisible(false);
+                                  setSoldePrice('');
+                                }
+                              }}
+                              checked={promoIsVisible}
+                            />
+                          </Form.Label>
+                          <InputGroup>
+                            <Form.Control
+                              value={promoPrice}
+                              className={promoIsVisible ? '' : 'd-none'}
+                              onChange={(e) => {
+                                setPromoPrice(e.target.value);
+                              }}
+                              placeholder="€"
+                            />
+                            <InputGroup.Text
+                              className={promoIsVisible ? '' : 'd-none'}
+                            >
+                              <FontAwesomeIcon icon={faEuroSign} />
+                            </InputGroup.Text>
+                          </InputGroup>
+                        </Form.Group>
+                      </Col>
+                      <Col md={4}>
+                        <Form.Group className="mb-3" controlId="soldePrice">
+                          <Form.Label>
+                            <Form.Check
+                              type="switch"
+                              id="solde-switch"
+                              label="Prix soldé ?"
+                              onChange={() => {
+                                setSoldeIsVisible(!soldeIsVisible);
+                                if (soldeIsVisible) {
+                                  setSoldePrice('');
+                                } else {
+                                  setPromoIsVisible(false);
+                                  setPromoPrice('');
+                                }
+                              }}
+                              checked={soldeIsVisible}
+                            />
+                          </Form.Label>
+
+                          <InputGroup>
+                            <Form.Control
+                              value={soldePrice}
+                              className={soldeIsVisible ? '' : 'd-none'}
+                              onChange={(e) => {
+                                setSoldePrice(e.target.value);
+                              }}
+                              placeholder="€"
+                            />
+                            <InputGroup.Text
+                              className={soldeIsVisible ? '' : 'd-none'}
+                            >
+                              <FontAwesomeIcon icon={faEuroSign} />
+                            </InputGroup.Text>
+                          </InputGroup>
+                        </Form.Group>
+                      </Col>
+                    </Row>
                   )}
 
                   {!!customizable && (
@@ -624,6 +740,7 @@ export default function ProductEditPage() {
                         <InputGroup className="mb-3">
                           <Form.Control
                             type="number"
+                            min="0"
                             value={weight}
                             onChange={(e) => setWeight(e.target.value)}
                             required
@@ -636,101 +753,12 @@ export default function ProductEditPage() {
                       <Form.Group className="mb-3" controlId="countInStock">
                         <Form.Label>Stock</Form.Label>
                         <Form.Control
+                          type="number"
+                          min="0"
                           value={countInStock}
                           onChange={(e) => setCountInStock(e.target.value)}
                           required
                         />
-                      </Form.Group>
-                    </Col>
-                  </Row>
-                )}
-                {!priceIsVisible && (
-                  <Row>
-                    <Col md={4}>
-                      <Form.Group className="mb-3" controlId="price">
-                        <Form.Label>Prix</Form.Label>
-                        <InputGroup className="mb-3">
-                          <Form.Control
-                            value={price}
-                            onChange={(e) => setPrice(e.target.value)}
-                          />
-                          <InputGroup.Text>
-                            <FontAwesomeIcon icon={faEuroSign} />
-                          </InputGroup.Text>
-                        </InputGroup>
-                      </Form.Group>
-                    </Col>
-                    <Col md={4}>
-                      <Form.Group className="mb-3" controlId="promoPrice">
-                        <Form.Label>
-                          <Form.Check
-                            type="switch"
-                            id="promo-switch"
-                            label="Prix promo ?"
-                            onChange={() => {
-                              setPromoIsVisible(!promoIsVisible);
-                              if (promoIsVisible) {
-                                setPromoPrice('');
-                              } else {
-                                setSoldeIsVisible(false);
-                                setSoldePrice('');
-                              }
-                            }}
-                            checked={promoIsVisible}
-                          />
-                        </Form.Label>
-                        <InputGroup>
-                          <Form.Control
-                            value={promoPrice}
-                            className={promoIsVisible ? '' : 'd-none'}
-                            onChange={(e) => {
-                              setPromoPrice(e.target.value);
-                            }}
-                            placeholder="€"
-                          />
-                          <InputGroup.Text
-                            className={promoIsVisible ? '' : 'd-none'}
-                          >
-                            <FontAwesomeIcon icon={faEuroSign} />
-                          </InputGroup.Text>
-                        </InputGroup>
-                      </Form.Group>
-                    </Col>
-                    <Col md={4}>
-                      <Form.Group className="mb-3" controlId="soldePrice">
-                        <Form.Label>
-                          <Form.Check
-                            type="switch"
-                            id="solde-switch"
-                            label="Prix soldé ?"
-                            onChange={() => {
-                              setSoldeIsVisible(!soldeIsVisible);
-                              if (soldeIsVisible) {
-                                setSoldePrice('');
-                              } else {
-                                setPromoIsVisible(false);
-                                setPromoPrice('');
-                              }
-                            }}
-                            checked={soldeIsVisible}
-                          />
-                        </Form.Label>
-
-                        <InputGroup>
-                          <Form.Control
-                            value={soldePrice}
-                            className={soldeIsVisible ? '' : 'd-none'}
-                            onChange={(e) => {
-                              setSoldePrice(e.target.value);
-                            }}
-                            placeholder="€"
-                          />
-                          <InputGroup.Text
-                            className={soldeIsVisible ? '' : 'd-none'}
-                          >
-                            <FontAwesomeIcon icon={faEuroSign} />
-                          </InputGroup.Text>
-                        </InputGroup>
                       </Form.Group>
                     </Col>
                   </Row>
