@@ -84,7 +84,7 @@ export default function ProductEditPage() {
   const [description, setDescription] = useState('');
   const [categories, setCategories] = useState([]);
   const [promoIsVisible, setPromoIsVisible] = useState(false);
-  const [soldeIsVisible, setSoldeIsVisible] = useState();
+  const [soldeIsVisible, setSoldeIsVisible] = useState(false);
   const [categoryInputIsVisible, setCategoryInputIsVisible] = useState(false);
   const [subCategoryInputIsVisible, setSubCategoryInputIsVisible] =
     useState(false);
@@ -209,19 +209,9 @@ export default function ProductEditPage() {
     }
   }, [category, initialized]);
 
-  // useEffect(() => {
-  //   if (priceIsVisible) {
-  //     variants.forEach((variant) => {
-  //       variant.price = '';
-  //       variant.promoPrice = '';
-  //       variant.soldePrice = '';
-  //     });
-  //   }
-  // }, [priceIsVisible, variants]);
-
   useEffect(() => {
     const variantPrice = variants.map((variant) => {
-      return variant.price;
+      return variant;
     });
     if (initialized && variants != null && variants.length > 0) {
       let uniquePrices = [...new Set(variantPrice)];
@@ -370,6 +360,25 @@ export default function ProductEditPage() {
     return priceIsVisible;
   };
 
+  const updatePrices = () => {
+    setPriceIsVisible(!priceIsVisible);
+    const variant = variants.map((variant) => {
+      return variant;
+    });
+    if (priceIsVisible) {
+      variant.price = '';
+      variant.soldePrice = '';
+      variant.promoPrice = '';
+      setPrice(price);
+    } else {
+      setPrice('');
+      variant.setPrice(variant.price);
+      variant.setSoldePrice(variant.soldePrice);
+      variant.setPromoPrice(variant.promoPrice);
+      setVariants(variants);
+    }
+  };
+
   return (
     <Container className="my-5">
       <Helmet>
@@ -440,18 +449,15 @@ export default function ProductEditPage() {
                     />
                   </Col>
 
-                  {variantIsVisible && (
+                  {!!variantIsVisible && (
                     <div className="bg-white my-3 p-3 rounded-3 border">
                       <Form.Check
                         checked={!priceIsVisible}
                         type="checkBox"
                         id="custom-switch-3"
                         label="Même prix pour tous"
-                        onChange={(e) => {
-                          setPriceIsVisible(!priceIsVisible);
-                          // setPrice('');
-                          setPromoPrice('');
-                          setSoldePrice('');
+                        onChange={() => {
+                          updatePrices();
                         }}
                       />
 

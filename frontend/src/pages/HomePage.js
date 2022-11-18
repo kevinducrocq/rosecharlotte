@@ -128,10 +128,12 @@ function HomePage() {
           <>
             {soldeProducts.length > 0 ? (
               <section className="mt-3 mb-5">
-                <h2>Les dernières soldes</h2> &nbsp;
-                <Button className="homepage-button" variant="outline-light">
-                  <Link to={'/soldes'}>Voir toutes les soldes</Link>
-                </Button>
+                <div className="d-flex justify-content-between">
+                  <h2>Les dernières soldes</h2> &nbsp;
+                  <Button className="homepage-button" variant="outline-light">
+                    <Link to={'/soldes'}>Voir toutes les soldes</Link>
+                  </Button>
+                </div>
                 <hr />
                 <Row>
                   <OwlCarousel
@@ -155,10 +157,12 @@ function HomePage() {
 
             {promoProducts.length > 0 ? (
               <section className="mt-5 mb-5">
-                <h2>Les dernières poromotions</h2> &nbsp;
-                <button className="homepage-button">
-                  <Link to={'/promotions'}>Voir toutes les promotions</Link>
-                </button>
+                <div className="d-flex justify-content-between">
+                  <h2>Les dernières poromotions</h2> &nbsp;
+                  <Button className="homepage-button" variant="outline-light">
+                    <Link to={'/promotions'}>Voir toutes les promotions</Link>
+                  </Button>
+                </div>
                 <hr />
                 <Row>
                   <OwlCarousel

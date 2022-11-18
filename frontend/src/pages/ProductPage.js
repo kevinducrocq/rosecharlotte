@@ -616,11 +616,15 @@ function ProductPage() {
         </ListGroup.Item>
       );
     } else {
-      return (
-        <ListGroup.Item className="price-tag">
-          <div className="p-2">{product.price} &euro;</div>
-        </ListGroup.Item>
-      );
+      if (product.price && (!product.promoPrice || !product.soldePrice)) {
+        return (
+          <ListGroup.Item className="price-tag">
+            <div className="p-2">{product.price} &euro;</div>
+          </ListGroup.Item>
+        );
+      } else if (product.price && product.promoPrice) {
+        return <div>{product.soldePrice}</div>;
+      }
     }
   };
 
@@ -732,7 +736,27 @@ function ProductPage() {
               </div>
             </ListGroup.Item>
 
-            {renderedPrices()}
+            {!product.promoPrice && !product.soldePrice && renderedPrices()}
+            {product.promoPrice && (
+              <>
+                <ListGroup.Item className="price-tag">
+                  <div className="text-nowrap p-2 rounded-5">
+                    <s className="p-2">{product.price} &euro;</s>
+                    <b>{product.promoPrice} &euro;</b>
+                  </div>
+                </ListGroup.Item>
+              </>
+            )}
+            {product.soldePrice && (
+              <>
+                <ListGroup.Item className="price-tag">
+                  <div className="text-nowrap p-2 rounded-5">
+                    <s className="p-2">{product.price} &euro;</s>
+                    <b>{product.soldePrice} &euro;</b>
+                  </div>
+                </ListGroup.Item>
+              </>
+            )}
 
             <ListGroup.Item>
               <div className="p-2">
