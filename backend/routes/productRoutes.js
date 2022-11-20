@@ -110,10 +110,9 @@ productRouter.put(
     if (product) {
       product.name = req.body.name || product.name;
       product.slug = req.body.slug || product.slug;
-      product.price = req.body.price || product.price;
       product.promoPrice = req.body.promoPrice;
       product.soldePrice = req.body.soldePrice;
-      product.price = req.body.price || product.price;
+      product.price = req.body.price;
       product.weight = req.body.weight || product.weight;
       product.image = req.body.image || product.image;
       product.images = req.body.images || product.images;

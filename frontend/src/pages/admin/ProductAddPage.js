@@ -152,7 +152,7 @@ export default function ProductAddPage() {
   Object.keys(categories).forEach(function (mappedCategory) {
     renderedCategories.push(
       <option
-        selected={category === mappedCategory}
+        defaultValue={category === mappedCategory}
         key={mappedCategory}
         value={mappedCategory}
         onChange={(e) => setCategory(e.target.value)}
@@ -172,7 +172,7 @@ export default function ProductAddPage() {
               <option
                 value={subCat}
                 key={subCat}
-                selected={subCat === subCategory}
+                defaultValue={subCat === subCategory}
               >
                 {subCat}
               </option>
@@ -356,6 +356,7 @@ export default function ProductAddPage() {
                           setPromoPrice('');
                           setSoldePrice('');
                         }}
+                        className="mb-3"
                       />
                       {variants.map((variant, key) => {
                         return (

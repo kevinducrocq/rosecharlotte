@@ -104,6 +104,7 @@ export default function ProductEditPage() {
 
   const [initialized, setInitialized] = useState(false);
 
+  // Récupère le produit
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -150,6 +151,7 @@ export default function ProductEditPage() {
     };
     fetchData();
 
+    // Récupère les catégories
     const fetchCategories = async () => {
       try {
         const { data } = await axios.get(`/api/products/categories`);
@@ -161,6 +163,7 @@ export default function ProductEditPage() {
     fetchCategories();
   }, [productId]);
 
+  // Récupère les fils
   useEffect(() => {
     const fetchFils = async () => {
       try {
@@ -175,6 +178,7 @@ export default function ProductEditPage() {
     fetchFils();
   }, [userInfo.token]);
 
+  // Récupère les tissus
   useEffect(() => {
     const fetchTissus = async () => {
       try {
@@ -189,6 +193,7 @@ export default function ProductEditPage() {
     fetchTissus();
   }, [userInfo.token]);
 
+  // Récupère les motifs broderie
   useEffect(() => {
     const fetchPatches = async () => {
       try {
@@ -209,22 +214,38 @@ export default function ProductEditPage() {
     }
   }, [category, initialized]);
 
+  // Gestion des prix
   useEffect(() => {
-    const variantPrice = variants.map((variant) => {
+    const variantPrices = variants.map((variant) => {
       return variant;
     });
-    if (initialized && variants != null && variants.length > 0) {
-      let uniquePrices = [...new Set(variantPrice)];
+    let uniquePrices = [...new Set(variantPrices)];
+    if (!initialized && variants != null && variants.length > 0) {
       setPriceIsVisible(uniquePrices.length !== 1);
       setInitialized(true);
     }
-  }, [initialized, variants]);
+    if (price > 0) {
+      setPriceIsVisible(priceIsVisible);
+      variantPrices.forEach((variant) => {
+        variant.price = '';
+        variant.promoPrice = '';
+        variant.SoldePrice = '';
+        setVariants(variants);
+      });
+    }
+    if (priceIsVisible) {
+      setPrice('');
+      setPromoPrice('');
+      setSoldePrice('');
+    }
+  }, [initialized, price, priceIsVisible, variants]);
 
+  // Champ select des catégories
   const renderedCategories = [];
   Object.keys(categories).forEach(function (mappedCategory) {
     renderedCategories.push(
       <option
-        selected={category === mappedCategory}
+        defaultValue={category === mappedCategory}
         key={mappedCategory}
         value={mappedCategory}
       >
@@ -233,6 +254,7 @@ export default function ProductEditPage() {
     );
   });
 
+  // Champ select des sous-catégories
   const renderedSubCategories = [];
   Object.keys(categories).forEach(function (mappedCategory) {
     if (category === mappedCategory) {
@@ -241,7 +263,7 @@ export default function ProductEditPage() {
           <option
             value={availableSubCat}
             key={availableSubCat}
-            selected={availableSubCat === subCategory}
+            defaultValue={availableSubCat === subCategory}
           >
             {availableSubCat}
           </option>
@@ -257,6 +279,7 @@ export default function ProductEditPage() {
       await axios
         .put(
           `/api/products/${productId}`,
+
           {
             _id: productId,
             name,
@@ -287,6 +310,7 @@ export default function ProductEditPage() {
             logOutAndRedirect();
           }
         });
+
       dispatch({
         type: 'UPDATE_SUCCESS',
       });
@@ -297,6 +321,8 @@ export default function ProductEditPage() {
       dispatch({ type: 'UPDATE_FAIL' });
     }
   };
+
+  // Upload une photo en local
   const uploadFileHandler = async (e, forImages) => {
     const file = e.target.files[0];
     const bodyFormData = new FormData();
@@ -331,10 +357,12 @@ export default function ProductEditPage() {
     }
   };
 
+  // Supprimer une photo additionnelle
   const deleteFileHandler = async (fileName, f) => {
     setImages(images.filter((x) => x !== fileName));
   };
 
+  // Ajouter une ligne de variant
   const addNewVariants = () => {
     setVariants([
       ...variants,
@@ -350,33 +378,16 @@ export default function ProductEditPage() {
     setWeight('');
   };
 
+  // supprimer un variant
   const removeVariant = async (index) => {
     const newVariants = [...variants];
     newVariants.splice(index, 1);
     setVariants(newVariants);
   };
 
+  // affiche / cache les champs prix des variants et du prix unique
   const handlePrices = () => {
     return priceIsVisible;
-  };
-
-  const updatePrices = () => {
-    setPriceIsVisible(!priceIsVisible);
-    const variant = variants.map((variant) => {
-      return variant;
-    });
-    if (priceIsVisible) {
-      variant.price = '';
-      variant.soldePrice = '';
-      variant.promoPrice = '';
-      setPrice(price);
-    } else {
-      setPrice('');
-      variant.setPrice(variant.price);
-      variant.setSoldePrice(variant.soldePrice);
-      variant.setPromoPrice(variant.promoPrice);
-      setVariants(variants);
-    }
   };
 
   return (
@@ -457,8 +468,9 @@ export default function ProductEditPage() {
                         id="custom-switch-3"
                         label="Même prix pour tous"
                         onChange={() => {
-                          updatePrices();
+                          setPriceIsVisible(!priceIsVisible);
                         }}
+                        className="mb-3"
                       />
 
                       {variants.map((variant, key) => {
@@ -494,8 +506,8 @@ export default function ProductEditPage() {
                           <InputGroup className="mb-3">
                             <Form.Control
                               type="number"
-                              min="0"
                               value={price}
+                              min={0}
                               onChange={(e) => setPrice(e.target.value)}
                             />
                             <InputGroup.Text>

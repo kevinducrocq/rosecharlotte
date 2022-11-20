@@ -49,7 +49,7 @@ export default function ModalCategoryHome() {
   Object.keys(categories).forEach(function (mappedCategory) {
     renderedCategories.push(
       <option
-        selected={chosenCategory === mappedCategory}
+        defaultValue={chosenCategory === mappedCategory}
         key={mappedCategory}
         value={mappedCategory}
         onChange={(e) => setChosenCategory(e.target.value)}
