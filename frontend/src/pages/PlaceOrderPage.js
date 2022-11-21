@@ -54,12 +54,11 @@ export default function PlaceOrderPage() {
     newCart.itemsPrice = round2(
       newCart.cartItems.reduce(
         (price, item) =>
-          price +
-          item.quantity * (item.price < 0 ? item.price : item.variant.price),
+          price + item.quantity * (item.price || item.variant.price),
         0
       )
     );
-
+    console.log(newCart.itemsPrice);
     newCart.itemsPriceWithDiscount = round2(
       (newCart.itemsPrice * (100 - discount)) / 100
     );
@@ -297,7 +296,7 @@ export default function PlaceOrderPage() {
                         )}
                         {item.customization ? (
                           <div>
-                            <strong>Commentaire : </strong>
+                            <strong>Texte : </strong>
                             {item.customization}
                           </div>
                         ) : (
@@ -305,7 +304,7 @@ export default function PlaceOrderPage() {
                         )}
                         {item.side ? (
                           <div>
-                            <strong>Style : </strong>
+                            <strong>Côté : </strong>
                             {item.side}
                           </div>
                         ) : (
