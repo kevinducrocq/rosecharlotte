@@ -349,6 +349,8 @@ export default function OrderPage() {
           <Card className="mb-3 bg-light">
             <Card.Body>
               <Card.Title>Produits</Card.Title>
+
+              
               <ListGroup className="mb-3 text-center rounded-3">
                 {order.orderItems.map((item) => (
                   <ListGroup.Item
@@ -398,7 +400,7 @@ export default function OrderPage() {
                         )}
                         {item.customization ? (
                           <div>
-                            <strong>Texte : </strong>
+                            <strong>Commentaire : </strong>
                             {item.customization}
                           </div>
                         ) : (

@@ -143,7 +143,7 @@ export default function CartPage() {
                       )}
                       {item.customization ? (
                         <div>
-                          <strong>Texte : </strong>
+                          <strong>Commentaire : </strong>
                           {item.customization}
                         </div>
                       ) : (

@@ -281,7 +281,7 @@ function ProductPage() {
                   {variant.price > 0 &&
                     variant.promoPrice === null &&
                     variant.soldePrice === null &&
-                    ' -' + variant.price + ' €'}
+                    ' - ' + variant.price + ' €'}
                   {variant.countInStock <= 0 ? '- Non-disponible' : ''}
                 </option>
               );
@@ -510,11 +510,11 @@ function ProductPage() {
         <hr />
         <Form.Group className="my-3">
           <div className="h5">
-            <span>Commentaire, Texte personnalisé (facultatif)</span>
+            <span>Commentaire (facultatif)</span>
           </div>
           <Form.Control
             value={customization}
-            placeholder="Charlotte, Rose..."
+            placeholder="Commentaire, texte-personnalisé à broder..."
             onChange={(e) => {
               setCustomization(e.target.value);
             }}
