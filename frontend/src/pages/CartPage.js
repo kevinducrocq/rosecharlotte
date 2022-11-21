@@ -244,6 +244,13 @@ export default function CartPage() {
                     >
                       Commander
                     </Button>
+                    <div
+                      className={
+                        cartItems.length === 0 ? 'd-none' : 'mt-3 text-center'
+                      }
+                    >
+                      <Link to={'/boutique/search'}>Continuer vos achats</Link>
+                    </div>
                   </div>
                 </ListGroup.Item>
               </ListGroup>
