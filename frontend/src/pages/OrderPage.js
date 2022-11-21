@@ -350,7 +350,6 @@ export default function OrderPage() {
             <Card.Body>
               <Card.Title>Produits</Card.Title>
 
-              
               <ListGroup className="mb-3 text-center rounded-3">
                 {order.orderItems.map((item) => (
                   <ListGroup.Item
@@ -408,7 +407,7 @@ export default function OrderPage() {
                         )}
                         {item.side ? (
                           <div>
-                            <strong>Côté : </strong>
+                            <strong>Style : </strong>
                             {item.side}
                           </div>
                         ) : (

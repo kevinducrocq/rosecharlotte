@@ -305,7 +305,7 @@ export default function PlaceOrderPage() {
                         )}
                         {item.side ? (
                           <div>
-                            <strong>Côté : </strong>
+                            <strong>Style : </strong>
                             {item.side}
                           </div>
                         ) : (
@@ -366,7 +366,6 @@ export default function PlaceOrderPage() {
                         ? 'Offerte'
                         : cart.shippingPrice?.toFixed(2) + ' €'}
                     </Col>
-                    
                   </Row>
                 </ListGroup.Item>
                 <ListGroup.Item>

@@ -151,7 +151,7 @@ export default function CartPage() {
                       )}
                       {item.side ? (
                         <div>
-                          <strong>Côté : </strong>
+                          <strong>Style : </strong>
                           {item.side}
                         </div>
                       ) : (

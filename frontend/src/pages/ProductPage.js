@@ -781,10 +781,10 @@ function ProductPage() {
               </div>
 
               {isBarrette() && (
-                <Form>
+                <Form className="p-2">
                   <hr />
                   <div className="h5">
-                    <span>Choisissez un côté</span>
+                    <span>Choisissez le style</span>
                   </div>
 
                   <Form.Check
@@ -792,8 +792,8 @@ function ProductPage() {
                     name="side"
                     type="radio"
                     id="narrette-gauche"
-                    label="Gauche"
-                    value="Gauche"
+                    label="Côté gauche"
+                    value="Côté gauche"
                     onChange={(e) => {
                       setSide(e.target.value);
                     }}
@@ -803,12 +803,36 @@ function ProductPage() {
                     name="side"
                     type="radio"
                     id="barrette-droite"
-                    label="Droite"
-                    value="Droite"
+                    label="Côté droit"
+                    value="Côté droit"
                     onChange={(e) => {
                       setSide(e.target.value);
                     }}
                   />
+                  <br />
+                  <Form.Check
+                    inline
+                    name="side"
+                    type="radio"
+                    id="broche"
+                    label="Broche"
+                    value="Broche"
+                    onChange={(e) => {
+                      setSide(e.target.value);
+                    }}
+                  />
+                  <Form.Check
+                    inline
+                    name="side"
+                    type="radio"
+                    id="roco"
+                    label="Clic Clac"
+                    value="Clic Clac"
+                    onChange={(e) => {
+                      setSide(e.target.value);
+                    }}
+                  />
+                  <hr />
                 </Form>
               )}
 
