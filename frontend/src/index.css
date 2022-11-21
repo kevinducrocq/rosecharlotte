@@ -134,6 +134,11 @@ main {
 
 /*PRODUCT CAROUSEL*/
 
+.owl-stage-outer {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
 .arrow {
   position: absolute;
   border-radius: 1px;

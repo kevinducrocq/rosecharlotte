@@ -27,6 +27,34 @@ productRouter.get('/', async (req, res) => {
   res.send(products);
 });
 
+// RECUPERE LES PRODUITS EN PROMO
+productRouter.get('/promos', async (req, res) => {
+  const products = await Product.find({
+    $or: [
+      { promoPrice: { $gt: 0 } },
+      { variants: { $elemMatch: { promoPrice: { $gt: 0 } } } },
+    ],
+    isVisible: true,
+  }).sort({
+    createdAt: -1,
+  });
+  res.send(products);
+});
+
+// RECUPERE LES PRODUITS EN SOLDE
+productRouter.get('/soldes', async (req, res) => {
+  const products = await Product.find({
+    $or: [
+      { soldePrice: { $gt: 0 } },
+      { variants: { $elemMatch: { soldePrice: { $gt: 0 } } } },
+    ],
+    isVisible: true,
+  }).sort({
+    createdAt: -1,
+  });
+  res.send(products);
+});
+
 // RECUPERER TOUS LES PRODUITS ORDRE ASCENDANT DATE
 productRouter.get('/last-products', async (req, res) => {
   const products = await Product.find({ isVisible: true }).sort({

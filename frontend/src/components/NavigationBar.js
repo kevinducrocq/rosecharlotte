@@ -64,6 +64,8 @@ function NavigationBar() {
   };
 
   const [categories, setCategories] = useState([]);
+  const [promoProducts, setPromoProducts] = useState('');
+  const [soldeProducts, setSoldeProducts] = useState('');
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -78,29 +80,28 @@ function NavigationBar() {
   }, []);
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      dispatch({ type: 'FETCH_REQUEST' });
+    const fetchCategories = async () => {
       try {
-        const result = await axios.get('/api/products/last-products');
-        dispatch({ type: 'FETCH_SUCCESS', payload: result.data });
+        const { data } = await axios.get(`/api/products/promos`);
+        setPromoProducts(data);
       } catch (err) {
-        dispatch({ type: 'FETCH_FAIL', payload: err.message });
+        toast.error(getError(err));
       }
     };
-    fetchProducts();
-  }, []);
+    fetchCategories();
+  }, [dispatch]);
 
-  const promoProducts = (
-    products && typeof products.filter === 'function' ? products : []
-  ).filter((product) => {
-    return !!product.promoPrice;
-  });
-
-  const soldeProducts = (
-    products && typeof products.filter === 'function' ? products : []
-  ).filter((product) => {
-    return !!product.soldePrice;
-  });
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const { data } = await axios.get(`/api/products/soldes`);
+        setSoldeProducts(data);
+      } catch (err) {
+        toast.error(getError(err));
+      }
+    };
+    fetchCategories();
+  }, [dispatch]);
 
   const renderedCategories = [];
   Object.keys(categories)

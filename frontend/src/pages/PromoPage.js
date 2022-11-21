@@ -15,7 +15,7 @@ const reducer = (state, action) => {
     case 'FETCH_SUCCESS':
       return {
         ...state,
-        products: action.payload,
+        promoProducts: action.payload,
         loading: false,
       };
     case 'FETCH_FAIL':
@@ -26,8 +26,8 @@ const reducer = (state, action) => {
 };
 
 function PromoPage() {
-  const [{ loading, error, products }, dispatch] = useReducer(reducer, {
-    products: [],
+  const [{ loading, error, promoProducts }, dispatch] = useReducer(reducer, {
+    promoProducts: [],
     loading: true,
     error: '',
   });
@@ -36,7 +36,7 @@ function PromoPage() {
     const fetchData = async () => {
       dispatch({ type: 'FETCH_REQUEST' });
       try {
-        const result = await axios.get('/api/products/last-products');
+        const result = await axios.get('/api/products/promos');
         dispatch({ type: 'FETCH_SUCCESS', payload: result.data });
       } catch (err) {
         dispatch({ type: 'FETCH_FAIL', payload: err.message });
@@ -44,10 +44,6 @@ function PromoPage() {
     };
     fetchData();
   }, []);
-
-  const promoProducts = products.filter((product) => {
-    return !!product.promoPrice;
-  });
 
   useEffect(() => {
     window.scrollTo(0, 0);

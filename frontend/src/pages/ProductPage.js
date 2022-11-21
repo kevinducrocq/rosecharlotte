@@ -264,7 +264,24 @@ function ProductPage() {
               return (
                 <option key={variant._id} value={variant._id}>
                   {variant.name}&nbsp;
-                  {variant.price > 0 && '- ' + variant.price + '€'}
+                  {variant.promoPrice > 0 &&
+                    '- Ancien prix : ' +
+                      variant.price +
+                      ' €' +
+                      ' || Nouveau : ' +
+                      variant.promoPrice +
+                      ' €'}
+                  {variant.soldePrice > 0 &&
+                    '- Ancien prix : ' +
+                      variant.price +
+                      ' €' +
+                      ' || Nouveau : ' +
+                      variant.soldePrice +
+                      ' €'}
+                  {variant.price > 0 &&
+                    variant.promoPrice === null &&
+                    variant.soldePrice === null &&
+                    ' -' + variant.price + ' €'}
                   {variant.countInStock <= 0 ? '- Non-disponible' : ''}
                 </option>
               );

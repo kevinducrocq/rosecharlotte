@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useEffect, useReducer } from 'react';
+import React, { useEffect, useReducer, useState } from 'react';
 import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import { Button, Col, Container, Row } from 'react-bootstrap';
@@ -10,6 +10,8 @@ import Product from '../components/Product';
 import { Link } from 'react-router-dom';
 import CarouselHome from '../components/Carousel';
 import SearchBox from '../components/SearchBox';
+import { toast } from 'react-toastify';
+import { getError } from '../utils';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -58,6 +60,8 @@ function HomePage() {
       },
     },
   };
+  const [promoProducts, setPromoProducts] = useState('');
+  const [soldeProducts, setSoldeProducts] = useState('');
 
   useEffect(() => {
     const fetchData = async () => {
@@ -72,17 +76,29 @@ function HomePage() {
     fetchData();
   }, []);
 
-  const promoProducts = (
-    products && typeof products.filter === 'function' ? products : []
-  ).filter((product) => {
-    return !!product.promoPrice;
-  });
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const { data } = await axios.get(`/api/products/promos`);
+        setPromoProducts(data);
+      } catch (err) {
+        toast.error(getError(err));
+      }
+    };
+    fetchCategories();
+  }, [dispatch]);
 
-  const soldeProducts = (
-    products && typeof products.filter === 'function' ? products : []
-  ).filter((product) => {
-    return !!product.soldePrice;
-  });
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const { data } = await axios.get(`/api/products/soldes`);
+        setSoldeProducts(data);
+      } catch (err) {
+        toast.error(getError(err));
+      }
+    };
+    fetchCategories();
+  }, [dispatch]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -135,7 +151,7 @@ function HomePage() {
                   </Button>
                 </div>
                 <hr />
-                <Row>
+                <Row className="py-5">
                   <OwlCarousel
                     className="slider-items owl-carousel owl-theme"
                     {...options}
