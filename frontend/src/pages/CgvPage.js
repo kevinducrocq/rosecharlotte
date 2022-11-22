@@ -455,12 +455,6 @@ export default function CgvPage() {
           pour but que le bon traitement de la commande, sa livraison,
           l’établissement de la facture et le suivi de la relation commerciale
           avec le client. <br /> <br />
-          La collecte de ces données a fait l'objet d'une déclaration auprès de
-          la Commission National de l'informatique et des libertés (CNIL) sous
-          le numéro ………………………………………. Les informations sont strictement
-          confidentielles et sont mentionnées par un astérisque (*) lorsqu'elles
-          sont nécessaires Rose Charlotte &amp; COMPAGNIE, et/ou ses
-          prestataires dans le cadre de la gestion de la commande du client.{' '}
           <br /> <br />
           Rose Charlotte &amp; COMPAGNIE s'engage à prendre toutes les
           précautions utiles pour assurer la sécurité de ses fichiers et la

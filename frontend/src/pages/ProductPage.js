@@ -282,7 +282,7 @@ function ProductPage() {
                     variant.promoPrice === null &&
                     variant.soldePrice === null &&
                     ' - ' + variant.price + ' €'}
-                  {variant.countInStock <= 0 ? '- Non-disponible' : ''}
+                  {variant.countInStock <= 0 ? ' - Non disponible' : ''}
                 </option>
               );
             })}
@@ -514,7 +514,7 @@ function ProductPage() {
           </div>
           <Form.Control
             value={customization}
-            placeholder="Commentaire, texte-personnalisé à broder..."
+            placeholder="Commentaire, texte personnalisé à broder..."
             onChange={(e) => {
               setCustomization(e.target.value);
             }}
@@ -606,8 +606,11 @@ function ProductPage() {
       <Button
         disabled={btnDisabled}
         onClick={addToCartHandler}
-        className="bg1 w-100"
-        variant="outline-light"
+        className={
+          btnDisabled
+            ? 'bg-light text-secondary border-light w-100'
+            : 'bg1 w-100 border-light'
+        }
       >
         Ajouter au panier
       </Button>
@@ -735,12 +738,12 @@ function ProductPage() {
               </div>
 
               <div className="p-2 d-flex justify-content-between">
-                {product.variants.length >= 1 ? (
-                  ''
-                ) : product.countInStock && product.countInStock > 0 ? (
-                  <span className="badge-stock">
-                    {product.countInStock} En stock
-                  </span>
+                {product.variants.reduce(
+                  (countInStock, variant) =>
+                    countInStock + variant.countInStock,
+                  product.countInStock
+                ) > 0 ? (
+                  <span className="badge-stock">En stock</span>
                 ) : (
                   <span className="badge-epuise">Epuisé</span>
                 )}
@@ -780,76 +783,86 @@ function ProductPage() {
                 <p>{nl2br(product.description)}</p>
               </div>
 
-              {isBarrette() && (
-                <Form className="p-2">
-                  <hr />
-                  <div className="h5">
-                    <span>Choisissez le style</span>
-                  </div>
+              {product.variants.reduce(
+                (countInStock, variant) => countInStock + variant.countInStock,
+                product.countInStock
+              ) > 0 ? (
+                <>
+                  {isBarrette() && (
+                    <Form className="p-2">
+                      <hr />
+                      <div className="h5">
+                        <span>Choisissez le style</span>
+                      </div>
 
-                  <Form.Check
-                    inline
-                    name="side"
-                    type="radio"
-                    id="narrette-gauche"
-                    label="Côté gauche"
-                    value="Côté gauche"
-                    onChange={(e) => {
-                      setSide(e.target.value);
-                    }}
-                  />
-                  <Form.Check
-                    inline
-                    name="side"
-                    type="radio"
-                    id="barrette-droite"
-                    label="Côté droit"
-                    value="Côté droit"
-                    onChange={(e) => {
-                      setSide(e.target.value);
-                    }}
-                  />
-                  <br />
-                  <Form.Check
-                    inline
-                    name="side"
-                    type="radio"
-                    id="broche"
-                    label="Broche"
-                    value="Broche"
-                    onChange={(e) => {
-                      setSide(e.target.value);
-                    }}
-                  />
-                  <Form.Check
-                    inline
-                    name="side"
-                    type="radio"
-                    id="roco"
-                    label="Clic Clac"
-                    value="Clic Clac"
-                    onChange={(e) => {
-                      setSide(e.target.value);
-                    }}
-                  />
-                  <hr />
-                </Form>
+                      <Form.Check
+                        inline
+                        name="side"
+                        type="radio"
+                        id="narrette-gauche"
+                        label="Côté gauche"
+                        value="Côté gauche"
+                        onChange={(e) => {
+                          setSide(e.target.value);
+                        }}
+                      />
+                      <Form.Check
+                        inline
+                        name="side"
+                        type="radio"
+                        id="barrette-droite"
+                        label="Côté droit"
+                        value="Côté droit"
+                        onChange={(e) => {
+                          setSide(e.target.value);
+                        }}
+                      />
+                      <br />
+                      <Form.Check
+                        inline
+                        name="side"
+                        type="radio"
+                        id="broche"
+                        label="Broche"
+                        value="Broche"
+                        onChange={(e) => {
+                          setSide(e.target.value);
+                        }}
+                      />
+                      <Form.Check
+                        inline
+                        name="side"
+                        type="radio"
+                        id="roco"
+                        label="Clic Clac"
+                        value="Clic Clac"
+                        onChange={(e) => {
+                          setSide(e.target.value);
+                        }}
+                      />
+                      <hr />
+                    </Form>
+                  )}
+
+                  {renderVariationsAndPersonalisationForm()}
+                </>
+              ) : (
+                ''
               )}
-
-              {renderVariationsAndPersonalisationForm()}
             </ListGroup.Item>
 
-            {product.countInStock > 0 || product.variants.length ? (
-              <div className="p-2">{renderAddToCartButton()}</div>
-            ) : (
-              <ListGroup.Item>
-                <div className="p-2">
-                  <Button variant="secondary" disabled>
-                    Epuisé
-                  </Button>
-                </div>
-              </ListGroup.Item>
-            )}
+            <ListGroup.Item>
+              {product.variants.reduce(
+                (countInStock, variant) => countInStock + variant.countInStock,
+                product.countInStock
+              ) > 0 ? (
+                <div className="p-2">{renderAddToCartButton()}</div>
+              ) : (
+                <Button variant="secondary" disabled>
+                  Epuisé
+                </Button>
+              )}
+            </ListGroup.Item>
           </ListGroup>
         </Col>
       </Row>
