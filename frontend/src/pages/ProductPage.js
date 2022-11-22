@@ -609,8 +609,9 @@ function ProductPage() {
         className={
           btnDisabled
             ? 'bg-light text-secondary border-light w-100'
-            : 'bg1 w-100 border-light'
+            : 'bg1 w-100'
         }
+        variant={btnDisabled ? '' : 'outline-light'}
       >
         Ajouter au panier
       </Button>
