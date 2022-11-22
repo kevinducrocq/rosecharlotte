@@ -335,13 +335,12 @@ function ProductPage() {
       loop: false,
       margin: 0,
       nav: true,
-      // startPosition: selectedIndex + 2,
       responsive: {
         0: {
-          items: 4,
+          items: 3,
         },
         400: {
-          items: 4,
+          items: 3,
         },
         600: {
           items: 4,
@@ -429,10 +428,10 @@ function ProductPage() {
       // startPosition: selectedIndex - 1,
       responsive: {
         0: {
-          items: 4,
+          items: 3,
         },
         400: {
-          items: 4,
+          items: 3,
         },
         600: {
           items: 4,

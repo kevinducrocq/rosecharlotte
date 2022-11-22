@@ -28,7 +28,7 @@ export default function Footer() {
 
           <Col md={4} className="text-center footer-link">
             <Link className="nav-link mb-2" to="/cgv">
-              Condition générales de vente
+              Conditions générales de vente
             </Link>
             <Link className="nav-link mb-2" to="/mentions">
               Mentions Légales
