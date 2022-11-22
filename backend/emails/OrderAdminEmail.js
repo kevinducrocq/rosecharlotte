@@ -79,7 +79,7 @@ export function orderAdminEmail(order, user) {
                                     ${
                                       item.side &&
                                       `<tr>
-                                        <td style="font-size:15px;">Côté : <b>${item.side}</b></td>
+                                        <td style="font-size:15px;">Style : <b>${item.side}</b></td>
                                     </tr>`
                                     }
                                 </tbody>

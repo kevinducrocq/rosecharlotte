@@ -304,7 +304,7 @@ export default function PlaceOrderPage() {
                         )}
                         {item.side ? (
                           <div>
-                            <strong>Côté : </strong>
+                            <strong>Style : </strong>
                             {item.side}
                           </div>
                         ) : (
@@ -362,7 +362,7 @@ export default function PlaceOrderPage() {
 
                     <Col>
                       {cart.shippingPrice === 0
-                        ? 'Offerte'
+                        ? 'Offerte (en point relai)'
                         : cart.shippingPrice?.toFixed(2) + ' €'}
                     </Col>
                   </Row>
