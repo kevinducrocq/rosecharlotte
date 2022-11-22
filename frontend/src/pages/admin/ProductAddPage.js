@@ -345,8 +345,9 @@ export default function ProductAddPage() {
                     />
                   </Col>
                   {variantIsVisible && (
-                    <div className="bg-white my-3 p-3 rounded-3 border">
+                    <div className="bg-white my-3 p-4 rounded-3 border">
                       <Form.Check
+                        className="mb-3"
                         type="checkBox"
                         id="custom-switch-3"
                         label="Même prix pour tous"
@@ -356,7 +357,6 @@ export default function ProductAddPage() {
                           setPromoPrice('');
                           setSoldePrice('');
                         }}
-                        className="mb-3"
                       />
                       {variants.map((variant, key) => {
                         return (
@@ -399,7 +399,7 @@ export default function ProductAddPage() {
                       </Col>
                       <Col md={4}>
                         <Form.Group className="mb-3" controlId="promoPrice">
-                          <Form.Label>
+                          <Form.Label className="switch-price-2">
                             <Form.Check
                               type="switch"
                               id="promo-switch"
@@ -435,7 +435,7 @@ export default function ProductAddPage() {
                       </Col>
                       <Col md={4}>
                         <Form.Group className="mb-3" controlId="soldePrice">
-                          <Form.Label>
+                          <Form.Label className="switch-price-2">
                             <Form.Check
                               type="switch"
                               id="solde-switch"

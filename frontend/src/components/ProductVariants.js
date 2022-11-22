@@ -42,7 +42,7 @@ function ProductVariants(props) {
     return (
       <>
         <Col md={2}>
-          <Form.Group controlId="Price" className="my-2">
+          <Form.Group controlId="Price" className="my-1">
             <Form.Label>
               <small className="text-muted">Prix</small>
             </Form.Label>
@@ -55,9 +55,9 @@ function ProductVariants(props) {
           </Form.Group>
         </Col>
         <Col md={2}>
-          <Form.Group className="my-2" controlId={''}>
-            <Form.Label>
-              <small>
+          <Form.Group className="my-1" controlId={Math.random()}>
+            <Form.Label className="switch-price">
+              <small className="text-muted">
                 <Form.Check
                   type="switch"
                   label="Promo"
@@ -86,10 +86,11 @@ function ProductVariants(props) {
         </Col>
 
         <Col md={2}>
-          <Form.Group className="my-2" controlId={''}>
-            <Form.Label>
-              <small>
+          <Form.Group className="my-1" controlId={Math.random()}>
+            <Form.Label className="switch-price">
+              <small className="text-muted">
                 <Form.Check
+                  className="switch-price"
                   type="switch"
                   label="Solde"
                   onChange={() => {
@@ -121,9 +122,9 @@ function ProductVariants(props) {
 
   return (
     <>
-      <Row>
+      <Row className="bg-light p-2 rounded-3 mb-2">
         <Col md={2}>
-          <Form.Group controlId="name" className="my-2">
+          <Form.Group controlId="name" className="my-1">
             <Form.Label>
               <small className="text-muted">Nom variante</small>
             </Form.Label>
@@ -136,7 +137,7 @@ function ProductVariants(props) {
           </Form.Group>
         </Col>
         <Col md={2}>
-          <Form.Group controlId="weight" className="my-2">
+          <Form.Group controlId="weight" className="my-1">
             <Form.Label>
               <small className="text-muted">Poids</small>
             </Form.Label>
@@ -151,7 +152,7 @@ function ProductVariants(props) {
           </Form.Group>
         </Col>
         <Col md={1}>
-          <Form.Group controlId="countInStock" className="my-2">
+          <Form.Group controlId="countInStock" className="my-1">
             <Form.Label>
               <small className="text-muted">Stock</small>
             </Form.Label>
@@ -168,19 +169,15 @@ function ProductVariants(props) {
 
         {props.handlePrices() && renderVariantPrices()}
 
-        <Col md={1}>
-          <div className="d-flex" style={{ height: 100 }}>
-            <div className="align-self-center justify-self-end mt-3">
-              <Button
-                variant="warning"
-                onClick={() => props.removeVariant(props.index)}
-              >
-                <FontAwesomeIcon icon={faTrash} />
-              </Button>
-            </div>
-          </div>
+        <Col md={1} className="d-flex justify-content-end">
+          <Button
+            className="float-end"
+            onClick={() => props.removeVariant(props.index)}
+            variant="warning"
+          >
+            <FontAwesomeIcon icon={faTrash} />
+          </Button>
         </Col>
-        <hr />
       </Row>
     </>
   );

@@ -59,6 +59,14 @@ main {
   font-weight: 600;
 }
 
+/*INPUTS*/
+.switch-price {
+  margin-bottom: 0.17rem;
+}
+.switch-price-2 {
+  margin-bottom: 6px;
+}
+
 /*BREADCRUMB*/
 
 .modal-header {
