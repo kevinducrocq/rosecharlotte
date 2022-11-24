@@ -505,9 +505,7 @@ export default function ProductEditPage() {
                           <Form.Label>Prix</Form.Label>
                           <InputGroup className="mb-3">
                             <Form.Control
-                              type="number"
                               value={price}
-                              min={0}
                               onChange={(e) => setPrice(e.target.value)}
                             />
                             <InputGroup.Text>
