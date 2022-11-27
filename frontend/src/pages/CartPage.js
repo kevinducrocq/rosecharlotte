@@ -93,7 +93,7 @@ export default function CartPage() {
           {cartItems.length === 0 ? (
             <MessageBox>
               Votre panier est vide,{' '}
-              <Link to="/boutique/search">Go Shopping</Link>
+              <Link to="/boutique/search"></Link>Voir la boutique
             </MessageBox>
           ) : (
             <ListGroup className="text-center">
