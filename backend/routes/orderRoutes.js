@@ -74,8 +74,10 @@ orderRouter.post('/stripe/pay', cors(), async (req, res) => {
   try {
     const { amount, id, orderId } = req.body;
     const order = await Order.findById(orderId).populate('user', 'email name');
+
+    const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100;
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: amount,
+      amount: round2(amount),
       currency: 'eur',
       payment_method_types: ['card'],
       metadata: {

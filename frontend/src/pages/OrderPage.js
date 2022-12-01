@@ -118,18 +118,19 @@ export default function OrderPage() {
     return actions.order.capture().then(async function (details) {
       try {
         dispatch({ type: 'PAY_REQUEST' });
-        const { data } = await axios.put(
-          `/api/orders/${order._id}/pay`,
-          { details },
-          {
-            headers: { authorization: `Bearer ${userInfo.token}` },
-          }
-        );
-        // .catch(function (error) {
-        //   if (error.response && error.response.status === 401) {
-        //     logOutAndRedirect();
-        //   }
-        // });
+        const { data } = await axios
+          .put(
+            `/api/orders/${order._id}/pay`,
+            { details },
+            {
+              headers: { authorization: `Bearer ${userInfo.token}` },
+            }
+          )
+          .catch(function (error) {
+            if (error.response && error.response.status === 401) {
+              logOutAndRedirect();
+            }
+          });
         dispatch({ type: 'PAY_SUCCESS', payload: data });
         toast.success('Commande payée avec succès');
       } catch (err) {
@@ -191,14 +192,15 @@ export default function OrderPage() {
       }
     } else {
       const loadPaypalScript = async () => {
-        const { data: clientId } = await axios.get('/api/keys/paypal', {
-          headers: { authorization: `Bearer ${userInfo.token}` },
-        });
-        // .catch(function (error) {
-        //   if (error.response && error.response.status === 401) {
-        //     logOutAndRedirect();
-        //   }
-        // });
+        const { data: clientId } = await axios
+          .get('/api/keys/paypal', {
+            headers: { authorization: `Bearer ${userInfo.token}` },
+          })
+          .catch(function (error) {
+            if (error.response && error.response.status === 401) {
+              logOutAndRedirect();
+            }
+          });
         paypalDispatch({
           type: 'resetOptions',
           value: {
@@ -226,18 +228,19 @@ export default function OrderPage() {
   async function deliverOrderHandler() {
     try {
       dispatch({ type: 'DELIVER_REQUEST' });
-      const { data } = await axios.put(
-        `/api/orders/${order._id}/deliver`,
-        {},
-        {
-          headers: { authorization: `Bearer ${userInfo.token}` },
-        }
-      );
-      // .catch(function (error) {
-      //   if (error.response && error.response.status === 401) {
-      //     logOutAndRedirect();
-      //   }
-      // });
+      const { data } = await axios
+        .put(
+          `/api/orders/${order._id}/deliver`,
+          {},
+          {
+            headers: { authorization: `Bearer ${userInfo.token}` },
+          }
+        )
+        .catch(function (error) {
+          if (error.response && error.response.status === 401) {
+            logOutAndRedirect();
+          }
+        });
       dispatch({ type: 'DELIVER_SUCCESS', payload: data });
       toast.success('La commande a été marquée comme envoyée');
     } catch (err) {
@@ -249,18 +252,19 @@ export default function OrderPage() {
   async function payOrderHandler() {
     try {
       dispatch({ type: 'IS_PAID_REQUEST' });
-      const { data } = await axios.put(
-        `/api/orders/${order._id}/is-paid`,
-        {},
-        {
-          headers: { authorization: `Bearer ${userInfo.token}` },
-        }
-      );
-      // .catch(function (error) {
-      //   if (error.response && error.response.status === 401) {
-      //     logOutAndRedirect();
-      //   }
-      // });
+      const { data } = await axios
+        .put(
+          `/api/orders/${order._id}/is-paid`,
+          {},
+          {
+            headers: { authorization: `Bearer ${userInfo.token}` },
+          }
+        )
+        .catch(function (error) {
+          if (error.response && error.response.status === 401) {
+            logOutAndRedirect();
+          }
+        });
       dispatch({ type: 'IS_PAID_SUCCESS', payload: data });
       toast.success('La commande a été marquée comme payée');
     } catch (err) {
