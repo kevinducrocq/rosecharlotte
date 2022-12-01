@@ -51,7 +51,8 @@ export default function PlaceOrderPage() {
     const newCart = { ...cart };
     newCart.itemsPrice = round2(
       newCart.cartItems.reduce(
-        (price, item) => price + item.quantity * item.price,
+        (price, item) =>
+          price + item.quantity * (item.price || item.variant.price),
         0
       )
     );
