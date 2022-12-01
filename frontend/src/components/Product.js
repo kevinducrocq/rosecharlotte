@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, ListGroup } from 'react-bootstrap';
+import { Card, Image } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Rating from './Rating';
 
@@ -41,12 +41,11 @@ function Product(props) {
       to={`/product/${product.slug}`}
     >
       <Card className="hover-shadow flex-fill">
-        <img
+        <Image
           src={product.image}
           className="card-img-top img-fluid"
           alt={product.name}
         />
-
         <div className="product-badge">
           {product.variants.reduce(
             (countInStock, variant) => countInStock + variant.countInStock,

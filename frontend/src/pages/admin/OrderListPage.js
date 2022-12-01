@@ -63,15 +63,14 @@ export default function OrderListPage() {
     const fetchData = async () => {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
-        const { data } = await axios
-          .get(`/api/orders`, {
-            headers: { Authorization: `Bearer ${userInfo.token}` },
-          })
-          .catch(function (error) {
-            if (error.response && error.response.status === 401) {
-              logOutAndRedirect();
-            }
-          });
+        const { data } = await axios.get(`/api/orders`, {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        });
+        // .catch(function (error) {
+        //   if (error.response && error.response.status === 401) {
+        //     logOutAndRedirect();
+        //   }
+        // });
         setTimeout(() => {
           $(tableRef.current).DataTable({
             destroy: true,
@@ -102,15 +101,14 @@ export default function OrderListPage() {
     if (!order.isPaid) {
       try {
         dispatch({ type: 'DELETE_REQUEST' });
-        await axios
-          .delete(`/api/orders/${order._id}`, {
-            headers: { Authorization: `Bearer ${userInfo.token}` },
-          })
-          .catch(function (error) {
-            if (error.response && error.response.status === 401) {
-              logOutAndRedirect();
-            }
-          });
+        await axios.delete(`/api/orders/${order._id}`, {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        });
+        // .catch(function (error) {
+        //   if (error.response && error.response.status === 401) {
+        //     logOutAndRedirect();
+        //   }
+        // });
 
         dispatch({ type: 'DELETE_SUCCESS' });
       } catch (err) {

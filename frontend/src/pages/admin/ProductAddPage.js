@@ -186,36 +186,35 @@ export default function ProductAddPage() {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      await axios
-        .post(
-          `/api/products/add`,
-          {
-            name,
-            price,
-            promoPrice,
-            soldePrice,
-            weight,
-            image,
-            images,
-            category,
-            subCategory,
-            countInStock,
-            description,
-            variants,
-            customizable,
-            fils,
-            tissus,
-            patches,
-          },
-          {
-            headers: { Authorization: `Bearer ${userInfo.token}` },
-          }
-        )
-        .catch(function (error) {
-          if (error.response && error.response.status === 401) {
-            logOutAndRedirect();
-          }
-        });
+      await axios.post(
+        `/api/products/add`,
+        {
+          name,
+          price,
+          promoPrice,
+          soldePrice,
+          weight,
+          image,
+          images,
+          category,
+          subCategory,
+          countInStock,
+          description,
+          variants,
+          customizable,
+          fils,
+          tissus,
+          patches,
+        },
+        {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+      // .catch(function (error) {
+      //   if (error.response && error.response.status === 401) {
+      //     logOutAndRedirect();
+      //   }
+      // });
       toast.success('Produit ajouté');
       navigate('/admin/products');
     } catch (err) {
@@ -229,18 +228,17 @@ export default function ProductAddPage() {
     bodyFormData.append('file', file);
     try {
       dispatch({ type: 'UPLOAD_REQUEST' });
-      const { data } = await axios
-        .post('/api/upload/image', bodyFormData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            authorization: `Bearer ${userInfo.token}`,
-          },
-        })
-        .catch(function (error) {
-          if (error.response && error.response.status === 401) {
-            logOutAndRedirect();
-          }
-        });
+      const { data } = await axios.post('/api/upload/image', bodyFormData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          authorization: `Bearer ${userInfo.token}`,
+        },
+      });
+      // .catch(function (error) {
+      //   if (error.response && error.response.status === 401) {
+      //     logOutAndRedirect();
+      //   }
+      // });
       dispatch({ type: 'UPLOAD_SUCCESS' });
 
       if (forImages) {

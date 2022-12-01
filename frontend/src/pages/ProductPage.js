@@ -191,19 +191,18 @@ function ProductPage() {
       return;
     }
     try {
-      const { data } = await axios
-        .post(
-          `/api/products/${product._id}/reviews`,
-          { rating, comment, name: userInfo.name },
-          {
-            headers: { Authorization: `Bearer ${userInfo.token}` },
-          }
-        )
-        .catch(function (error) {
-          if (error.response && error.response.status === 401) {
-            logOutAndRedirect();
-          }
-        });
+      const { data } = await axios.post(
+        `/api/products/${product._id}/reviews`,
+        { rating, comment, name: userInfo.name },
+        {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+      // .catch(function (error) {
+      //   if (error.response && error.response.status === 401) {
+      //     logOutAndRedirect();
+      //   }
+      // });
 
       dispatch({
         type: 'CREATE_SUCCESS',

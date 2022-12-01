@@ -133,15 +133,14 @@ export default function PlaceOrderPage() {
     const userOrders = async () => {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
-        const { data } = await axios
-          .get(`/api/orders/orders-by-user`, {
-            headers: { authorization: `Bearer ${userInfo.token}` },
-          })
-          .catch(function (error) {
-            if (error.response && error.response.status === 401) {
-              logOutAndRedirect();
-            }
-          });
+        const { data } = await axios.get(`/api/orders/orders-by-user`, {
+          headers: { authorization: `Bearer ${userInfo.token}` },
+        });
+        // .catch(function (error) {
+        //   if (error.response && error.response.status === 401) {
+        //     logOutAndRedirect();
+        //   }
+        // });
         if (data.length === 0) {
           setDiscount(0);
         }

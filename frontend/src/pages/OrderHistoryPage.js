@@ -39,15 +39,14 @@ const OrderHistoryPage = () => {
     const fetchData = async () => {
       dispatch({ type: 'FETCH_REQUEST' });
       try {
-        const { data } = await axios
-          .get(`/api/orders/mine`, {
-            headers: { authorization: `Bearer ${userInfo.token}` },
-          })
-          .catch(function (error) {
-            if (error.response && error.response.status === 401) {
-              logOutAndRedirect();
-            }
-          });
+        const { data } = await axios.get(`/api/orders/mine`, {
+          headers: { authorization: `Bearer ${userInfo.token}` },
+        });
+        // .catch(function (error) {
+        //   if (error.response && error.response.status === 401) {
+        //     logOutAndRedirect();
+        //   }
+        // });
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {
         dispatch({ type: 'FETCH_ERROR', payload: getError(err) });

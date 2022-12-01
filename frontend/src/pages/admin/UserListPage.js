@@ -67,15 +67,14 @@ export default function UserListScreen() {
     const fetchData = async () => {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
-        const { data } = await axios
-          .get(`/api/users`, {
-            headers: { Authorization: `Bearer ${userInfo.token}` },
-          })
-          .catch(function (error) {
-            if (error.response && error.response.status === 401) {
-              logOutAndRedirect();
-            }
-          });
+        const { data } = await axios.get(`/api/users`, {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        });
+        // .catch(function (error) {
+        //   if (error.response && error.response.status === 401) {
+        //     logOutAndRedirect();
+        //   }
+        // });
         setTimeout(() => {
           $(tableRef.current).DataTable({
             language: {
@@ -106,15 +105,14 @@ export default function UserListScreen() {
     if (window.confirm('Confirmer?')) {
       try {
         dispatch({ type: 'DELETE_REQUEST' });
-        await axios
-          .delete(`/api/users/${user._id}`, {
-            headers: { Authorization: `Bearer ${userInfo.token}` },
-          })
-          .catch(function (error) {
-            if (error.response && error.response.status === 401) {
-              logOutAndRedirect();
-            }
-          });
+        await axios.delete(`/api/users/${user._id}`, {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        });
+        // .catch(function (error) {
+        //   if (error.response && error.response.status === 401) {
+        //     logOutAndRedirect();
+        //   }
+        // });
         toast.success('Utilisateur supprimé');
         dispatch({ type: 'DELETE_SUCCESS' });
       } catch (error) {

@@ -37,15 +37,14 @@ export default function DashboardScreen() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const { data } = await axios
-          .get('/api/orders/summary', {
-            headers: { Authorization: `Bearer ${userInfo.token}` },
-          })
-          .catch(function (error) {
-            if (error.response && error.response.status === 401) {
-              logOutAndRedirect();
-            }
-          });
+        const { data } = await axios.get('/api/orders/summary', {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        });
+        // .catch(function (error) {
+        //   if (error.response && error.response.status === 401) {
+        //     logOutAndRedirect();
+        //   }
+        // });
         dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {
         dispatch({

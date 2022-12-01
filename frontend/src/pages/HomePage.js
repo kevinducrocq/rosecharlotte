@@ -36,6 +36,7 @@ function HomePage() {
     loading: true,
     error: '',
   });
+
   const options = {
     loop: false,
     margin: 10,

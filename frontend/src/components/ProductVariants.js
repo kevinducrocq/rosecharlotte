@@ -1,7 +1,7 @@
-import { faEuroSign, faTrash } from '@fortawesome/pro-solid-svg-icons';
+import { faTrash } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react';
-import { Button, Col, Form, InputGroup, Row } from 'react-bootstrap';
+import { Button, Col, Form, Row } from 'react-bootstrap';
 
 function ProductVariants(props) {
   const [name, setName] = useState(props.variant.name);

@@ -51,15 +51,14 @@ export default function UserEditScreen() {
     const fetchData = async () => {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
-        const { data } = await axios
-          .get(`/api/users/${userId}`, {
-            headers: { Authorization: `Bearer ${userInfo.token}` },
-          })
-          .catch(function (error) {
-            if (error.response && error.response.status === 401) {
-              logOutAndRedirect();
-            }
-          });
+        const { data } = await axios.get(`/api/users/${userId}`, {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        });
+        // .catch(function (error) {
+        //   if (error.response && error.response.status === 401) {
+        //     logOutAndRedirect();
+        //   }
+        // });
         setName(data.name);
         setEmail(data.email);
         setIsAdmin(data.isAdmin);
@@ -78,19 +77,18 @@ export default function UserEditScreen() {
     e.preventDefault();
     try {
       dispatch({ type: 'UPDATE_REQUEST' });
-      await axios
-        .put(
-          `/api/users/${userId}`,
-          { _id: userId, name, email, isAdmin },
-          {
-            headers: { Authorization: `Bearer ${userInfo.token}` },
-          }
-        )
-        .catch(function (error) {
-          if (error.response && error.response.status === 401) {
-            logOutAndRedirect();
-          }
-        });
+      await axios.put(
+        `/api/users/${userId}`,
+        { _id: userId, name, email, isAdmin },
+        {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+      // .catch(function (error) {
+      //   if (error.response && error.response.status === 401) {
+      //     logOutAndRedirect();
+      //   }
+      // });
       dispatch({
         type: 'UPDATE_SUCCESS',
       });

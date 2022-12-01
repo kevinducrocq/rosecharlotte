@@ -83,15 +83,14 @@ export default function TissuListPage() {
     const fetchData = async () => {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
-        const { data } = await axios
-          .get(`/api/fils`, {
-            headers: { Authorization: `Bearer ${userInfo.token}` },
-          })
-          .catch(function (error) {
-            if (error.response && error.response.status === 401) {
-              logOutAndRedirect();
-            }
-          });
+        const { data } = await axios.get(`/api/fils`, {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        });
+        // .catch(function (error) {
+        //   if (error.response && error.response.status === 401) {
+        //     logOutAndRedirect();
+        //   }
+        // });
         setTimeout(() => {
           $(tableRef.current).DataTable({
             language: {
@@ -123,21 +122,20 @@ export default function TissuListPage() {
     e.preventDefault();
     try {
       dispatch({ type: 'ADD_REQUEST' });
-      await axios
-        .post(
-          `/api/fils/add`,
-          {
-            name,
-          },
-          {
-            headers: { Authorization: `Bearer ${userInfo.token}` },
-          }
-        )
-        .catch(function (error) {
-          if (error.response && error.response.status === 401) {
-            logOutAndRedirect();
-          }
-        });
+      await axios.post(
+        `/api/fils/add`,
+        {
+          name,
+        },
+        {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+      // .catch(function (error) {
+      //   if (error.response && error.response.status === 401) {
+      //     logOutAndRedirect();
+      //   }
+      // });
       dispatch({ type: 'ADD_SUCCESS' });
       setName('');
       toast.success('Fil ajouté');
@@ -151,15 +149,14 @@ export default function TissuListPage() {
   const deleteHandler = async (fil) => {
     try {
       dispatch({ type: 'DELETE_REQUEST' });
-      await axios
-        .delete(`/api/fils/${fil._id}`, {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        })
-        .catch(function (error) {
-          if (error.response && error.response.status === 401) {
-            logOutAndRedirect();
-          }
-        });
+      await axios.delete(`/api/fils/${fil._id}`, {
+        headers: { Authorization: `Bearer ${userInfo.token}` },
+      });
+      // .catch(function (error) {
+      //   if (error.response && error.response.status === 401) {
+      //     logOutAndRedirect();
+      //   }
+      // });
       dispatch({ type: 'DELETE_SUCCESS' });
     } catch (err) {
       toast.error(getError(error));

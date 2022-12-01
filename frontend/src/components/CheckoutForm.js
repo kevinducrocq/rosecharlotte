@@ -10,7 +10,7 @@ function CheckoutForm({ order, reducer, onSuccess }) {
   const stripe = useStripe();
   const elements = useElements();
 
-  const [{}, dispatch] = useReducer(reducer, {});
+  const [dispatch] = useReducer(reducer, {});
   const [loader, setLoader] = useState(false);
 
   const handleSubmit = async (e) => {

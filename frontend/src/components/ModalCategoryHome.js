@@ -2,28 +2,27 @@ import { faPen } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import axios from 'axios';
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, Form, Modal, NavDropdown } from 'react-bootstrap';
-import { LinkContainer } from 'react-router-bootstrap';
+import { Button, Form, Modal } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { Store } from '../Store';
 import { getError, logOutAndRedirect } from '../utils';
 
-const reducer = (state, action) => {
-  switch (action.type) {
-    case 'FETCH_REQUEST':
-      return { ...state, loading: true };
-    case 'FETCH_SUCCESS':
-      return {
-        ...state,
-        categories: action.payload,
-        loading: false,
-      };
-    case 'FETCH_FAIL':
-      return { ...state, loading: false, error: action.payload };
-    default:
-      return state;
-  }
-};
+// const reducer = (state, action) => {
+//   switch (action.type) {
+//     case 'FETCH_REQUEST':
+//       return { ...state, loading: true };
+//     case 'FETCH_SUCCESS':
+//       return {
+//         ...state,
+//         categories: action.payload,
+//         loading: false,
+//       };
+//     case 'FETCH_FAIL':
+//       return { ...state, loading: false, error: action.payload };
+//     default:
+//       return state;
+//   }
+// };
 
 export default function ModalCategoryHome() {
   const [categories, setCategories] = useState([]);
@@ -62,21 +61,20 @@ export default function ModalCategoryHome() {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      await axios
-        .post(
-          `/api/settings/chosen-category`,
-          {
-            chosenCategory,
-          },
-          {
-            headers: { Authorization: `Bearer ${userInfo.token}` },
-          }
-        )
-        .catch(function (error) {
-          if (error.response && error.response.status === 401) {
-            logOutAndRedirect();
-          }
-        });
+      await axios.post(
+        `/api/settings/chosen-category`,
+        {
+          chosenCategory,
+        },
+        {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+      // .catch(function (error) {
+      //   if (error.response && error.response.status === 401) {
+      //     logOutAndRedirect();
+      //   }
+      // });
       toast.success(
         `Catégorie ${chosenCategory} a été ajoutée à l'ecran d'accueil`
       );

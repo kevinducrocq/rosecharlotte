@@ -23,7 +23,7 @@ const reducer = (state, action) => {
 };
 
 function CarouselHome() {
-  const [{ loading, error, carouselHome }, dispatch] = useReducer(reducer, {
+  const [{ carouselHome }, dispatch] = useReducer(reducer, {
     loading: false,
     error: '',
   });

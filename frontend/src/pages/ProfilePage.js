@@ -49,26 +49,25 @@ const ProfilePage = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await axios
-        .put(
-          '/api/users/profile',
-          {
-            name,
-            email,
-            address,
-            zip,
-            city,
-            country,
-          },
-          {
-            headers: { Authorization: `Bearer ${userInfo.token}` },
-          }
-        )
-        .catch(function (error) {
-          if (error.response && error.response.status === 401) {
-            logOutAndRedirect();
-          }
-        });
+      const { data } = await axios.put(
+        '/api/users/profile',
+        {
+          name,
+          email,
+          address,
+          zip,
+          city,
+          country,
+        },
+        {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+      // .catch(function (error) {
+      //   if (error.response && error.response.status === 401) {
+      //     logOutAndRedirect();
+      //   }
+      // });
       dispatch({ type: 'UPDATE_SUCCESS' });
       ctxDispatch({ type: 'USER_SIGNIN', payload: data });
       localStorage.setItem('userInfo', JSON.stringify(data));
@@ -86,21 +85,20 @@ const ProfilePage = () => {
       toast.error('Les mots de passe ne correspondent pas');
     } else {
       try {
-        const { data } = await axios
-          .put(
-            '/api/users/profile',
-            {
-              password,
-            },
-            {
-              headers: { Authorization: `Bearer ${userInfo.token}` },
-            }
-          )
-          .catch(function (error) {
-            if (error.response && error.response.status === 401) {
-              logOutAndRedirect();
-            }
-          });
+        const { data } = await axios.put(
+          '/api/users/profile',
+          {
+            password,
+          },
+          {
+            headers: { Authorization: `Bearer ${userInfo.token}` },
+          }
+        );
+        // .catch(function (error) {
+        //   if (error.response && error.response.status === 401) {
+        //     logOutAndRedirect();
+        //   }
+        // });
         dispatch({ type: 'UPDATE_SUCCESS' });
         ctxDispatch({ type: 'USER_SIGNIN', payload: data });
         toast.success('Votre mot de passe a été mis à jour', {

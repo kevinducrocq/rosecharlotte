@@ -28,7 +28,6 @@ import { getError } from '../utils';
 import CategoriesCanvasMenu from './CategoriesCanvasMenu';
 import { useReducer } from 'react';
 import SearchBox from './SearchBox';
-import LoadingBox from './LoadingBox';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -48,7 +47,7 @@ const reducer = (state, action) => {
 };
 
 function NavigationBar() {
-  const [{ products, loading }, dispatch] = useReducer(reducer, {
+  const [dispatch] = useReducer(reducer, {
     loading: false,
     products: [],
   });

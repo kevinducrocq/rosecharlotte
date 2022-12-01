@@ -98,15 +98,14 @@ export default function PatchListPage() {
     const fetchData = async () => {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
-        const { data } = await axios
-          .get(`/api/patches`, {
-            headers: { Authorization: `Bearer ${userInfo.token}` },
-          })
-          .catch(function (error) {
-            if (error.response && error.response.status === 401) {
-              logOutAndRedirect();
-            }
-          });
+        const { data } = await axios.get(`/api/patches`, {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        });
+        // .catch(function (error) {
+        //   if (error.response && error.response.status === 401) {
+        //     logOutAndRedirect();
+        //   }
+        // });
         setTimeout(() => {
           $(tableRef.current).DataTable({
             language: {
@@ -140,22 +139,21 @@ export default function PatchListPage() {
     e.preventDefault();
     try {
       dispatch({ type: 'ADD_REQUEST' });
-      await axios
-        .post(
-          `/api/patches/add`,
-          {
-            name,
-            image,
-          },
-          {
-            headers: { Authorization: `Bearer ${userInfo.token}` },
-          }
-        )
-        .catch(function (error) {
-          if (error.response && error.response.status === 401) {
-            logOutAndRedirect();
-          }
-        });
+      await axios.post(
+        `/api/patches/add`,
+        {
+          name,
+          image,
+        },
+        {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+      // .catch(function (error) {
+      //   if (error.response && error.response.status === 401) {
+      //     logOutAndRedirect();
+      //   }
+      // });
       dispatch({ type: 'ADD_SUCCESS' });
       setName('');
       if (imageInputRef) imageInputRef.current.value = null;
@@ -172,18 +170,17 @@ export default function PatchListPage() {
     bodyFormData.append('file', file);
     try {
       dispatch({ type: 'UPLOAD_REQUEST' });
-      const { data } = await axios
-        .post('/api/upload/image', bodyFormData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            authorization: `Bearer ${userInfo.token}`,
-          },
-        })
-        .catch(function (error) {
-          if (error.response && error.response.status === 401) {
-            logOutAndRedirect();
-          }
-        });
+      const { data } = await axios.post('/api/upload/image', bodyFormData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          authorization: `Bearer ${userInfo.token}`,
+        },
+      });
+      // .catch(function (error) {
+      //   if (error.response && error.response.status === 401) {
+      //     logOutAndRedirect();
+      //   }
+      // });
       dispatch({ type: 'UPLOAD_SUCCESS' });
       setImage(data.path);
     } catch (err) {
@@ -196,15 +193,14 @@ export default function PatchListPage() {
     if (window.confirm('Confirmer ?')) {
       try {
         dispatch({ type: 'DELETE_REQUEST' });
-        await axios
-          .delete(`/api/patches/${patch._id}`, {
-            headers: { Authorization: `Bearer ${userInfo.token}` },
-          })
-          .catch(function (error) {
-            if (error.response && error.response.status === 401) {
-              logOutAndRedirect();
-            }
-          });
+        await axios.delete(`/api/patches/${patch._id}`, {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        });
+        // .catch(function (error) {
+        //   if (error.response && error.response.status === 401) {
+        //     logOutAndRedirect();
+        //   }
+        // });
 
         dispatch({ type: 'DELETE_SUCCESS' });
       } catch (err) {

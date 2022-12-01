@@ -1,11 +1,6 @@
 import React from 'react';
 
-import {
-  faForward,
-  faHouse,
-  faPersonCarryBox,
-  faStore,
-} from '@fortawesome/pro-solid-svg-icons';
+import { faHouse, faPersonCarryBox } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useContext, useEffect, useState } from 'react';
 import { Col, Form, Row } from 'react-bootstrap';
@@ -38,7 +33,7 @@ const reducer = (state, action) => {
 };
 
 function DeliveryAddressModal() {
-  const [{ loading, loadingUpdate }, dispatch] = useReducer(reducer, {
+  const [dispatch] = useReducer(reducer, {
     loading: true,
     error: '',
     loadingUpdate: false,
@@ -64,6 +59,7 @@ function DeliveryAddressModal() {
   const [deliveryMethodName, setDeliveryMethod] = useState('');
   const [modalShow, setModalShow] = useState(false);
   const [modalSaveAddressShow, setModalSaveAddressShow] = useState(false);
+
   const handleClose = () => setModalSaveAddressShow(false);
   const handleShow = () => setModalSaveAddressShow(true);
 
@@ -79,25 +75,24 @@ function DeliveryAddressModal() {
 
   const updateUserAddress = async () => {
     try {
-      const { data } = await axios
-        .put(
-          '/api/users/profile',
-          {
-            name,
-            address,
-            zip,
-            city,
-            country,
-          },
-          {
-            headers: { Authorization: `Bearer ${userInfo.token}` },
-          }
-        )
-        .catch(function (error) {
-          if (error.response && error.response.status === 401) {
-            logOutAndRedirect();
-          }
-        });
+      const { data } = await axios.put(
+        '/api/users/profile',
+        {
+          name,
+          address,
+          zip,
+          city,
+          country,
+        },
+        {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+      // .catch(function (error) {
+      //   if (error.response && error.response.status === 401) {
+      //     logOutAndRedirect();
+      //   }
+      // });
       dispatch({ type: 'UPDATE_SUCCESS' });
       localStorage.setItem('userInfo', JSON.stringify(data));
       toast.success('Votre adresse a été mise à jour dans votre profil');
@@ -283,6 +278,7 @@ function DeliveryAddressModal() {
             <FontAwesomeIcon icon={faHouse} size="5x" />
           </Button>
         </Col>
+        {/* <Col md={4}></Col> */}
         <Col md={6}>
           <Form onSubmit={homeHandler}>
             <Button

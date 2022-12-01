@@ -168,10 +168,10 @@ export default function SearchScreen() {
         <LinkContainer to={'/boutique/search'}>
           <Breadcrumb.Item>Boutique</Breadcrumb.Item>
         </LinkContainer>
-        {selectedCategory != 'all' && (
+        {selectedCategory !== 'all' && (
           <>
             <LinkContainer to={`/boutique/search?category=${selectedCategory}`}>
-              <Breadcrumb.Item active={selectedSubCategory == 'all'}>
+              <Breadcrumb.Item active={selectedSubCategory === 'all'}>
                 {selectedCategory}
               </Breadcrumb.Item>
             </LinkContainer>

@@ -61,15 +61,14 @@ function ModalEditPatch({ id, onEditSuccess }) {
       const fetchData = async () => {
         try {
           dispatch({ type: 'FETCH_REQUEST' });
-          const { data } = await axios
-            .get(`/api/patches/${patchId}`, {
-              headers: { Authorization: `Bearer ${userInfo.token}` },
-            })
-            .catch(function (error) {
-              if (error.response && error.response.status === 401) {
-                logOutAndRedirect();
-              }
-            });
+          const { data } = await axios.get(`/api/patches/${patchId}`, {
+            headers: { Authorization: `Bearer ${userInfo.token}` },
+          });
+          // .catch(function (error) {
+          //   if (error.response && error.response.status === 401) {
+          //     logOutAndRedirect();
+          //   }
+          // });
           setName(data.name);
           setImage(data.image);
           dispatch({ type: 'FETCH_SUCCESS' });
@@ -88,23 +87,22 @@ function ModalEditPatch({ id, onEditSuccess }) {
     e.preventDefault();
     try {
       dispatch({ type: 'UPDATE_REQUEST' });
-      await axios
-        .put(
-          `/api/patches/${patchId}`,
-          {
-            _id: id,
-            name,
-            image,
-          },
-          {
-            headers: { Authorization: `Bearer ${userInfo.token}` },
-          }
-        )
-        .catch(function (error) {
-          if (error.response && error.response.status === 401) {
-            logOutAndRedirect();
-          }
-        });
+      await axios.put(
+        `/api/patches/${patchId}`,
+        {
+          _id: id,
+          name,
+          image,
+        },
+        {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        }
+      );
+      // .catch(function (error) {
+      //   if (error.response && error.response.status === 401) {
+      //     logOutAndRedirect();
+      //   }
+      // });
       onEditSuccess();
       dispatch({
         type: 'UPDATE_SUCCESS',
@@ -131,13 +129,12 @@ function ModalEditPatch({ id, onEditSuccess }) {
           'Content-Type': 'multipart/form-data',
           authorization: `Bearer ${userInfo.token}`,
         },
-      }).catch(
-        function (error) {
-          if (error.response && error.response.status === 401) {
-            logOutAndRedirect();
-          }
-        }
-      );
+      });
+      // .catch(function (error) {
+      //   if (error.response && error.response.status === 401) {
+      //     logOutAndRedirect();
+      //   }
+      // });
       setImage(data.path);
       dispatch({ type: 'UPLOAD_SUCCESS' });
     } catch (err) {

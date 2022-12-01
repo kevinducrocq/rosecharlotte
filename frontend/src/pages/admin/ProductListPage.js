@@ -140,15 +140,14 @@ export default function ProductListScreen() {
     const fetchData = async () => {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
-        const { data } = await axios
-          .get(`/api/products/admin?page=${page} `, {
-            headers: { Authorization: `Bearer ${userInfo.token}` },
-          })
-          .catch(function (error) {
-            if (error.response && error.response.status === 401) {
-              logOutAndRedirect();
-            }
-          });
+        const { data } = await axios.get(`/api/products/admin?page=${page} `, {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        });
+        // .catch(function (error) {
+        //   if (error.response && error.response.status === 401) {
+        //     logOutAndRedirect();
+        //   }
+        // });
 
         setTimeout(() => {
           $(tableRef.current).DataTable({
@@ -188,15 +187,14 @@ export default function ProductListScreen() {
   const validateHandler = async (product) => {
     try {
       dispatch({ type: 'VALIDATE_REQUEST' });
-      await axios
-        .put(`/api/products/${product._id}/validate`, [], {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        })
-        .catch(function (error) {
-          if (error.response && error.response.status === 401) {
-            logOutAndRedirect();
-          }
-        });
+      await axios.put(`/api/products/${product._id}/validate`, [], {
+        headers: { Authorization: `Bearer ${userInfo.token}` },
+      });
+      // .catch(function (error) {
+      //   if (error.response && error.response.status === 401) {
+      //     logOutAndRedirect();
+      //   }
+      // });
       dispatch({ type: 'VALIDATE_SUCCESS' });
     } catch (err) {
       toast.error(getError(error));
@@ -209,15 +207,14 @@ export default function ProductListScreen() {
   const hideHandler = async (product) => {
     try {
       dispatch({ type: 'HIDE_REQUEST' });
-      await axios
-        .put(`/api/products/${product._id}/hide`, [], {
-          headers: { Authorization: `Bearer ${userInfo.token}` },
-        })
-        .catch(function (error) {
-          if (error.response && error.response.status === 401) {
-            logOutAndRedirect();
-          }
-        });
+      await axios.put(`/api/products/${product._id}/hide`, [], {
+        headers: { Authorization: `Bearer ${userInfo.token}` },
+      });
+      // .catch(function (error) {
+      //   if (error.response && error.response.status === 401) {
+      //     logOutAndRedirect();
+      //   }
+      // });
       dispatch({ type: 'HIDE_SUCCESS' });
     } catch (err) {
       toast.error(getError(error));
@@ -230,15 +227,14 @@ export default function ProductListScreen() {
   const deleteHandler = async (product) => {
     if (window.confirm('Confirmer ?')) {
       try {
-        await axios
-          .delete(`/api/products/${product._id}`, {
-            headers: { Authorization: `Bearer ${userInfo.token}` },
-          })
-          .catch(function (error) {
-            if (error.response && error.response.status === 401) {
-              logOutAndRedirect();
-            }
-          });
+        await axios.delete(`/api/products/${product._id}`, {
+          headers: { Authorization: `Bearer ${userInfo.token}` },
+        });
+        // .catch(function (error) {
+        //   if (error.response && error.response.status === 401) {
+        //     logOutAndRedirect();
+        //   }
+        // });
         toast.success('Produit supprimé');
         dispatch({ type: 'DELETE_SUCCESS' });
       } catch (err) {
