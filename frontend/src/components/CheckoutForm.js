@@ -16,8 +16,9 @@ function CheckoutForm({ order, reducer, onSuccess }) {
   const handleSubmit = async (e) => {
     try {
       setLoader(true);
+      const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100;
       const response = await axios.post('/api/orders/stripe/pay', {
-        amount: order.totalPrice * 100,
+        amount: round2(order.totalPrice * 100),
         orderId: order._id,
       });
 

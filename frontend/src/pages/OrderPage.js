@@ -147,14 +147,15 @@ export default function OrderPage() {
     const fetchOrder = async () => {
       try {
         dispatch({ type: 'FETCH_REQUEST' });
-        const { data } = await axios.get(`/api/orders/${orderId}`, {
-          headers: { authorization: `Bearer ${userInfo.token}` },
-        });
-        // .catch(function (error) {
-        //   if (error.response && error.response.status === 401) {
-        //     logOutAndRedirect();
-        //   }
-        // });
+        const { data } = await axios
+          .get(`/api/orders/${orderId}`, {
+            headers: { authorization: `Bearer ${userInfo.token}` },
+          })
+          .catch(function (error) {
+            if (error.response && error.response.status === 401) {
+              logOutAndRedirect();
+            }
+          });
         if (data.paymentMethod === 'Chèque' && !data.isPaid) {
           setShowModalCheque(true);
         }
