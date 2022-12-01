@@ -11,7 +11,7 @@ import {
 import { Helmet } from 'react-helmet-async';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { getError, logOutAndRedirect } from '../utils';
+import { getError } from '../utils';
 import CheckoutSteps from '../components/CheckoutSteps';
 import { Store } from '../Store';
 import axios from 'axios';
@@ -47,18 +47,15 @@ export default function PlaceOrderPage() {
   const [cart, setCart] = useState({ ...storeCart });
 
   const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100;
-
   const recalculatePrices = () => {
     const newCart = { ...cart };
-
     newCart.itemsPrice = round2(
       newCart.cartItems.reduce(
-        (price, item) =>
-          price + item.quantity * (item.price || item.variant.price),
+        (price, item) => price + item.quantity * item.price,
         0
       )
     );
-    console.log(newCart.itemsPrice);
+
     newCart.itemsPriceWithDiscount = round2(
       (newCart.itemsPrice * (100 - discount)) / 100
     );
@@ -113,11 +110,8 @@ export default function PlaceOrderPage() {
           shippingPrice: cart.shippingPrice,
           totalPrice: cart.totalPrice,
         },
-        {
-          headers: { authorization: `Bearer ${userInfo.token}` },
-        }
+        { headers: { authorization: `Bearer ${userInfo.token}` } }
       );
-
       ctxDispatch({ type: 'CART_CLEAR' });
       dispatch({ type: 'CREATE-SUCCESS' });
       localStorage.removeItem('cartItems');
@@ -136,11 +130,6 @@ export default function PlaceOrderPage() {
         const { data } = await axios.get(`/api/orders/orders-by-user`, {
           headers: { authorization: `Bearer ${userInfo.token}` },
         });
-        // .catch(function (error) {
-        //   if (error.response && error.response.status === 401) {
-        //     logOutAndRedirect();
-        //   }
-        // });
         if (data.length === 0) {
           setDiscount(0);
         }
@@ -361,7 +350,7 @@ export default function PlaceOrderPage() {
 
                     <Col>
                       {cart.shippingPrice === 0
-                        ? 'Offerte (en point relai)'
+                        ? 'Offerte'
                         : cart.shippingPrice?.toFixed(2) + ' €'}
                     </Col>
                   </Row>
