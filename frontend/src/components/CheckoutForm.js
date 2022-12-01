@@ -4,68 +4,59 @@ import axios from 'axios';
 import { Button, Form } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { getError } from '../utils';
-import LoadingBox from '../components/LoadingBox';
 
-function CheckoutForm({ order, reducer, onSuccess }) {
+const CheckoutForm = ({ order, reducer, onSuccess }) => {
   const stripe = useStripe();
   const elements = useElements();
 
-  const [dispatch] = useReducer(reducer, {});
+  const [{}, dispatch] = useReducer(reducer, {});
   const [loader, setLoader] = useState(false);
 
   const handleSubmit = async (e) => {
-    try {
-      setLoader(true);
-      const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100;
-      const response = await axios.post('/api/orders/stripe/pay', {
-        amount: round2(order.totalPrice * 100),
-        orderId: order._id,
-      });
+    e.preventDefault();
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
+      type: 'card',
+      card: elements.getElement(CardElement),
+    });
 
-      const data = await response.data;
-      const cardElement = elements.getElement(CardElement);
-      const confirmPayment = await stripe.confirmCardPayment(
-        data.clientSecret,
-        { payment_method: { card: cardElement } }
-      );
-      const { paymentIntent } = confirmPayment;
-      console.log(paymentIntent);
+    if (!error) {
+      console.log('Token généré', paymentMethod);
 
-      if (paymentIntent.status === 'succeeded') {
-        dispatch({ type: 'IS_PAID_SUCCESS' });
-        toast.success('Paiement accepté, merci !');
-
-        setTimeout(async () => {
-          const paymentId = paymentIntent.id;
-          console.log(paymentId);
-          const paymentSuccess = await axios.post('/api/orders/stripe/check', {
-            paymentId,
-            clientSecret: data.clientSecret,
-            orderId: order._id,
-          });
-          console.log(paymentSuccess);
+      // envoi du token au backend
+      try {
+        setLoader(true);
+        const { id } = paymentMethod;
+        const response = await axios.post('/api/orders/stripe/charge', {
+          amount: order.totalPrice * 100,
+          id: id,
+          orderId: order._id,
+        });
+        setLoader(false);
+        if (response.data.success) {
+          dispatch({ type: 'IS_PAID_SUCCESS' });
+          toast.success('Paiement accepté, merci !');
           setTimeout(() => {
             onSuccess();
-            setLoader(false);
-          }, 3000);
-        }, 1000);
-      } else {
-        toast.error('Il y a eu une erreur lors du paiement');
+          }, 1000);
+        }
+      } catch (error) {
+        dispatch({ type: 'IS_PAID_FAIL' });
+        toast.error(getError(error));
+        onSuccess();
       }
-    } catch (error) {
-      dispatch({ type: 'IS_PAID_FAIL' });
+    } else {
       toast.error(getError(error));
-      onSuccess();
     }
   };
 
   return (
     <Form onSubmit={handleSubmit} style={{ maxWidth: 400 }}>
+      <div className="mb-2 text-center">Payer par carte bancaire</div>
       <CardElement
         className="form-control"
         style={{
           base: {
-            lineHeight: '3',
+            lineHeight: '1.6',
           },
         }}
         options={{
@@ -76,10 +67,9 @@ function CheckoutForm({ order, reducer, onSuccess }) {
         <Button disabled={loader} onClick={handleSubmit} className="w-100 mt-2">
           Payer
         </Button>
-        {loader ? <LoadingBox /> : ''}
       </div>
     </Form>
   );
-}
+};
 
 export default CheckoutForm;
