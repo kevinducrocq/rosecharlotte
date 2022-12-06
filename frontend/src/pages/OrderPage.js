@@ -1,13 +1,13 @@
-import React, { useReducer, useContext, useEffect, useState } from 'react';
-import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
-import { useNavigate, useParams } from 'react-router-dom';
-import LoadingBox from '../components/LoadingBox';
-import MessageBox from '../components/MessageBox';
-import { toast } from 'react-toastify';
-import { Store } from '../Store';
-import axios from 'axios';
-import { dateFr, getError, logOutAndRedirect } from '../utils';
-import { Helmet } from 'react-helmet-async';
+import React, { useReducer, useContext, useEffect, useState } from "react";
+import { PayPalButtons, usePayPalScriptReducer } from "@paypal/react-paypal-js";
+import { useNavigate, useParams } from "react-router-dom";
+import LoadingBox from "../components/LoadingBox";
+import MessageBox from "../components/MessageBox";
+import { toast } from "react-toastify";
+import { Store } from "../Store";
+import axios from "axios";
+import { dateFr, getError, logOutAndRedirect } from "../utils";
+import { Helmet } from "react-helmet-async";
 import {
   Button,
   Card,
@@ -17,46 +17,46 @@ import {
   ListGroup,
   Modal,
   Row,
-} from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+} from "react-bootstrap";
+import { Link } from "react-router-dom";
 
-import StripeContainer from '../components/StripeContainer';
+import StripeContainer from "../components/StripeContainer";
 
 function reducer(state, action) {
   switch (action.type) {
-    case 'FETCH_REQUEST':
-      return { ...state, loading: true, error: '' };
-    case 'FETCH_SUCCESS':
-      return { ...state, loading: false, order: action.payload, error: '' };
-    case 'FETCH_FAIL':
+    case "FETCH_REQUEST":
+      return { ...state, loading: true, error: "" };
+    case "FETCH_SUCCESS":
+      return { ...state, loading: false, order: action.payload, error: "" };
+    case "FETCH_FAIL":
       return { ...state, loading: false, error: action.payload };
-    case 'PAY_REQUEST':
+    case "PAY_REQUEST":
       return { ...state, loadingPay: true };
-    case 'PAY_SUCCESS':
+    case "PAY_SUCCESS":
       return { ...state, loadingPay: false, successPay: true };
-    case 'PAY_FAIL':
+    case "PAY_FAIL":
       return { ...state, loadingPay: false };
-    case 'PAY_RESET':
+    case "PAY_RESET":
       return { ...state, loadingPay: false, successPay: false };
-    case 'DELIVER_REQUEST':
+    case "DELIVER_REQUEST":
       return { ...state, loadingDeliver: true };
-    case 'DELIVER_SUCCESS':
+    case "DELIVER_SUCCESS":
       return { ...state, loadingDeliver: false, successDeliver: true };
-    case 'DELIVER_FAIL':
+    case "DELIVER_FAIL":
       return { ...state, loadingDeliver: false };
-    case 'DELIVER_RESET':
+    case "DELIVER_RESET":
       return {
         ...state,
         loadingDeliver: false,
         successDeliver: false,
       };
-    case 'IS_PAID_REQUEST':
+    case "IS_PAID_REQUEST":
       return { ...state, loadingIsPaid: true };
-    case 'IS_PAID_SUCCESS':
+    case "IS_PAID_SUCCESS":
       return { ...state, loadingIsPaid: false, successIsPaid: true };
-    case 'IS_PAID_FAIL':
+    case "IS_PAID_FAIL":
       return { ...state, loadingIsPaid: false };
-    case 'IS_PAID_RESET':
+    case "IS_PAID_RESET":
       return {
         ...state,
         loadingIsPaid: false,
@@ -92,7 +92,7 @@ export default function OrderPage() {
   ] = useReducer(reducer, {
     loading: true,
     order: {},
-    error: '',
+    error: "",
     successPay: false,
     loadingPay: false,
     isPaid: false,
@@ -117,7 +117,7 @@ export default function OrderPage() {
   function onApprove(data, actions) {
     return actions.order.capture().then(async function (details) {
       try {
-        dispatch({ type: 'PAY_REQUEST' });
+        dispatch({ type: "PAY_REQUEST" });
         const { data } = await axios
           .put(
             `/api/orders/${order._id}/pay`,
@@ -131,10 +131,10 @@ export default function OrderPage() {
               logOutAndRedirect();
             }
           });
-        dispatch({ type: 'PAY_SUCCESS', payload: data });
-        toast.success('Commande payée avec succès');
+        dispatch({ type: "PAY_SUCCESS", payload: data });
+        toast.success("Commande payée avec succès");
       } catch (err) {
-        dispatch({ type: 'PAY_FAIL', payload: getError(err) });
+        dispatch({ type: "PAY_FAIL", payload: getError(err) });
         toast.error(getError(err));
       }
     });
@@ -147,7 +147,7 @@ export default function OrderPage() {
   useEffect(() => {
     const fetchOrder = async () => {
       try {
-        dispatch({ type: 'FETCH_REQUEST' });
+        dispatch({ type: "FETCH_REQUEST" });
         const { data } = await axios
           .get(`/api/orders/${orderId}`, {
             headers: { authorization: `Bearer ${userInfo.token}` },
@@ -157,17 +157,17 @@ export default function OrderPage() {
               logOutAndRedirect();
             }
           });
-        if (data.paymentMethod === 'Chèque' && !data.isPaid) {
+        if (data.paymentMethod === "Chèque" && !data.isPaid) {
           setShowModalCheque(true);
         }
-        dispatch({ type: 'FETCH_SUCCESS', payload: data });
+        dispatch({ type: "FETCH_SUCCESS", payload: data });
       } catch (err) {
-        dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
+        dispatch({ type: "FETCH_FAIL", payload: getError(err) });
       }
     };
 
     if (!userInfo) {
-      return navigate('/signin');
+      return navigate("/signin");
     }
     if (
       !order._id ||
@@ -179,13 +179,13 @@ export default function OrderPage() {
     ) {
       fetchOrder();
       if (successPay) {
-        dispatch({ type: 'PAY_RESET' });
+        dispatch({ type: "PAY_RESET" });
       }
       if (successIsPaid) {
-        dispatch({ type: 'IS_PAID_RESET' });
+        dispatch({ type: "IS_PAID_RESET" });
       }
       if (successDeliver) {
-        dispatch({ type: 'DELIVER_RESET' });
+        dispatch({ type: "DELIVER_RESET" });
       }
       if (refresh > 1) {
         setRefresh(1);
@@ -193,7 +193,7 @@ export default function OrderPage() {
     } else {
       const loadPaypalScript = async () => {
         const { data: clientId } = await axios
-          .get('/api/keys/paypal', {
+          .get("/api/keys/paypal", {
             headers: { authorization: `Bearer ${userInfo.token}` },
           })
           .catch(function (error) {
@@ -202,14 +202,14 @@ export default function OrderPage() {
             }
           });
         paypalDispatch({
-          type: 'resetOptions',
+          type: "resetOptions",
           value: {
-            'client-id': clientId,
-            currency: 'EUR',
-            'disable-funding': 'credit,card',
+            "client-id": clientId,
+            currency: "EUR",
+            "disable-funding": "credit,card",
           },
         });
-        paypalDispatch({ type: 'setLoadingStatus', value: 'pending' });
+        paypalDispatch({ type: "setLoadingStatus", value: "pending" });
       };
       loadPaypalScript();
     }
@@ -227,7 +227,7 @@ export default function OrderPage() {
 
   async function deliverOrderHandler() {
     try {
-      dispatch({ type: 'DELIVER_REQUEST' });
+      dispatch({ type: "DELIVER_REQUEST" });
       const { data } = await axios
         .put(
           `/api/orders/${order._id}/deliver`,
@@ -241,17 +241,17 @@ export default function OrderPage() {
             logOutAndRedirect();
           }
         });
-      dispatch({ type: 'DELIVER_SUCCESS', payload: data });
-      toast.success('La commande a été marquée comme envoyée');
+      dispatch({ type: "DELIVER_SUCCESS", payload: data });
+      toast.success("La commande a été marquée comme envoyée");
     } catch (err) {
       toast.error(getError(err));
-      dispatch({ type: 'DELIVER_FAIL' });
+      dispatch({ type: "DELIVER_FAIL" });
     }
   }
 
   async function payOrderHandler() {
     try {
-      dispatch({ type: 'IS_PAID_REQUEST' });
+      dispatch({ type: "IS_PAID_REQUEST" });
       const { data } = await axios
         .put(
           `/api/orders/${order._id}/is-paid`,
@@ -265,11 +265,11 @@ export default function OrderPage() {
             logOutAndRedirect();
           }
         });
-      dispatch({ type: 'IS_PAID_SUCCESS', payload: data });
-      toast.success('La commande a été marquée comme payée');
+      dispatch({ type: "IS_PAID_SUCCESS", payload: data });
+      toast.success("La commande a été marquée comme payée");
     } catch (err) {
       toast.error(getError(err));
-      dispatch({ type: 'IS_PAID_FAIL' });
+      dispatch({ type: "IS_PAID_FAIL" });
     }
   }
 
@@ -314,10 +314,10 @@ export default function OrderPage() {
               <Card.Body>
                 <Card.Title>Livraison</Card.Title>
                 <Card.Text>
-                  <strong>Nom | Prénom :</strong> {order.shippingAddress.name}{' '}
+                  <strong>Nom | Prénom :</strong> {order.shippingAddress.name}{" "}
                   <br />
-                  <strong>Adresse : </strong> {order.shippingAddress.address},{' '}
-                  {order.shippingAddress.zip}, {order.shippingAddress.city},{' '}
+                  <strong>Adresse : </strong> {order.shippingAddress.address},{" "}
+                  {order.shippingAddress.zip}, {order.shippingAddress.city},{" "}
                   {order.shippingAddress.country} <br />
                 </Card.Text>
               </Card.Body>
@@ -336,7 +336,7 @@ export default function OrderPage() {
               ) : order.isPaid ? (
                 <div className="bg1 badge">Commande en préparation</div>
               ) : (
-                ''
+                ""
               )}
             </Card.Body>
           </Card>
@@ -374,28 +374,28 @@ export default function OrderPage() {
                             <strong>Modèle :</strong> {item.variant.name}
                           </div>
                         ) : (
-                          ''
+                          ""
                         )}
                         {item.fil ? (
                           <div>
                             <strong>Fil :</strong> {item.fil}
                           </div>
                         ) : (
-                          ''
+                          ""
                         )}
                         {item.tissu ? (
                           <div>
                             <strong>Tissu :</strong> {item.tissu}
                           </div>
                         ) : (
-                          ''
+                          ""
                         )}
                         {item.patch ? (
                           <div>
                             <strong>Motif broderie :</strong> {item.patch}
                           </div>
                         ) : (
-                          ''
+                          ""
                         )}
                         {item.customization ? (
                           <div>
@@ -403,7 +403,7 @@ export default function OrderPage() {
                             {item.customization}
                           </div>
                         ) : (
-                          ''
+                          ""
                         )}
                         {item.side ? (
                           <div>
@@ -411,7 +411,7 @@ export default function OrderPage() {
                             {item.side}
                           </div>
                         ) : (
-                          ''
+                          ""
                         )}
                       </Col>
 
@@ -420,7 +420,10 @@ export default function OrderPage() {
                       </Col>
 
                       <Col md={2}>
-                        {item.price || item.variant.price} &euro;
+                        {item.promoPrice || item.soldePrice
+                          ? item.promoPrice ?? item.soldePrice
+                          : item.price || item.variant.price}{" "}
+                        &euro;
                       </Col>
                     </Row>
                   </ListGroup.Item>
@@ -455,7 +458,7 @@ export default function OrderPage() {
                 </ListGroup.Item>
               </ListGroup>
 
-              {!order.isPaid && order.paymentMethod === 'CB ou PayPal' && (
+              {!order.isPaid && order.paymentMethod === "CB ou PayPal" && (
                 <ListGroup.Item className="rounded-3">
                   {isPending ? (
                     <LoadingBox />
@@ -507,11 +510,11 @@ export default function OrderPage() {
                   {loadingPay && <LoadingBox></LoadingBox>}
                 </ListGroup.Item>
               )}
-              {!order.isPaid && order.paymentMethod === 'Chèque' && (
+              {!order.isPaid && order.paymentMethod === "Chèque" && (
                 <>
                   <ListGroup.Item className="shadow rounded-3 text-center">
                     <p>
-                      Merci d'envoyer le chèque, à l'ordre de{' '}
+                      Merci d'envoyer le chèque, à l'ordre de{" "}
                       <strong>"Rose Charlotte &amp; Compagnie"</strong> à
                       l'adresse suivante :&nbsp;
                     </p>
@@ -535,7 +538,7 @@ export default function OrderPage() {
                       </Modal.Header>
                       <Modal.Body>
                         <p>
-                          Merci de l'envoyer, à l'ordre de{' '}
+                          Merci de l'envoyer, à l'ordre de{" "}
                           <strong>"Rose Charlotte &amp; Compagnie"</strong> à
                           l'adresse suivante :
                         </p>
@@ -577,7 +580,7 @@ export default function OrderPage() {
               {userInfo.isAdmin &&
                 !order.isPaid &&
                 !order.isDelivered &&
-                order.paymentMethod === 'Chèque' && (
+                order.paymentMethod === "Chèque" && (
                   <ListGroup.Item>
                     {loadingIsPaid && <LoadingBox></LoadingBox>}
                     <div className="d-grid">

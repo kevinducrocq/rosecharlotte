@@ -1,17 +1,17 @@
-import express from 'express';
-import expressAsyncHandler from 'express-async-handler';
-import Order from '../models/orderModel.js';
-import User from '../models/userModel.js';
-import Product from '../models/productModel.js';
-import { isAuth, isAdmin } from '../utils.js';
-import mongoose from 'mongoose';
-import transporter, { sender } from '../email.js';
-import { orderEmail } from '../emails/OrderEmail.js';
-import { orderAdminEmail } from '../emails/OrderAdminEmail.js';
-import { sentOrderEmail } from '../emails/SentOrderEmail.js';
-import { chequeEmail } from '../emails/ChequeEmail.js';
-import Stripe from 'stripe';
-import cors from 'cors';
+import express from "express";
+import expressAsyncHandler from "express-async-handler";
+import Order from "../models/orderModel.js";
+import User from "../models/userModel.js";
+import Product from "../models/productModel.js";
+import { isAuth, isAdmin } from "../utils.js";
+import mongoose from "mongoose";
+import transporter, { sender } from "../email.js";
+import { orderEmail } from "../emails/OrderEmail.js";
+import { orderAdminEmail } from "../emails/OrderAdminEmail.js";
+import { sentOrderEmail } from "../emails/SentOrderEmail.js";
+import { chequeEmail } from "../emails/ChequeEmail.js";
+import Stripe from "stripe";
+import cors from "cors";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const publicStripe = new Stripe(process.env.STRIPE_PUBLIC_KEY);
@@ -70,65 +70,65 @@ const updateStock = async (order) => {
   }
 };
 
-orderRouter.post('/stripe/pay', cors(), async (req, res) => {
+orderRouter.post("/stripe/pay", cors(), async (req, res) => {
   try {
     const { amount, id, orderId } = req.body;
-    const order = await Order.findById(orderId).populate('user', 'email name');
+    const order = await Order.findById(orderId).populate("user", "email name");
 
     const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100;
     const paymentIntent = await stripe.paymentIntents.create({
       amount: round2(amount),
-      currency: 'eur',
-      payment_method_types: ['card'],
+      currency: "eur",
+      payment_method_types: ["card"],
       metadata: {
         name: order.user.name,
         email: order.user.email,
       },
     });
     const clientSecret = paymentIntent.client_secret;
-    res.status(201).send({ clientSecret, message: 'Payment Initiated' });
+    res.status(201).send({ clientSecret, message: "Payment Initiated" });
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: 'Internal server error' });
+    res.status(500).json({ message: "Internal server error" });
   }
 });
 
-orderRouter.post('/stripe/check', async (req, res) => {
+orderRouter.post("/stripe/check", async (req, res) => {
   const order = await Order.findById(req.body.orderId).populate(
-    'user',
-    'email name'
+    "user",
+    "email name"
   );
   const payment = await publicStripe.paymentIntents.retrieve(
     req.body.paymentId,
     { client_secret: req.body.clientSecret },
     process.env.STRIPE_PUBLIC_KEY
   );
-  if (payment.status === 'succeeded') {
+  if (payment.status === "succeeded") {
     const updatedOrder = await setOrderPaid(order, res, {
       id: req.body.paymentId,
       status: payment.status,
       update_time: new Date().toISOString(),
       email_address: order.user.email,
     });
-    res.status(201).send({ message: 'Paiement accepté', order: updatedOrder });
+    res.status(201).send({ message: "Paiement accepté", order: updatedOrder });
   } else {
-    res.status(400).json({ message: 'Erreur lors du paiement' });
+    res.status(400).json({ message: "Erreur lors du paiement" });
   }
 });
 
 orderRouter.get(
-  '/',
+  "/",
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
     const orders = await Order.aggregate([{ $sort: { createdAt: -1 } }]);
-    await User.populate(orders, 'user');
+    await User.populate(orders, "user");
     res.send(orders);
   })
 );
 
 orderRouter.get(
-  '/orders-by-user',
+  "/orders-by-user",
   isAuth,
   expressAsyncHandler(async (req, res) => {
     const ordersByUsers = await Order.find({ user: req.user._id });
@@ -139,7 +139,7 @@ orderRouter.get(
 const updateUserAddress = () => {};
 
 orderRouter.post(
-  '/',
+  "/",
   isAuth,
   expressAsyncHandler(async (req, res) => {
     const newOrder = new Order({
@@ -162,7 +162,7 @@ orderRouter.post(
     });
 
     const order = await newOrder.save();
-    if (order.paymentMethod === 'Chèque') {
+    if (order.paymentMethod === "Chèque") {
       await transporter.sendMail({
         from: sender,
         to: req.user.email,
@@ -175,12 +175,12 @@ orderRouter.post(
       });
       updateStock(order);
     }
-    res.status(201).send({ message: 'Nouvelle commande crée', order });
+    res.status(201).send({ message: "Nouvelle commande crée", order });
   })
 );
 
 orderRouter.get(
-  '/summary',
+  "/summary",
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
@@ -189,7 +189,7 @@ orderRouter.get(
         $group: {
           _id: null,
           numOrders: { $sum: 1 },
-          totalSales: { $sum: '$totalPrice' },
+          totalSales: { $sum: "$totalPrice" },
         },
       },
     ]);
@@ -212,9 +212,9 @@ orderRouter.get(
     const dailyOrders = await Order.aggregate([
       {
         $group: {
-          _id: { $dateToString: { format: '%d-%m-%Y', date: '$createdAt' } },
+          _id: { $dateToString: { format: "%d-%m-%Y", date: "$createdAt" } },
           orders: { $sum: 1 },
-          sales: { $sum: '$totalPrice' },
+          sales: { $sum: "$totalPrice" },
         },
       },
       { $sort: { _id: 1 } },
@@ -222,7 +222,7 @@ orderRouter.get(
     const productCategories = await Product.aggregate([
       {
         $group: {
-          _id: '$category',
+          _id: "$category",
           count: { $sum: 1 },
         },
       },
@@ -239,7 +239,7 @@ orderRouter.get(
 );
 
 orderRouter.get(
-  '/mine',
+  "/mine",
   isAuth,
   expressAsyncHandler(async (req, res) => {
     const orders = await Order.find({ user: req.user._id }).sort({
@@ -250,23 +250,23 @@ orderRouter.get(
 );
 
 orderRouter.get(
-  '/:id',
+  "/:id",
   isAuth,
   expressAsyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id).populate(
-      'user',
-      'email name'
+      "user",
+      "email name"
     );
     if (order) {
       res.send(order);
     } else {
-      res.status(404).send({ message: 'Commande non trouvée' });
+      res.status(404).send({ message: "Commande non trouvée" });
     }
   })
 );
 
 orderRouter.put(
-  '/:id/deliver',
+  "/:id/deliver",
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
@@ -284,15 +284,15 @@ orderRouter.put(
         ...sentOrderEmail(order, user),
       });
 
-      res.send({ message: 'Commande expédiée' });
+      res.send({ message: "Commande expédiée" });
     } else {
-      res.status(404).send({ message: 'Commande non trouvée' });
+      res.status(404).send({ message: "Commande non trouvée" });
     }
   })
 );
 
 orderRouter.put(
-  '/:id/is-paid',
+  "/:id/is-paid",
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
@@ -310,20 +310,20 @@ orderRouter.put(
         to: user.email,
         ...chequeEmail(order, user),
       });
-      res.send({ message: 'Commande payée' });
+      res.send({ message: "Commande payée" });
     } else {
-      res.status(404).send({ message: 'Commande non trouvée' });
+      res.status(404).send({ message: "Commande non trouvée" });
     }
   })
 );
 
 orderRouter.put(
-  '/:id/pay',
+  "/:id/pay",
   isAuth,
   expressAsyncHandler(async (req, res) => {
     let order = await Order.findById(req.params.id).populate(
-      'user',
-      'email name'
+      "user",
+      "email name"
     );
     if (order) {
       //Verifier avec le req.details que le paiment est valide, et est pour le bon montant
@@ -339,26 +339,26 @@ orderRouter.put(
       });
 
       res.send({
-        message: 'Commande payée',
+        message: "Commande payée",
         order: updatedOrder,
       });
     } else {
-      res.status(404).send({ message: 'Commande non trouvée' });
+      res.status(404).send({ message: "Commande non trouvée" });
     }
   })
 );
 
 orderRouter.delete(
-  '/:id',
+  "/:id",
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
     const order = await Order.findById(req.params.id);
     if (order) {
       await order.remove();
-      res.send({ message: 'Commande supprimée' });
+      res.send({ message: "Commande supprimée" });
     } else {
-      res.status(404).send({ message: 'Commande non trouvée' });
+      res.status(404).send({ message: "Commande non trouvée" });
     }
   })
 );
