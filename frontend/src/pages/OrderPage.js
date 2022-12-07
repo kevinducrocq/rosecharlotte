@@ -420,14 +420,18 @@ export default function OrderPage() {
                       </Col>
 
                       <Col md={2}>
-                        {item.promoPrice ||
-                        item.soldePrice ||
-                        item.variant.promoPrice ||
-                        item.variant.soldePrice
-                          ? (item.promoPrice ?? item.soldePrice) ||
-                            (item.variant.promoPrice ?? item.variant.soldePrice)
-                          : item.price || item.variant.price}{' '}
-                        &euro;
+                        <s>{item.price || item.variant.price} &euro;</s>{' '}
+                        <b>
+                          {item.promoPrice ||
+                          item.soldePrice ||
+                          item.variant.promoPrice ||
+                          item.variant.soldePrice
+                            ? (item.promoPrice ?? item.soldePrice) ||
+                              (item.variant.promoPrice ??
+                                item.variant.soldePrice)
+                            : item.price || item.variant.price}{' '}
+                          &euro;
+                        </b>
                       </Col>
                     </Row>
                   </ListGroup.Item>

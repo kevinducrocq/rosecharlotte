@@ -182,14 +182,17 @@ export default function CartPage() {
                     </Col>
 
                     <Col md={3}>
-                      {item.promoPrice ||
-                      item.soldePrice ||
-                      item.variant.promoPrice ||
-                      item.variant.soldePrice
-                        ? (item.promoPrice ?? item.soldePrice) ||
-                          (item.variant.promoPrice ?? item.variant.soldePrice)
-                        : item.price || item.variant.price}{' '}
-                      &euro;
+                      <s>{item.price || item.variant.price} &euro;</s>{' '}
+                      <b>
+                        {item.promoPrice ||
+                        item.soldePrice ||
+                        item.variant.promoPrice ||
+                        item.variant.soldePrice
+                          ? (item.promoPrice ?? item.soldePrice) ||
+                            (item.variant.promoPrice ?? item.variant.soldePrice)
+                          : item.price || item.variant.price}{' '}
+                        &euro;
+                      </b>
                     </Col>
 
                     <Col md={3}>
