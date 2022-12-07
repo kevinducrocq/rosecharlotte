@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useReducer, useState } from "react";
+import React, { useContext, useEffect, useReducer, useState } from 'react';
 import {
   Button,
   Card,
@@ -7,25 +7,25 @@ import {
   Image,
   ListGroup,
   Row,
-} from "react-bootstrap";
-import { Helmet } from "react-helmet-async";
-import { Link, useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
-import { getError, logOutAndRedirect } from "../utils";
-import CheckoutSteps from "../components/CheckoutSteps";
-import { Store } from "../Store";
-import axios from "axios";
-import LoadingBox from "../components/LoadingBox";
-import { faPenToSquare } from "@fortawesome/pro-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+} from 'react-bootstrap';
+import { Helmet } from 'react-helmet-async';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { getError, logOutAndRedirect } from '../utils';
+import CheckoutSteps from '../components/CheckoutSteps';
+import { Store } from '../Store';
+import axios from 'axios';
+import LoadingBox from '../components/LoadingBox';
+import { faPenToSquare } from '@fortawesome/pro-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case "CREATE_REQUEST":
+    case 'CREATE_REQUEST':
       return { ...state, loading: true };
-    case "CREATE_SUCCESS":
+    case 'CREATE_SUCCESS':
       return { ...state, loading: false };
-    case "CREATE_FAIL":
+    case 'CREATE_FAIL':
       return { ...state, loading: false };
     default:
       return state;
@@ -56,8 +56,12 @@ export default function PlaceOrderPage() {
         (price, item) =>
           price +
           item.quantity *
-            (item.promoPrice || item.soldePrice
-              ? item.promoPrice ?? item.soldePrice
+            (item.promoPrice ||
+            item.soldePrice ||
+            item.variant.promoPrice ||
+            item.variant.soldePrice
+              ? (item.promoPrice ?? item.soldePrice) ||
+                (item.variant.promoPrice ?? item.variant.soldePrice)
               : item.price || item.variant.price),
         0
       )
@@ -76,7 +80,7 @@ export default function PlaceOrderPage() {
     newCart.itemsWeight = totalWeight;
 
     const deliveryPrice = () => {
-      if (newCart.deliveryMethod === "Local") {
+      if (newCart.deliveryMethod === 'Local') {
         return 0;
       }
 
@@ -105,9 +109,9 @@ export default function PlaceOrderPage() {
 
   const placeOrderHandler = async () => {
     try {
-      dispatch({ type: "CREATE_REQUEST" });
+      dispatch({ type: 'CREATE_REQUEST' });
       const { data } = await axios.post(
-        "/api/orders",
+        '/api/orders',
         {
           orderItems: cart.cartItems,
           shippingAddress: cart.shippingAddress,
@@ -122,12 +126,12 @@ export default function PlaceOrderPage() {
         }
       );
 
-      ctxDispatch({ type: "CART_CLEAR" });
-      dispatch({ type: "CREATE-SUCCESS" });
-      localStorage.removeItem("cartItems");
+      ctxDispatch({ type: 'CART_CLEAR' });
+      dispatch({ type: 'CREATE-SUCCESS' });
+      localStorage.removeItem('cartItems');
       navigate(`/order/${data.order._id}`);
     } catch (err) {
-      dispatch({ type: "CREATE_FAIL" });
+      dispatch({ type: 'CREATE_FAIL' });
       toast.error(getError(err));
     }
   };
@@ -136,7 +140,7 @@ export default function PlaceOrderPage() {
     recalculatePrices();
     const userOrders = async () => {
       try {
-        dispatch({ type: "FETCH_REQUEST" });
+        dispatch({ type: 'FETCH_REQUEST' });
         const { data } = await axios
           .get(`/api/orders/orders-by-user`, {
             headers: { authorization: `Bearer ${userInfo.token}` },
@@ -149,9 +153,9 @@ export default function PlaceOrderPage() {
         if (data.length === 0) {
           setDiscount(0);
         }
-        dispatch({ type: "FETCH_SUCCESS", payload: data });
+        dispatch({ type: 'FETCH_SUCCESS', payload: data });
       } catch (err) {
-        dispatch({ type: "FETCH_FAIL", payload: getError(err) });
+        dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
       }
     };
 
@@ -164,7 +168,7 @@ export default function PlaceOrderPage() {
 
   useEffect(() => {
     if (!cart.paymentMethod) {
-      navigate("/payment");
+      navigate('/payment');
     }
   }, [cart, navigate]);
 
@@ -184,7 +188,7 @@ export default function PlaceOrderPage() {
       <Row>
         <Col md={8}>
           <Card className="mb-3 bg-light">
-            {cart.deliveryMethod === "Local" ? (
+            {cart.deliveryMethod === 'Local' ? (
               <Card.Body className="d-flex justify-content-between align-items-center">
                 <div>
                   <Card.Title>Commande à retirer dans nos Locaux</Card.Title>
@@ -207,8 +211,8 @@ export default function PlaceOrderPage() {
                   <Card.Text>
                     <strong>Nom | Prénom : </strong> {cart.shippingAddress.name}
                     <br />
-                    <strong>Adresse : </strong> {cart.shippingAddress.address},{" "}
-                    {cart.shippingAddress.zip}, {cart.shippingAddress.city}{" "}
+                    <strong>Adresse : </strong> {cart.shippingAddress.address},{' '}
+                    {cart.shippingAddress.zip}, {cart.shippingAddress.city}{' '}
                     <br />
                     <strong>Pays : </strong> {cart.shippingAddress.country}
                   </Card.Text>
@@ -275,28 +279,28 @@ export default function PlaceOrderPage() {
                             <strong>Modèle :</strong> {item.variant.name}
                           </div>
                         ) : (
-                          ""
+                          ''
                         )}
                         {item.fil ? (
                           <div>
                             <strong>Fil :</strong> {item.fil}
                           </div>
                         ) : (
-                          ""
+                          ''
                         )}
                         {item.tissu ? (
                           <div>
                             <strong>Tissu :</strong> {item.tissu}
                           </div>
                         ) : (
-                          ""
+                          ''
                         )}
                         {item.patch ? (
                           <div>
                             <strong>Motif broderie :</strong> {item.patch}
                           </div>
                         ) : (
-                          ""
+                          ''
                         )}
                         {item.customization ? (
                           <div>
@@ -304,7 +308,7 @@ export default function PlaceOrderPage() {
                             {item.customization}
                           </div>
                         ) : (
-                          ""
+                          ''
                         )}
                         {item.side ? (
                           <div>
@@ -312,7 +316,7 @@ export default function PlaceOrderPage() {
                             {item.side}
                           </div>
                         ) : (
-                          ""
+                          ''
                         )}
                       </Col>
 
@@ -321,9 +325,13 @@ export default function PlaceOrderPage() {
                       </Col>
 
                       <Col md={2}>
-                        {item.promoPrice || item.soldePrice
-                          ? item.promoPrice ?? item.soldePrice
-                          : item.price || item.variant.price}
+                        {item.promoPrice ||
+                        item.soldePrice ||
+                        item.variant.promoPrice ||
+                        item.variant.soldePrice
+                          ? (item.promoPrice ?? item.soldePrice) ||
+                            (item.variant.promoPrice ?? item.variant.soldePrice)
+                          : item.price || item.variant.price}{' '}
                         &euro;
                       </Col>
                     </Row>
@@ -356,7 +364,7 @@ export default function PlaceOrderPage() {
                           {(
                             (cart.itemsPrice ?? 0) -
                             (cart.itemsPriceWithDiscount ?? 0)
-                          ).toFixed(2)}{" "}
+                          ).toFixed(2)}{' '}
                           &euro;
                         </Col>
                       </>
@@ -369,8 +377,8 @@ export default function PlaceOrderPage() {
 
                     <Col>
                       {cart.shippingPrice === 0
-                        ? "Offerte (en point relai)"
-                        : cart.shippingPrice?.toFixed(2) + " €"}
+                        ? 'Offerte (en point relai)'
+                        : cart.shippingPrice?.toFixed(2) + ' €'}
                     </Col>
                   </Row>
                 </ListGroup.Item>

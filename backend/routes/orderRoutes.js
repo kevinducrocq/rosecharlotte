@@ -171,9 +171,8 @@ orderRouter.post(
         return item.price;
       }
     });
-    console.log(prices);
+
     const itemsPrices = prices.reduce((a, c) => a + c, 0);
-    console.log(itemsPrices);
 
     const newOrder = new Order({
       orderItems: req.body.orderItems.map((x) => ({
