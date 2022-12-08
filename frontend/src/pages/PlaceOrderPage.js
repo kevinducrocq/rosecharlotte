@@ -66,7 +66,7 @@ export default function PlaceOrderPage() {
         0
       )
     );
-    console.log(newCart.itemsPrice);
+    
     newCart.itemsPriceWithDiscount = round2(
       (newCart.itemsPrice * (100 - discount)) / 100
     );

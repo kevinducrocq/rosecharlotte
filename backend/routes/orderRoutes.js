@@ -140,7 +140,7 @@ orderRouter.post(
   '/',
   isAuth,
   expressAsyncHandler(async (req, res) => {
-    // tableau items avec prix
+    // retourne les prix en fonction des variants, des promos, des soldes
     const prices = req.body.orderItems.map((item) => {
       if (item.promoPrice > 0) {
         return item.promoPrice;
@@ -171,8 +171,21 @@ orderRouter.post(
         return item.price;
       }
     });
-
     const itemsPrices = prices.reduce((a, c) => a + c, 0);
+
+    // Poids total du panier
+    const totalCartWeight = req.body.orderItems.reduce((weight, item) => {
+      if (item.variant) {
+        return weight + item.quantity * item.variant.weight;
+      }
+      return weight + item.quantity * item.weight;
+    }, 0);
+
+    // Discount
+
+    // Prix de livraison
+
+    // Total
 
     const newOrder = new Order({
       orderItems: req.body.orderItems.map((x) => ({
