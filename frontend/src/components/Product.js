@@ -46,6 +46,7 @@ function Product(props) {
           className="card-img-top img-fluid"
           alt={product.name}
         />
+
         <div className="product-badge">
           {product.variants.reduce(
             (countInStock, variant) => countInStock + variant.countInStock,

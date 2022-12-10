@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
 const variantSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -21,7 +21,7 @@ const orderSchema = new mongoose.Schema(
         soldePrice: { type: Number },
         product: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: "Product",
+          ref: 'Product',
           required: true,
         },
         customization: { type: String },
@@ -50,7 +50,7 @@ const orderSchema = new mongoose.Schema(
     itemsPrice: { type: Number, required: true },
     shippingPrice: { type: Number, required: true },
     totalPrice: { type: Number, required: true },
-    user: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
     isPaid: { type: Boolean, default: false },
     paidAt: { type: Date },
     isDelivered: { type: Boolean, default: false },
@@ -61,5 +61,5 @@ const orderSchema = new mongoose.Schema(
   }
 );
 
-const Order = mongoose.model("Order", orderSchema);
+const Order = mongoose.model('Order', orderSchema);
 export default Order;

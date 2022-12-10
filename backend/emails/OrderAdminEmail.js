@@ -89,22 +89,9 @@ export function orderAdminEmail(order, user) {
 
                     <div style="margin-left:5px;">
                         <span>Quantité : <b>${item.quantity}</b></span><br>
-                        ${item.promoPrice || item.soldePrice}
-                        <span>Prix : ${
-                          item.promoPrice ||
-                          item.soldePrice ||
-                          item.variant?.promoPrice ||
-                          (item.variant?.soldePrice &&
-                            `<s>${item.price || item.variant.price} &euro;</s>`)
-                        } &nbsp; € &nbsp; <b>${
-                item.promoPrice ||
-                item.soldePrice ||
-                item.variant?.promoPrice ||
-                item.variant?.soldePrice
-                  ? (item.promoPrice ?? item.soldePrice) ||
-                    (item.variant?.promoPrice ?? item.variant?.soldePrice)
-                  : item.price || item.variant.price
-              }</b></span>
+                        <span>Prix : <b>${
+                          item.price || item.variant?.price
+                        } &nbsp; €</b></span>
                     </div>
 
                 </div>

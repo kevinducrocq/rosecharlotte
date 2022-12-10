@@ -181,11 +181,34 @@ orderRouter.post(
       return weight + item.quantity * item.weight;
     }, 0);
 
+    // Nombre de commande de l'utilisateur
+
+    // Si 1ère commande, alors remise
+
     // Discount
 
     // Prix de livraison
+    const deliveryPrice = () => {
+      if (req.body.deliveryMethod === 'Local') {
+        return 0;
+      }
+      if (totalCartWeight <= 200 && itemsPrices < 99) {
+        return 4.4;
+      } else if (
+        totalCartWeight >= 200 &&
+        totalCartWeight <= 250 &&
+        itemsPrices < 99
+      ) {
+        return 5.4;
+      } else if (totalCartWeight >= 250 && itemsPrices < 99) {
+        return 6.9;
+      } else if (itemsPrices >= 99) {
+        return 0;
+      }
+    };
 
     // Total
+    const total = itemsPrices + deliveryPrice();
 
     const newOrder = new Order({
       orderItems: req.body.orderItems.map((x) => ({
@@ -197,8 +220,8 @@ orderRouter.post(
       shippingAddress: req.body.shippingAddress,
       itemsPrice: itemsPrices,
       paymentMethod: req.body.paymentMethod,
-      shippingPrice: req.body.shippingPrice,
-      totalPrice: req.body.totalPrice,
+      shippingPrice: deliveryPrice(),
+      totalPrice: total,
       user: req.user._id,
       fil: req.body.fil,
       tissu: req.body.tissu,
