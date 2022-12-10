@@ -181,11 +181,17 @@ orderRouter.post(
       return weight + item.quantity * item.weight;
     }, 0);
 
-    // Nombre de commande de l'utilisateur
+    // Nombre de commandes de l'utilisateur
+    const ordersByUsers = await Order.find({
+      user: req.user._id,
+      isPaid: true,
+    }).countDocuments();
 
+    let discount = 0;
     // Si 1ère commande, alors remise
-
-    // Discount
+    if (ordersByUsers === 0) {
+      discount = 10;
+    }
 
     // Prix de livraison
     const deliveryPrice = () => {
@@ -208,7 +214,11 @@ orderRouter.post(
     };
 
     // Total
-    const total = itemsPrices + deliveryPrice();
+    const round2 = (num) => Math.round(num * 100 + Number.EPSILON) / 100;
+
+    const total = round2(
+      ((itemsPrices + deliveryPrice()) * (100 - discount)) / 100
+    );
 
     const newOrder = new Order({
       orderItems: req.body.orderItems.map((x) => ({
@@ -221,6 +231,7 @@ orderRouter.post(
       itemsPrice: itemsPrices,
       paymentMethod: req.body.paymentMethod,
       shippingPrice: deliveryPrice(),
+      discount: discount,
       totalPrice: total,
       user: req.user._id,
       fil: req.body.fil,

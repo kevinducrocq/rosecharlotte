@@ -98,9 +98,8 @@ export default function PlaceOrderPage() {
         return 0;
       }
     };
-
     newCart.shippingPrice = deliveryPrice();
-
+    
     newCart.totalPrice = round2(
       newCart.itemsPriceWithDiscount + newCart.shippingPrice
     );
