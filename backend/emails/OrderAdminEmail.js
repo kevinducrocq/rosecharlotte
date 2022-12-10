@@ -89,31 +89,22 @@ export function orderAdminEmail(order, user) {
 
                     <div style="margin-left:5px;">
                         <span>Quantité : <b>${item.quantity}</b></span><br>
-                        <span>Prix : <b>${
+                        ${item.promoPrice || item.soldePrice}
+                        <span>Prix : ${
                           item.promoPrice ||
                           item.soldePrice ||
                           item.variant?.promoPrice ||
-                          item.variant?.soldePrice ? (
-                            <div>
-                              <s>{item.price || item.variant.price} &euro;</s>
-                            </div>
-                          ) : (
-                            ''
-                          )
-                        }&nbsp; €</b></span>
-                        <span>${(
-                          <b>
-                            {item.promoPrice ||
-                            item.soldePrice ||
-                            item.variant?.promoPrice ||
-                            item.variant?.soldePrice
-                              ? (item.promoPrice ?? item.soldePrice) ||
-                                (item.variant?.promoPrice ??
-                                  item.variant?.soldePrice)
-                              : item.price || item.variant.price}{' '}
-                            &euro;
-                          </b>
-                        )}</span>
+                          (item.variant?.soldePrice &&
+                            `<s>${item.price || item.variant.price} &euro;</s>`)
+                        } &nbsp; € &nbsp; <b>${
+                item.promoPrice ||
+                item.soldePrice ||
+                item.variant?.promoPrice ||
+                item.variant?.soldePrice
+                  ? (item.promoPrice ?? item.soldePrice) ||
+                    (item.variant?.promoPrice ?? item.variant?.soldePrice)
+                  : item.price || item.variant.price
+              }</b></span>
                     </div>
 
                 </div>
