@@ -465,16 +465,21 @@ export default function OrderPage() {
                     <Col>Livraison</Col>
                     <Col>{order.shippingPrice.toFixed(2)} &euro;</Col>
                   </Row>
-                  <Row>
-                    <Col>Remise {order.discount} %</Col>
-                    <Col>
-                      -{' '}
-                      {order.itemsPrice +
-                        order.shippingPrice -
-                        order.totalPrice}{' '}
-                      &euro;
-                    </Col>
-                  </Row>
+                  {order.discount && (
+                    <Row>
+                      <Col>Remise {order.discount} %</Col>
+                      <Col>
+                        -{' '}
+                        {(
+                          order.itemsPrice +
+                          order.shippingPrice -
+                          order.totalPrice
+                        ).toFixed(2)}{' '}
+                        &euro;
+                      </Col>
+                    </Row>
+                  )}
+
                   <Row>
                     <Col>
                       <strong>Total</strong>

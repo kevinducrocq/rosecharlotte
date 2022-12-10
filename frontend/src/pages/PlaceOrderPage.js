@@ -99,7 +99,7 @@ export default function PlaceOrderPage() {
       }
     };
     newCart.shippingPrice = deliveryPrice();
-    
+
     newCart.totalPrice = round2(
       newCart.itemsPriceWithDiscount + newCart.shippingPrice
     );
@@ -374,6 +374,7 @@ export default function PlaceOrderPage() {
                       <>
                         <Col>Remise {discount}%</Col>
                         <Col>
+                          -
                           {(
                             (cart.itemsPrice ?? 0) -
                             (cart.itemsPriceWithDiscount ?? 0)
