@@ -87,8 +87,30 @@ export function sentOrderEmail(order, user) {
                     <div style="margin-left:5px;">
                         <span>Quantité : <b>${item.quantity}</b></span><br>
                         <span>Prix : <b>${
-                          item.price || item.variant?.price
-                        } &nbsp; €</b></span>
+                          item.promoPrice ||
+                          item.soldePrice ||
+                          item.variant?.promoPrice ||
+                          item.variant?.soldePrice ? (
+                            <div>
+                              <s>{item.price || item.variant.price} &euro;</s>
+                            </div>
+                          ) : (
+                            ''
+                          )
+                        }&nbsp; €</b></span>
+                        <span>${(
+                          <b>
+                            {item.promoPrice ||
+                            item.soldePrice ||
+                            item.variant?.promoPrice ||
+                            item.variant?.soldePrice
+                              ? (item.promoPrice ?? item.soldePrice) ||
+                                (item.variant?.promoPrice ??
+                                  item.variant?.soldePrice)
+                              : item.price || item.variant.price}{' '}
+                            &euro;
+                          </b>
+                        )}</span>
                     </div>
 
                 </div>

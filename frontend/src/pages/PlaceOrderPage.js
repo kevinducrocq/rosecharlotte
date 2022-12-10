@@ -58,15 +58,15 @@ export default function PlaceOrderPage() {
           item.quantity *
             (item.promoPrice ||
             item.soldePrice ||
-            item.variant.promoPrice ||
-            item.variant.soldePrice
+            item.variant?.promoPrice ||
+            item.variant?.soldePrice
               ? (item.promoPrice ?? item.soldePrice) ||
-                (item.variant.promoPrice ?? item.variant.soldePrice)
+                (item.variant?.promoPrice ?? item.variant?.soldePrice)
               : item.price || item.variant.price),
         0
       )
     );
-    
+
     newCart.itemsPriceWithDiscount = round2(
       (newCart.itemsPrice * (100 - discount)) / 100
     );
@@ -325,15 +325,25 @@ export default function PlaceOrderPage() {
                       </Col>
 
                       <Col md={2}>
-                        <s>{item.price || item.variant.price} &euro;</s>{' '}
+                        {item.promoPrice ||
+                        item.soldePrice ||
+                        item.variant?.promoPrice ||
+                        item.variant?.soldePrice ? (
+                          <div>
+                            <s>{item.price || item.variant.price} &euro;</s>
+                          </div>
+                        ) : (
+                          ''
+                        )}
+
                         <b>
                           {item.promoPrice ||
                           item.soldePrice ||
-                          item.variant.promoPrice ||
-                          item.variant.soldePrice
+                          item.variant?.promoPrice ||
+                          item.variant?.soldePrice
                             ? (item.promoPrice ?? item.soldePrice) ||
-                              (item.variant.promoPrice ??
-                                item.variant.soldePrice)
+                              (item.variant?.promoPrice ??
+                                item.variant?.soldePrice)
                             : item.price || item.variant.price}{' '}
                           &euro;
                         </b>

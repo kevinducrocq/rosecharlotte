@@ -182,14 +182,25 @@ export default function CartPage() {
                     </Col>
 
                     <Col md={3}>
-                      <s>{item.price || item.variant.price} &euro;</s>{' '}
+                      {item.promoPrice ||
+                      item.soldePrice ||
+                      item.variant?.promoPrice ||
+                      item.variant?.soldePrice ? (
+                        <div>
+                          <s>{item.price || item.variant.price} &euro;</s>
+                        </div>
+                      ) : (
+                        ''
+                      )}
+
                       <b>
                         {item.promoPrice ||
                         item.soldePrice ||
-                        item.variant.promoPrice ||
-                        item.variant.soldePrice
+                        item.variant?.promoPrice ||
+                        item.variant?.soldePrice
                           ? (item.promoPrice ?? item.soldePrice) ||
-                            (item.variant.promoPrice ?? item.variant.soldePrice)
+                            (item.variant?.promoPrice ??
+                              item.variant?.soldePrice)
                           : item.price || item.variant.price}{' '}
                         &euro;
                       </b>
@@ -230,10 +241,10 @@ export default function CartPage() {
                             a +
                             (c.promoPrice ||
                             c.soldePrice ||
-                            c.variant.promoPrice ||
-                            c.variant.soldePrice
+                            c.variant?.promoPrice ||
+                            c.variant?.soldePrice
                               ? (c.promoPrice ?? c.soldePrice) ||
-                                (c.variant.promoPrice ?? c.variant.soldePrice)
+                                (c.variant?.promoPrice ?? c.variant?.soldePrice)
                               : c.price || c.variant.price) *
                               c.quantity,
                           0
