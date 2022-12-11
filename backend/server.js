@@ -12,6 +12,7 @@ import patchRouter from './routes/patchRoutes.js';
 import settingsRouter from './routes/settingsRoutes.js';
 import sitemapRouter from './routes/sitemapRoutes.js';
 import rssFeedRouter from './routes/rssFeedRoutes.js';
+import mondialRelayRouter from './routes/mondialRelayRoutes.js';
 
 dotenv.config();
 
@@ -45,6 +46,7 @@ app.use('/api/products', productRouter);
 app.use('/api/settings', settingsRouter);
 app.use('/api/sitemap', sitemapRouter);
 app.use('/api/rss', rssFeedRouter);
+app.use('/api/mondialRelay', mondialRelayRouter);
 
 const __dirname = path.resolve();
 
