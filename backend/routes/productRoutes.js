@@ -273,11 +273,11 @@ productRouter.post(
 
       const updatedProduct = await product.save();
 
-      await transporter.sendMail({
-        from: sender,
-        to: sender,
-        ...reviewEmail(review, product),
-      });
+      // await transporter.sendMail({
+      //   from: sender,
+      //   to: sender,
+      //   ...reviewEmail(review, product),
+      // });
 
       res.status(201).send({
         message: 'Avis créé',

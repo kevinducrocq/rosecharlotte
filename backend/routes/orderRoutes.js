@@ -190,7 +190,7 @@ orderRouter.post(
     let discount = 0;
     // Si 1ère commande, alors remise
     if (ordersByUsers === 0) {
-      discount = 10;
+      discount = 0;
     }
 
     // Prix de livraison

@@ -175,7 +175,7 @@ function HomePage() {
             {promoProducts.length > 0 ? (
               <section className="mt-5 mb-5">
                 <div className="d-flex justify-content-between">
-                  <h2>Les dernières poromotions</h2> &nbsp;
+                  <h2>Les dernières promotions</h2> &nbsp;
                   <Button className="homepage-button" variant="outline-light">
                     <Link to={'/promotions'}>Voir toutes les promotions</Link>
                   </Button>
