@@ -50,7 +50,14 @@ mondialRelayRouter.get(
     });
 
     const body = await response.text();
-    res.send(parser.parse(body)?.['soap:Envelope']?.['soap:Body']?.['WSI2_RecherchePointRelaisResponse']?.['WSI2_RecherchePointRelaisResult'] ?? []);
+    const results = parser.parse(body)?.['soap:Envelope']?.['soap:Body']?.['WSI2_RecherchePointRelaisResponse']?.['WSI2_RecherchePointRelaisResult'] ?? {};
+    let parsedResults = [];
+    for (let key in results) {
+      if (results[key]) {
+        parsedResults.push(results[key]);
+      }
+    }
+    res.send(parsedResults);
   })
 );
 
