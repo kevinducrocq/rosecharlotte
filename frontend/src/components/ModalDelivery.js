@@ -3,7 +3,7 @@ import React from 'react';
 import { faHouse, faPersonCarryBox } from '@fortawesome/pro-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useContext, useEffect, useState } from 'react';
-import { Col, Form, Row } from 'react-bootstrap';
+import { Col, Form, Image, Row } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import { useNavigate } from 'react-router-dom';
@@ -12,6 +12,7 @@ import { useReducer } from 'react';
 import { toast } from 'react-toastify';
 import { getError, logOutAndRedirect } from '../utils';
 import axios from 'axios';
+import MondialRelay from './MondialRelay';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -265,7 +266,7 @@ function DeliveryAddressModal() {
   return (
     <>
       <Row>
-        <Col md={6}>
+        <Col md={4}>
           <Button
             className="bg2 text-light w-100 p-4 mb-2"
             variant="outline-secondary"
@@ -278,8 +279,10 @@ function DeliveryAddressModal() {
             <FontAwesomeIcon icon={faHouse} size="5x" />
           </Button>
         </Col>
-        {/* <Col md={4}></Col> */}
-        <Col md={6}>
+        <Col md={4}>
+          <MondialRelay />
+        </Col>
+        <Col md={4}>
           <Form onSubmit={homeHandler}>
             <Button
               type="submit"
