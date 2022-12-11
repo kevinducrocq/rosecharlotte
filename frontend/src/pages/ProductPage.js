@@ -64,8 +64,9 @@ function ProductPage() {
   const [tissu, setTissu] = useState('');
   const [patch, setPatch] = useState('');
   const [refresh, setRefresh] = useState(0);
-  
+
   const [showMore, setShowMore] = useState(false);
+
   // const [buttonCartIsVisible, setButtonCartIsVisible] = useState('');
 
   const navigate = useNavigate();
@@ -954,15 +955,17 @@ function ProductPage() {
                           <Card.Body>
                             <p>{dateFr(review.createdAt)}</p>
                             <p>
-                              {showMore
-                                ? nl2br(review.comment)
-                                : `${review.comment.substring(0, 250)}`}
-                              <button
-                                className="btn"
-                                onClick={() => setShowMore(!showMore)}
-                              >
-                                {showMore ? 'Show less' : 'Show more'}
-                              </button>
+                              <h6>
+                                {showMore
+                                  ? review.comment
+                                  : `${review.comment.substring(0, 250)}`}
+                                <button
+                                  className="btn"
+                                  onClick={() => setShowMore(!showMore)}
+                                >
+                                  {showMore ? 'Show less' : 'Show more'}
+                                </button>
+                              </h6>
                             </p>
                           </Card.Body>
                         </Card>

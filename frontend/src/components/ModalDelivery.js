@@ -12,7 +12,6 @@ import { useReducer } from 'react';
 import { toast } from 'react-toastify';
 import { getError, logOutAndRedirect } from '../utils';
 import axios from 'axios';
-import MondialRelay from './MondialRelay';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -143,6 +142,9 @@ function DeliveryAddressModal() {
     localStorage.setItem('deliveryMethod', deliveryMethodName);
     localStorage.removeItem('shippingAddress');
     navigate('/payment');
+  };
+  const navigateToMondialRelay = () => {
+    navigate('/mondialrelay');
   };
 
   const buttonChangeAddress = () => {
@@ -280,7 +282,17 @@ function DeliveryAddressModal() {
           </Button>
         </Col>
         <Col md={4}>
-          <MondialRelay />
+          <Button
+            type="submit"
+            className="bg2 text-light w-100 p-4"
+            variant="outline-secondary"
+            onClick={() => {
+              navigateToMondialRelay();
+            }}
+          >
+            <h6>Mondial Relay</h6>
+            <Image src="../mondialrelay.png" width={78} />
+          </Button>
         </Col>
         <Col md={4}>
           <Form onSubmit={homeHandler}>

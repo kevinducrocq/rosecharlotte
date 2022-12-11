@@ -43,6 +43,7 @@ import SettingsPage from './pages/admin/SettingsPage';
 import LostPasswordPage from './pages/LostPasswordPage';
 import ResetPasswordPage from './pages/ResetPasswordPage';
 import PageNotFound from './pages/PageNotFound';
+import MondialRelayPage from './pages/MondialRelayPage';
 
 function App() {
   return (
@@ -115,6 +116,10 @@ function App() {
                 }
               ></Route>
               <Route path="/shipping" element={<ShippingAddressPage />}></Route>
+              <Route
+                path="/mondialrelay"
+                element={<MondialRelayPage />}
+              ></Route>
               <Route path="/payment" element={<PaymentMethodPage />}></Route>
               {/* Admin Routes */}
               <Route

@@ -59,6 +59,11 @@ main {
   font-weight: 600;
 }
 
+.leaflet-container {
+  width: 100wh;
+  height: 50vh;
+}
+
 /*INPUTS*/
 .switch-price {
   margin-bottom: 0.17rem;
