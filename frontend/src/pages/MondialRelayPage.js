@@ -71,21 +71,25 @@ export default function MondialRelayPage() {
 
   async function getPointsMondialRelay() {
     try {
-      const result = await axios.get(`/api/mondialRelay/${codePostal}`);
-      setPointsMondialRelay(result.data[0].PointRelais_Details);
+      if (codePostal.length === 5) {
+        const result = await axios.get(`/api/mondialRelay/${codePostal}`);
+        setPointsMondialRelay(result.data[0].PointRelais_Details);
 
-      let lat = 0,
-        lng = 0;
-      result.data[0].PointRelais_Details.map((pm) => {
-        lat += parseFloat(pm.Latitude.replace(',', '.'));
-        lng += parseFloat(pm.Longitude.replace(',', '.'));
-      });
+        let lat = 0,
+          lng = 0;
+        result.data[0].PointRelais_Details.map((pm) => {
+          lat += parseFloat(pm.Latitude.replace(',', '.'));
+          lng += parseFloat(pm.Longitude.replace(',', '.'));
+        });
 
-      lat = lat / result.data[0].PointRelais_Details.length;
-      lng = lng / result.data[0].PointRelais_Details.length;
+        lat = lat / result.data[0].PointRelais_Details.length;
+        lng = lng / result.data[0].PointRelais_Details.length;
 
-      setLat(lat);
-      setLng(lng);
+        setLat(lat);
+        setLng(lng);
+      } else {
+        toast.error("Le code postal saisi n'est pas correct");
+      }
     } catch (err) {
       toast.error("Le code postal saisi n'existe pas");
     }
@@ -168,8 +172,6 @@ export default function MondialRelayPage() {
             >
               <InputGroup className="mb-3">
                 <Form.Control
-                  maxLength={5}
-                  minLength={4}
                   type="text"
                   placeholder="Votre code postal"
                   value={codePostal}
