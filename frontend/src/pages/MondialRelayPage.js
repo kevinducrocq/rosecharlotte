@@ -239,7 +239,7 @@ export default function MondialRelayPage() {
             <div className="text-center">
               <div className="mb-3">
                 Vous avez choisi : <br />
-                <br />
+                <hr />
                 <p>
                   <b> {chosenPointRelais[0]}</b> <br />
                   {chosenPointRelais[1]} <br />

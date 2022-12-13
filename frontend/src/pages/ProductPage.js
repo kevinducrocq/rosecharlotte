@@ -77,6 +77,37 @@ function ProductPage() {
   const params = useParams();
   const { slug } = params;
 
+  const slidersPersoSettings = {
+    speed: 500,
+    slidesToShow: 5,
+    slidesToScroll: 5,
+    prevArrow: <SamplePrevArrow />,
+    nextArrow: <SampleNextArrow />,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 5,
+          slidesToScroll: 5,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 4,
+          slidesToScroll: 4,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+        },
+      },
+    ],
+  };
+
   const [{ loading, error, product, loadingCreateReview }, dispatch] =
     useReducer(reducer, {
       product: [],
@@ -85,26 +116,6 @@ function ProductPage() {
     });
 
   const [readMore, setReadMore] = useState(false);
-  const options = {
-    margin: 0,
-    responsive: {
-      0: {
-        items: 1,
-      },
-      400: {
-        items: 1,
-      },
-      600: {
-        items: 2,
-      },
-      800: {
-        items: 3,
-      },
-      1000: {
-        items: 3,
-      },
-    },
-  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -249,12 +260,31 @@ function ProductPage() {
     return product.patches && product.patches.length > 0;
   };
 
+  function SamplePrevArrow(props) {
+    const { onClick } = props;
+    return (
+      <button className="btn-default" onClick={onClick}>
+        <FontAwesomeIcon icon={faCircleChevronLeft} />
+      </button>
+    );
+  }
+  function SampleNextArrow(props) {
+    const { onClick } = props;
+    return (
+      <button className="btn-default" onClick={onClick}>
+        <FontAwesomeIcon icon={faCircleChevronRight} />
+      </button>
+    );
+  }
+
   const reviewCarouselSettings = {
     dots: true,
     infinite: true,
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 3,
+    prevArrow: <SamplePrevArrow />,
+    nextArrow: <SampleNextArrow />,
   };
   const renderReviews = () => {
     return (
@@ -270,7 +300,7 @@ function ProductPage() {
               (review) =>
                 review.status === true && (
                   <div>
-                    <Card key={review._id} className="me-2" id={review._id}>
+                    <Card key={review._id} id={review._id} className="me-2">
                       <Card.Header>
                         <strong>{review.name}</strong>
                         <Rating rating={review.rating} caption=" "></Rating>
@@ -302,8 +332,8 @@ function ProductPage() {
 
   const renderVariationsForm = () => {
     return (
-      <div className="p-2">
-        <Form>
+      <div className="mb-3">
+        <Form className="p-2">
           <div className="h5">
             <span>Choisissez le modèle</span>
           </div>
@@ -378,60 +408,19 @@ function ProductPage() {
   };
 
   const renderTissusForm = () => {
-    // let selectedIndex = 0;
-    // product.tissus.forEach((item, index) => {
-    //   if (item.name === tissu) {
-    //     selectedIndex = index;
-    //   } else if (item.name === patch) {
-    //     selectedIndex = index;
-    //   }
-    // });
-
-    const opts = {
-      loop: false,
-      margin: 0,
-      nav: true,
-      responsive: {
-        0: {
-          items: 3,
-        },
-        400: {
-          items: 3,
-        },
-        600: {
-          items: 4,
-        },
-        800: {
-          items: 5,
-        },
-        1000: {
-          items: 5,
-        },
-      },
-    };
-
     return (
       <>
-        <div className="h5">
+        <div className="h5 mb-3">
           <span>Choisissez le tissu</span>
         </div>
-        <OwlCarousel
-          className="slider-items owl-carousel owl-theme"
-          {...opts}
-          navText={[
-            '<span class="arrow prev">‹</span>',
-            '<span class="arrow next">›</span>',
-          ]}
-          id="slider_tissus"
-        >
+
+        <Slider {...slidersPersoSettings} className="d-flex">
           {product.tissus.map((currentTissu) => {
             return (
-              <div className="item" key={currentTissu._id}>
+              <div key={currentTissu._id}>
                 <div
                   role="button"
-                  className={
-                    tissu === currentTissu.name ? 'selected-item p-1' : 'p-1'
-                  }
+                  className={tissu === currentTissu.name ? 'selected-item' : ''}
                   onClick={() => {
                     setTissu(currentTissu.name);
                   }}
@@ -456,7 +445,7 @@ function ProductPage() {
               </div>
             );
           })}
-        </OwlCarousel>
+        </Slider>
         {tissu && (
           <div className="text-muted">
             Vous avez choisi : &nbsp;
@@ -468,54 +457,13 @@ function ProductPage() {
   };
 
   const renderPatchesForm = () => {
-    // let selectedIndex = 0;
-    // product.tissus.forEach((item, index) => {
-    //   if (item.name === tissu) {
-    //     selectedIndex = index;
-    //   } else if (item.name === patch) {
-    //     selectedIndex = index;
-    //   }
-    // });
-
-    const opts = {
-      loop: false,
-      margin: 0,
-      nav: true,
-      // startPosition: selectedIndex - 1,
-      responsive: {
-        0: {
-          items: 3,
-        },
-        400: {
-          items: 3,
-        },
-        600: {
-          items: 4,
-        },
-        800: {
-          items: 5,
-        },
-        1000: {
-          items: 5,
-        },
-      },
-    };
-
     return (
       <>
         <hr />
-        <div className="h5">
+        <div className="h5 mb-3">
           <span>Choisissez le motif à broder</span>
         </div>
-        <OwlCarousel
-          className="slider-items owl-carousel owl-theme"
-          {...opts}
-          navText={[
-            '<span class="arrow prev">‹</span>',
-            '<span class="arrow next">›</span>',
-          ]}
-          id="slider_patches"
-        >
+        <Slider {...slidersPersoSettings} className="d-flex">
           {product.patches.map((currentPatch) => {
             return (
               <div className="item" key={currentPatch._id}>
@@ -548,7 +496,7 @@ function ProductPage() {
               </div>
             );
           })}
-        </OwlCarousel>
+        </Slider>
         {patch && (
           <div className="text-muted">
             Vous avez choisi : &nbsp;
@@ -612,7 +560,7 @@ function ProductPage() {
 
   const renderPersonalisationForms = () => {
     return (
-      <div className="p-2">
+      <div>
         <Form>{renderPersonalizationFormElements()}</Form>
       </div>
     );
@@ -788,7 +736,6 @@ function ProductPage() {
                   <h2 className="h6 text-muted">
                     {product.category}
                     {product.subCategory ? ' - ' + product.subCategory : ''}
-                    {/* {product.otherCategory ? ' - ' + product.otherCategory : ''} */}
                   </h2>
                 </div>
               </div>
@@ -849,52 +796,57 @@ function ProductPage() {
                       <div className="h5">
                         <span>Choisissez le style</span>
                       </div>
+                      <Row>
+                        <Col md={3}>
+                          <Form.Check
+                            name="side"
+                            type="radio"
+                            id="narrette-gauche"
+                            label="Côté gauche"
+                            value="Côté gauche"
+                            onChange={(e) => {
+                              setSide(e.target.value);
+                            }}
+                          />
+                        </Col>
+                        <Col md={3}>
+                          <Form.Check
+                            name="side"
+                            type="radio"
+                            id="barrette-droite"
+                            label="Côté droit"
+                            value="Côté droit"
+                            onChange={(e) => {
+                              setSide(e.target.value);
+                            }}
+                          />
+                        </Col>
+                        <Col md={3}>
+                          <Form.Check
+                            name="side"
+                            type="radio"
+                            id="broche"
+                            label="Broche"
+                            value="Broche"
+                            onChange={(e) => {
+                              setSide(e.target.value);
+                            }}
+                          />
+                        </Col>
+                        <Col md={3}>
+                          <Form.Check
+                            name="side"
+                            type="radio"
+                            id="roco"
+                            label="Clic Clac"
+                            value="Clic Clac"
+                            onChange={(e) => {
+                              setSide(e.target.value);
+                            }}
+                          />
+                        </Col>
+                      </Row>
 
-                      <Form.Check
-                        inline
-                        name="side"
-                        type="radio"
-                        id="narrette-gauche"
-                        label="Côté gauche"
-                        value="Côté gauche"
-                        onChange={(e) => {
-                          setSide(e.target.value);
-                        }}
-                      />
-                      <Form.Check
-                        inline
-                        name="side"
-                        type="radio"
-                        id="barrette-droite"
-                        label="Côté droit"
-                        value="Côté droit"
-                        onChange={(e) => {
-                          setSide(e.target.value);
-                        }}
-                      />
-                      <br />
-                      <Form.Check
-                        inline
-                        name="side"
-                        type="radio"
-                        id="broche"
-                        label="Broche"
-                        value="Broche"
-                        onChange={(e) => {
-                          setSide(e.target.value);
-                        }}
-                      />
-                      <Form.Check
-                        inline
-                        name="side"
-                        type="radio"
-                        id="roco"
-                        label="Clic Clac"
-                        value="Clic Clac"
-                        onChange={(e) => {
-                          setSide(e.target.value);
-                        }}
-                      />
                       <hr />
                     </Form>
                   )}

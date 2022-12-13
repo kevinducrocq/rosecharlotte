@@ -59,6 +59,17 @@ main {
   font-weight: 600;
 }
 
+.btn-default:hover {
+  border: none;
+  padding: 0;
+  background: none;
+}
+.btn-default {
+  border: none;
+  padding: 0;
+  background: none;
+}
+
 .leaflet-container {
   width: 100wh;
   height: 50vh;
