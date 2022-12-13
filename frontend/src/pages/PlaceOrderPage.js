@@ -80,7 +80,10 @@ export default function PlaceOrderPage() {
     newCart.itemsWeight = totalWeight;
 
     const deliveryPrice = () => {
-      if (newCart.deliveryMethod === 'Local') {
+      if (
+        newCart.deliveryMethod === 'Local' ||
+        newCart.deliveryMethod === 'Mondial Relay'
+      ) {
         return 0;
       }
 
@@ -124,10 +127,12 @@ export default function PlaceOrderPage() {
           headers: { authorization: `Bearer ${userInfo.token}` },
         }
       );
-
       ctxDispatch({ type: 'CART_CLEAR' });
       dispatch({ type: 'CREATE-SUCCESS' });
       localStorage.removeItem('cartItems');
+      localStorage.removeItem('deliveryMethod');
+      localStorage.removeItem('paymentMethod');
+      localStorage.removeItem('shippingAddress');
       navigate(`/order/${data.order._id}`);
     } catch (err) {
       dispatch({ type: 'CREATE_FAIL' });
@@ -187,7 +192,30 @@ export default function PlaceOrderPage() {
       <Row>
         <Col md={8}>
           <Card className="mb-3 bg-light">
-            {cart.deliveryMethod === 'Local' ? (
+            {cart.deliveryMethod === 'Mondial Relay' && (
+              <Card.Body className="d-flex justify-content-between align-items-center">
+                <div>
+                  <Card.Title>Livraison Mondial Relay</Card.Title>
+                  <Card.Text>
+                    <strong>Nom du point relais : </strong>
+                    {cart.shippingAddress.name} <br />
+                    <strong>Addresse : </strong> {cart.shippingAddress.address}
+                    <br />
+                    <strong>Code postal :</strong> {cart.shippingAddress.zip}
+                    <br />
+                    <strong>Ville : </strong>
+                    {cart.shippingAddress.city}
+                  </Card.Text>
+                </div>
+                <div className="text-nowrap">
+                  <Link to="/shipping">
+                    <FontAwesomeIcon icon={faPenToSquare} /> Modifier
+                  </Link>
+                </div>
+              </Card.Body>
+            )}
+
+            {cart.deliveryMethod === 'Local' && (
               <Card.Body className="d-flex justify-content-between align-items-center">
                 <div>
                   <Card.Title>Commande à retirer dans nos Locaux</Card.Title>
@@ -203,7 +231,9 @@ export default function PlaceOrderPage() {
                   </Link>
                 </div>
               </Card.Body>
-            ) : (
+            )}
+
+            {cart.deliveryMethod === 'Domicile' && (
               <Card.Body className="d-flex justify-content-between align-items-center">
                 <div>
                   <Card.Title>Livraison</Card.Title>
@@ -391,7 +421,7 @@ export default function PlaceOrderPage() {
 
                     <Col>
                       {cart.shippingPrice === 0
-                        ? 'Offerte (en point relai)'
+                        ? 'Offerte'
                         : cart.shippingPrice?.toFixed(2) + ' €'}
                     </Col>
                   </Row>

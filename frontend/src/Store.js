@@ -103,8 +103,6 @@ function reducer(state, action) {
         ...state,
         cart: { ...state.cart, deliveryMethod: action.payload },
       };
-    case 'DELIVERY_METHOD_CLEAR':
-      return { ...state, cart: { ...state.cart, deliveryMethod: '' } };
     case 'UPDATE_REQUEST':
       return { ...state, loadingUpdate: true };
     case 'UPDATE_SUCCESS':

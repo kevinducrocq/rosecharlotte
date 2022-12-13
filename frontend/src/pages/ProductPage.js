@@ -28,6 +28,14 @@ import { toast } from 'react-toastify';
 import { LinkContainer } from 'react-router-bootstrap';
 import OwlCarousel from 'react-owl-carousel';
 import nl2br from 'react-nl2br';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {
+  faCircleChevronLeft,
+  faCircleChevronRight,
+} from '@fortawesome/pro-solid-svg-icons';
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -65,10 +73,6 @@ function ProductPage() {
   const [patch, setPatch] = useState('');
   const [refresh, setRefresh] = useState(0);
 
-  const [showMore, setShowMore] = useState(false);
-
-  // const [buttonCartIsVisible, setButtonCartIsVisible] = useState('');
-
   const navigate = useNavigate();
   const params = useParams();
   const { slug } = params;
@@ -80,10 +84,9 @@ function ProductPage() {
       error: '',
     });
 
+  const [readMore, setReadMore] = useState(false);
   const options = {
-    loop: false,
     margin: 0,
-    nav: true,
     responsive: {
       0: {
         items: 1,
@@ -244,6 +247,57 @@ function ProductPage() {
   };
   const isPatch = () => {
     return product.patches && product.patches.length > 0;
+  };
+
+  const reviewCarouselSettings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 3,
+  };
+  const renderReviews = () => {
+    return (
+      <div className="p-4 align-items-center">
+        <h2 ref={reviewsRef} className="mb-4">
+          Avis des clients
+        </h2>
+        {product.reviews.length === 0 ? (
+          <MessageBox>Il n'y a pas encore d'avis sur ce produit</MessageBox>
+        ) : (
+          <Slider {...reviewCarouselSettings} className="d-flex">
+            {product.reviews.map(
+              (review) =>
+                review.status === true && (
+                  <div>
+                    <Card key={review._id} className="me-2" id={review._id}>
+                      <Card.Header>
+                        <strong>{review.name}</strong>
+                        <Rating rating={review.rating} caption=" "></Rating>
+                      </Card.Header>
+                      <Card.Body>
+                        <p>{dateFr(review.createdAt)}</p>
+                        <small>
+                          {readMore
+                            ? review.comment
+                            : review.comment.substring(0, 80)}
+                          ...
+                          <button
+                            className="btn"
+                            onClick={() => setReadMore(!readMore)}
+                          >
+                            {readMore ? 'lire moins' : 'lire plus'}
+                          </button>
+                        </small>
+                      </Card.Body>
+                    </Card>
+                  </div>
+                )
+            )}
+          </Slider>
+        )}
+      </div>
+    );
   };
 
   const renderVariationsForm = () => {
@@ -779,7 +833,6 @@ function ProductPage() {
                 </ListGroup.Item>
               </>
             )}
-
             <ListGroup.Item>
               <div className="p-2">
                 <p>{nl2br(product.description)}</p>
@@ -929,52 +982,7 @@ function ProductPage() {
             </div>
           </Col>
 
-          <Col md={8}>
-            <div className="p-4 align-items-center">
-              <h2 ref={reviewsRef} className="mb-4">
-                Avis des clients
-              </h2>
-              {product.reviews.length === 0 ? (
-                <MessageBox>
-                  Il n'y a pas encore d'avis sur ce produit
-                </MessageBox>
-              ) : (
-                <OwlCarousel
-                  className="slider-items owl-carousel"
-                  {...options}
-                  id="slider_comments"
-                >
-                  {product.reviews.map(
-                    (review) =>
-                      !review.status === false && (
-                        <Card key={review._id} className="me-2">
-                          <Card.Header>
-                            <strong>{review.name}</strong>
-                            <Rating rating={review.rating} caption=" "></Rating>
-                          </Card.Header>
-                          <Card.Body>
-                            <p>{dateFr(review.createdAt)}</p>
-                            <p>
-                              <h6>
-                                {showMore
-                                  ? review.comment
-                                  : `${review.comment.substring(0, 250)}`}
-                                <button
-                                  className="btn"
-                                  onClick={() => setShowMore(!showMore)}
-                                >
-                                  {showMore ? 'Show less' : 'Show more'}
-                                </button>
-                              </h6>
-                            </p>
-                          </Card.Body>
-                        </Card>
-                      )
-                  )}
-                </OwlCarousel>
-              )}
-            </div>
-          </Col>
+          <Col md={8}>{renderReviews()}</Col>
         </Row>
       </div>
     </Container>

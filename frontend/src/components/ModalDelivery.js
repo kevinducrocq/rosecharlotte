@@ -141,6 +141,7 @@ function DeliveryAddressModal() {
     ctxDispatch({ type: 'SAVE_DELIVERY_METHOD', payload: deliveryMethodName });
     localStorage.setItem('deliveryMethod', deliveryMethodName);
     localStorage.removeItem('shippingAddress');
+    localStorage.removeItem('AdressePointRelais');
     navigate('/payment');
   };
   const navigateToMondialRelay = () => {
@@ -284,7 +285,7 @@ function DeliveryAddressModal() {
         <Col md={4}>
           <Button
             type="submit"
-            className="bg2 text-light w-100 p-4"
+            className="bg2 text-light w-100 p-4 mb-2"
             variant="outline-secondary"
             onClick={() => {
               navigateToMondialRelay();

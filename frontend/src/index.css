@@ -64,6 +64,11 @@ main {
   height: 50vh;
 }
 
+.scroll {
+  max-height: 40vh;
+  overflow-y: scroll;
+}
+
 /*INPUTS*/
 .switch-price {
   margin-bottom: 0.17rem;

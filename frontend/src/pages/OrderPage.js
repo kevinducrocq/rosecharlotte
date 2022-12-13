@@ -225,6 +225,8 @@ export default function OrderPage() {
     refresh,
   ]);
 
+  console.log(order.shippingAddress);
+
   async function deliverOrderHandler() {
     try {
       dispatch({ type: 'DELIVER_REQUEST' });
@@ -310,24 +312,44 @@ export default function OrderPage() {
       <Row>
         <Col md={8}>
           <Card className="mb-3">
-            {order.shippingAddress ? (
+            {order.deliveryMethod === 'Domicile' && (
               <Card.Body>
                 <Card.Title>Livraison</Card.Title>
                 <Card.Text>
                   <strong>Nom | Prénom :</strong> {order.shippingAddress.name}{' '}
                   <br />
-                  <strong>Adresse : </strong> {order.shippingAddress.address},{' '}
-                  {order.shippingAddress.zip}, {order.shippingAddress.city},{' '}
-                  {order.shippingAddress.country} <br />
+                  <strong>Addresse : </strong> {order.shippingAddress.address}
+                  <br />
+                  <strong>Code postal :</strong> {order.shippingAddress.zip}
+                  <br />
+                  <strong>Ville : </strong>
+                  {order.shippingAddress.city}
                 </Card.Text>
               </Card.Body>
-            ) : (
+            )}
+            {order.deliveryMethod === 'Mondial Relay' && (
+              <Card.Body>
+                <Card.Title>Livraison Mondial Relay</Card.Title>
+                <Card.Text>
+                  <strong>Nom du point relais:</strong>{' '}
+                  {order.shippingAddress.name} <br />
+                  <strong>Addresse : </strong> {order.shippingAddress.address}
+                  <br />
+                  <strong>Code postal :</strong> {order.shippingAddress.zip}
+                  <br />
+                  <strong>Ville : </strong>
+                  {order.shippingAddress.city}
+                </Card.Text>
+              </Card.Body>
+            )}
+            {order.deliveryMethod === 'Local' && (
               <Card.Body>
                 <Card.Title>Commande à récupérer pour : </Card.Title>
                 <strong>Nom | Prénom : </strong> {order.user.name} <br />
                 <strong>Email : </strong> {order.user.email}
               </Card.Body>
             )}
+
             <Card.Body>
               {order.isDelivered ? (
                 <div className="badge bg-success">
@@ -465,7 +487,7 @@ export default function OrderPage() {
                     <Col>Livraison</Col>
                     <Col>{order.shippingPrice.toFixed(2)} &euro;</Col>
                   </Row>
-                  {order.discount && (
+                  {order.discount ? (
                     <Row>
                       <Col>Remise {order.discount} %</Col>
                       <Col>
@@ -478,6 +500,8 @@ export default function OrderPage() {
                         &euro;
                       </Col>
                     </Row>
+                  ) : (
+                    ''
                   )}
 
                   <Row>

@@ -195,7 +195,10 @@ orderRouter.post(
 
     // Prix de livraison
     const deliveryPrice = () => {
-      if (req.body.deliveryMethod === 'Local') {
+      if (
+        req.body.deliveryMethod === 'Local' ||
+        req.body.deliveryMethod === 'Mondial Relay'
+      ) {
         return 0;
       }
       if (totalCartWeight <= 200 && itemsPrices < 99) {
