@@ -46,10 +46,7 @@ function CarouselHome() {
 
   return (
     <>
-      {(carouselHome && typeof carouselHome.map === 'function'
-        ? carouselHome
-        : []
-      ).map((carousel) => {
+      {(carouselHome ? carouselHome : []).map((carousel) => {
         return (
           <Carousel key={carouselHome} fade wrap="true" className="carousel">
             <Carousel.Item className="carousel-item">

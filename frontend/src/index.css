@@ -163,30 +163,6 @@ main {
 
 /*PRODUCT CAROUSEL*/
 
-.owl-stage-outer {
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
-.arrow {
-  position: absolute;
-  border-radius: 1px;
-  font-size: 50px;
-  top: 5px;
-}
-
-.arrow:hover {
-  color: #f47c7c;
-}
-
-.next {
-  right: -20px;
-}
-
-.prev {
-  left: -20px;
-}
-
 .selected-item {
   border: 2px solid #f47c7c;
 }
@@ -200,20 +176,9 @@ main {
   color: #f1f1f1;
 }
 
-#slider_tissus {
-  max-height: 150px;
-}
-#slider_patches {
-  max-height: 150px;
-}
-
 .caption-carousel {
   font-size: 9.5px;
   text-align: center;
-}
-
-.owl-stage {
-  padding-bottom: -40px important!;
 }
 
 .product-carousel-image {

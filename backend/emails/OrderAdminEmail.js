@@ -130,10 +130,17 @@ export function orderAdminEmail(order, user) {
                         <td><b>${order.deliveryMethod}</b></td>
                     </tr>
                     ${
-                      !order.paymentMethod === 'Cheque'
+                      !order.paymentMethod === 'Cheque' &&
+                      !order.deliveryMethod === 'Mondial Relay'
                         ? ` <tr>
                         <td style="font-size:15px;">Adresse :</td>
-                        <td><b>${order.shippingAdress.address},&nbsp;${order.shippingAdress.zip},&nbsp;${order.shippingAdress.city},&nbsp;${order.shippingAdress.country}</b>
+                        <td><b>${order.shippingAddress.address},&nbsp;${order.shippingAddress.zip},&nbsp;${order.shippingAddress.city},&nbsp;${order.shippingAddress.country}</b>
+                        </td>
+                    </tr>`
+                        : order.deliveryMethod === 'Mondial Relay'
+                        ? ` <tr>
+                        <td style="font-size:15px;">Point relais : </td>
+                        <td><b>${order.shippingAddress.name},&nbsp;${order.shippingAddress.address},&nbsp;${order.shippingAddress.zip},&nbsp;${order.shippingAddress.city},&nbsp;${order.shippingAddress.country}</b>
                         </td>
                     </tr>`
                         : ''

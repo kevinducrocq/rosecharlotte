@@ -26,7 +26,6 @@ import { dateFr, getError, logOutAndRedirect } from '../utils';
 import { Store } from '../Store';
 import { toast } from 'react-toastify';
 import { LinkContainer } from 'react-router-bootstrap';
-import OwlCarousel from 'react-owl-carousel';
 import nl2br from 'react-nl2br';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
