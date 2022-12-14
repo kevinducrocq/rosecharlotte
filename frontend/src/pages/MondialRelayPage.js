@@ -162,8 +162,8 @@ export default function MondialRelayPage() {
             Retour
           </Link>
         </div>
-        <Col md={4} className="bg-white p-2 rounded-3">
-          <div>
+        <Col md={4} className="bg-white p-2 rounded-3 mb-3">
+          <div className="col-md-pull-4">
             <Form
               onSubmit={(e) => {
                 e.preventDefault();

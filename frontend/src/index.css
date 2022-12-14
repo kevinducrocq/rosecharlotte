@@ -76,7 +76,7 @@ main {
 }
 
 .scroll {
-  max-height: 40vh;
+  max-height: 43vh;
   overflow-y: scroll;
 }
 
@@ -433,6 +433,11 @@ LOGO
 /*RESPONSIVE*/
 
 @media screen and (max-width: 767px) {
+  .scroll {
+    max-height: 100%;
+    overflow-y: visible;
+  }
+
   .product-vignettes {
     display: none;
   }
