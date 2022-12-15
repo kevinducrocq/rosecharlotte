@@ -1,7 +1,7 @@
-import React, { useContext, useEffect, useReducer, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import axios from 'axios';
+import React, { useContext, useEffect, useReducer, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
+import axios from "axios";
 import {
   Container,
   Button,
@@ -10,46 +10,46 @@ import {
   Row,
   Col,
   InputGroup,
-} from 'react-bootstrap';
-import { Helmet } from 'react-helmet-async';
-import { Store } from '../../Store';
-import { getError, logOutAndRedirect } from '../../utils';
-import LoadingBox from '../../components/LoadingBox';
-import MessageBox from '../../components/MessageBox';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+} from "react-bootstrap";
+import { Helmet } from "react-helmet-async";
+import { Store } from "../../Store";
+import { getError, logOutAndRedirect } from "../../utils";
+import LoadingBox from "../../components/LoadingBox";
+import MessageBox from "../../components/MessageBox";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faEuroSign,
   faMinus,
   faPlus,
   faTrash,
-} from '@fortawesome/pro-solid-svg-icons';
-import AdminMenu from '../../components/AdminMenu';
-import ProductVariants from '../../components/ProductVariants';
-import AdminCanvasMenu from '../../components/AdminCanvasMenu';
+} from "@fortawesome/pro-solid-svg-icons";
+import AdminMenu from "../../components/AdminMenu";
+import ProductVariants from "../../components/ProductVariants";
+import AdminCanvasMenu from "../../components/AdminCanvasMenu";
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'FETCH_REQUEST':
+    case "FETCH_REQUEST":
       return { ...state, loading: true };
-    case 'FETCH_SUCCESS':
+    case "FETCH_SUCCESS":
       return { ...state, loading: false };
-    case 'FETCH_FAIL':
+    case "FETCH_FAIL":
       return { ...state, loading: false, error: action.payload };
-    case 'UPDATE_REQUEST':
+    case "UPDATE_REQUEST":
       return { ...state, loadingUpdate: true };
-    case 'UPDATE_SUCCESS':
+    case "UPDATE_SUCCESS":
       return { ...state, loadingUpdate: false };
-    case 'UPDATE_FAIL':
+    case "UPDATE_FAIL":
       return { ...state, loadingUpdate: false };
-    case 'UPLOAD_REQUEST':
-      return { ...state, loadingUpload: true, errorUpload: '' };
-    case 'UPLOAD_SUCCESS':
+    case "UPLOAD_REQUEST":
+      return { ...state, loadingUpload: true, errorUpload: "" };
+    case "UPLOAD_SUCCESS":
       return {
         ...state,
         loadingUpload: false,
-        errorUpload: '',
+        errorUpload: "",
       };
-    case 'UPLOAD_FAIL':
+    case "UPLOAD_FAIL":
       return { ...state, loadingUpload: false, errorUpload: action.payload };
 
     default:
@@ -66,22 +66,22 @@ export default function ProductEditPage() {
   const [{ loading, error, loadingUpdate, loadingUpload }, dispatch] =
     useReducer(reducer, {
       loading: true,
-      error: '',
+      error: "",
     });
 
-  const [name, setName] = useState('');
-  const [slug, setSlug] = useState('');
-  const [price, setPrice] = useState('');
-  const [promoPrice, setPromoPrice] = useState('');
-  const [soldePrice, setSoldePrice] = useState('');
-  const [weight, setWeight] = useState('');
-  const [image, setImage] = useState('');
+  const [name, setName] = useState("");
+  const [slug, setSlug] = useState("");
+  const [price, setPrice] = useState("");
+  const [promoPrice, setPromoPrice] = useState("");
+  const [soldePrice, setSoldePrice] = useState("");
+  const [weight, setWeight] = useState("");
+  const [image, setImage] = useState("");
   const [images, setImages] = useState([]);
-  const [category, setCategory] = useState('');
-  const [subCategory, setSubCategory] = useState('');
-  const [otherCategory, setOtherCategory] = useState('');
-  const [countInStock, setCountInStock] = useState('');
-  const [description, setDescription] = useState('');
+  const [category, setCategory] = useState("");
+  const [subCategory, setSubCategory] = useState("");
+  const [otherCategory, setOtherCategory] = useState("");
+  const [countInStock, setCountInStock] = useState("");
+  const [description, setDescription] = useState("");
   const [categories, setCategories] = useState([]);
   const [promoIsVisible, setPromoIsVisible] = useState(false);
   const [soldeIsVisible, setSoldeIsVisible] = useState(false);
@@ -108,7 +108,7 @@ export default function ProductEditPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        dispatch({ type: 'FETCH_REQUEST' });
+        dispatch({ type: "FETCH_REQUEST" });
         const { data } = await axios.get(`/api/products/${productId}`);
         setName(data.name);
         setSlug(data.slug);
@@ -141,10 +141,10 @@ export default function ProductEditPage() {
 
         setTimeout(() => setInitialized(true), 0);
 
-        dispatch({ type: 'FETCH_SUCCESS' });
+        dispatch({ type: "FETCH_SUCCESS" });
       } catch (err) {
         dispatch({
-          type: 'FETCH_FAIL',
+          type: "FETCH_FAIL",
           payload: getError(err),
         });
       }
@@ -167,7 +167,7 @@ export default function ProductEditPage() {
   useEffect(() => {
     const fetchFils = async () => {
       try {
-        const { data } = await axios.get('/api/fils', {
+        const { data } = await axios.get("/api/fils", {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         });
         setAvailableFils(data);
@@ -182,7 +182,7 @@ export default function ProductEditPage() {
   useEffect(() => {
     const fetchTissus = async () => {
       try {
-        const { data } = await axios.get('/api/tissus', {
+        const { data } = await axios.get("/api/tissus", {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         });
         setAvailableTissus(data);
@@ -197,7 +197,7 @@ export default function ProductEditPage() {
   useEffect(() => {
     const fetchPatches = async () => {
       try {
-        const { data } = await axios.get('/api/patches', {
+        const { data } = await axios.get("/api/patches", {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         });
         setAvailablePatches(data);
@@ -227,16 +227,16 @@ export default function ProductEditPage() {
     if (price > 0) {
       setPriceIsVisible(priceIsVisible);
       variantPrices.forEach((variant) => {
-        variant.price = '';
-        variant.promoPrice = '';
-        variant.SoldePrice = '';
+        variant.price = "";
+        variant.promoPrice = "";
+        variant.SoldePrice = "";
         setVariants(variants);
       });
     }
     if (priceIsVisible) {
-      setPrice('');
-      setPromoPrice('');
-      setSoldePrice('');
+      setPrice("");
+      setPromoPrice("");
+      setSoldePrice("");
     }
   }, [initialized, price, priceIsVisible, variants]);
 
@@ -275,7 +275,7 @@ export default function ProductEditPage() {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      dispatch({ type: 'UPDATE_REQUEST' });
+      dispatch({ type: "UPDATE_REQUEST" });
       await axios.put(
         `/api/products/${productId}`,
 
@@ -311,13 +311,13 @@ export default function ProductEditPage() {
       // });
 
       dispatch({
-        type: 'UPDATE_SUCCESS',
+        type: "UPDATE_SUCCESS",
       });
-      toast.success('Produit mis à jour avec succès');
-      navigate('/admin/products');
+      toast.success("Produit mis à jour avec succès");
+      navigate("/admin/products");
     } catch (err) {
       toast.error(getError(err));
-      dispatch({ type: 'UPDATE_FAIL' });
+      dispatch({ type: "UPDATE_FAIL" });
     }
   };
 
@@ -325,12 +325,12 @@ export default function ProductEditPage() {
   const uploadFileHandler = async (e, forImages) => {
     const file = e.target.files[0];
     const bodyFormData = new FormData();
-    bodyFormData.append('file', file);
+    bodyFormData.append("file", file);
     try {
-      dispatch({ type: 'UPLOAD_REQUEST' });
-      const { data } = await axios.post('/api/upload/image', bodyFormData, {
+      dispatch({ type: "UPLOAD_REQUEST" });
+      const { data } = await axios.post("/api/upload/image", bodyFormData, {
         headers: {
-          'Content-Type': 'multipart/form-data',
+          "Content-Type": "multipart/form-data",
           authorization: `Bearer ${userInfo.token}`,
         },
       });
@@ -339,7 +339,7 @@ export default function ProductEditPage() {
       //     logOutAndRedirect();
       //   }
       // });
-      dispatch({ type: 'UPLOAD_SUCCESS' });
+      dispatch({ type: "UPLOAD_SUCCESS" });
 
       if (forImages) {
         setImages([...images, data.path]);
@@ -347,11 +347,12 @@ export default function ProductEditPage() {
         setImage(data.path);
       }
       toast.success(
-        'Image téléversée, cliquer sur mettre à jour pour que les changements soient pris en compte'
+        "Image téléversée, cliquer sur mettre à jour pour que les changements soient pris en compte",
+        { autoClose: 3000 }
       );
     } catch (err) {
       toast.error(getError(err));
-      dispatch({ type: 'UPLOAD_FAIL', payload: getError(err) });
+      dispatch({ type: "UPLOAD_FAIL", payload: getError(err) });
     }
   };
 
@@ -365,15 +366,15 @@ export default function ProductEditPage() {
     setVariants([
       ...variants,
       {
-        name: '',
-        countInStock: '',
-        weight: '',
-        price: '',
-        promoPrice: '',
-        soldePrice: '',
+        name: "",
+        countInStock: "",
+        weight: "",
+        price: "",
+        promoPrice: "",
+        soldePrice: "",
       },
     ]);
-    setWeight('');
+    setWeight("");
   };
 
   // supprimer un variant
@@ -522,10 +523,10 @@ export default function ProductEditPage() {
                               onChange={() => {
                                 setPromoIsVisible(!promoIsVisible);
                                 if (promoIsVisible) {
-                                  setPromoPrice('');
+                                  setPromoPrice("");
                                 } else {
                                   setSoldeIsVisible(false);
-                                  setSoldePrice('');
+                                  setSoldePrice("");
                                 }
                               }}
                               checked={promoIsVisible}
@@ -534,14 +535,14 @@ export default function ProductEditPage() {
                           <InputGroup>
                             <Form.Control
                               value={promoPrice}
-                              className={promoIsVisible ? '' : 'd-none'}
+                              className={promoIsVisible ? "" : "d-none"}
                               onChange={(e) => {
                                 setPromoPrice(e.target.value);
                               }}
                               placeholder="€"
                             />
                             <InputGroup.Text
-                              className={promoIsVisible ? '' : 'd-none'}
+                              className={promoIsVisible ? "" : "d-none"}
                             >
                               <FontAwesomeIcon icon={faEuroSign} />
                             </InputGroup.Text>
@@ -558,10 +559,10 @@ export default function ProductEditPage() {
                               onChange={() => {
                                 setSoldeIsVisible(!soldeIsVisible);
                                 if (soldeIsVisible) {
-                                  setSoldePrice('');
+                                  setSoldePrice("");
                                 } else {
                                   setPromoIsVisible(false);
-                                  setPromoPrice('');
+                                  setPromoPrice("");
                                 }
                               }}
                               checked={soldeIsVisible}
@@ -571,14 +572,14 @@ export default function ProductEditPage() {
                           <InputGroup>
                             <Form.Control
                               value={soldePrice}
-                              className={soldeIsVisible ? '' : 'd-none'}
+                              className={soldeIsVisible ? "" : "d-none"}
                               onChange={(e) => {
                                 setSoldePrice(e.target.value);
                               }}
                               placeholder="€"
                             />
                             <InputGroup.Text
-                              className={soldeIsVisible ? '' : 'd-none'}
+                              className={soldeIsVisible ? "" : "d-none"}
                             >
                               <FontAwesomeIcon icon={faEuroSign} />
                             </InputGroup.Text>
@@ -796,7 +797,7 @@ export default function ProductEditPage() {
                             width="80"
                           />
                         ) : (
-                          ''
+                          ""
                         )}
                       </div>
                     </Form.Group>
@@ -870,7 +871,7 @@ export default function ProductEditPage() {
                             </Button>
                           </InputGroup.Text>
                           <Form.Control
-                            className={categoryInputIsVisible ? '' : 'd-none'}
+                            className={categoryInputIsVisible ? "" : "d-none"}
                             onChange={(e) => setCategory(e.target.value)}
                             placeholder="Nom"
                           />
@@ -913,7 +914,7 @@ export default function ProductEditPage() {
                           </Button>
                         </InputGroup.Text>
                         <Form.Control
-                          className={subCategoryInputIsVisible ? '' : 'd-none'}
+                          className={subCategoryInputIsVisible ? "" : "d-none"}
                           onChange={(e) => setSubCategory(e.target.value)}
                           placeholder="Nom"
                         />

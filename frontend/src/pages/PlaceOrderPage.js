@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useReducer, useState } from 'react';
+import React, { useContext, useEffect, useReducer, useState } from "react";
 import {
   Button,
   Card,
@@ -7,25 +7,25 @@ import {
   Image,
   ListGroup,
   Row,
-} from 'react-bootstrap';
-import { Helmet } from 'react-helmet-async';
-import { Link, useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
-import { getError, logOutAndRedirect } from '../utils';
-import CheckoutSteps from '../components/CheckoutSteps';
-import { Store } from '../Store';
-import axios from 'axios';
-import LoadingBox from '../components/LoadingBox';
-import { faPenToSquare } from '@fortawesome/pro-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+} from "react-bootstrap";
+import { Helmet } from "react-helmet-async";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import { getError, logOutAndRedirect } from "../utils";
+import CheckoutSteps from "../components/CheckoutSteps";
+import { Store } from "../Store";
+import axios from "axios";
+import LoadingBox from "../components/LoadingBox";
+import { faPenToSquare } from "@fortawesome/pro-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'CREATE_REQUEST':
+    case "CREATE_REQUEST":
       return { ...state, loading: true };
-    case 'CREATE_SUCCESS':
+    case "CREATE_SUCCESS":
       return { ...state, loading: false };
-    case 'CREATE_FAIL':
+    case "CREATE_FAIL":
       return { ...state, loading: false };
     default:
       return state;
@@ -81,8 +81,8 @@ export default function PlaceOrderPage() {
 
     const deliveryPrice = () => {
       if (
-        newCart.deliveryMethod === 'Local' ||
-        newCart.deliveryMethod === 'Mondial Relay'
+        newCart.deliveryMethod === "Local" ||
+        newCart.deliveryMethod === "Mondial Relay"
       ) {
         return 0;
       }
@@ -111,9 +111,9 @@ export default function PlaceOrderPage() {
 
   const placeOrderHandler = async () => {
     try {
-      dispatch({ type: 'CREATE_REQUEST' });
+      dispatch({ type: "CREATE_REQUEST" });
       const { data } = await axios.post(
-        '/api/orders',
+        "/api/orders",
         {
           orderItems: cart.cartItems,
           shippingAddress: cart.shippingAddress,
@@ -127,15 +127,15 @@ export default function PlaceOrderPage() {
           headers: { authorization: `Bearer ${userInfo.token}` },
         }
       );
-      ctxDispatch({ type: 'CART_CLEAR' });
-      dispatch({ type: 'CREATE-SUCCESS' });
-      localStorage.removeItem('cartItems');
-      localStorage.removeItem('deliveryMethod');
-      localStorage.removeItem('paymentMethod');
-      localStorage.removeItem('shippingAddress');
+      ctxDispatch({ type: "CART_CLEAR" });
+      dispatch({ type: "CREATE-SUCCESS" });
+      localStorage.removeItem("cartItems");
+      localStorage.removeItem("deliveryMethod");
+      localStorage.removeItem("paymentMethod");
+      localStorage.removeItem("shippingAddress");
       navigate(`/order/${data.order._id}`);
     } catch (err) {
-      dispatch({ type: 'CREATE_FAIL' });
+      dispatch({ type: "CREATE_FAIL" });
       toast.error(getError(err));
     }
   };
@@ -144,7 +144,7 @@ export default function PlaceOrderPage() {
     recalculatePrices();
     const userOrders = async () => {
       try {
-        dispatch({ type: 'FETCH_REQUEST' });
+        dispatch({ type: "FETCH_REQUEST" });
         const { data } = await axios
           .get(`/api/orders/orders-by-user`, {
             headers: { authorization: `Bearer ${userInfo.token}` },
@@ -157,9 +157,9 @@ export default function PlaceOrderPage() {
         if (data.length === 0) {
           setDiscount(10);
         }
-        dispatch({ type: 'FETCH_SUCCESS', payload: data });
+        dispatch({ type: "FETCH_SUCCESS", payload: data });
       } catch (err) {
-        dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
+        dispatch({ type: "FETCH_FAIL", payload: getError(err) });
       }
     };
 
@@ -172,7 +172,7 @@ export default function PlaceOrderPage() {
 
   useEffect(() => {
     if (!cart.paymentMethod) {
-      navigate('/payment');
+      navigate("/payment");
     }
   }, [cart, navigate]);
 
@@ -190,9 +190,9 @@ export default function PlaceOrderPage() {
       <Helmet>Récapitulatif de commande</Helmet>
       <h1 className="my-5">Récapitulatif de la commande</h1>
       <Row>
-        <Col md={8}>
+        <Col md={8} className="order-2 order-md-1">
           <Card className="mb-3 bg-light">
-            {cart.deliveryMethod === 'Mondial Relay' && (
+            {cart.deliveryMethod === "Mondial Relay" && (
               <Card.Body className="d-flex justify-content-between align-items-center">
                 <div>
                   <Card.Title>Livraison Mondial Relay</Card.Title>
@@ -215,7 +215,7 @@ export default function PlaceOrderPage() {
               </Card.Body>
             )}
 
-            {cart.deliveryMethod === 'Local' && (
+            {cart.deliveryMethod === "Local" && (
               <Card.Body className="d-flex justify-content-between align-items-center">
                 <div>
                   <Card.Title>Commande à retirer dans nos Locaux</Card.Title>
@@ -233,15 +233,15 @@ export default function PlaceOrderPage() {
               </Card.Body>
             )}
 
-            {cart.deliveryMethod === 'Domicile' && (
+            {cart.deliveryMethod === "Domicile" && (
               <Card.Body className="d-flex justify-content-between align-items-center">
                 <div>
                   <Card.Title>Livraison</Card.Title>
                   <Card.Text>
                     <strong>Nom | Prénom : </strong> {cart.shippingAddress.name}
                     <br />
-                    <strong>Adresse : </strong> {cart.shippingAddress.address},{' '}
-                    {cart.shippingAddress.zip}, {cart.shippingAddress.city}{' '}
+                    <strong>Adresse : </strong> {cart.shippingAddress.address},{" "}
+                    {cart.shippingAddress.zip}, {cart.shippingAddress.city}{" "}
                     <br />
                     <strong>Pays : </strong> {cart.shippingAddress.country}
                   </Card.Text>
@@ -308,28 +308,28 @@ export default function PlaceOrderPage() {
                             <strong>Modèle :</strong> {item.variant.name}
                           </div>
                         ) : (
-                          ''
+                          ""
                         )}
                         {item.fil ? (
                           <div>
                             <strong>Fil :</strong> {item.fil}
                           </div>
                         ) : (
-                          ''
+                          ""
                         )}
                         {item.tissu ? (
                           <div>
                             <strong>Tissu :</strong> {item.tissu}
                           </div>
                         ) : (
-                          ''
+                          ""
                         )}
                         {item.patch ? (
                           <div>
                             <strong>Motif broderie :</strong> {item.patch}
                           </div>
                         ) : (
-                          ''
+                          ""
                         )}
                         {item.customization ? (
                           <div>
@@ -337,7 +337,7 @@ export default function PlaceOrderPage() {
                             {item.customization}
                           </div>
                         ) : (
-                          ''
+                          ""
                         )}
                         {item.side ? (
                           <div>
@@ -345,7 +345,7 @@ export default function PlaceOrderPage() {
                             {item.side}
                           </div>
                         ) : (
-                          ''
+                          ""
                         )}
                       </Col>
 
@@ -362,7 +362,7 @@ export default function PlaceOrderPage() {
                             <s>{item.price || item.variant.price} &euro;</s>
                           </div>
                         ) : (
-                          ''
+                          ""
                         )}
 
                         <b>
@@ -373,7 +373,7 @@ export default function PlaceOrderPage() {
                             ? (item.promoPrice ?? item.soldePrice) ||
                               (item.variant?.promoPrice ??
                                 item.variant?.soldePrice)
-                            : item.price || item.variant.price}{' '}
+                            : item.price || item.variant.price}{" "}
                           &euro;
                         </b>
                       </Col>
@@ -384,7 +384,7 @@ export default function PlaceOrderPage() {
             </Card.Body>
           </Card>
         </Col>
-        <Col md={4}>
+        <Col md={4} className="mb-3 order-1 order-md-2">
           <Card className="bg-light shadow">
             <Card.Body>
               <Card.Title className="text-center mb-2">
@@ -408,7 +408,7 @@ export default function PlaceOrderPage() {
                           {(
                             (cart.itemsPrice ?? 0) -
                             (cart.itemsPriceWithDiscount ?? 0)
-                          ).toFixed(2)}{' '}
+                          ).toFixed(2)}{" "}
                           &euro;
                         </Col>
                       </>
@@ -421,8 +421,8 @@ export default function PlaceOrderPage() {
 
                     <Col>
                       {cart.shippingPrice === 0
-                        ? 'Offerte'
-                        : cart.shippingPrice?.toFixed(2) + ' €'}
+                        ? "Offerte"
+                        : cart.shippingPrice?.toFixed(2) + " €"}
                     </Col>
                   </Row>
                 </ListGroup.Item>

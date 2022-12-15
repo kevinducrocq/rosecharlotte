@@ -1,6 +1,6 @@
-import React, { useContext, useEffect } from 'react';
-import { Store } from '../Store';
-import { Helmet } from 'react-helmet-async';
+import React, { useContext, useEffect } from "react";
+import { Store } from "../Store";
+import { Helmet } from "react-helmet-async";
 import {
   Row,
   Col,
@@ -10,17 +10,17 @@ import {
   Container,
   Image,
   Breadcrumb,
-} from 'react-bootstrap';
-import MessageBox from '../components/MessageBox';
-import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+} from "react-bootstrap";
+import MessageBox from "../components/MessageBox";
+import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 import {
   faMinusCircle,
   faPlusCircle,
   faTrash,
-} from '@fortawesome/pro-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { LinkContainer } from 'react-router-bootstrap';
+} from "@fortawesome/pro-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { LinkContainer } from "react-router-bootstrap";
 
 export default function CartPage() {
   const navigate = useNavigate();
@@ -46,7 +46,7 @@ export default function CartPage() {
         return;
       }
       ctxDispatch({
-        type: 'CART_ADD_ITEM',
+        type: "CART_ADD_ITEM",
         payload: { ...item, quantity },
       });
     } else {
@@ -57,14 +57,14 @@ export default function CartPage() {
         return;
       }
       ctxDispatch({
-        type: 'CART_ADD_ITEM',
+        type: "CART_ADD_ITEM",
         payload: { ...item, quantity },
       });
     }
   };
 
   const removeItemHandler = (item) => {
-    ctxDispatch({ type: 'CART_REMOVE_ITEM', payload: item });
+    ctxDispatch({ type: "CART_REMOVE_ITEM", payload: item });
   };
 
   const checkoutHandler = () => {
@@ -78,7 +78,7 @@ export default function CartPage() {
   return (
     <Container className="my-5">
       <Breadcrumb className="d-none d-md-flex">
-        <LinkContainer to={'/'} exact>
+        <LinkContainer to={"/"} exact>
           <Breadcrumb.Item>Accueil</Breadcrumb.Item>
         </LinkContainer>
         <Breadcrumb.Item active>Panier</Breadcrumb.Item>
@@ -89,7 +89,7 @@ export default function CartPage() {
       <h1 className="my-5 text-center">Panier</h1>
 
       <Row>
-        <Col md={8}>
+        <Col md={8} className="order-2 order-md-1">
           {cartItems.length === 0 ? (
             <MessageBox>
               Votre panier est vide,&nbsp;
@@ -118,28 +118,28 @@ export default function CartPage() {
                           <strong>Modèle :</strong> {item.variant.name}
                         </div>
                       ) : (
-                        ''
+                        ""
                       )}
                       {item.fil ? (
                         <div>
                           <strong>Fil :</strong> {item.fil}
                         </div>
                       ) : (
-                        ''
+                        ""
                       )}
                       {item.tissu ? (
                         <div>
                           <strong>Tissu :</strong> {item.tissu}
                         </div>
                       ) : (
-                        ''
+                        ""
                       )}
                       {item.patch ? (
                         <div>
                           <strong>Motif :</strong> {item.patch}
                         </div>
                       ) : (
-                        ''
+                        ""
                       )}
                       {item.customization ? (
                         <div>
@@ -147,7 +147,7 @@ export default function CartPage() {
                           {item.customization}
                         </div>
                       ) : (
-                        ''
+                        ""
                       )}
                       {item.side ? (
                         <div>
@@ -155,7 +155,7 @@ export default function CartPage() {
                           {item.side}
                         </div>
                       ) : (
-                        ''
+                        ""
                       )}
                     </Col>
 
@@ -167,7 +167,7 @@ export default function CartPage() {
                         }
                         disabled={item.quantity === 1}
                       >
-                        <FontAwesomeIcon icon={faMinusCircle} />{' '}
+                        <FontAwesomeIcon icon={faMinusCircle} />{" "}
                       </Button>
                       <span className="mx-1">{item.quantity}</span>
                       <Button
@@ -190,7 +190,7 @@ export default function CartPage() {
                           <s>{item.price || item.variant.price} &euro;</s>
                         </div>
                       ) : (
-                        ''
+                        ""
                       )}
 
                       <b>
@@ -201,7 +201,7 @@ export default function CartPage() {
                           ? (item.promoPrice ?? item.soldePrice) ||
                             (item.variant?.promoPrice ??
                               item.variant?.soldePrice)
-                          : item.price || item.variant.price}{' '}
+                          : item.price || item.variant.price}{" "}
                         &euro;
                       </b>
                     </Col>
@@ -223,7 +223,7 @@ export default function CartPage() {
             </ListGroup>
           )}
         </Col>
-        <Col md={4}>
+        <Col md={4} className="order-1 order-md-2 mb-3">
           <Card className="shadow">
             <Card.Body className="bg4">
               <ListGroup variant="flush">
@@ -232,7 +232,7 @@ export default function CartPage() {
                     <h3 className="text-center">Sous-total</h3>
                     <span className="h6 text-muted">
                       ({cartItems.reduce((a, c) => a + c.quantity, 0)} produit
-                      {itemsQuantity <= 1 ? '' : 's'})
+                      {itemsQuantity <= 1 ? "" : "s"})
                     </span>
                     <span className="h3">
                       {cartItems
@@ -249,7 +249,7 @@ export default function CartPage() {
                               c.quantity,
                           0
                         )
-                        .toFixed(2)}{' '}
+                        .toFixed(2)}{" "}
                       &euro;
                     </span>
                   </div>
@@ -267,10 +267,10 @@ export default function CartPage() {
                     </Button>
                     <div
                       className={
-                        cartItems.length === 0 ? 'd-none' : 'mt-3 text-center'
+                        cartItems.length === 0 ? "d-none" : "mt-3 text-center"
                       }
                     >
-                      <Link to={'/boutique/search'}>Continuer vos achats</Link>
+                      <Link to={"/boutique/search"}>Continuer vos achats</Link>
                     </div>
                   </div>
                 </ListGroup.Item>

@@ -1,5 +1,5 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Helmet } from 'react-helmet-async';
+import React, { useContext, useEffect, useState } from "react";
+import { Helmet } from "react-helmet-async";
 import {
   Button,
   Col,
@@ -9,27 +9,27 @@ import {
   ListGroup,
   Modal,
   Row,
-} from 'react-bootstrap';
-import CheckoutSteps from '../components/CheckoutSteps';
-import { MapContainer, Marker, Popup, TileLayer, useMap } from 'react-leaflet';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/pro-solid-svg-icons';
-import 'leaflet/dist/leaflet.css';
-import axios from 'axios';
-import { toast } from 'react-toastify';
-import { getError } from '../utils';
-import { Store } from '../Store';
-import { Link, useNavigate } from 'react-router-dom';
-import { useReducer } from 'react';
-import L from 'leaflet';
+} from "react-bootstrap";
+import CheckoutSteps from "../components/CheckoutSteps";
+import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/pro-solid-svg-icons";
+import "leaflet/dist/leaflet.css";
+import axios from "axios";
+import { toast } from "react-toastify";
+import { getError } from "../utils";
+import { Store } from "../Store";
+import { Link, useNavigate } from "react-router-dom";
+import { useReducer } from "react";
+import L from "leaflet";
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'UPDATE_REQUEST':
+    case "UPDATE_REQUEST":
       return { ...state, loadingUpdate: true };
-    case 'UPDATE_SUCCESS':
+    case "UPDATE_SUCCESS":
       return { ...state, loadingUpdate: false };
-    case 'UPDATE_FAIL':
+    case "UPDATE_FAIL":
       return { ...state, loadingUpdate: false };
     default:
       return state;
@@ -39,18 +39,18 @@ const reducer = (state, action) => {
 export default function MondialRelayPage() {
   const [dispatch] = useReducer(reducer, {
     loading: true,
-    error: '',
+    error: "",
     loadingUpdate: false,
   });
-  const [codePostal, setCodePostal] = useState('');
+  const [codePostal, setCodePostal] = useState("");
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   let icon = L.icon({
-    iconUrl: '../marker.svg',
-    iconRetinaUrl: '../marker.svg',
+    iconUrl: "../marker.svg",
+    iconRetinaUrl: "../marker.svg",
     iconAnchor: [5, 55],
     popupAnchor: [10, -44],
     iconSize: [40, 40],
@@ -78,8 +78,8 @@ export default function MondialRelayPage() {
         let lat = 0,
           lng = 0;
         result.data[0].PointRelais_Details.map((pm) => {
-          lat += parseFloat(pm.Latitude.replace(',', '.'));
-          lng += parseFloat(pm.Longitude.replace(',', '.'));
+          lat += parseFloat(pm.Latitude.replace(",", "."));
+          lng += parseFloat(pm.Longitude.replace(",", "."));
         });
 
         lat = lat / result.data[0].PointRelais_Details.length;
@@ -97,19 +97,19 @@ export default function MondialRelayPage() {
 
   const updatePointRelais = () => {
     handleClose();
-    setChozenPointRelais('');
+    setChozenPointRelais("");
   };
 
   const submitHandler = async () => {
     try {
       ctxDispatch({
-        type: 'SAVE_DELIVERY_METHOD',
-        payload: 'Mondial Relay',
+        type: "SAVE_DELIVERY_METHOD",
+        payload: "Mondial Relay",
       });
-      localStorage.setItem('deliveryMethod', 'Mondial Relay');
+      localStorage.setItem("deliveryMethod", "Mondial Relay");
 
       ctxDispatch({
-        type: 'SAVE_SHIPPING_ADDRESS',
+        type: "SAVE_SHIPPING_ADDRESS",
         payload: {
           name: chosenPointRelais[0],
           address: chosenPointRelais[1],
@@ -119,7 +119,7 @@ export default function MondialRelayPage() {
         },
       });
       localStorage.setItem(
-        'shippingAddress',
+        "shippingAddress",
         JSON.stringify({
           name: chosenPointRelais[0],
           address: chosenPointRelais[1],
@@ -128,9 +128,9 @@ export default function MondialRelayPage() {
           country: chosenPointRelais[4],
         })
       );
-      navigate('/payment');
+      navigate("/payment");
     } catch (err) {
-      dispatch({ type: 'UPDATE_FAIL' });
+      dispatch({ type: "UPDATE_FAIL" });
       toast.error(getError(err));
     }
   };
@@ -156,40 +156,35 @@ export default function MondialRelayPage() {
       <Row>
         <div className="">
           <Link
-            to={'/shipping'}
+            to={"/shipping"}
             className="mb-3 btn btn-md bg-secondary text-white"
           >
             Retour
           </Link>
         </div>
-        <Col md={4} className="bg-white p-2 rounded-3 mb-3">
-          <div className="col-md-pull-4">
-            <Form
-              onSubmit={(e) => {
-                e.preventDefault();
-                getPointsMondialRelay();
+        <Form
+          onSubmit={(e) => {
+            e.preventDefault();
+            getPointsMondialRelay();
+          }}
+        >
+          <InputGroup className="mb-3">
+            <Form.Control
+              type="text"
+              placeholder="Votre code postal"
+              value={codePostal}
+              onChange={(e) => {
+                setCodePostal(e.target.value);
               }}
-            >
-              <InputGroup className="mb-3">
-                <Form.Control
-                  type="text"
-                  placeholder="Votre code postal"
-                  value={codePostal}
-                  onChange={(e) => {
-                    setCodePostal(e.target.value);
-                  }}
-                  required
-                />
-                <Button
-                  variant="outline-secondary"
-                  id="button-addon"
-                  type="submit"
-                >
-                  <FontAwesomeIcon icon={faSearch} />
-                </Button>
-              </InputGroup>
-            </Form>
-          </div>
+              className=""
+              required
+            />
+            <Button variant="outline-secondary" id="button-addon" type="submit">
+              <FontAwesomeIcon icon={faSearch} />
+            </Button>
+          </InputGroup>
+        </Form>
+        <Col md={4} className="bg-white p-2 rounded-3 mb-3 order-2 order-md-1">
           <div className="scroll">
             <ListGroup variant="flush">
               {pointsMondialRelay.map((pm) => {
@@ -277,8 +272,8 @@ export default function MondialRelayPage() {
           </Modal.Body>
         </Modal>
 
-        <Col md={8}>
-          <MapContainer center={[lat, lng]} zoom={12} scrollWheelZoom={true}>
+        <Col md={8} className="order-1 order-md-2 mb-3">
+          <MapContainer center={[lat, lng]} zoom={12} scrollWheelZoom={false}>
             <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -289,8 +284,8 @@ export default function MondialRelayPage() {
                   key={pm.Num}
                   icon={icon}
                   position={[
-                    parseFloat(pm.Latitude.replace(',', '.')),
-                    parseFloat(pm.Longitude.replace(',', '.')),
+                    parseFloat(pm.Latitude.replace(",", ".")),
+                    parseFloat(pm.Longitude.replace(",", ".")),
                   ]}
                 >
                   <Popup>
