@@ -548,7 +548,7 @@ function ProductPage() {
     if (isPatch()) {
       renderedFormsBis.push(renderPatchesForm());
     }
-
+    
     if (isPatch() && !patch) {
       return renderedFormsBis;
     }

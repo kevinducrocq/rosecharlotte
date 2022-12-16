@@ -1,7 +1,7 @@
-import React from 'react';
-import { Card, Image } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import Rating from './Rating';
+import React from "react";
+import { Card, Image } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import Rating from "./Rating";
 
 function Product(props) {
   const { product } = props;
@@ -22,7 +22,7 @@ function Product(props) {
       const max = () => variantPrices.reduce((x, y) => Math.max(x, y));
       return (
         <Card.Text className="card-price text-nowrap fw-bold bg3 p-2 rounded-5">
-          {'de ' + min() + ' à ' + max() + ' €'}
+          {"de " + min() + " à " + max() + " €"}
         </Card.Text>
       );
     } else {

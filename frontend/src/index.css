@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins&display=swap");
 
 body {
   margin: 0;
   background-color: #fff2f2;
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 h1,
@@ -12,11 +12,11 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Pacifico', cursive;
+  font-family: "Pacifico", cursive;
 }
 
 .paywithpaypal {
-  font-family: 'Poppins', sans-serif;
+  font-family: "Poppins", sans-serif;
 }
 
 .site-container {
@@ -57,17 +57,6 @@ main {
   text-decoration: none;
   color: #000;
   font-weight: 600;
-}
-
-.btn-default:hover {
-  border: none;
-  padding: 0;
-  background: none;
-}
-.btn-default {
-  border: none;
-  padding: 0;
-  background: none;
 }
 
 .leaflet-container {
@@ -336,6 +325,52 @@ main {
 }
 
 /*CAROUSEL*/
+
+.slick-slide .hover-shadow.flex-fill.card {
+  margin: 0 12px;
+}
+
+.btn-default:hover {
+  border: none;
+  padding: 0;
+  background: none;
+  color: #f47c7c;
+}
+.btn-default {
+  border: none;
+  padding: 0;
+  background: none;
+  color: #f47c7c;
+}
+
+.btn-carousel-left-container {
+  height: 100%;
+  position: relative;
+}
+
+.btn-carousel-right-container {
+  height: 100%;
+  position: relative;
+}
+
+.btn-carousel-left {
+  font-size: 35px;
+  color: #f47c7c;
+  position: absolute;
+  z-index: 3;
+  margin-top: 120px;
+  margin-left: 15px;
+}
+
+.btn-carousel-right {
+  font-size: 35px;
+  color: #f47c7c;
+  position: absolute;
+  z-index: 3;
+  margin-top: 120px;
+  margin-left: -50px;
+}
+
 .carousel-item img {
   height: 400px;
   object-fit: cover;
@@ -490,6 +525,15 @@ LOGO
     display: block;
   }
   .site-cart {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 575px) {
+  .btn-carousel-left {
+    display: none;
+  }
+  .btn-carousel-right {
     display: none;
   }
 }
