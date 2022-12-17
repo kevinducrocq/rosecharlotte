@@ -1,23 +1,20 @@
-import express from 'express';
-import multer from 'multer';
-import { v2 as cloudinary } from 'cloudinary';
-import streamifier from 'streamifier';
-import { isAdmin, isAuth } from '../utils.js';
-import { v4 as uuid } from 'uuid';
-import sharp from 'sharp';
-import path from 'path';
-import mkdirp from 'mkdirp';
-import fs from 'fs';
+import express from "express";
+import multer from "multer";
+import { v4 as uuid } from "uuid";
+import sharp from "sharp";
+import path from "path";
+import mkdirp from "mkdirp";
+import fs from "fs";
 
 const uploadRouter = express.Router();
 
 const __dirname = path.resolve();
 
-mkdirp.sync(path.join(__dirname, '/uploads'));
+mkdirp.sync(path.join(__dirname, "/uploads"));
 
-uploadRouter.use('/uploads', express.static('/uploads'));
+uploadRouter.use("/uploads", express.static("/uploads"));
 
-const FILE_DIR = path.join(__dirname, '/uploads');
+const FILE_DIR = path.join(__dirname, "/uploads");
 
 const storage = multer.diskStorage({
   destination: (req, file, done) => {
@@ -26,26 +23,26 @@ const storage = multer.diskStorage({
   filename: (req, file, done) => {
     done(
       null,
-      uuid() + '_' + file.originalname.toLocaleLowerCase().split(' ').join('-')
+      uuid() + "_" + file.originalname.toLocaleLowerCase().split(" ").join("-")
     );
   },
 });
 
 const fileFilter = (req, file, done) => {
   if (
-    file.mimetype === 'image/jpeg' ||
-    file.mimetype === 'image/png' ||
-    file.mimetype == 'image/jpg'
+    file.mimetype === "image/jpeg" ||
+    file.mimetype === "image/png" ||
+    file.mimetype == "image/jpg"
   ) {
     done(null, true);
   } else {
-    done(new Error('file type not supported'), false);
+    done(new Error("file type not supported"), false);
   }
 };
 
-const imgUpload = multer({ storage, fileFilter }).single('file');
+const imgUpload = multer({ storage, fileFilter }).single("file");
 
-uploadRouter.post('/image', (req, res) => {
+uploadRouter.post("/image", (req, res) => {
   imgUpload(req, res, async (err) => {
     if (err) {
       return res.status(400).json({ success: false, message: err.message });
@@ -55,13 +52,14 @@ uploadRouter.post('/image', (req, res) => {
       if (!file) {
         return res
           .status(400)
-          .json({ success: false, message: 'file not supplied' });
+          .json({ success: false, message: "file not supplied" });
       }
       const newFileName =
         uuid() +
-        '_' +
-        file.originalname.toLocaleLowerCase().split(' ').join('-');
+        "_" +
+        file.originalname.toLocaleLowerCase().split(" ").join("-");
       const newFilePath = path.join(FILE_DIR, newFileName);
+
       // save newFilePath in your db as image path
       await sharp(file.path)
         .resize({ height: 1000 })
@@ -72,8 +70,8 @@ uploadRouter.post('/image', (req, res) => {
 
       return res.status(200).json({
         success: true,
-        message: 'image uploaded',
-        path: '/' + newFileName,
+        message: "image uploaded",
+        path: "/" + newFileName,
       });
     } catch (error) {
       return res.status(500).json({ success: false, message: error.message });

@@ -1,5 +1,5 @@
-import axios from 'axios';
-import React, { useEffect, useReducer, useState } from 'react';
+import axios from "axios";
+import React, { useEffect, useReducer, useState } from "react";
 import {
   Breadcrumb,
   Card,
@@ -8,24 +8,25 @@ import {
   Form,
   Image,
   Row,
-} from 'react-bootstrap';
-import { Helmet } from 'react-helmet-async';
-import { LinkContainer } from 'react-router-bootstrap';
-import LoadingBox from '../components/LoadingBox';
-import MessageBox from '../components/MessageBox';
-import ModalTissuPatch from '../components/ModalTissuPatch';
+} from "react-bootstrap";
+import { Helmet } from "react-helmet-async";
+import { LinkContainer } from "react-router-bootstrap";
+import LoadingBox from "../components/LoadingBox";
+import MessageBox from "../components/MessageBox";
+import ModalTissuPatch from "../components/ModalTissuPatch";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'FETCH_REQUEST':
+    case "FETCH_REQUEST":
       return { ...state, loading: true };
-    case 'FETCH_SUCCESS':
+    case "FETCH_SUCCESS":
       return {
         ...state,
         patches: action.payload,
         loading: false,
       };
-    case 'FETCH_FAIL':
+    case "FETCH_FAIL":
       return { ...state, loading: false, error: action.payload };
     default:
       return state;
@@ -36,23 +37,23 @@ function TissuPage() {
   const [{ loading, error, patches }, dispatch] = useReducer(reducer, {
     products: [],
     loading: true,
-    error: '',
+    error: "",
   });
 
   const [modalShow, setModalShow] = useState(false);
 
-  const [patchImage, setPatchImage] = useState('');
+  const [patchImage, setPatchImage] = useState("");
 
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
-      dispatch({ type: 'FETCH_REQUEST' });
+      dispatch({ type: "FETCH_REQUEST" });
       try {
-        const result = await axios.get('/api/patches/');
-        dispatch({ type: 'FETCH_SUCCESS', payload: result.data });
+        const result = await axios.get("/api/patches/");
+        dispatch({ type: "FETCH_SUCCESS", payload: result.data });
       } catch (err) {
-        dispatch({ type: 'FETCH_FAIL', payload: err.message });
+        dispatch({ type: "FETCH_FAIL", payload: err.message });
       }
     };
     fetchData();
@@ -70,7 +71,7 @@ function TissuPage() {
 
       <Container className="my-5">
         <Breadcrumb className="d-none d-md-flex">
-          <LinkContainer to={'/'} exact>
+          <LinkContainer to={"/"} exact>
             <Breadcrumb.Item>Accueil</Breadcrumb.Item>
           </LinkContainer>
           <Breadcrumb.Item active>Motifs broderie</Breadcrumb.Item>
@@ -94,9 +95,9 @@ function TissuPage() {
                 />
               </div>
               <Row className="mt-5">
-                {(patches && typeof patches.map === 'function' ? patches : [])
+                {(patches && typeof patches.map === "function" ? patches : [])
                   .filter((val) => {
-                    if (searchTerm === '') {
+                    if (searchTerm === "") {
                       return val;
                     } else if (
                       val.name
@@ -105,7 +106,7 @@ function TissuPage() {
                     ) {
                       return val;
                     }
-                    return '';
+                    return "";
                   })
                   .map((patch) => (
                     <Col key={patch._id} md={4} sm={6} lg={3}>
@@ -115,7 +116,7 @@ function TissuPage() {
                         </Card.Header>
                         <div className="text-center">
                           {patch.image ? (
-                            <Image
+                            <LazyLoadImage
                               value={patch.name}
                               src={patch.image}
                               role="button"
@@ -124,11 +125,13 @@ function TissuPage() {
                                 setPatchImage(e.target.src)
                               }
                               className="card-img-top img-fluid"
+                              placeholderSrc="../Spinner.svg"
                             />
                           ) : (
-                            <Image
+                            <LazyLoadImage
                               className="images-tissu-motifs"
                               src="../images/no-image.png"
+                              placeholderSrc="../Spinner.svg"
                             />
                           )}
                         </div>

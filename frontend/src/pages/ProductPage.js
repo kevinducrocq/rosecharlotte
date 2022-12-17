@@ -35,6 +35,7 @@ import {
   faCircleChevronLeft,
   faCircleChevronRight,
 } from "@fortawesome/pro-solid-svg-icons";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -426,16 +427,18 @@ function ProductPage() {
                 >
                   <div className="d-flex flex-column align-items-center">
                     {currentTissu.image ? (
-                      <img
+                      <LazyLoadImage
                         className="product-carousel-image"
                         alt={currentTissu.name}
                         src={currentTissu.image}
+                        placeholderSrc="../Spinner.svg"
                       />
                     ) : (
-                      <img
+                      <LazyLoadImage
                         className="product-carousel-image"
                         alt={currentTissu.name}
                         src="../images/no-image.png"
+                        placeholderSrc="../Spinner.svg"
                       />
                     )}
                     <p className="caption-carousel">{currentTissu.name}</p>
@@ -477,16 +480,18 @@ function ProductPage() {
                 >
                   <div className="d-flex flex-column align-items-center">
                     {currentPatch.image ? (
-                      <img
+                      <LazyLoadImage
                         className="product-carousel-image"
                         alt={currentPatch.name}
                         src={currentPatch.image}
+                        placeholderSrc="../Spinner.svg"
                       />
                     ) : (
-                      <img
+                      <LazyLoadImage
                         className="product-carousel-image"
                         alt={currentPatch.name}
                         src="../images/no-image.png"
+                        placeholderSrc="../Spinner.svg"
                       />
                     )}
                     <p className="caption-carousel">{currentPatch.name}</p>
@@ -548,7 +553,7 @@ function ProductPage() {
     if (isPatch()) {
       renderedFormsBis.push(renderPatchesForm());
     }
-    
+
     if (isPatch() && !patch) {
       return renderedFormsBis;
     }
@@ -695,7 +700,13 @@ function ProductPage() {
                     variant="outline-none"
                     onClick={() => setSelectedImage(x)}
                   >
-                    <Card.Img src={x} alt="product" className="img-thumbnail" />
+                    <LazyLoadImage
+                      src={x}
+                      alt="product"
+                      className="img-fluid border"
+                      width={70}
+                      placeholderSrc="../Spinner.svg"
+                    />
                   </Button>
                 </div>
               </Col>
@@ -705,23 +716,30 @@ function ProductPage() {
 
         <Col md={4} className="mt-2">
           <div>
-            <Image
+            <LazyLoadImage
               src={selectedImage || product.image}
               alt={product.name}
-              fluid
-              className="product-page-main-image"
+              className="product-page-main-image img-fluid"
+              placeholderSrc="../Spinner.svg"
             />
           </div>
         </Col>
         {product.images.length >= 1 && (
           <div className="product-vignettes-bottom">
             {[product.image, ...product.images].map((x) => (
+              
               <div key={x}>
                 <Button
                   variant="outline-none"
                   onClick={() => setSelectedImage(x)}
                 >
-                  <Card.Img src={x} alt="product" className="img-thumbnail" />
+                  <LazyLoadImage
+                    src={x}
+                    alt="product"
+                    className="img-fluid"
+                    width={70}
+                    placeholderSrc="../Spinner.svg"
+                  />
                 </Button>
               </div>
             ))}

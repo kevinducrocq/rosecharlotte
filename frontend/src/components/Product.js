@@ -2,6 +2,7 @@ import React from "react";
 import { Card, Image } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Rating from "./Rating";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 function Product(props) {
   const { product } = props;
@@ -41,10 +42,11 @@ function Product(props) {
       to={`/product/${product.slug}`}
     >
       <Card className="hover-shadow flex-fill">
-        <Image
+        <LazyLoadImage
           src={product.image}
           className="card-img-top img-fluid"
           alt={product.name}
+          placeholderSrc="../Spinner.svg"
         />
 
         <div className="product-badge">
