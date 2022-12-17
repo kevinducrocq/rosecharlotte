@@ -727,7 +727,6 @@ function ProductPage() {
         {product.images.length >= 1 && (
           <div className="product-vignettes-bottom">
             {[product.image, ...product.images].map((x) => (
-              
               <div key={x}>
                 <Button
                   variant="outline-none"

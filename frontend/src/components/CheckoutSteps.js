@@ -56,28 +56,30 @@ export default function CheckoutSteps(props) {
             props.step1 ? "active" : ""
           }`}
         >
-          <FontAwesomeIcon icon={faRightToBracket} size="2x" /> &nbsp;
+          <FontAwesomeIcon icon={faRightToBracket} className="fontaw-check" />{" "}
+          &nbsp;
         </Col>
         <Col
           className={`mb-2 text-center text-md-left ${
             props.step2 ? "active" : ""
           }`}
         >
-          <FontAwesomeIcon icon={faTruck} size="2x" /> &nbsp;
+          <FontAwesomeIcon icon={faTruck} className="fontaw-check" /> &nbsp;
         </Col>
         <Col
           className={`mb-2 text-center text-md-left ${
             props.step3 ? "active" : ""
           }`}
         >
-          <FontAwesomeIcon icon={faCreditCard} size="2x" /> &nbsp;
+          <FontAwesomeIcon icon={faCreditCard} className="fontaw-check" />{" "}
+          &nbsp;
         </Col>
         <Col
           className={`mb-2 text-center text-md-left ${
             props.step4 ? "active" : ""
           }`}
         >
-          <FontAwesomeIcon icon={faTruckFast} size="2x" /> &nbsp;
+          <FontAwesomeIcon icon={faTruckFast} className="fontaw-check" /> &nbsp;
         </Col>
       </Row>
     </>
