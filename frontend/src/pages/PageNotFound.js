@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react';
-import 'owl.carousel/dist/assets/owl.carousel.css';
-import { Container, Image } from 'react-bootstrap';
-import { Helmet } from 'react-helmet-async';
+import React, { useEffect } from "react";
+import { Container, Image } from "react-bootstrap";
+import { Helmet } from "react-helmet-async";
 
 function PageNotFound() {
   useEffect(() => {

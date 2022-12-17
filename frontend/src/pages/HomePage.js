@@ -1,7 +1,5 @@
 import axios from "axios";
 import React, { useEffect, useReducer, useState } from "react";
-import OwlCarousel from "react-owl-carousel";
-import "owl.carousel/dist/assets/owl.carousel.css";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { Helmet } from "react-helmet-async";
 import LoadingBox from "../components/LoadingBox";
@@ -245,7 +243,7 @@ function HomePage() {
           <div className="bg4">
             <div className="text-center bg3 bbr-lg p-3">
               <img
-                src="../logo-lapin.png"
+                src="../logo-hiver.png"
                 alt="Rose Charlotte"
                 width={280}
                 className="img-fluid mb-3 mt-2"
