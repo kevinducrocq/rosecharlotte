@@ -514,15 +514,6 @@ LOGO
   color: #f47c7c;
 }
 
-@media screen and (min-width: 767px) {
-  .product-vignettes {
-    display: block;
-  }
-  .product-vignettes-bottom {
-    display: none;
-  }
-}
-
 @media screen and (max-width: 991px) {
   .mobile-cart {
     display: block;

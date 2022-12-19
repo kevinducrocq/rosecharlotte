@@ -72,6 +72,7 @@ function ProductPage() {
   const [tissu, setTissu] = useState("");
   const [patch, setPatch] = useState("");
   const [refresh, setRefresh] = useState(0);
+  const [readMore, setReadMore] = useState({});
 
   const navigate = useNavigate();
   const params = useParams();
@@ -115,25 +116,28 @@ function ProductPage() {
       error: "",
     });
 
-  const [readMore, setReadMore] = useState(false);
-
   useEffect(() => {
     const fetchData = async () => {
       dispatch({ type: "FETCH_REQUEST" });
       try {
         const result = await axios.get(`/api/products/slug/${slug}`);
+        let readMore = [];
+        result.data.reviews.forEach((review) => {
+          readMore[review._id] = false;
+        });
+        setReadMore(readMore);
         dispatch({ type: "FETCH_SUCCESS", payload: result.data });
       } catch (err) {
         dispatch({ type: "FETCH_FAIL", payload: getError(err) });
       }
     };
+
     fetchData();
   }, [slug]);
 
   useEffect(() => {
     setRefresh((r) => r + 1);
   }, [tissu, patch]);
-
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { cart, userInfo } = state;
 
@@ -215,6 +219,7 @@ function ProductPage() {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         }
       );
+
       // .catch(function (error) {
       //   if (error.response && error.response.status === 401) {
       //     logOutAndRedirect();
@@ -279,55 +284,77 @@ function ProductPage() {
 
   const reviewCarouselSettings = {
     dots: true,
-    infinite: true,
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 3,
     prevArrow: <SamplePrevArrow />,
     nextArrow: <SampleNextArrow />,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 3,
+        },
+      },
+      {
+        breakpoint: 990,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
-  const renderReviews = () => {
-    return (
-      <div className="p-4 align-items-center">
-        <h2 ref={reviewsRef} className="mb-4">
-          Avis des clients
-        </h2>
-        {product.reviews.length === 0 ? (
-          <MessageBox>Il n'y a pas encore d'avis sur ce produit</MessageBox>
-        ) : (
-          <Slider {...reviewCarouselSettings} className="d-flex">
-            {product.reviews.map(
-              (review) =>
-                review.status === true && (
-                  <div>
-                    <Card key={review._id} id={review._id} className="me-2">
-                      <Card.Header>
-                        <strong>{review.name}</strong>
-                        <Rating rating={review.rating} caption=" "></Rating>
-                      </Card.Header>
-                      <Card.Body>
-                        <p>{dateFr(review.createdAt)}</p>
-                        <small>
-                          {readMore
-                            ? review.comment
-                            : review.comment.substring(0, 80)}
-                          ...
-                          <button
-                            className="btn"
-                            onClick={() => setReadMore(!readMore)}
-                          >
-                            {readMore ? "lire moins" : "lire plus"}
-                          </button>
-                        </small>
-                      </Card.Body>
-                    </Card>
-                  </div>
-                )
-            )}
-          </Slider>
-        )}
-      </div>
+
+  const renderReview = () => {
+    return product.reviews.map(
+      (review) =>
+        review.status === true && (
+          <div>
+            <Card key={review._id} id={review._id} className="mx-2">
+              <Card.Header>
+                <strong>{review.name}</strong>
+                <Rating rating={review.rating} caption=" "></Rating>
+              </Card.Header>
+              <Card.Body>
+                <p>{dateFr(review.createdAt)}</p>
+                <small>
+                  {readMore[review._id]
+                    ? review.comment
+                    : review.comment.substring(0, 80)}
+                  ...
+                  <button
+                    className="btn"
+                    onClick={() => setReadMore(!readMore)}
+                  >
+                    {readMore[review._id] ? "lire moins" : "lire plus"}
+                  </button>
+                </small>
+              </Card.Body>
+            </Card>
+          </div>
+        )
     );
+  };
+
+  const renderCarouselReviews = () => {
+    if (product.reviews.length >= 3) {
+      return (
+        <Slider {...reviewCarouselSettings} className="d-flex">
+          {renderReview()}
+        </Slider>
+      );
+    } else if (product.reviews.length < 3) {
+      return renderReview();
+    }
   };
 
   const renderVariationsForm = () => {
@@ -656,6 +683,48 @@ function ProductPage() {
     }
   };
 
+  let slides = () => {
+    if (product.images.length >= 0) {
+      return 2;
+    } else {
+      return 4;
+    }
+  };
+
+  const sliderVignette = {
+    speed: 500,
+    slidesToShow: slides,
+    slidesToScroll: 1,
+    prevArrow: <SamplePrevArrow />,
+    nextArrow: <SampleNextArrow />,
+  };
+
+  const renderCarouselVignettes = () => {
+    if (product.images.length >= 0) {
+      return (
+        <Slider {...sliderVignette} className="d-flex d-md-none">
+          {[product.image, ...product.images].map((x) => {
+            return (
+              <Button
+                key={x}
+                variant="outline-none"
+                onClick={() => setSelectedImage(x)}
+              >
+                <LazyLoadImage
+                  src={x}
+                  alt="product"
+                  className="img-fluid"
+                  width={70}
+                  placeholderSrc="../Spinner.svg"
+                />
+              </Button>
+            );
+          })}
+        </Slider>
+      );
+    }
+  };
+
   return loading ? (
     <LoadingBox />
   ) : error ? (
@@ -713,7 +782,6 @@ function ProductPage() {
             ))}
           </div>
         </Col>
-
         <Col md={4} className="mt-2">
           <div>
             <LazyLoadImage
@@ -723,27 +791,9 @@ function ProductPage() {
               placeholderSrc="../Spinner.svg"
             />
           </div>
+          {renderCarouselVignettes()}
         </Col>
-        {product.images.length >= 1 && (
-          <div className="product-vignettes-bottom">
-            {[product.image, ...product.images].map((x) => (
-              <div key={x}>
-                <Button
-                  variant="outline-none"
-                  onClick={() => setSelectedImage(x)}
-                >
-                  <LazyLoadImage
-                    src={x}
-                    alt="product"
-                    className="img-fluid"
-                    width={70}
-                    placeholderSrc="../Spinner.svg"
-                  />
-                </Button>
-              </div>
-            ))}
-          </div>
-        )}
+
         <Col md={6} className="mt-2">
           <ListGroup>
             <ListGroup.Item>
@@ -951,7 +1001,20 @@ function ProductPage() {
             </div>
           </Col>
 
-          <Col md={8}>{renderReviews()}</Col>
+          <Col md={8}>
+            <div className="p-4 align-items-center">
+              <h2 ref={reviewsRef} className="mb-4">
+                Avis des clients
+              </h2>
+              {product.reviews.length === 0 ? (
+                <MessageBox>
+                  Il n'y a pas encore d'avis sur ce produit
+                </MessageBox>
+              ) : (
+                renderCarouselReviews()
+              )}
+            </div>
+          </Col>
         </Row>
       </div>
     </Container>
