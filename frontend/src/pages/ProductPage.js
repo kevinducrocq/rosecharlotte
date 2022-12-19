@@ -358,7 +358,11 @@ function ProductPage() {
         </Slider>
       );
     } else if (product.reviews.length < 3) {
-      return renderReview();
+      return (
+        <Row>
+          <Col md={4}>{renderReview()}</Col>
+        </Row>
+      );
     }
   };
 
