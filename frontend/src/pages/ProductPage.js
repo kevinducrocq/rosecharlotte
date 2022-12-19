@@ -731,7 +731,7 @@ function ProductPage() {
       );
     } else if (product.images.length >= 1) {
       return (
-        <div className="justify-content-around d-flex d-md-none">
+        <div className="justify-content-between d-flex d-md-none">
           {vignette()}
         </div>
       );
