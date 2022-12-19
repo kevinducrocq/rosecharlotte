@@ -694,6 +694,8 @@ function ProductPage() {
 
   const sliderVignette = {
     speed: 500,
+    infinite: false,
+    dots: true,
     slidesToShow: 4,
     slidesToScroll: 1,
     prevArrow: <SamplePrevArrow />,
@@ -721,14 +723,18 @@ function ProductPage() {
   };
 
   const renderCarouselVignettes = () => {
-    if (product.images.length >= 0) {
+    if (product.images.length >= 4) {
       return (
-        <Slider {...sliderVignette} className="d-flex d-md-none">
+        <Slider {...sliderVignette} className="d-flex d-md-none mb-3">
           {vignette()}
         </Slider>
       );
-    } else {
-      return <Row className="justify-content-between">{vignette()}</Row>;
+    } else if (product.images.length >= 1) {
+      return (
+        <div className="justify-content-around d-flex d-md-none">
+          {vignette()}
+        </div>
+      );
     }
   };
 
