@@ -17,6 +17,7 @@ import {
   Image,
   Container,
   Breadcrumb,
+  ListGroupItem,
 } from "react-bootstrap";
 import Rating from "../components/Rating";
 import { Helmet } from "react-helmet-async";
@@ -131,7 +132,6 @@ function ProductPage() {
         dispatch({ type: "FETCH_FAIL", payload: getError(err) });
       }
     };
-
     fetchData();
   }, [slug]);
 
@@ -328,15 +328,20 @@ function ProductPage() {
                 <p>{dateFr(review.createdAt)}</p>
                 <small>
                   {readMore[review._id]
-                    ? review.comment
+                    ? nl2br(review.comment)
                     : review.comment.substring(0, 80)}
                   ...
-                  <button
-                    className="btn"
-                    onClick={() => setReadMore(!readMore)}
-                  >
-                    {readMore[review._id] ? "lire moins" : "lire plus"}
-                  </button>
+                  {review.comment.length > 80 && (
+                    <button
+                      className="btn"
+                      onClick={() => {
+                        readMore[review._id] = !readMore[review._id];
+                        setReadMore({ ...readMore });
+                      }}
+                    >
+                      {readMore[review._id] ? "lire moins" : "lire plus"}
+                    </button>
+                  )}
                 </small>
               </Card.Body>
             </Card>
@@ -683,45 +688,43 @@ function ProductPage() {
     }
   };
 
-  let slides = () => {
-    if (product.images.length >= 0) {
-      return 2;
-    } else {
-      return 4;
-    }
-  };
-
   const sliderVignette = {
     speed: 500,
-    slidesToShow: slides,
+    slidesToShow: 4,
     slidesToScroll: 1,
     prevArrow: <SamplePrevArrow />,
     nextArrow: <SampleNextArrow />,
+  };
+
+  const vignette = () => {
+    return [product.image, ...product.images].map((x) => {
+      return (
+        <Button
+          key={x}
+          variant="outline-none"
+          onClick={() => setSelectedImage(x)}
+        >
+          <LazyLoadImage
+            src={x}
+            alt="product"
+            className="img-fluid"
+            width={70}
+            placeholderSrc="../Spinner.svg"
+          />
+        </Button>
+      );
+    });
   };
 
   const renderCarouselVignettes = () => {
     if (product.images.length >= 0) {
       return (
         <Slider {...sliderVignette} className="d-flex d-md-none">
-          {[product.image, ...product.images].map((x) => {
-            return (
-              <Button
-                key={x}
-                variant="outline-none"
-                onClick={() => setSelectedImage(x)}
-              >
-                <LazyLoadImage
-                  src={x}
-                  alt="product"
-                  className="img-fluid"
-                  width={70}
-                  placeholderSrc="../Spinner.svg"
-                />
-              </Button>
-            );
-          })}
+          {vignette()}
         </Slider>
       );
+    } else {
+      return <Row className="justify-content-between">{vignette()}</Row>;
     }
   };
 

@@ -80,25 +80,49 @@ export default function PlaceOrderPage() {
     newCart.itemsWeight = totalWeight;
 
     const deliveryPrice = () => {
-      if (
-        newCart.deliveryMethod === "Local" ||
-        newCart.deliveryMethod === "Mondial Relay"
-      ) {
+      if (newCart.deliveryMethod === "Local") {
         return 0;
       }
 
-      if (totalWeight <= 200 && newCart.itemsPriceWithDiscount < 99) {
-        return 4.4;
-      } else if (
-        totalWeight >= 200 &&
-        totalWeight <= 250 &&
-        newCart.itemsPriceWithDiscount < 99
-      ) {
-        return 5.4;
-      } else if (totalWeight >= 250 && newCart.itemsPriceWithDiscount < 99) {
-        return 6.9;
-      } else if (newCart.itemsPriceWithDiscount >= 99) {
-        return 0;
+      if (newCart.deliveryMethod === "Domicile") {
+        if (totalWeight <= 200 && newCart.itemsPriceWithDiscount < 99) {
+          return 4.4;
+        } else if (
+          totalWeight >= 200 &&
+          totalWeight <= 250 &&
+          newCart.itemsPriceWithDiscount < 99
+        ) {
+          return 5.4;
+        } else if (totalWeight >= 250 && newCart.itemsPriceWithDiscount < 99) {
+          return 6.9;
+        } else if (newCart.itemsPriceWithDiscount >= 99) {
+          return 0;
+        }
+      }
+
+      console.log(totalWeight);
+
+      if (newCart.deliveryMethod === "Mondial Relay") {
+        if (totalWeight <= 500 && newCart.itemsPriceWithDiscount < 100) {
+          return 4.4;
+        } else if (
+          totalWeight >= 500 &&
+          totalWeight <= 1000 &&
+          newCart.itemsPriceWithDiscount < 100
+        ) {
+          return 4.9;
+        } else if (
+          totalWeight >= 1000 &&
+          totalWeight <= 1500 &&
+          newCart.itemsPriceWithDiscount < 100
+        ) {
+          return 6.4;
+        } else if (
+          newCart.itemsPriceWithDiscount >= 100 ||
+          totalWeight > 1500
+        ) {
+          return 0;
+        }
       }
     };
     newCart.shippingPrice = deliveryPrice();
