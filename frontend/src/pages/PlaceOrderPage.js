@@ -179,7 +179,7 @@ export default function PlaceOrderPage() {
             }
           });
         if (data.length === 0) {
-          setDiscount(10);
+          setDiscount(0);
         }
         dispatch({ type: "FETCH_SUCCESS", payload: data });
       } catch (err) {
