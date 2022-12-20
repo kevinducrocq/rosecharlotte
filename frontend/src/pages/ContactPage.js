@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import { Breadcrumb, Button, Col, Container, Form, Row } from 'react-bootstrap';
-import { Helmet } from 'react-helmet-async';
-import { toast } from 'react-toastify';
-import axios from 'axios';
-import { getError } from '../utils';
-import { useReducer } from 'react';
-import LoadingBox from '../components/LoadingBox';
-import { LinkContainer } from 'react-router-bootstrap';
+import React, { useEffect, useState } from "react";
+import { Breadcrumb, Button, Col, Container, Form, Row } from "react-bootstrap";
+import { Helmet } from "react-helmet-async";
+import { toast } from "react-toastify";
+import axios from "axios";
+import { getError } from "../utils";
+import { useReducer } from "react";
+import LoadingBox from "../components/LoadingBox";
+import { LinkContainer } from "react-router-bootstrap";
 
 function reducer(state, action) {
   switch (action.type) {
-    case 'SEND_REQUEST':
-      return { ...state, loading: true, error: '' };
-    case 'SEND_SUCCESS':
-      return { ...state, loading: false, error: '' };
-    case 'SEND_FAIL':
+    case "SEND_REQUEST":
+      return { ...state, loading: true, error: "" };
+    case "SEND_SUCCESS":
+      return { ...state, loading: false, error: "" };
+    case "SEND_FAIL":
       return { ...state, loading: false, error: action.payload };
     default:
       return state;
@@ -22,46 +22,45 @@ function reducer(state, action) {
 }
 
 export default function ContactPage() {
-  
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   const [{ loading, error }, dispatch] = useReducer(reducer, {
     loading: false,
-    error: '',
+    error: "",
   });
 
-  const [senderName, setSenderName] = useState('');
-  const [senderEmail, setSenderEmail] = useState('');
-  const [message, setMessage] = useState('');
+  const [senderName, setSenderName] = useState("");
+  const [senderEmail, setSenderEmail] = useState("");
+  const [message, setMessage] = useState("");
 
   async function sendEmail(e) {
     e.preventDefault();
     try {
-      dispatch({ type: 'SEND_REQUEST' });
-      await axios.post('/api/users/contact/send', {
+      dispatch({ type: "SEND_REQUEST" });
+      await axios.post("/api/users/contact/send", {
         message,
         senderName,
         senderEmail,
       });
       dispatch({
-        type: 'SEND_SUCCESS',
+        type: "SEND_SUCCESS",
       });
-      setMessage('');
-      setSenderName('');
-      setSenderEmail('');
-      toast.success('Votre message a été envoyé');
+      setMessage("");
+      setSenderName("");
+      setSenderEmail("");
+      toast.success("Votre message a été envoyé");
     } catch (err) {
       toast.error(getError(err));
-      dispatch({ type: 'SEND_FAIL' });
+      dispatch({ type: "SEND_FAIL" });
     }
   }
 
   return (
     <Container className="my-5">
       <Breadcrumb className="d-none d-md-flex">
-        <LinkContainer to={'/'} exact>
+        <LinkContainer to={"/"} exact>
           <Breadcrumb.Item>Accueil</Breadcrumb.Item>
         </LinkContainer>
         <Breadcrumb.Item active>Contact</Breadcrumb.Item>
@@ -111,11 +110,7 @@ export default function ContactPage() {
               />
             </Form.Group>
             <div className="mb-3">
-              <Button
-                type="submit"
-                variant="outline-light"
-                className="bg1 w-100"
-              >
+              <Button type="submit" className="bg1 w-100">
                 Envoyer
               </Button>
               <div>{loading ? <LoadingBox /> : error}</div>

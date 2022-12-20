@@ -14,10 +14,8 @@ import {
   ListGroup,
   Form,
   Button,
-  Image,
   Container,
   Breadcrumb,
-  ListGroupItem,
 } from "react-bootstrap";
 import Rating from "../components/Rating";
 import { Helmet } from "react-helmet-async";
@@ -33,6 +31,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
+  faBackward,
   faCircleChevronLeft,
   faCircleChevronRight,
 } from "@fortawesome/pro-solid-svg-icons";
@@ -705,19 +704,19 @@ function ProductPage() {
   const vignette = () => {
     return [product.image, ...product.images].map((x) => {
       return (
-        <Button
+        <div
+          role="button"
+          className="my-2 btn btn-sm"
           key={x}
-          variant="outline-none"
           onClick={() => setSelectedImage(x)}
         >
           <LazyLoadImage
             src={x}
             alt="product"
-            className="img-fluid"
-            width={70}
+            className="img-vignette-product"
             placeholderSrc="../Spinner.svg"
           />
-        </Button>
+        </div>
       );
     });
   };
@@ -766,34 +765,23 @@ function ProductPage() {
         <title>{product.name}</title>
       </Helmet>
       <Row className="product-infos">
-        <div>
-          {userInfo && userInfo.isAdmin && (
-            <Link to={`/admin/product/${product._id}`}>
-              <Button>Editer</Button>
+        <div className="d-flex align-items-center justify-content-between">
+          <div>
+            <Link to="/boutique/search">
+              <FontAwesomeIcon icon={faBackward} /> retour
             </Link>
-          )}
-        </div>
-        <Col md={2} className="product-vignettes">
-          <div className="d-flex flex-column align-items-end">
-            {[product.image, ...product.images].map((x) => (
-              <Col key={x}>
-                <div className="my-1 align-items-start">
-                  <Button
-                    variant="outline-none"
-                    onClick={() => setSelectedImage(x)}
-                  >
-                    <LazyLoadImage
-                      src={x}
-                      alt="product"
-                      className="img-fluid border"
-                      width={70}
-                      placeholderSrc="../Spinner.svg"
-                    />
-                  </Button>
-                </div>
-              </Col>
-            ))}
           </div>
+          <div>
+            {userInfo && userInfo.isAdmin && (
+              <Link to={`/admin/product/${product._id}`}>
+                <Button>Editer</Button>
+              </Link>
+            )}
+          </div>
+        </div>
+
+        <Col md={2} className="product-vignettes">
+          <div className="d-flex flex-column align-items-end">{vignette()}</div>
         </Col>
         <Col md={4} className="mt-2">
           <div>

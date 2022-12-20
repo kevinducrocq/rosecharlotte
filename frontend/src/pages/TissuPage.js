@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useEffect, useReducer, useState } from "react";
 import {
   Breadcrumb,
+  Button,
   Card,
   Col,
   Container,
@@ -45,6 +46,14 @@ function TissuPage() {
   const [tissuImage, setTissuImage] = useState("");
 
   const [searchTerm, setSearchTerm] = useState("");
+
+  const cardsPerRow = 8;
+
+  const [next, setNext] = useState(cardsPerRow);
+
+  const handleMoreCards = () => {
+    setNext(next + cardsPerRow);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -109,9 +118,10 @@ function TissuPage() {
                     }
                     return "";
                   })
-                  .map((tissu) => {
+                  .slice(0, next)
+                  .map((tissu, index) => {
                     return (
-                      <Col key={tissu._id} md={4} sm={6} lg={3}>
+                      <Col key={index} md={4} sm={6} lg={3}>
                         <Card className="mb-3">
                           <Card.Header className="text-center">
                             <h2 className="h5">{tissu.name}</h2>
@@ -142,6 +152,17 @@ function TissuPage() {
                     );
                   })}
               </Row>
+              {next < tissus?.length && (
+                <div className="d-flex justify-content-center">
+                  <Button
+                    className="bg1 w-100 border-white text-white"
+                    variant="bg1"
+                    onClick={handleMoreCards}
+                  >
+                    Afficher plus
+                  </Button>
+                </div>
+              )}
               <ModalTissuPatch
                 show={modalShow}
                 image={tissuImage}

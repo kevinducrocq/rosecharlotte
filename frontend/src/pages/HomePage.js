@@ -19,6 +19,7 @@ import {
   faCircleChevronLeft,
   faCircleChevronRight,
 } from "@fortawesome/pro-solid-svg-icons";
+import { LazyLoadImage } from "react-lazy-load-image-component";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -242,11 +243,12 @@ function HomePage() {
           <div className="flex-fill bg4 btrr-lg mt-4"></div>
           <div className="bg4">
             <div className="text-center bg3 bbr-lg p-3">
-              <img
+              <LazyLoadImage
                 src="../logo-hiver.png"
                 alt="Rose Charlotte"
                 width={280}
-                className="img-fluid mb-3 mt-2"
+                className="img-fluid mb-3 mt-3"
+                placeholderSrc="../Spinner.svg"
               />
             </div>
           </div>

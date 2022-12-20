@@ -9,11 +9,11 @@ import {
   faManhole,
   faBadge,
   faRug,
-} from '@fortawesome/pro-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { useState } from 'react';
-import { Button, ListGroup, Offcanvas } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+} from "@fortawesome/pro-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useState } from "react";
+import { Button, ListGroup, Offcanvas } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 export default function AdminCanvasMenu(props) {
   const [show, setShow] = useState(false);
@@ -43,7 +43,7 @@ export default function AdminCanvasMenu(props) {
           <ListGroup>
             <ListGroup.Item
               variant="flush"
-              className={props.link1 ? 'activee py-3' : 'py-3'}
+              className={props.link1 ? "activee py-3" : "py-3"}
             >
               <Link to="/admin/dashboard">
                 <FontAwesomeIcon icon={faGauge} />
@@ -53,7 +53,7 @@ export default function AdminCanvasMenu(props) {
 
             <ListGroup.Item
               variant="flush"
-              className={props.link2 ? 'activee py-3' : 'py-3'}
+              className={props.link2 ? "activee py-3" : "py-3"}
             >
               <Link to="/admin/orders">
                 <FontAwesomeIcon icon={faBagShopping} />
@@ -62,7 +62,7 @@ export default function AdminCanvasMenu(props) {
             </ListGroup.Item>
             <ListGroup.Item
               variant="flush"
-              className={props.link3 ? 'activee  py-3' : 'py-3'}
+              className={props.link3 ? "activee  py-3" : "py-3"}
             >
               <Link to="/admin/products">
                 <FontAwesomeIcon icon={faShirt} />
@@ -71,7 +71,7 @@ export default function AdminCanvasMenu(props) {
             </ListGroup.Item>
             <ListGroup.Item
               variant="flush"
-              className={props.link4 ? 'activee  py-3' : 'py-3'}
+              className={props.link4 ? "activee  py-3" : "py-3"}
             >
               <Link to="/admin/product/add">
                 <FontAwesomeIcon icon={faPlus} />
@@ -80,7 +80,7 @@ export default function AdminCanvasMenu(props) {
             </ListGroup.Item>
             <ListGroup.Item
               variant="flush"
-              className={props.link5 ? 'activee  py-3' : 'py-3'}
+              className={props.link5 ? "activee  py-3" : "py-3"}
             >
               <Link to="/admin/users">
                 <FontAwesomeIcon icon={faUsers} />
@@ -89,7 +89,7 @@ export default function AdminCanvasMenu(props) {
             </ListGroup.Item>
             <ListGroup.Item
               variant="flush"
-              className={props.link6 ? 'activee  py-3' : 'py-3'}
+              className={props.link6 ? "activee  py-3" : "py-3"}
             >
               <Link to="/admin/reviews">
                 <FontAwesomeIcon icon={faComments} />
@@ -98,7 +98,7 @@ export default function AdminCanvasMenu(props) {
             </ListGroup.Item>
             <ListGroup.Item
               variant="flush"
-              className={props.link7 ? 'activee  py-3' : 'py-3'}
+              className={props.link7 ? "activee  py-3" : "py-3"}
             >
               <Link to="/admin/fils">
                 <FontAwesomeIcon icon={faReel} />
@@ -107,7 +107,7 @@ export default function AdminCanvasMenu(props) {
             </ListGroup.Item>
             <ListGroup.Item
               variant="flush"
-              className={props.link8 ? 'activee  py-3' : 'py-3'}
+              className={props.link8 ? "activee  py-3" : "py-3"}
             >
               <Link to="/admin/tissus">
                 <FontAwesomeIcon icon={faRug} />
@@ -116,7 +116,7 @@ export default function AdminCanvasMenu(props) {
             </ListGroup.Item>
             <ListGroup.Item
               variant="flush"
-              className={props.link9 ? 'activee  py-3' : 'py-3'}
+              className={props.link9 ? "activee  py-3" : "py-3"}
             >
               <Link to="/admin/patches">
                 <FontAwesomeIcon icon={faBadge} />

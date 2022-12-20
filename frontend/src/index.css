@@ -133,6 +133,16 @@ main {
   text-decoration: none;
 }
 
+.product-infos a {
+  color: #f47c7c;
+}
+
+.img-vignette-product {
+  width: 65px;
+  height: 65px;
+  object-fit: cover;
+}
+
 /*COULEURS GENERALES*/
 .bg1 {
   background-color: #f47c7c;
