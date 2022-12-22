@@ -100,8 +100,6 @@ export default function PlaceOrderPage() {
         }
       }
 
-      console.log(totalWeight);
-
       if (newCart.deliveryMethod === "Mondial Relay") {
         if (totalWeight <= 500 && newCart.itemsPriceWithDiscount < 100) {
           return 4.4;

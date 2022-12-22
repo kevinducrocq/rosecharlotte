@@ -13,7 +13,12 @@ export function sentOrderEmail(order, user) {
         <div style="margin-bottom: 15px; margin-top: 15px; font-size:20px;">
             <b>Bonjour ${user.name} ! votre commande n° ${
       order._id
-    } a été expédiée</b> <br />
+    } a été expédiée</b> <br /><br />
+    ${
+      order.trackNumber &&
+      `<div><b>N° de suivi : </b>  ${order.trackNumber}</div><br />`
+    }
+
     <b>Récapitulatif :</b>
         </div>
 
@@ -46,7 +51,7 @@ export function sentOrderEmail(order, user) {
                                         ? `<tr>
                                         <td style="font-size:15px;"><b>${item.variant.name}</b></td>
                                     </tr>`
-                                        : ''
+                                        : ""
                                     }
 
                                     ${
@@ -127,20 +132,20 @@ export function sentOrderEmail(order, user) {
                         <td><b>${order.deliveryMethod}</b></td>
                     </tr>
                     ${
-                      !order.paymentMethod === 'Cheque' &&
-                      !order.deliveryMethod === 'Mondial Relay'
+                      !order.paymentMethod === "Cheque" &&
+                      !order.deliveryMethod === "Mondial Relay"
                         ? ` <tr>
                         <td style="font-size:15px;">Adresse :</td>
                         <td><b>${order.shippingAddress.address},&nbsp;${order.shippingAddress.zip},&nbsp;${order.shippingAddress.city},&nbsp;${order.shippingAddress.country}</b>
                         </td>
                     </tr>`
-                        : order.deliveryMethod === 'Mondial Relay'
+                        : order.deliveryMethod === "Mondial Relay"
                         ? ` <tr>
                         <td style="font-size:15px;">Point relais : </td>
                         <td><b>${order.shippingAddress.name},&nbsp;${order.shippingAddress.address},&nbsp;${order.shippingAddress.zip},&nbsp;${order.shippingAddress.city},&nbsp;${order.shippingAddress.country}</b>
                         </td>
                     </tr>`
-                        : ''
+                        : ""
                     }
                 </tbody>
             </table>

@@ -13,6 +13,7 @@ import {
   Card,
   Col,
   Container,
+  Form,
   Image,
   ListGroup,
   Modal,
@@ -21,6 +22,8 @@ import {
 import { Link } from "react-router-dom";
 
 import StripeContainer from "../components/StripeContainer";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBackward } from "@fortawesome/pro-solid-svg-icons";
 
 function reducer(state, action) {
   switch (action.type) {
@@ -75,7 +78,7 @@ export default function OrderPage() {
   const navigate = useNavigate();
   const [showModalCheque, setShowModalCheque] = useState(false);
   const [refresh, setRefresh] = useState(1);
-
+  const [trackNumber, setTrackNumber] = useState("");
   const [
     {
       loading,
@@ -225,15 +228,13 @@ export default function OrderPage() {
     refresh,
   ]);
 
-  console.log(order.shippingAddress);
-
   async function deliverOrderHandler() {
     try {
       dispatch({ type: "DELIVER_REQUEST" });
       const { data } = await axios
         .put(
           `/api/orders/${order._id}/deliver`,
-          {},
+          { trackNumber },
           {
             headers: { authorization: `Bearer ${userInfo.token}` },
           }
@@ -309,6 +310,11 @@ export default function OrderPage() {
           </div>
         </Col>
       </Row>
+      <div className="my-2 product-infos">
+        <Link to="/orderhistory">
+          <FontAwesomeIcon icon={faBackward} /> Voir mes commandes
+        </Link>
+      </div>
       <Row>
         <Col md={8} className="order-2 order-md-1">
           <Card className="mb-3">
@@ -623,6 +629,29 @@ export default function OrderPage() {
                 <ListGroup.Item>
                   {loadingDeliver && <LoadingBox></LoadingBox>}
                   <div className="d-grid">
+                    {order.deliveryMethod === "Domicile" ||
+                      (order.deliveryMethod === "Mondial Relay" && (
+                        <Form.Group
+                          className="mb-3"
+                          value={trackNumber}
+                          controlId="trackNumber"
+                          onChange={(e) => {
+                            setTrackNumber(e.target.value);
+                          }}
+                        >
+                          <Form.Control placeholder="N° suivi" />
+                        </Form.Group>
+                      ))}
+                    <Form.Group
+                      className="mb-3"
+                      value={trackNumber}
+                      controlId="trackNumber"
+                      onChange={(e) => {
+                        setTrackNumber(e.target.value);
+                      }}
+                    >
+                      <Form.Control placeholder="N° suivi" />
+                    </Form.Group>
                     <Button
                       type="button"
                       variant="outline-light"

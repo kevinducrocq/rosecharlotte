@@ -375,6 +375,7 @@ orderRouter.put(
     if (order) {
       order.isDelivered = true;
       order.deliveredAt = Date.now();
+      order.trackNumber = req.body.trackNumber;
 
       await order.save();
 
@@ -428,7 +429,7 @@ orderRouter.put(
     );
     if (order) {
       //Verifier avec le req.details que le paiment est valide, et est pour le bon montant
-      console.log(req.body.details);
+      // console.log(req.body.details);
 
       // const updatedOrder = order;
 
