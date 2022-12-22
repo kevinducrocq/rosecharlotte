@@ -143,32 +143,32 @@ orderRouter.post(
     // retourne les prix en fonction des variants, des promos, des soldes
     const prices = req.body.orderItems.map((item) => {
       if (item.promoPrice > 0) {
-        return item.promoPrice;
+        return item.promoPrice * item.quantity;
       } else if (item.soldePrice > 0) {
-        return item.soldePrice;
+        return item.soldePrice * item.quantity;
       } else if (
         item.variant &&
         item.variant.price > 0 &&
         item.variant.promoPrice === null &&
         item.variant.soldePrice === null
       ) {
-        return item.variant.price;
+        return item.variant.price * item.quantity;
       } else if (
         item.variant &&
         item.variant.price > 0 &&
         item.variant.promoPrice != null &&
         item.variant.soldePrice === null
       ) {
-        return item.variant.promoPrice;
+        return item.variant.promoPrice * item.quantity;
       } else if (
         item.variant &&
         item.variant.price > 0 &&
         item.variant.promoPrice === null &&
         item.variant.soldePrice != null
       ) {
-        return item.variant.soldePrice;
+        return item.variant.soldePrice * item.quantity;
       } else {
-        return item.price;
+        return item.price * item.quantity;
       }
     });
     const itemsPrices = prices.reduce((a, c) => a + c, 0);

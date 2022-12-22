@@ -11,15 +11,8 @@ import SearchBox from "../components/SearchBox";
 import { toast } from "react-toastify";
 import { getError } from "../utils";
 
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faCircleChevronLeft,
-  faCircleChevronRight,
-} from "@fortawesome/pro-solid-svg-icons";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import SlickCarousel from "../components/SlickCarousel";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -89,59 +82,29 @@ function HomePage() {
     window.scrollTo(0, 0);
   }, []);
 
-  function SamplePrevArrow(props) {
-    const { onClick } = props;
-    return (
-      <div className="btn-carousel-left-container">
-        <div role="button" className="btn-carousel-left" onClick={onClick}>
-          <FontAwesomeIcon icon={faCircleChevronLeft} />
-        </div>
-      </div>
-    );
-  }
-  function SampleNextArrow(props) {
-    const { onClick } = props;
-    return (
-      <div className="btn-carousel-right-container">
-        <div role="button" className="btn-carousel-right" onClick={onClick}>
-          <FontAwesomeIcon icon={faCircleChevronRight} />
-        </div>
-      </div>
-    );
-  }
-
-  const carouselSettings = {
-    dots: true,
-    inifite: true,
-    slidesToShow: 4,
-    slidesToScroll: 2,
-    speed: 500,
-    prevArrow: <SamplePrevArrow />,
-    nextArrow: <SampleNextArrow />,
-    responsive: [
-      {
-        breakpoint: 992,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
-        },
+  const responsiveCarousel = [
+    {
+      breakpoint: 992,
+      settings: {
+        slidesToShow: 3,
+        slidesToScroll: 3,
       },
-      {
-        breakpoint: 767,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
-        },
+    },
+    {
+      breakpoint: 767,
+      settings: {
+        slidesToShow: 2,
+        slidesToScroll: 2,
       },
-      {
-        breakpoint: 575,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-        },
+    },
+    {
+      breakpoint: 575,
+      settings: {
+        slidesToShow: 1,
+        slidesToScroll: 1,
       },
-    ],
-  };
+    },
+  ];
 
   const renderPromoCarousel = () => {
     if (promoProducts.length > 0) {
@@ -155,13 +118,21 @@ function HomePage() {
           </div>
           <hr />
           {promoProducts.length > 4 ? (
-            <Slider {...carouselSettings} className="d-flex">
+            <SlickCarousel
+              {...{
+                dots: true,
+                slidesToShow: 4,
+                slidesToScroll: 2,
+                speed: 500,
+                responsive: responsiveCarousel,
+              }}
+            >
               {promoProducts.slice(0, 12).map((product) => (
                 <div key={product.slug}>
                   <Product product={product} />
                 </div>
               ))}
-            </Slider>
+            </SlickCarousel>
           ) : (
             <Row>
               {promoProducts.slice(0, 4).map((product) => {
@@ -198,13 +169,21 @@ function HomePage() {
           </div>
           <hr />
           {soldeProducts.length > 4 ? (
-            <Slider {...carouselSettings} className="d-flex">
+            <SlickCarousel
+              {...{
+                dots: true,
+                slidesToShow: 4,
+                slidesToScroll: 2,
+                speed: 500,
+                responsive: responsiveCarousel,
+              }}
+            >
               {soldeProducts.slice(0, 12).map((product) => (
                 <div key={product.slug}>
                   <Product product={product} />
                 </div>
               ))}
-            </Slider>
+            </SlickCarousel>
           ) : (
             <Row>
               {soldeProducts.slice(0, 4).map((product) => {

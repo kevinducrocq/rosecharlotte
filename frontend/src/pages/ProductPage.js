@@ -26,9 +26,6 @@ import { Store } from "../Store";
 import { toast } from "react-toastify";
 import { LinkContainer } from "react-router-bootstrap";
 import nl2br from "react-nl2br";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faBackward,
@@ -36,6 +33,7 @@ import {
   faCircleChevronRight,
 } from "@fortawesome/pro-solid-svg-icons";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import SlickCarousel from "../components/SlickCarousel";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -78,43 +76,14 @@ function ProductPage() {
   const params = useParams();
   const { slug } = params;
 
-  const slidersPersoSettings = {
-    speed: 500,
-    slidesToShow: 5,
-    slidesToScroll: 5,
-    prevArrow: <SamplePrevArrow />,
-    nextArrow: <SampleNextArrow />,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 5,
-          slidesToScroll: 5,
-        },
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 4,
-          slidesToScroll: 4,
-        },
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
-        },
-      },
-    ],
-  };
-
   const [{ loading, error, product, loadingCreateReview }, dispatch] =
     useReducer(reducer, {
       product: [],
       loading: true,
       error: "",
     });
+
+  // Récupère le produit de la BDD
 
   useEffect(() => {
     const fetchData = async () => {
@@ -140,6 +109,7 @@ function ProductPage() {
   const { state, dispatch: ctxDispatch } = useContext(Store);
   const { cart, userInfo } = state;
 
+  // Fonction d'ajout au panier
   const addToCartHandler = async () => {
     const existItem = cart.cartItems.find(
       (x) =>
@@ -204,6 +174,7 @@ function ProductPage() {
     navigate("/cart");
   };
 
+  // Fonction pour ajouter un commentaire
   const submitHandler = async (e) => {
     e.preventDefault();
     if (!comment || !rating) {
@@ -243,6 +214,7 @@ function ProductPage() {
     }
   };
 
+  // Le produit est-il une barrette ?
   const isBarrette = () => {
     return product.name.includes(
       "Barrette",
@@ -264,55 +236,7 @@ function ProductPage() {
     return product.patches && product.patches.length > 0;
   };
 
-  function SamplePrevArrow(props) {
-    const { onClick } = props;
-    return (
-      <button className="btn-default" onClick={onClick}>
-        <FontAwesomeIcon icon={faCircleChevronLeft} />
-      </button>
-    );
-  }
-  function SampleNextArrow(props) {
-    const { onClick } = props;
-    return (
-      <button className="btn-default" onClick={onClick}>
-        <FontAwesomeIcon icon={faCircleChevronRight} />
-      </button>
-    );
-  }
-
-  const reviewCarouselSettings = {
-    dots: true,
-    speed: 500,
-    slidesToShow: 3,
-    slidesToScroll: 3,
-    prevArrow: <SamplePrevArrow />,
-    nextArrow: <SampleNextArrow />,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
-        },
-      },
-      {
-        breakpoint: 990,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
-        },
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-        },
-      },
-    ],
-  };
-
+  // Card commentaire
   const renderReview = () => {
     return product.reviews.map(
       (review) =>
@@ -349,12 +273,43 @@ function ProductPage() {
     );
   };
 
+  // Carousel avec les avis des clients
   const renderCarouselReviews = () => {
     if (product.reviews.length >= 3) {
       return (
-        <Slider {...reviewCarouselSettings} className="d-flex">
+        <SlickCarousel
+          {...{
+            dots: true,
+            slidesToShow: 3,
+            slidesToScroll: 3,
+            speed: 500,
+            responsive: [
+              {
+                breakpoint: 1024,
+                settings: {
+                  slidesToShow: 3,
+                  slidesToScroll: 3,
+                },
+              },
+              {
+                breakpoint: 990,
+                settings: {
+                  slidesToShow: 2,
+                  slidesToScroll: 2,
+                },
+              },
+              {
+                breakpoint: 480,
+                settings: {
+                  slidesToShow: 1,
+                  slidesToScroll: 1,
+                },
+              },
+            ],
+          }}
+        >
           {renderReview()}
-        </Slider>
+        </SlickCarousel>
       );
     } else if (product.reviews.length < 3) {
       return (
@@ -365,6 +320,7 @@ function ProductPage() {
     }
   };
 
+  // Formulaires des variantes du produit
   const renderVariationsForm = () => {
     return (
       <div className="mb-3">
@@ -413,6 +369,7 @@ function ProductPage() {
     );
   };
 
+  // Formulaire des fils du produit
   const renderFilsForm = () => {
     return (
       <>
@@ -442,6 +399,7 @@ function ProductPage() {
     );
   };
 
+  // Formulaire des tissus du produit
   const renderTissusForm = () => {
     return (
       <>
@@ -449,7 +407,36 @@ function ProductPage() {
           <span>Choisissez le tissu</span>
         </div>
 
-        <Slider {...slidersPersoSettings} className="d-flex">
+        <SlickCarousel
+          {...{
+            speed: 500,
+            slidesToShow: 5,
+            slidesToScroll: 5,
+            responsive: [
+              {
+                breakpoint: 1024,
+                settings: {
+                  slidesToShow: 5,
+                  slidesToScroll: 5,
+                },
+              },
+              {
+                breakpoint: 600,
+                settings: {
+                  slidesToShow: 4,
+                  slidesToScroll: 4,
+                },
+              },
+              {
+                breakpoint: 480,
+                settings: {
+                  slidesToShow: 3,
+                  slidesToScroll: 3,
+                },
+              },
+            ],
+          }}
+        >
           {product.tissus.map((currentTissu) => {
             return (
               <div key={currentTissu._id}>
@@ -482,7 +469,7 @@ function ProductPage() {
               </div>
             );
           })}
-        </Slider>
+        </SlickCarousel>
         {tissu && (
           <div className="text-muted">
             Vous avez choisi : &nbsp;
@@ -493,6 +480,7 @@ function ProductPage() {
     );
   };
 
+  // Formulaire des motifs broderie du produit
   const renderPatchesForm = () => {
     return (
       <>
@@ -500,7 +488,36 @@ function ProductPage() {
         <div className="h5 mb-3">
           <span>Choisissez le motif à broder</span>
         </div>
-        <Slider {...slidersPersoSettings} className="d-flex">
+        <SlickCarousel
+          {...{
+            speed: 500,
+            slidesToShow: 5,
+            slidesToScroll: 5,
+            responsive: [
+              {
+                breakpoint: 1024,
+                settings: {
+                  slidesToShow: 5,
+                  slidesToScroll: 5,
+                },
+              },
+              {
+                breakpoint: 600,
+                settings: {
+                  slidesToShow: 4,
+                  slidesToScroll: 4,
+                },
+              },
+              {
+                breakpoint: 480,
+                settings: {
+                  slidesToShow: 3,
+                  slidesToScroll: 3,
+                },
+              },
+            ],
+          }}
+        >
           {product.patches.map((currentPatch) => {
             return (
               <div className="item" key={currentPatch._id}>
@@ -535,7 +552,7 @@ function ProductPage() {
               </div>
             );
           })}
-        </Slider>
+        </SlickCarousel>
         {patch && (
           <div className="text-muted">
             Vous avez choisi : &nbsp;
@@ -691,16 +708,6 @@ function ProductPage() {
     }
   };
 
-  const sliderVignette = {
-    speed: 500,
-    infinite: false,
-    dots: true,
-    slidesToShow: 4,
-    slidesToScroll: 1,
-    prevArrow: <SamplePrevArrow />,
-    nextArrow: <SampleNextArrow />,
-  };
-
   const vignette = () => {
     return [product.image, ...product.images].map((x) => {
       return (
@@ -724,9 +731,18 @@ function ProductPage() {
   const renderCarouselVignettes = () => {
     if (product.images.length >= 4) {
       return (
-        <Slider {...sliderVignette} className="d-flex d-md-none mb-3">
+        <SlickCarousel
+          {...{
+            speed: 500,
+            infinite: false,
+            dots: true,
+            slidesToShow: 4,
+            slidesToScroll: 1,
+          }}
+          className="d-flex d-md-none"
+        >
           {vignette()}
-        </Slider>
+        </SlickCarousel>
       );
     } else if (product.images.length >= 1) {
       return (
