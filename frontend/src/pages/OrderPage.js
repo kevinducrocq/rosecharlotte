@@ -642,16 +642,6 @@ export default function OrderPage() {
                           <Form.Control placeholder="N° suivi" />
                         </Form.Group>
                       ))}
-                    <Form.Group
-                      className="mb-3"
-                      value={trackNumber}
-                      controlId="trackNumber"
-                      onChange={(e) => {
-                        setTrackNumber(e.target.value);
-                      }}
-                    >
-                      <Form.Control placeholder="N° suivi" />
-                    </Form.Group>
                     <Button
                       type="button"
                       variant="outline-light"

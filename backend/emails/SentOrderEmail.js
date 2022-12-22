@@ -21,9 +21,6 @@ export function sentOrderEmail(order, user) {
 
     <b>Récapitulatif :</b>
         </div>
-
-
-
             ${order.orderItems.map((item) => {
               return `
               <div style="margin-bottom:10px ;border-radius: 10px; padding:5px; max-width: 600px; background-color:#fff2f2;">
