@@ -338,11 +338,10 @@ main {
 
 .btn-zoom {
   position: absolute;
-  font-size: 1.5em;
-  margin-right: 49px;
-  z-index: 2;
+  font-size: 1.1em;
+  margin-right: 57px;
   background-color: #f47c7c;
-  padding: 3px;
+  padding: 2px;
   color: #f1f1f1;
 }
 

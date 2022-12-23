@@ -27,12 +27,8 @@ import { toast } from "react-toastify";
 import { LinkContainer } from "react-router-bootstrap";
 import nl2br from "react-nl2br";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faBackward,
-  faCircleChevronLeft,
-  faCircleChevronRight,
-  faMagnifyingGlassPlus,
-} from "@fortawesome/pro-solid-svg-icons";
+import { faBackward } from "@fortawesome/pro-solid-svg-icons";
+import { faMagnifyingGlassPlus } from "@fortawesome/pro-regular-svg-icons";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import SlickCarousel from "../components/SlickCarousel";
 import ModalTissuPatch from "../components/ModalZoomImage";
