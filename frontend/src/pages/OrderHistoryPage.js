@@ -67,6 +67,7 @@ const OrderHistoryPage = () => {
       loading: true,
       error: "",
     });
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -345,15 +346,21 @@ const OrderHistoryPage = () => {
                         ) : (
                           ""
                         )}
-                        <Button
+                        {/* <Button
                           className="w-100 btn-sm bg-white text-dark mb-2"
                           variant="outline-secondary"
+                          onClick={() => {
+                            navigate(`product/`);
+                          }}
                         >
                           Laisser un avis sur le produit
-                        </Button>
+                        </Button> */}
                         <Button
                           className="w-100 btn-sm bg-white text-dark mb-2"
                           variant="outline-secondary"
+                          onClick={() => {
+                            navigate("/contact");
+                          }}
                         >
                           Contactez-nous
                         </Button>
