@@ -178,11 +178,6 @@ const OrderHistoryPage = () => {
                               </div>
                             </div>
                           </Card.Body>
-                          <Card.Body>
-                            {order.orderItems.map((item) => (
-                              <div>{item.name}</div>
-                            ))}
-                          </Card.Body>
                         </Card>
                       </Col>
                     );
