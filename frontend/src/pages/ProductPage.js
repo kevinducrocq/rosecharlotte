@@ -31,9 +31,11 @@ import {
   faBackward,
   faCircleChevronLeft,
   faCircleChevronRight,
+  faMagnifyingGlassPlus,
 } from "@fortawesome/pro-solid-svg-icons";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import SlickCarousel from "../components/SlickCarousel";
+import ModalTissuPatch from "../components/ModalZoomImage";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -71,6 +73,8 @@ function ProductPage() {
   const [patch, setPatch] = useState("");
   const [refresh, setRefresh] = useState(0);
   const [readMore, setReadMore] = useState({});
+  const [modalShow, setModalShow] = useState(false);
+  const [tissuImage, setTissuImage] = useState("");
 
   const navigate = useNavigate();
   const params = useParams();
@@ -449,12 +453,24 @@ function ProductPage() {
                 >
                   <div className="d-flex flex-column align-items-center">
                     {currentTissu.image ? (
-                      <LazyLoadImage
-                        className="product-carousel-image"
-                        alt={currentTissu.name}
-                        src={currentTissu.image}
-                        placeholderSrc="../Spinner.svg"
-                      />
+                      <>
+                        <LazyLoadImage
+                          className="product-carousel-image"
+                          alt={currentTissu.name}
+                          src={currentTissu.image}
+                          placeholderSrc="../Spinner.svg"
+                        />
+
+                        <FontAwesomeIcon
+                          role="button"
+                          icon={faMagnifyingGlassPlus}
+                          className="btn-zoom"
+                          onClick={() => {
+                            setTissuImage(currentTissu.image);
+                            setModalShow(true);
+                          }}
+                        />
+                      </>
                     ) : (
                       <LazyLoadImage
                         className="product-carousel-image"
@@ -476,6 +492,11 @@ function ProductPage() {
             <strong className="bg1 badge badge-pill">{tissu}</strong>
           </div>
         )}
+        <ModalTissuPatch
+          show={modalShow}
+          image={tissuImage}
+          onHide={() => setModalShow(false)}
+        />
       </>
     );
   };
@@ -532,12 +553,23 @@ function ProductPage() {
                 >
                   <div className="d-flex flex-column align-items-center">
                     {currentPatch.image ? (
-                      <LazyLoadImage
-                        className="product-carousel-image"
-                        alt={currentPatch.name}
-                        src={currentPatch.image}
-                        placeholderSrc="../Spinner.svg"
-                      />
+                      <>
+                        <LazyLoadImage
+                          className="product-carousel-image"
+                          alt={currentPatch.name}
+                          src={currentPatch.image}
+                          placeholderSrc="../Spinner.svg"
+                        />
+                        <FontAwesomeIcon
+                          role="button"
+                          icon={faMagnifyingGlassPlus}
+                          className="btn-zoom"
+                          onClick={() => {
+                            setTissuImage(currentPatch.image);
+                            setModalShow(true);
+                          }}
+                        />
+                      </>
                     ) : (
                       <LazyLoadImage
                         className="product-carousel-image"

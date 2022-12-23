@@ -14,8 +14,8 @@ import { Helmet } from "react-helmet-async";
 import { LinkContainer } from "react-router-bootstrap";
 import LoadingBox from "../components/LoadingBox";
 import MessageBox from "../components/MessageBox";
-import ModalTissuPatch from "../components/ModalTissuPatch";
 import { LazyLoadImage } from "react-lazy-load-image-component";
+import ModalZoomImage from "../components/ModalZoomImage";
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -163,7 +163,7 @@ function TissuPage() {
                   </Button>
                 </div>
               )}
-              <ModalTissuPatch
+              <ModalZoomImage
                 show={modalShow}
                 image={tissuImage}
                 onHide={() => setModalShow(false)}

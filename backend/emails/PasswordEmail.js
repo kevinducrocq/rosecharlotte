@@ -23,6 +23,6 @@ export function passwordEmail(sender, userEmail, link) {
 
     </div>
 
-  </div>`,
+  </div>`
   };
 }
