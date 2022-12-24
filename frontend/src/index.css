@@ -1,9 +1,9 @@
-@import url("https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins&display=swap');
 
 body {
   margin: 0;
   background-color: #fff2f2;
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 h1,
@@ -12,11 +12,11 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Pacifico", cursive;
+  font-family: 'Pacifico', cursive;
 }
 
 .paywithpaypal {
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
 .site-container {
@@ -339,7 +339,7 @@ main {
 .btn-zoom {
   position: absolute;
   font-size: 1.1em;
-  margin-right: 57px;
+  margin-right: 58px;
   background-color: #f47c7c;
   padding: 2px;
   color: #f1f1f1;
