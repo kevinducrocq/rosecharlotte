@@ -336,6 +336,11 @@ main {
 
 /*CAROUSEL*/
 
+.readMore-btn {
+  color: #f47c7c;
+  text-decoration: underline;
+}
+
 .btn-zoom {
   position: absolute;
   font-size: 1.1em;
