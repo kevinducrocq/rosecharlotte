@@ -1,12 +1,12 @@
-import axios from 'axios';
+import axios from "axios";
 import React, {
   useContext,
   useEffect,
   useReducer,
   useRef,
   useState,
-} from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+} from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import {
   Row,
   Col,
@@ -16,38 +16,38 @@ import {
   Button,
   Container,
   Breadcrumb,
-} from 'react-bootstrap';
-import Rating from '../components/Rating';
-import { Helmet } from 'react-helmet-async';
-import LoadingBox from '../components/LoadingBox';
-import MessageBox from '../components/MessageBox';
-import { dateFr, getError, logOutAndRedirect } from '../utils';
-import { Store } from '../Store';
-import { toast } from 'react-toastify';
-import { LinkContainer } from 'react-router-bootstrap';
-import nl2br from 'react-nl2br';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBackward, faMinus, faPlus } from '@fortawesome/pro-solid-svg-icons';
-import { faMagnifyingGlassPlus } from '@fortawesome/pro-regular-svg-icons';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
-import SlickCarousel from '../components/SlickCarousel';
-import ModalTissuPatch from '../components/ModalZoomImage';
+} from "react-bootstrap";
+import Rating from "../components/Rating";
+import { Helmet } from "react-helmet-async";
+import LoadingBox from "../components/LoadingBox";
+import MessageBox from "../components/MessageBox";
+import { dateFr, getError, logOutAndRedirect } from "../utils";
+import { Store } from "../Store";
+import { toast } from "react-toastify";
+import { LinkContainer } from "react-router-bootstrap";
+import nl2br from "react-nl2br";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faBackward, faMinus, faPlus } from "@fortawesome/pro-solid-svg-icons";
+import { faMagnifyingGlassPlus } from "@fortawesome/pro-regular-svg-icons";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import SlickCarousel from "../components/SlickCarousel";
+import ModalTissuPatch from "../components/ModalZoomImage";
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'REFRESH_PRODUCT':
+    case "REFRESH_PRODUCT":
       return { ...state, product: action.payload };
-    case 'CREATE_REQUEST':
+    case "CREATE_REQUEST":
       return { ...state, loadingCreateReview: true };
-    case 'CREATE_SUCCESS':
+    case "CREATE_SUCCESS":
       return { ...state, loadingCreateReview: false };
-    case 'CREATE_FAIL':
+    case "CREATE_FAIL":
       return { ...state, loadingCreateReview: false };
-    case 'FETCH_REQUEST':
+    case "FETCH_REQUEST":
       return { ...state, loading: true };
-    case 'FETCH_SUCCESS':
+    case "FETCH_SUCCESS":
       return { ...state, product: action.payload, loading: false };
-    case 'FETCH_FAIL':
+    case "FETCH_FAIL":
       return { ...state, loading: false, error: action.payload };
     default:
       return state;
@@ -58,19 +58,19 @@ function ProductPage() {
   let reviewsRef = useRef();
 
   const [rating, setRating] = useState();
-  const [comment, setComment] = useState('');
-  const [selectedImage, setSelectedImage] = useState('');
-  const [customization, setCustomization] = useState('');
-  const [variantId, setVariant] = useState('');
-  const [side, setSide] = useState('');
+  const [comment, setComment] = useState("");
+  const [selectedImage, setSelectedImage] = useState("");
+  const [customization, setCustomization] = useState("");
+  const [variantId, setVariant] = useState("");
+  const [side, setSide] = useState("");
 
-  const [fil, setFil] = useState('');
-  const [tissu, setTissu] = useState('');
-  const [patch, setPatch] = useState('');
+  const [fil, setFil] = useState("");
+  const [tissu, setTissu] = useState("");
+  const [patch, setPatch] = useState("");
   const [refresh, setRefresh] = useState(0);
   const [readMore, setReadMore] = useState({});
   const [modalShow, setModalShow] = useState(false);
-  const [tissuImage, setTissuImage] = useState('');
+  const [tissuImage, setTissuImage] = useState("");
 
   const navigate = useNavigate();
   const params = useParams();
@@ -80,14 +80,14 @@ function ProductPage() {
     useReducer(reducer, {
       product: [],
       loading: true,
-      error: '',
+      error: "",
     });
 
   // Récupère le produit de la BDD
 
   useEffect(() => {
     const fetchData = async () => {
-      dispatch({ type: 'FETCH_REQUEST' });
+      dispatch({ type: "FETCH_REQUEST" });
       try {
         const result = await axios.get(`/api/products/slug/${slug}`);
         let readMore = [];
@@ -95,9 +95,9 @@ function ProductPage() {
           readMore[review._id] = false;
         });
         setReadMore(readMore);
-        dispatch({ type: 'FETCH_SUCCESS', payload: result.data });
+        dispatch({ type: "FETCH_SUCCESS", payload: result.data });
       } catch (err) {
-        dispatch({ type: 'FETCH_FAIL', payload: getError(err) });
+        dispatch({ type: "FETCH_FAIL", payload: getError(err) });
       }
     };
     fetchData();
@@ -138,7 +138,7 @@ function ProductPage() {
       }
 
       ctxDispatch({
-        type: 'CART_ADD_ITEM',
+        type: "CART_ADD_ITEM",
         payload: {
           ...product,
           quantity,
@@ -154,11 +154,11 @@ function ProductPage() {
       });
     } else {
       if (data.countInStock < quantity) {
-        window.alert('Désolé, le produit est épuisé');
+        window.alert("Désolé, le produit est épuisé");
         return;
       }
       ctxDispatch({
-        type: 'CART_ADD_ITEM',
+        type: "CART_ADD_ITEM",
         payload: {
           ...product,
           quantity,
@@ -171,14 +171,14 @@ function ProductPage() {
         },
       });
     }
-    navigate('/cart');
+    navigate("/cart");
   };
 
   // Fonction pour ajouter un commentaire
   const submitHandler = async (e) => {
     e.preventDefault();
     if (!comment || !rating) {
-      toast.error('Entrez une note et un commentaire');
+      toast.error("Entrez une note et un commentaire");
       return;
     }
     try {
@@ -197,32 +197,32 @@ function ProductPage() {
       // });
 
       dispatch({
-        type: 'CREATE_SUCCESS',
+        type: "CREATE_SUCCESS",
       });
-      toast.success('Commentaire soumis avec succès');
+      toast.success("Commentaire soumis avec succès");
       product.reviews.unshift(data.review);
       product.numReviews = data.numReviews;
       product.rating = data.rating;
-      dispatch({ type: 'REFRESH_PRODUCT', payload: product });
+      dispatch({ type: "REFRESH_PRODUCT", payload: product });
       window.scrollTo({
-        behavior: 'smooth',
+        behavior: "smooth",
         top: reviewsRef.current.offsetTop,
       });
     } catch (error) {
       toast.error(getError(error));
-      dispatch({ type: 'CREATE_FAIL' });
+      dispatch({ type: "CREATE_FAIL" });
     }
   };
 
   // Le produit est-il une barrette ?
   const isBarrette = () => {
     return product.name.includes(
-      'Barrette',
-      'Barrettes',
-      'barrette',
-      'barrettes',
-      'barette',
-      'Barette'
+      "Barrette",
+      "Barrettes",
+      "barrette",
+      "barrettes",
+      "barette",
+      "Barette"
     );
   };
 
@@ -236,82 +236,95 @@ function ProductPage() {
     return product.patches && product.patches.length > 0;
   };
 
-  const isReviewActive = useEffect(() => {
-    product.reviews?.filter((review) => {
-      return (review.status = true);
-    });
-  }, [product.reviews]);
-
   // Card commentaire
   const renderReview = () => {
-    return isReviewActive.map((review) => (
-      <Card key={review._id} id={review._id}>
-        <Card.Header>
-          <strong>{review.name}</strong>
-          <Rating rating={review.rating} caption=" "></Rating>
-        </Card.Header>
-        <Card.Body>
-          <p>{dateFr(review.createdAt)}</p>
-          <p>
-            {readMore[review._id]
-              ? nl2br(review.comment)
-              : review.comment.substring(0, 80)}
-            ...
-            {review.comment.length > 80 && (
-              <div
-                role="button"
-                onClick={() => {
-                  readMore[review._id] = !readMore[review._id];
-                  setReadMore({ ...readMore });
-                }}
-                className="readMore-btn"
-              >
-                {readMore[review._id] ? 'Lire -' : 'Lire +'}
-              </div>
-            )}
-          </p>
-        </Card.Body>
-      </Card>
-    ));
+    return product.reviews
+      ?.filter((review) => review.status === true)
+      .map((review) => (
+        <Col md={4}>
+          <Card
+            key={review._id}
+            id={review._id}
+            className={
+              product.reviews?.filter((review) => review.status === true)
+                .length >= 3
+                ? "mx-2"
+                : ""
+            }
+          >
+            <Card.Header>
+              <strong>{review.name}</strong>
+              <Rating rating={review.rating} caption=" "></Rating>
+            </Card.Header>
+            <Card.Body>
+              <p>{dateFr(review.createdAt)}</p>
+              <p>
+                {readMore[review._id]
+                  ? nl2br(review.comment)
+                  : review.comment.substring(0, 80)}
+                ...
+                {review.comment.length > 80 && (
+                  <div
+                    role="button"
+                    onClick={() => {
+                      readMore[review._id] = !readMore[review._id];
+                      setReadMore({ ...readMore });
+                    }}
+                    className="readMore-btn"
+                  >
+                    {readMore[review._id] ? "Lire -" : "Lire +"}
+                  </div>
+                )}
+              </p>
+            </Card.Body>
+          </Card>
+        </Col>
+      ));
   };
 
   // Carousel avec les avis des clients
   const renderCarouselReviews = () => {
-    return (
-      <SlickCarousel
-        {...{
-          dots: true,
-          slidesToShow: 3,
-          slidesToScroll: 3,
-          speed: 500,
-          responsive: [
-            {
-              breakpoint: 1024,
-              settings: {
-                slidesToShow: 3,
-                slidesToScroll: 3,
+    if (
+      product.reviews?.filter((review) => review.status === true).length >= 3
+    ) {
+      return (
+        <SlickCarousel
+          {...{
+            dots: true,
+            speed: 500,
+            slidesToShow: 3,
+            slidesToScroll: 3,
+            responsive: [
+              {
+                breakpoint: 1024,
+                settings: {
+                  slidesToShow: 3,
+                  slidesToScroll: 3,
+                },
               },
-            },
-            {
-              breakpoint: 990,
-              settings: {
-                slidesToShow: 2,
-                slidesToScroll: 2,
+              {
+                breakpoint: 990,
+                settings: {
+                  slidesToShow: 2,
+                  slidesToScroll: 2,
+                },
               },
-            },
-            {
-              breakpoint: 480,
-              settings: {
-                slidesToShow: 1,
-                slidesToScroll: 1,
+              {
+                breakpoint: 480,
+                settings: {
+                  slidesToShow: 1,
+                  slidesToScroll: 1,
+                },
               },
-            },
-          ],
-        }}
-      >
-        {renderReview()}
-      </SlickCarousel>
-    );
+            ],
+          }}
+        >
+          {renderReview()}
+        </SlickCarousel>
+      );
+    } else {
+      return <Row>{renderReview()}</Row>;
+    }
   };
 
   // Formulaires des variantes du produit
@@ -336,24 +349,24 @@ function ProductPage() {
                 <option key={variant._id} value={variant._id}>
                   {variant.name}&nbsp;
                   {variant.promoPrice > 0 &&
-                    '- Ancien prix : ' +
+                    "- Ancien prix : " +
                       variant.price +
-                      ' €' +
-                      ' || Nouveau : ' +
+                      " €" +
+                      " || Nouveau : " +
                       variant.promoPrice +
-                      ' €'}
+                      " €"}
                   {variant.soldePrice > 0 &&
-                    '- Ancien prix : ' +
+                    "- Ancien prix : " +
                       variant.price +
-                      ' €' +
-                      ' || Nouveau : ' +
+                      " €" +
+                      " || Nouveau : " +
                       variant.soldePrice +
-                      ' €'}
+                      " €"}
                   {variant.price > 0 &&
                     variant.promoPrice === null &&
                     variant.soldePrice === null &&
-                    ' - ' + variant.price + ' €'}
-                  {variant.countInStock <= 0 ? ' - Non disponible' : ''}
+                    " - " + variant.price + " €"}
+                  {variant.countInStock <= 0 ? " - Non disponible" : ""}
                 </option>
               );
             })}
@@ -436,7 +449,7 @@ function ProductPage() {
               <div key={currentTissu._id}>
                 <div
                   role="button"
-                  className={tissu === currentTissu.name ? 'selected-item' : ''}
+                  className={tissu === currentTissu.name ? "selected-item" : ""}
                   onClick={() => {
                     setTissu(currentTissu.name);
                   }}
@@ -535,7 +548,7 @@ function ProductPage() {
                 <div
                   role="button"
                   className={
-                    patch === currentPatch.name ? 'selected-item p-1' : 'p-1'
+                    patch === currentPatch.name ? "selected-item p-1" : "p-1"
                   }
                   onClick={() => {
                     setPatch(currentPatch.name);
@@ -689,10 +702,10 @@ function ProductPage() {
         onClick={addToCartHandler}
         className={
           btnDisabled
-            ? 'bg-light text-secondary border-light w-100'
-            : 'bg1 w-100'
+            ? "bg-light text-secondary border-light w-100"
+            : "bg1 w-100"
         }
-        variant={btnDisabled ? '' : 'outline-light'}
+        variant={btnDisabled ? "" : "outline-light"}
       >
         Ajouter au panier
       </Button>
@@ -714,7 +727,7 @@ function ProductPage() {
       const max = () => variantPrices.reduce((x, y) => Math.max(x, y));
       return (
         <ListGroup.Item className="price-tag">
-          <div className="p-2">{'de ' + min() + ' à ' + max() + ' €'}</div>
+          <div className="p-2">{"de " + min() + " à " + max() + " €"}</div>
         </ListGroup.Item>
       );
     } else {
@@ -782,10 +795,10 @@ function ProductPage() {
   ) : (
     <Container className="my-5">
       <Breadcrumb className="d-none d-md-flex">
-        <LinkContainer to={'/'} exact>
+        <LinkContainer to={"/"} exact>
           <Breadcrumb.Item>Accueil</Breadcrumb.Item>
         </LinkContainer>
-        <LinkContainer to={'/boutique/search'}>
+        <LinkContainer to={"/boutique/search"}>
           <Breadcrumb.Item>Boutique</Breadcrumb.Item>
         </LinkContainer>
         <LinkContainer to={`/boutique/search?category=${product.category}`}>
@@ -841,7 +854,7 @@ function ProductPage() {
                   <h1 className="h2 mb-3">{product.name}</h1>
                   <h2 className="h6 text-muted">
                     {product.category}
-                    {product.subCategory ? ' - ' + product.subCategory : ''}
+                    {product.subCategory ? " - " + product.subCategory : ""}
                   </h2>
                 </div>
               </div>
@@ -960,7 +973,7 @@ function ProductPage() {
                   {renderVariationsAndPersonalisationForm()}
                 </>
               ) : (
-                ''
+                ""
               )}
             </ListGroup.Item>
 
@@ -1033,7 +1046,7 @@ function ProductPage() {
                 <MessageBox>
                   <Link to={`/signin?redirect=/product/${product.slug}`}>
                     Connectez-vous
-                  </Link>{' '}
+                  </Link>{" "}
                   pour rédiger un avis
                 </MessageBox>
               )}
