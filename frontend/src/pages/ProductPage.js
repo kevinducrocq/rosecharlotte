@@ -236,89 +236,82 @@ function ProductPage() {
     return product.patches && product.patches.length > 0;
   };
 
+  const isReviewActive = useEffect(() => {
+    product.reviews?.filter((review) => {
+      return (review.status = true);
+    });
+  }, [product.reviews]);
+
   // Card commentaire
   const renderReview = () => {
-    return product.reviews.map(
-      (review) =>
-        review.status === true && (
-          <div>
-            <Card key={review._id} id={review._id} className="mx-2">
-              <Card.Header>
-                <strong>{review.name}</strong>
-                <Rating rating={review.rating} caption=" "></Rating>
-              </Card.Header>
-              <Card.Body>
-                <p>{dateFr(review.createdAt)}</p>
-                <p>
-                  {readMore[review._id]
-                    ? nl2br(review.comment)
-                    : review.comment.substring(0, 80)}
-                  ...
-                  {review.comment.length > 80 && (
-                    <div
-                      role="button"
-                      onClick={() => {
-                        readMore[review._id] = !readMore[review._id];
-                        setReadMore({ ...readMore });
-                      }}
-                      className="readMore-btn"
-                    >
-                      {readMore[review._id] ? 'Lire -' : 'Lire +'}
-                    </div>
-                  )}
-                </p>
-              </Card.Body>
-            </Card>
-          </div>
-        )
-    );
+    return isReviewActive.map((review) => (
+      <Card key={review._id} id={review._id}>
+        <Card.Header>
+          <strong>{review.name}</strong>
+          <Rating rating={review.rating} caption=" "></Rating>
+        </Card.Header>
+        <Card.Body>
+          <p>{dateFr(review.createdAt)}</p>
+          <p>
+            {readMore[review._id]
+              ? nl2br(review.comment)
+              : review.comment.substring(0, 80)}
+            ...
+            {review.comment.length > 80 && (
+              <div
+                role="button"
+                onClick={() => {
+                  readMore[review._id] = !readMore[review._id];
+                  setReadMore({ ...readMore });
+                }}
+                className="readMore-btn"
+              >
+                {readMore[review._id] ? 'Lire -' : 'Lire +'}
+              </div>
+            )}
+          </p>
+        </Card.Body>
+      </Card>
+    ));
   };
 
   // Carousel avec les avis des clients
   const renderCarouselReviews = () => {
-    if (product.reviews.length >= 3) {
-      return (
-        <SlickCarousel
-          {...{
-            dots: true,
-            slidesToShow: 3,
-            slidesToScroll: 3,
-            speed: 500,
-            responsive: [
-              {
-                breakpoint: 1024,
-                settings: {
-                  slidesToShow: 3,
-                  slidesToScroll: 3,
-                },
+    return (
+      <SlickCarousel
+        {...{
+          dots: true,
+          slidesToShow: 3,
+          slidesToScroll: 3,
+          speed: 500,
+          responsive: [
+            {
+              breakpoint: 1024,
+              settings: {
+                slidesToShow: 3,
+                slidesToScroll: 3,
               },
-              {
-                breakpoint: 990,
-                settings: {
-                  slidesToShow: 2,
-                  slidesToScroll: 2,
-                },
+            },
+            {
+              breakpoint: 990,
+              settings: {
+                slidesToShow: 2,
+                slidesToScroll: 2,
               },
-              {
-                breakpoint: 480,
-                settings: {
-                  slidesToShow: 1,
-                  slidesToScroll: 1,
-                },
+            },
+            {
+              breakpoint: 480,
+              settings: {
+                slidesToShow: 1,
+                slidesToScroll: 1,
               },
-            ],
-          }}
-        >
-          {renderReview()}
-        </SlickCarousel>
-      );
-    } else if (product.reviews.length < 3) {
-      return (
-        <Row>
-          <Col md={4}>{renderReview()}</Col>
-        </Row>
-      );
-    }
+            },
+          ],
+        }}
+      >
+        {renderReview()}
+      </SlickCarousel>
+    );
   };
 
   // Formulaires des variantes du produit
@@ -811,7 +804,7 @@ function ProductPage() {
       </Helmet>
       <Row className="product-infos">
         <div className="d-flex align-items-center justify-content-between">
-          <div>
+          <div className="d-flex d-md-none">
             <Link to="/boutique/search">
               <FontAwesomeIcon icon={faBackward} /> retour
             </Link>

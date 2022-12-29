@@ -1,5 +1,5 @@
-import axios from "axios";
-import React, { useEffect, useReducer, useState } from "react";
+import axios from 'axios';
+import React, { useEffect, useReducer, useState } from 'react';
 import {
   Breadcrumb,
   Button,
@@ -7,27 +7,26 @@ import {
   Col,
   Container,
   Form,
-  Image,
   Row,
-} from "react-bootstrap";
-import { Helmet } from "react-helmet-async";
-import { LinkContainer } from "react-router-bootstrap";
-import LoadingBox from "../components/LoadingBox";
-import MessageBox from "../components/MessageBox";
-import { LazyLoadImage } from "react-lazy-load-image-component";
-import ModalZoomImage from "../components/ModalZoomImage";
+} from 'react-bootstrap';
+import { Helmet } from 'react-helmet-async';
+import { LinkContainer } from 'react-router-bootstrap';
+import LoadingBox from '../components/LoadingBox';
+import MessageBox from '../components/MessageBox';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
+import ModalZoomImage from '../components/ModalZoomImage';
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case "FETCH_REQUEST":
+    case 'FETCH_REQUEST':
       return { ...state, loading: true };
-    case "FETCH_SUCCESS":
+    case 'FETCH_SUCCESS':
       return {
         ...state,
         tissus: action.payload,
         loading: false,
       };
-    case "FETCH_FAIL":
+    case 'FETCH_FAIL':
       return { ...state, loading: false, error: action.payload };
     default:
       return state;
@@ -38,14 +37,14 @@ function TissuPage() {
   const [{ loading, error, tissus }, dispatch] = useReducer(reducer, {
     products: [],
     loading: true,
-    error: "",
+    error: '',
   });
 
   const [modalShow, setModalShow] = useState(false);
 
-  const [tissuImage, setTissuImage] = useState("");
+  const [tissuImage, setTissuImage] = useState('');
 
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
 
   const cardsPerRow = 8;
 
@@ -57,12 +56,12 @@ function TissuPage() {
 
   useEffect(() => {
     const fetchData = async () => {
-      dispatch({ type: "FETCH_REQUEST" });
+      dispatch({ type: 'FETCH_REQUEST' });
       try {
-        const result = await axios.get("/api/tissus/");
-        dispatch({ type: "FETCH_SUCCESS", payload: result.data });
+        const result = await axios.get('/api/tissus/');
+        dispatch({ type: 'FETCH_SUCCESS', payload: result.data });
       } catch (err) {
-        dispatch({ type: "FETCH_FAIL", payload: err.message });
+        dispatch({ type: 'FETCH_FAIL', payload: err.message });
       }
     };
     fetchData();
@@ -80,7 +79,7 @@ function TissuPage() {
 
       <Container className="my-5">
         <Breadcrumb className="d-none d-md-flex">
-          <LinkContainer to={"/"} exact>
+          <LinkContainer to={'/'} exact>
             <Breadcrumb.Item>Accueil</Breadcrumb.Item>
           </LinkContainer>
           <Breadcrumb.Item active>Tissuthèque</Breadcrumb.Item>
@@ -105,9 +104,9 @@ function TissuPage() {
               </div>
 
               <Row className="mt-5">
-                {(tissus && typeof tissus.map === "function" ? tissus : [])
+                {(tissus && typeof tissus.map === 'function' ? tissus : [])
                   .filter((val) => {
-                    if (searchTerm === "") {
+                    if (searchTerm === '') {
                       return val;
                     } else if (
                       val.name
@@ -116,7 +115,7 @@ function TissuPage() {
                     ) {
                       return val;
                     }
-                    return "";
+                    return '';
                   })
                   .slice(0, next)
                   .map((tissu, index) => {
@@ -155,8 +154,8 @@ function TissuPage() {
               {next < tissus?.length && (
                 <div className="d-flex justify-content-center">
                   <Button
-                    className="bg1 w-100 border-white text-white"
-                    variant="bg1"
+                    className="dtn-default w-100 border-dark"
+                    variant="outline-none"
                     onClick={handleMoreCards}
                   >
                     Afficher plus
