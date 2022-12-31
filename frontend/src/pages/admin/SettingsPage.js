@@ -1,59 +1,59 @@
-import axios from 'axios';
-import React, { useContext, useEffect, useReducer, useState } from 'react';
-import { Card, Col, Container, Image, Row } from 'react-bootstrap';
-import { Helmet } from 'react-helmet-async';
+import axios from "axios";
+import React, { useContext, useEffect, useReducer, useState } from "react";
+import { Card, Col, Container, Image, Row } from "react-bootstrap";
+import { Helmet } from "react-helmet-async";
 
-import AdminCanvasMenu from '../../components/AdminCanvasMenu';
-import AdminMenu from '../../components/AdminMenu';
-import LoadingBox from '../../components/LoadingBox';
-import MessageBox from '../../components/MessageBox';
-import ModalCategoryHome from '../../components/ModalCategoryHome';
-import ModalEditCarouselHome from '../../components/ModalEditCarouselHome';
-import { Store } from '../../Store';
-import { getError, logOutAndRedirect } from '../../utils';
+import AdminCanvasMenu from "../../components/AdminCanvasMenu";
+import AdminMenu from "../../components/AdminMenu";
+import LoadingBox from "../../components/LoadingBox";
+import MessageBox from "../../components/MessageBox";
+import ModalCategoryHome from "../../components/ModalCategoryHome";
+import ModalEditCarouselHome from "../../components/ModalEditCarouselHome";
+import { Store } from "../../Store";
+import { getError, logOutAndRedirect } from "../../utils";
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case 'FETCH_REQUEST':
+    case "FETCH_REQUEST":
       return { ...state, loading: true };
-    case 'FETCH_SUCCESS':
+    case "FETCH_SUCCESS":
       return {
         ...state,
         carouselHome: action.payload,
         loading: false,
       };
-    case 'FETCH_FAIL':
+    case "FETCH_FAIL":
       return { ...state, loading: false, error: action.payload };
-    case 'ADD_REQUEST':
+    case "ADD_REQUEST":
       return { ...state, loading: true, successAdd: false };
-    case 'ADD_SUCCESS':
+    case "ADD_SUCCESS":
       return { ...state, loading: false, successAdd: true };
-    case 'ADD_FAIL':
+    case "ADD_FAIL":
       return { ...state, loading: false };
-    case 'ADD_RESET':
+    case "ADD_RESET":
       return { ...state, loading: false, successAdd: false };
 
-    case 'DELETE_REQUEST':
+    case "DELETE_REQUEST":
       return { ...state, loading: true, successDelete: false };
-    case 'DELETE_SUCCESS':
+    case "DELETE_SUCCESS":
       return {
         ...state,
         loading: false,
         successDelete: true,
       };
-    case 'DELETE_FAIL':
+    case "DELETE_FAIL":
       return { ...state, loading: false };
-    case 'DELETE_RESET':
+    case "DELETE_RESET":
       return { ...state, loading: false, successDelete: false };
-    case 'UPLOAD_REQUEST':
-      return { ...state, loadingUpload: true, errorUpload: '' };
-    case 'UPLOAD_SUCCESS':
+    case "UPLOAD_REQUEST":
+      return { ...state, loadingUpload: true, errorUpload: "" };
+    case "UPLOAD_SUCCESS":
       return {
         ...state,
         loadingUpload: false,
-        errorUpload: '',
+        errorUpload: "",
       };
-    case 'UPLOAD_FAIL':
+    case "UPLOAD_FAIL":
       return { ...state, loadingUpload: false, errorUpload: action.payload };
 
     default:
@@ -69,16 +69,16 @@ export default function SettingsPage() {
     dispatch,
   ] = useReducer(reducer, {
     loading: false,
-    error: '',
+    error: "",
   });
 
   const [refresh, setRefresh] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState("");
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        dispatch({ type: 'FETCH_REQUEST' });
+        dispatch({ type: "FETCH_REQUEST" });
         const { data } = await axios.get(`/api/settings/`, {
           headers: { Authorization: `Bearer ${userInfo.token}` },
         });
@@ -87,18 +87,18 @@ export default function SettingsPage() {
         //     logOutAndRedirect();
         //   }
         // });
-        dispatch({ type: 'FETCH_SUCCESS', payload: data });
+        dispatch({ type: "FETCH_SUCCESS", payload: data });
       } catch (err) {
         dispatch({
-          type: 'FETCH_FAIL',
+          type: "FETCH_FAIL",
           payload: getError(err),
         });
       }
     };
     if (successDelete) {
-      dispatch({ type: 'DELETE_RESET' });
+      dispatch({ type: "DELETE_RESET" });
     } else if (successAdd) {
-      dispatch({ type: 'ADD_RESET' });
+      dispatch({ type: "ADD_RESET" });
     } else {
       fetchData();
       if (refresh) {
@@ -188,7 +188,7 @@ export default function SettingsPage() {
                 </Card>
               </section>
 
-              <section>
+              {/* <section>
                 <Card className="p-4">
                   <Card.Title className="mb-4 d-flex justify-content-between align-items-center">
                     <div>
@@ -206,7 +206,7 @@ export default function SettingsPage() {
                     </div>
                   </div>
                 </Card>
-              </section>
+              </section> */}
             </>
           )}
         </Col>
