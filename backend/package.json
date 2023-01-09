@@ -5,7 +5,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "nodemon --ext js,mjs,json,twig server.js",
     "start-continuous": "supervisor server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -39,6 +39,7 @@
     "sitemap": "^7.1.1",
     "streamifier": "^0.1.1",
     "stripe": "^10.13.0",
+    "twig": "^1.15.4",
     "uuid": "^9.0.0",
     "xmlbuilder": "^15.1.1",
     "zlib": "^1.0.5"

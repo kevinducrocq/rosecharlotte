@@ -112,6 +112,39 @@ const OrderHistoryPage = () => {
     }
   };
 
+  const downloadInvoice = async (order) => {
+    try {
+      await axios
+        .get(`api/orders/mine/${order._id}`, {
+          headers: {
+            Authorization: `Bearer ${userInfo.token}`,
+          },
+          responseType: "blob",
+        })
+        .then((r) => {
+          return r.data;
+        })
+        .then((blob) => {
+          // Create blob link to download
+          const url = window.URL.createObjectURL(new Blob([blob]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", `facture_${order._id}.pdf`);
+
+          // Append to html link element page
+          document.body.appendChild(link);
+
+          // Start download
+          link.click();
+
+          // Clean up and remove the link
+          link.parentNode.removeChild(link);
+        });
+    } catch (err) {
+      toast.error(err);
+    }
+  };
+
   const ordersNotPaid = (orders ?? []).filter(
     (order) => order.isPaid === false
   );
@@ -262,7 +295,6 @@ const OrderHistoryPage = () => {
                             <Link to={`/order/${order._id}`}>
                               Voir les détails
                             </Link>
-                            &nbsp;|&nbsp; <Link to="">Facture</Link>
                           </div>
                         </div>
                       </Col>
@@ -296,7 +328,10 @@ const OrderHistoryPage = () => {
                               </div>
                               <div>
                                 <div>{item.name}</div>
-                                <div>Modèle : {item.variant?.name}</div>
+                                {item.variant?.name && (
+                                  <div>Modèle : {item.variant.name}</div>
+                                )}
+
                                 <div>
                                   {item.promoPrice ||
                                   item.soldePrice ||
@@ -346,15 +381,15 @@ const OrderHistoryPage = () => {
                         ) : (
                           ""
                         )}
-                        {/* <Button
+                        <Button
                           className="w-100 btn-sm bg-white text-dark mb-2"
                           variant="outline-secondary"
                           onClick={() => {
-                            navigate(`product/`);
+                            downloadInvoice(order);
                           }}
                         >
-                          Laisser un avis sur le produit
-                        </Button> */}
+                          Facture
+                        </Button>
                         <Button
                           className="w-100 btn-sm bg-white text-dark mb-2"
                           variant="outline-secondary"

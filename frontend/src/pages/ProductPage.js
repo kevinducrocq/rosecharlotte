@@ -714,17 +714,35 @@ function ProductPage() {
 
   const renderedPrices = () => {
     const variantPrices = [];
+    const variantPromoPrices = [];
+    const variantSoldePrices = [];
 
     product.variants.filter((variant) => {
       if (variant.price > 0) {
         return variantPrices.push(variant.price);
-      } else {
-        return product.price;
       }
     });
-    if (variantPrices.length > 0) {
-      const min = () => variantPrices.reduce((x, y) => Math.min(x, y));
-      const max = () => variantPrices.reduce((x, y) => Math.max(x, y));
+
+    product.variants.filter((variant) => {
+      if (variant.promoPrice > 0) {
+        return variantPromoPrices.push(variant.promoPrice);
+      }
+    });
+
+    product.variants.filter((variant) => {
+      if (variant.soldePrice > 0) {
+        return variantSoldePrices.push(variant.soldePrice);
+      }
+    });
+
+    const variantAllPrices = variantPrices.concat(
+      variantPromoPrices,
+      variantSoldePrices
+    );
+
+    if (variantAllPrices.length > 0) {
+      const min = () => variantAllPrices.reduce((x, y) => Math.min(x, y));
+      const max = () => variantAllPrices.reduce((x, y) => Math.max(x, y));
       return (
         <ListGroup.Item className="price-tag">
           <div className="p-2">{"de " + min() + " à " + max() + " €"}</div>

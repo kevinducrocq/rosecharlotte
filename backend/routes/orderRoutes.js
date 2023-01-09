@@ -12,6 +12,10 @@ import { sentOrderEmail } from "../emails/SentOrderEmail.js";
 import { chequeEmail } from "../emails/ChequeEmail.js";
 import Stripe from "stripe";
 import cors from "cors";
+import fs from "fs";
+import Twig from "twig";
+import puppeteer from "puppeteer";
+import html_to_pdf from "html-pdf-node";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 const publicStripe = new Stripe(process.env.STRIPE_PUBLIC_KEY);
@@ -243,10 +247,10 @@ orderRouter.post(
     );
 
     const newOrder = new Order({
-      orderItems: req.body.orderItems.map((x) => ({
-        ...x,
-        product: x._id,
-        variant: x.variant,
+      orderItems: req.body.orderItems.map((item) => ({
+        ...item,
+        product: item._id,
+        variant: item.variant,
       })),
       deliveryMethod: req.body.deliveryMethod,
       shippingAddress: req.body.shippingAddress,
@@ -350,6 +354,61 @@ orderRouter.get(
   })
 );
 
+const generateHtml = async (req, res, callback) => {
+  let order = await Order.findById(req.params.id).populate("user");
+
+  const orderRealPrices = order.orderItems.map((item) => {
+    return item.promoPrice ||
+      item.soldePrice ||
+      item.variant?.promoPrice ||
+      item.variant?.soldePrice
+      ? (item.promoPrice ?? item.soldePrice) ||
+          (item.variant?.promoPrice ?? item.variant?.soldePrice)
+      : item.price || item.variant.price;
+  });
+
+  if (order) {
+    try {
+      Twig.renderFile(
+        "./factures/facture.html.twig",
+        { order: order, orderRealPrices: orderRealPrices },
+        (err, html) => {
+          callback(html);
+        }
+      );
+    } catch (err) {
+      res
+        .status(500)
+        .send({ message: "Erreur lors de la génération de la facture" });
+    }
+  } else {
+    res.status(404).send({ message: "Commande non trouvée" });
+  }
+};
+
+orderRouter.get(
+  "/mine/:id",
+  isAuth,
+  expressAsyncHandler(async (req, res) => {
+    generateHtml(req, res, (html) => {
+      let file = { content: html };
+      let options = { format: "A4", printBackground: true };
+      html_to_pdf.generatePdf(file, options).then((pdfBuffer) => {
+        res.send(pdfBuffer);
+      });
+    });
+  })
+);
+
+orderRouter.get(
+  "/mine/:id/view",
+  expressAsyncHandler(async (req, res) => {
+    generateHtml(req, res, (html) => {
+      res.send(html);
+    });
+  })
+);
+
 orderRouter.get(
   "/:id",
   isAuth,
@@ -358,6 +417,19 @@ orderRouter.get(
       "user",
       "email name"
     );
+    if (order) {
+      res.send(order);
+    } else {
+      res.status(404).send({ message: "Commande non trouvée" });
+    }
+  })
+);
+
+orderRouter.get(
+  "invoice/:id",
+  isAuth,
+  expressAsyncHandler(async (req, res) => {
+    const order = await Order.findById(req.params.id).populate("user");
     if (order) {
       res.send(order);
     } else {

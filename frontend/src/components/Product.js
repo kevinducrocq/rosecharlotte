@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Image } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Rating from "./Rating";
 import { LazyLoadImage } from "react-lazy-load-image-component";
@@ -9,18 +9,35 @@ function Product(props) {
 
   const renderedPrices = () => {
     const variantPrices = [];
+    const variantPromoPrices = [];
+    const variantSoldePrices = [];
 
     product.variants.filter((variant) => {
       if (variant.price > 0) {
         return variantPrices.push(variant.price);
-      } else {
-        return product.price;
       }
     });
 
-    if (variantPrices.length > 0) {
-      const min = () => variantPrices.reduce((x, y) => Math.min(x, y));
-      const max = () => variantPrices.reduce((x, y) => Math.max(x, y));
+    product.variants.filter((variant) => {
+      if (variant.promoPrice > 0) {
+        return variantPromoPrices.push(variant.promoPrice);
+      }
+    });
+
+    product.variants.filter((variant) => {
+      if (variant.soldePrice > 0) {
+        return variantSoldePrices.push(variant.soldePrice);
+      }
+    });
+
+    const variantAllPrices = variantPrices.concat(
+      variantPromoPrices,
+      variantSoldePrices
+    );
+
+    if (variantAllPrices.length > 0) {
+      const min = () => variantAllPrices.reduce((x, y) => Math.min(x, y));
+      const max = () => variantAllPrices.reduce((x, y) => Math.max(x, y));
       return (
         <Card.Text className="card-price text-nowrap fw-bold bg3 p-2 rounded-5">
           {"de " + min() + " à " + max() + " €"}

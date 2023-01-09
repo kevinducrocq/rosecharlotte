@@ -1,12 +1,12 @@
-import express from 'express';
-import expressAsyncHandler from 'express-async-handler';
-import { isAuth, isAdmin } from '../utils.js';
-import Tissu from '../models/tissuModel.js';
+import express from "express";
+import expressAsyncHandler from "express-async-handler";
+import { isAuth, isAdmin } from "../utils.js";
+import Tissu from "../models/tissuModel.js";
 
 const tissuRouter = express.Router();
 
 tissuRouter.get(
-  '/',
+  "/",
   expressAsyncHandler(async (req, res) => {
     const tissus = await Tissu.find();
     res.send(tissus);
@@ -14,7 +14,7 @@ tissuRouter.get(
 );
 
 tissuRouter.post(
-  '/add',
+  "/add",
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
@@ -35,17 +35,17 @@ tissuRouter.post(
   })
 );
 
-tissuRouter.get('/:id', async (req, res) => {
+tissuRouter.get("/:id", async (req, res) => {
   const tissu = await Tissu.findById(req.params.id);
   if (tissu) {
     res.send(tissu);
   } else {
-    res.status(404).send({ message: 'Tissu non trouvé' });
+    res.status(404).send({ message: "Tissu non trouvé" });
   }
 });
 
 tissuRouter.put(
-  '/:id',
+  "/:id",
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
@@ -60,22 +60,22 @@ tissuRouter.put(
         image: updatedTissu.image,
       });
     } else {
-      res.status(404).send({ message: 'Tissu non trouvé' });
+      res.status(404).send({ message: "Tissu non trouvé" });
     }
   })
 );
 
 tissuRouter.delete(
-  '/:id',
+  "/:id",
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
     const tissu = await Tissu.findById(req.params.id);
     if (tissu) {
       await tissu.remove();
-      res.send({ message: 'Tissu supprimé' });
+      res.send({ message: "Tissu supprimé" });
     } else {
-      res.status(404).send({ message: 'Tissu non trouvé' });
+      res.status(404).send({ message: "Tissu non trouvé" });
     }
   })
 );

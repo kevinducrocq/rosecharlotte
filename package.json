@@ -23,6 +23,7 @@
   "homepage": "https://github.com/kevinducrocq/rosecharlotte#readme",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.1.2",
-    "@fortawesome/free-regular-svg-icons": "^6.1.2"
+    "@fortawesome/free-regular-svg-icons": "^6.1.2",
+    "puppeteer": "^19.5.0"
   }
 }
