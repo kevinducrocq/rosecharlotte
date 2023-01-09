@@ -12,9 +12,7 @@ import { sentOrderEmail } from "../emails/SentOrderEmail.js";
 import { chequeEmail } from "../emails/ChequeEmail.js";
 import Stripe from "stripe";
 import cors from "cors";
-import fs from "fs";
 import Twig from "twig";
-import puppeteer from "puppeteer";
 import html_to_pdf from "html-pdf-node";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
