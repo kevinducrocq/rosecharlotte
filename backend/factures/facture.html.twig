@@ -295,7 +295,9 @@
                   <p>{{ item.quantity }}</p>
                 </div>
                 <div class="col col_total">
-                  <p>{{ item.quantity * item.price }} &euro;</p>
+                  <p>
+                    {{ item.quantity * orderRealPrices[loop.index0] }} &euro;
+                  </p>
                 </div>
               </div>
               {% endfor %}
