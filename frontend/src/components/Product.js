@@ -80,25 +80,6 @@ function Product(props) {
     }
   };
 
-  const isPromoOrSolde = () => {
-    const variantPromoOrSoldePrices = [];
-    const isVariantPromoOrSolde = product.variants.filter((variant) => {
-      if (variant.promoPrice || variant.soldePrice) {
-        return variantPromoOrSoldePrices.push(
-          variant.promoPrice || variant.soldePrice
-        );
-      }
-    });
-
-    if (
-      product.promoPrice ||
-      product.soldePrice ||
-      variantPromoOrSoldePrices.length > 0
-    ) {
-      return true;
-    }
-  };
-
   return (
     <Link
       key={product.slug}
@@ -126,15 +107,7 @@ function Product(props) {
         <Card.Body className="d-flex flex-column">
           <div className="d-flex flex-column flex-fill justify-content-space-between">
             <div className="card-title-container flex-fill">
-              {isPromoOrSolde() ? (
-                <Card.Title className="card-titre h6">
-                  {product.name.substring(0, 30)}...
-                </Card.Title>
-              ) : (
-                <Card.Title className="card-titre h6">
-                  {product.name}
-                </Card.Title>
-              )}
+              <Card.Title className="card-titre h6">{product.name}</Card.Title>
             </div>
             <div className="card-rating d-flex justify-content-between align-items-center ">
               <Rating rating={product.rating} numReviews={product.numReviews} />
