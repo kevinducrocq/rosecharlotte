@@ -36,19 +36,66 @@ function Product(props) {
     );
 
     if (variantAllPrices.length > 0) {
-      const min = () => variantAllPrices.reduce((x, y) => Math.min(x, y));
-      const max = () => variantAllPrices.reduce((x, y) => Math.max(x, y));
-      return (
-        <Card.Text className="card-price text-nowrap fw-bold bg3 p-2 rounded-5">
-          {"de " + min() + " à " + max() + " €"}
-        </Card.Text>
-      );
+      if (
+        variantPromoPrices.length > 0 &&
+        variantPromoPrices.length === variantPrices.length
+      ) {
+        const min = () => variantPromoPrices.reduce((x, y) => Math.min(x, y));
+        const max = () => variantPromoPrices.reduce((x, y) => Math.max(x, y));
+        return (
+          <Card.Text className="card-price text-nowrap fw-bold bg3 p-2 rounded-5">
+            {"de " + min() + " à " + max() + " €"}
+          </Card.Text>
+        );
+      } else if (
+        variantSoldePrices.length > 0 &&
+        variantSoldePrices.length === variantPrices.length
+      ) {
+        const min = () => variantSoldePrices.reduce((x, y) => Math.min(x, y));
+        const max = () => variantSoldePrices.reduce((x, y) => Math.max(x, y));
+        return (
+          <Card.Text className="card-price text-nowrap fw-bold bg3 p-2 rounded-5">
+            {"de " + min() + " à " + max() + " €"}
+          </Card.Text>
+        );
+      } else {
+        const min = () => variantAllPrices.reduce((x, y) => Math.min(x, y));
+        const max = () => variantAllPrices.reduce((x, y) => Math.max(x, y));
+        return (
+          <Card.Text className="card-price text-nowrap fw-bold bg3 p-2 rounded-5">
+            {"de " + min() + " à " + max() + " €"}
+          </Card.Text>
+        );
+      }
     } else {
-      return (
-        <Card.Text className="card-price text-nowrap fw-bold bg3 p-2 rounded-5">
-          {product.price} &euro;
-        </Card.Text>
-      );
+      if (product.price && (!product.promoPrice || !product.soldePrice)) {
+        return (
+          <Card.Text className="card-price text-nowrap fw-bold bg3 p-2 rounded-5">
+            {product.price} &euro;
+          </Card.Text>
+        );
+      } else if (product.price && product.promoPrice) {
+        return <div>{product.soldePrice}</div>;
+      }
+    }
+  };
+
+  const isPromoOrSolde = () => {
+    const variantPromoOrSoldePrices = [];
+    const isVariantPromoOrSolde = product.variants.filter((variant) => {
+      if (variant.promoPrice || variant.soldePrice) {
+        return variantPromoOrSoldePrices.push(
+          variant.promoPrice || variant.soldePrice
+        );
+      }
+    });
+
+    if (
+      product.promoPrice ||
+      product.soldePrice ||
+      variantPromoOrSoldePrices.length > 0
+    ) {
+      return true;
     }
   };
 
@@ -79,7 +126,15 @@ function Product(props) {
         <Card.Body className="d-flex flex-column">
           <div className="d-flex flex-column flex-fill justify-content-space-between">
             <div className="card-title-container flex-fill">
-              <Card.Title className="card-titre h6">{product.name}</Card.Title>
+              {isPromoOrSolde() ? (
+                <Card.Title className="card-titre h6">
+                  {product.name.substring(0, 30)}...
+                </Card.Title>
+              ) : (
+                <Card.Title className="card-titre h6">
+                  {product.name}
+                </Card.Title>
+              )}
             </div>
             <div className="card-rating d-flex justify-content-between align-items-center ">
               <Rating rating={product.rating} numReviews={product.numReviews} />

@@ -741,13 +741,37 @@ function ProductPage() {
     );
 
     if (variantAllPrices.length > 0) {
-      const min = () => variantAllPrices.reduce((x, y) => Math.min(x, y));
-      const max = () => variantAllPrices.reduce((x, y) => Math.max(x, y));
-      return (
-        <ListGroup.Item className="price-tag">
-          <div className="p-2">{"de " + min() + " à " + max() + " €"}</div>
-        </ListGroup.Item>
-      );
+      if (
+        variantPromoPrices.length > 0 &&
+        variantPromoPrices.length === variantPrices.length
+      ) {
+        const min = () => variantPromoPrices.reduce((x, y) => Math.min(x, y));
+        const max = () => variantPromoPrices.reduce((x, y) => Math.max(x, y));
+        return (
+          <ListGroup.Item className="price-tag">
+            <div className="p-2">{"de " + min() + " à " + max() + " €"}</div>
+          </ListGroup.Item>
+        );
+      } else if (
+        variantSoldePrices.length > 0 &&
+        variantSoldePrices.length === variantPrices.length
+      ) {
+        const min = () => variantSoldePrices.reduce((x, y) => Math.min(x, y));
+        const max = () => variantSoldePrices.reduce((x, y) => Math.max(x, y));
+        return (
+          <ListGroup.Item className="price-tag">
+            <div className="p-2">{"de " + min() + " à " + max() + " €"}</div>
+          </ListGroup.Item>
+        );
+      } else {
+        const min = () => variantAllPrices.reduce((x, y) => Math.min(x, y));
+        const max = () => variantAllPrices.reduce((x, y) => Math.max(x, y));
+        return (
+          <ListGroup.Item className="price-tag">
+            <div className="p-2">{"de " + min() + " à " + max() + " €"}</div>
+          </ListGroup.Item>
+        );
+      }
     } else {
       if (product.price && (!product.promoPrice || !product.soldePrice)) {
         return (

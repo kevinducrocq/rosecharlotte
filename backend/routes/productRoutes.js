@@ -1,34 +1,34 @@
-import express from 'express';
-import expressAsyncHandler from 'express-async-handler';
-import transporter, { sender } from '../email.js';
-import { reviewEmail } from '../emails/ReviewEmail.js';
-import Product from '../models/productModel.js';
-import { isAuth, isAdmin } from '../utils.js';
-import Fil from '../models/filModel.js';
-import Tissu from '../models/tissuModel.js';
-import Patch from '../models/patchModel.js';
-import Category from '../models/categoryModel.js';
+import express from "express";
+import expressAsyncHandler from "express-async-handler";
+import transporter, { sender } from "../email.js";
+import { reviewEmail } from "../emails/ReviewEmail.js";
+import Product from "../models/productModel.js";
+import { isAuth, isAdmin } from "../utils.js";
+import Fil from "../models/filModel.js";
+import Tissu from "../models/tissuModel.js";
+import Patch from "../models/patchModel.js";
+import Category from "../models/categoryModel.js";
 
 const productRouter = express.Router();
 
 const slugify = (str) =>
   str
     .toString()
-    .normalize('NFKD')
+    .normalize("NFKD")
     .toLowerCase()
     .trim()
-    .replace(/\s+/g, '-')
-    .replace(/[^\w\-]+/g, '')
-    .replace(/\-\-+/g, '-');
+    .replace(/\s+/g, "-")
+    .replace(/[^\w\-]+/g, "")
+    .replace(/\-\-+/g, "-");
 
 // RECUPERER TOUS LES PRODUITS
-productRouter.get('/', async (req, res) => {
+productRouter.get("/", async (req, res) => {
   const products = await Product.find({ isVisible: true });
   res.send(products);
 });
 
 // RECUPERE LES PRODUITS EN PROMO
-productRouter.get('/promos', async (req, res) => {
+productRouter.get("/promos", async (req, res) => {
   const products = await Product.find({
     $or: [
       { promoPrice: { $gt: 0 } },
@@ -42,7 +42,7 @@ productRouter.get('/promos', async (req, res) => {
 });
 
 // RECUPERE LES PRODUITS EN SOLDE
-productRouter.get('/soldes', async (req, res) => {
+productRouter.get("/soldes", async (req, res) => {
   const products = await Product.find({
     $or: [
       { soldePrice: { $gt: 0 } },
@@ -56,7 +56,7 @@ productRouter.get('/soldes', async (req, res) => {
 });
 
 // RECUPERER TOUS LES PRODUITS ORDRE ASCENDANT DATE
-productRouter.get('/last-products', async (req, res) => {
+productRouter.get("/last-products", async (req, res) => {
   const products = await Product.find({ isVisible: true }).sort({
     createdAt: -1,
   });
@@ -65,7 +65,7 @@ productRouter.get('/last-products', async (req, res) => {
 
 // AJOUTER UN PRODUIT
 productRouter.post(
-  '/add',
+  "/add",
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
@@ -129,7 +129,7 @@ productRouter.post(
 
 // METTRE A JOUR UN PRODUIT
 productRouter.put(
-  '/:id',
+  "/:id",
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
@@ -180,14 +180,14 @@ productRouter.put(
         patches: updatedProduct.patches,
       });
     } else {
-      res.status(404).send({ message: 'Produit non trouvé' });
+      res.status(404).send({ message: "Produit non trouvé" });
     }
   })
 );
 
 // RETIRER UN PRODUIT DE LA VENTE
 productRouter.put(
-  '/:id/hide',
+  "/:id/hide",
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
@@ -199,16 +199,16 @@ productRouter.put(
       const updatedProduct = await product.save();
       res
         .status(201)
-        .send({ message: 'Produit remis en vente', product: updatedProduct });
+        .send({ message: "Produit remis en vente", product: updatedProduct });
     } else {
-      res.status(404).send({ message: 'Produit non trouvé' });
+      res.status(404).send({ message: "Produit non trouvé" });
     }
   })
 );
 
 // REMETTRE UN PRODUIT DE LA VENTE
 productRouter.put(
-  '/:id/validate',
+  "/:id/validate",
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
@@ -220,32 +220,32 @@ productRouter.put(
       const updatedProduct = await product.save();
       res
         .status(201)
-        .send({ message: 'Produit remis en vente', product: updatedProduct });
+        .send({ message: "Produit remis en vente", product: updatedProduct });
     } else {
-      res.status(404).send({ message: 'Produit non trouvé' });
+      res.status(404).send({ message: "Produit non trouvé" });
     }
   })
 );
 
 // SUPPRIMER UN PRODUIT
 productRouter.delete(
-  '/:id',
+  "/:id",
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
     const product = await Product.findById(req.params.id);
     if (product) {
       await product.remove();
-      res.send({ message: 'Produit supprimé' });
+      res.send({ message: "Produit supprimé" });
     } else {
-      res.status(404).send({ message: 'Produit non trouvé' });
+      res.status(404).send({ message: "Produit non trouvé" });
     }
   })
 );
 
 // POSTER UN AVIS
 productRouter.post(
-  '/:id/reviews',
+  "/:id/reviews",
   isAuth,
   expressAsyncHandler(async (req, res) => {
     const productId = req.params.id;
@@ -254,7 +254,7 @@ productRouter.post(
       if (product.reviews.find((x) => x.name === req.user.name)) {
         return res
           .status(400)
-          .send({ message: 'Vous avez déjà laissé un commentaire' });
+          .send({ message: "Vous avez déjà laissé un commentaire" });
       }
 
       const review = {
@@ -280,20 +280,20 @@ productRouter.post(
       });
 
       res.status(201).send({
-        message: 'Avis créé',
+        message: "Avis créé",
         review: updatedProduct.reviews[updatedProduct.reviews.length - 1],
         numReviews: product.numReviews,
         rating: product.rating,
       });
     } else {
-      res.status(404).send({ message: 'Pas de résultat' });
+      res.status(404).send({ message: "Pas de résultat" });
     }
   })
 );
 
 // AFFICHER LE NOMBRE TOTAL DE PRODUIT SUR LE TABLEAU DE BORD
 productRouter.get(
-  '/admin',
+  "/admin",
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
@@ -309,50 +309,50 @@ productRouter.get(
 // PAGE BOUTIQUE
 const PAGE_SIZE = 24;
 productRouter.get(
-  '/boutique/search',
+  "/boutique/search",
   expressAsyncHandler(async (req, res) => {
     const { query } = req;
     const pageSize = query.pageSize || PAGE_SIZE;
     const page = query.page || 1;
-    const category = query.category || '';
-    const subCategory = query.subCategory || '';
-    const price = query.price || '';
-    const order = query.order || '';
-    const searchQuery = query.query || '';
+    const category = query.category || "";
+    const subCategory = query.subCategory || "";
+    const price = query.price || "";
+    const order = query.order || "";
+    const searchQuery = query.query || "";
 
     const queryFilter =
-      searchQuery && searchQuery !== 'all'
+      searchQuery && searchQuery !== "all"
         ? {
             name: {
               $regex: searchQuery,
-              $options: 'i',
+              $options: "i",
             },
             isVisible: true,
           }
         : {};
 
-    const categoryFilter = category && category !== 'all' ? { category } : {};
+    const categoryFilter = category && category !== "all" ? { category } : {};
 
     const subCategoryFilter =
-      subCategory && subCategory !== 'all' ? { subCategory } : {};
+      subCategory && subCategory !== "all" ? { subCategory } : {};
 
     const priceFilter =
-      price && price !== 'all'
+      price && price !== "all"
         ? {
             // 1-50
             price: {
-              $gte: Number(price.split('-')[0]),
-              $lte: Number(price.split('-')[1]),
+              $gte: Number(price.split("-")[0]),
+              $lte: Number(price.split("-")[1]),
             },
           }
         : {};
 
     const sortOrder =
-      order === 'lowest'
+      order === "lowest"
         ? { price: 1 }
-        : order === 'highest'
+        : order === "highest"
         ? { price: -1 }
-        : order === 'newest'
+        : order === "newest"
         ? { createdAt: -1 }
         : { _id: -1 };
 
@@ -384,13 +384,13 @@ productRouter.get(
 
 // RECUPERER TOUTES LES CATEGORIES DES PRODUITS
 productRouter.get(
-  '/categories',
+  "/categories",
   expressAsyncHandler(async (req, res) => {
-    const categories = await Product.find().distinct('category');
+    const categories = await Product.find().distinct("category");
     const result = {};
     for (const category of categories) {
       const subCategories = await Product.find({ category: category }).distinct(
-        'subCategory'
+        "subCategory"
       );
       result[category] = subCategories;
     }
@@ -400,7 +400,7 @@ productRouter.get(
 
 // RECUPERER TOUS LES COMMENTAIRES DES PRODUITS
 productRouter.get(
-  '/reviews',
+  "/reviews",
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
@@ -417,7 +417,7 @@ productRouter.get(
 
 // VALIDER UN COMMENTAIRE
 productRouter.put(
-  '/:id/review/:reviewId',
+  "/:id/review/:reviewId",
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
@@ -433,16 +433,16 @@ productRouter.put(
       const updatedReview = await product.save();
       res
         .status(201)
-        .send({ message: 'Commentaire validé', product: updatedReview });
+        .send({ message: "Commentaire validé", product: updatedReview });
     } else {
-      res.status(404).send({ message: 'Commentaire non trouvé' });
+      res.status(404).send({ message: "Commentaire non trouvé" });
     }
   })
 );
 
 // CACHER UN COMMENTAIRE
 productRouter.put(
-  '/:id/review/:reviewId/hide',
+  "/:id/review/:reviewId/hide",
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
@@ -458,15 +458,15 @@ productRouter.put(
       const updatedReview = await product.save();
       res
         .status(201)
-        .send({ message: 'Commentaire caché', product: updatedReview });
+        .send({ message: "Commentaire caché", product: updatedReview });
     } else {
-      res.status(404).send({ message: 'Commentaire non trouvé' });
+      res.status(404).send({ message: "Commentaire non trouvé" });
     }
   })
 );
 // VALIDER UN COMMENTAIRE
 productRouter.put(
-  '/:id/review/:reviewId',
+  "/:id/review/:reviewId",
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
@@ -482,16 +482,16 @@ productRouter.put(
       const updatedReview = await product.save();
       res
         .status(201)
-        .send({ message: 'Commentaire validé', product: updatedReview });
+        .send({ message: "Commentaire validé", product: updatedReview });
     } else {
-      res.status(404).send({ message: 'Commentaire non trouvé' });
+      res.status(404).send({ message: "Commentaire non trouvé" });
     }
   })
 );
 
 // SUPPRIMER UN COMMENTAIRE
 productRouter.delete(
-  '/:id/review/:reviewId',
+  "/:id/review/:reviewId",
   isAuth,
   isAdmin,
   expressAsyncHandler(async (req, res) => {
@@ -510,52 +510,52 @@ productRouter.delete(
       const updatedReview = await product.save();
       res
         .status(201)
-        .send({ message: 'Commentaire supprimé', product: updatedReview });
+        .send({ message: "Commentaire supprimé", product: updatedReview });
     } else {
-      res.status(404).send({ message: 'Commentaire non trouvé' });
+      res.status(404).send({ message: "Commentaire non trouvé" });
     }
   })
 );
 
 // AFFICHER LE PRODUIT PAR SON SLUG (CLIENT)
-productRouter.get('/slug/:slug', async (req, res) => {
+productRouter.get("/slug/:slug", async (req, res) => {
   const product = await Product.findOne({ slug: req.params.slug });
   let fils;
   try {
-    fils = await Fil.find().in('_id', product.fils);
+    fils = await Fil.find().in("_id", product.fils);
   } catch (e) {
     fils = [];
   }
   let tissus;
   try {
-    tissus = await Tissu.find().in('_id', product.tissus);
+    tissus = await Tissu.find().in("_id", product.tissus);
   } catch (e) {
     tissus = [];
   }
   let patches;
   try {
-    patches = await Patch.find().in('_id', product.patches);
+    patches = await Patch.find().in("_id", product.patches);
   } catch (e) {
     patches = [];
   }
 
   if (product && product.isVisible === true) {
-    product['fils'] = fils;
-    product['tissus'] = tissus;
-    product['patches'] = patches;
+    product["fils"] = fils;
+    product["tissus"] = tissus;
+    product["patches"] = patches;
     res.send(product);
   } else {
-    res.status(404).send({ message: 'Produit non trouvé' });
+    res.status(404).send({ message: "Produit non trouvé" });
   }
 });
 
 // AFFICHER LE PRODUIT PAR SON ID (ADMIN)
-productRouter.get('/:id', async (req, res) => {
+productRouter.get("/:id", async (req, res) => {
   const product = await Product.findById(req.params.id);
   if (product) {
     res.send(product);
   } else {
-    res.status(404).send({ message: 'Produit non trouvé' });
+    res.status(404).send({ message: "Produit non trouvé" });
   }
 });
 

@@ -241,11 +241,12 @@
           <div class="bill_total_wrap">
             <div class="bill_sec">
               <p>Facturation à</p>
+              <br />
               <p class="bold name">{{ order.user.name }}</p>
               <span>
-                {{ order.user.address | lower }}<br />
-                {{ order.user.zip }}, {{ order.user.city | lower }}<br />{{
-                  order.user.country | lower
+                {{ order.user.address | upper }}<br />
+                {{ order.user.zip }}, {{ order.user.city | upper }}<br />{{
+                  order.user.country | upper
                 }}
               </span>
             </div>
@@ -303,6 +304,7 @@
               {% endfor %}
             </div>
           </div>
+          <br />
           <div class="paymethod_grandtotal_wrap">
             <div class="paymethod_sec">
               <p class="bold">Méthode de paiement</p>
